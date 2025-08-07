@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L3.7: Pseudocode for Procedures and Parameters (Part 2)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .code-block {
+            background-color: #0f172a; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            white-space: pre; /* Use pre to respect whitespace */
+        }
+        .code-keyword { color: #7dd3fc; } /* sky-300 */
+        .code-variable { color: #f8fafc; } /* slate-50 */
+        .code-value { color: #fcd34d; } /* amber-300 */
+        .code-comment { color: #94a3b8; } /* slate-400 */
+        .code-proc { color: #a5b4fc; } /* indigo-300 */
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L3.7: Using Procedures</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#analysis" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Analyzing Top Students</a></li>
+                        <li><a href="#pseudocode" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Pseudocode Solution</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Analysis</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Building with Procedures</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Now that we know how to define reusable procedures, we can use them as building blocks to solve more interesting and complex analytical problems.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        Instead of just finding a single value, we can call a procedure multiple times with different parameters, store the results, and then perform calculations on those results to gain deeper insights into our data.
+                    </p>
+                </section>
+
+                <!-- Analysis Section -->
+                <section id="analysis" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Analyzing Top Students</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Let's ask an analytical question: Is the student with the highest overall total score also a "superstar" who topped every single subject? Or is it more likely that the top student is a strong all-rounder, while subject specialists top the individual subjects?
+                    </p>
+                     <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">Our Investigation:</h4>
+                        <p>We will compare two numbers:</p>
+                        <ol class="list-decimal list-inside mt-2">
+                            <li>The actual <strong>maximum total score</strong> achieved by any single student.</li>
+                            <li>A theoretical "perfect score" calculated by <strong>summing the individual maximum scores</strong> from Maths, Physics, and Chemistry.</li>
+                        </ol>
+                        <p class="mt-2">If these two numbers are equal, it means one student topped everything. If they are different, it tells us that the top performers are specialized.</p>
+                    </div>
+                </section>
+
+                <!-- The Pseudocode Solution Section -->
+                <section id="pseudocode" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Pseudocode Solution</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Using our `Maxmarks(fld)` procedure, the solution becomes straightforward. We call the procedure four times, once for each category, and store each result in a variable.
+                    </p>
+                    <div class="code-block"><span class="code-comment">// 1. Call the procedure for each category and store results</span>
+<span class="code-variable">MaxMaths</span>     = <span class="code-proc">Maxmarks</span>(Maths)
+<span class="code-variable">MaxPhysics</span>   = <span class="code-proc">Maxmarks</span>(Physics)
+<span class="code-variable">MaxChemistry</span> = <span class="code-proc">Maxmarks</span>(Chemistry)
+<span class="code-variable">MaxTotal</span>     = <span class="code-proc">Maxmarks</span>(Total)
+
+<span class="code-comment">// 2. Perform calculations on the stored results</span>
+<span class="code-variable">SubjTotal</span>    = <span class="code-variable">MaxMaths</span> + <span class="code-variable">MaxPhysics</span> + <span class="code-variable">MaxChemistry</span>
+
+<span class="code-comment">// 3. Compare and determine the outcome</span>
+<span class="code-keyword">if</span> (<span class="code-variable">MaxTotal</span> == <span class="code-variable">SubjTotal</span>) {
+  <span class="code-variable">SingleTopper</span> = <span class="code-value">True</span>
+} <span class="code-keyword">else</span> {
+  <span class="code-variable">SingleTopper</span> = <span class="code-value">False</span>
+}</div>
+                     <p class="text-lg text-slate-700 mt-4">
+                        This approach is clean and modular. The main logic is easy to read because the complex task of finding a maximum is handled by the `Maxmarks` procedure.
+                    </p>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Interactive Analysis Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        Click the button below to run the analysis. The simulator will call the `Maxmarks` procedure four times, display the results, and then show the final comparison.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Run Analysis</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Run Analysis' to begin.</div>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-center">Procedure Return Values</h4>
+                                <div class="flex justify-between p-2 bg-slate-100 rounded"><span>MaxMaths:</span><span id="max-math" class="font-bold">-</span></div>
+                                <div class="flex justify-between p-2 bg-slate-100 rounded"><span>MaxPhysics:</span><span id="max-phys" class="font-bold">-</span></div>
+                                <div class="flex justify-between p-2 bg-slate-100 rounded"><span>MaxChemistry:</span><span id="max-chem" class="font-bold">-</span></div>
+                                <div class="flex justify-between p-2 bg-amber-100 rounded"><span>MaxTotal:</span><span id="max-total" class="font-bold">-</span></div>
+                            </div>
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-center">Final Comparison</h4>
+                                <div class="flex justify-between p-2 bg-slate-100 rounded"><span>Sum of Subject Maxes:</span><span id="subj-total" class="font-bold">-</span></div>
+                                <div id="final-result" class="p-4 text-center rounded-lg font-bold text-xl"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of using procedures for analysis.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const maxMathEl = document.getElementById('max-math');
+        const maxPhysEl = document.getElementById('max-phys');
+        const maxChemEl = document.getElementById('max-chem');
+        const maxTotalEl = document.getElementById('max-total');
+        const subjTotalEl = document.getElementById('subj-total');
+        const finalResultEl = document.getElementById('final-result');
+
+        const simStudents = [
+            { math: 97, phys: 92, chem: 92, total: 281 }, { math: 97, phys: 91, chem: 88, total: 276 },
+            { math: 72, phys: 92, chem: 97, total: 261 }, { math: 84, phys: 92, chem: 76, total: 252 }
+        ];
+
+        function Maxmarks(fld) {
+            let maxVal = 0;
+            simStudents.forEach(s => {
+                if (s[fld] > maxVal) {
+                    maxVal = s[fld];
+                }
+            });
+            return maxVal;
+        }
+
+        function resetSimulator() {
+            simStatus.textContent = "Press 'Run Analysis' to begin.";
+            maxMathEl.textContent = '-';
+            maxPhysEl.textContent = '-';
+            maxChemEl.textContent = '-';
+            maxTotalEl.textContent = '-';
+            subjTotalEl.textContent = '-';
+            finalResultEl.textContent = '';
+            finalResultEl.className = 'p-4 text-center rounded-lg font-bold text-xl';
+            startSimBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            let step = 0;
+            const steps = [
+                () => { simStatus.textContent = "Calling Maxmarks(Maths)..."; maxMathEl.textContent = Maxmarks('math'); },
+                () => { simStatus.textContent = "Calling Maxmarks(Physics)..."; maxPhysEl.textContent = Maxmarks('phys'); },
+                () => { simStatus.textContent = "Calling Maxmarks(Chemistry)..."; maxChemEl.textContent = Maxmarks('chem'); },
+                () => { simStatus.textContent = "Calling Maxmarks(Total)..."; maxTotalEl.textContent = Maxmarks('total'); },
+                () => {
+                    simStatus.textContent = "Calculating sum of subject maxes...";
+                    const subjTotal = parseInt(maxMathEl.textContent) + parseInt(maxPhysEl.textContent) + parseInt(maxChemEl.textContent);
+                    subjTotalEl.textContent = subjTotal;
+                },
+                () => {
+                    simStatus.textContent = "Comparing totals...";
+                    const maxTotal = parseInt(maxTotalEl.textContent);
+                    const subjTotal = parseInt(subjTotalEl.textContent);
+                    if (maxTotal === subjTotal) {
+                        finalResultEl.textContent = "Totals are EQUAL! There is a single superstar topper.";
+                        finalResultEl.classList.add('bg-green-100', 'text-green-800');
+                    } else {
+                        finalResultEl.textContent = "Totals are DIFFERENT! The top student is an all-rounder.";
+                        finalResultEl.classList.add('bg-blue-100', 'text-blue-800');
+                    }
+                },
+                 () => {
+                    simStatus.textContent = "Analysis Complete!";
+                    startSimBtn.disabled = false;
+                }
+            ];
+
+            const interval = setInterval(() => {
+                if (step < steps.length) {
+                    steps[step]();
+                    step++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        });
+
+        resetSimBtn.addEventListener('click', resetSimulator);
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "If a student has topped the class in terms of total marks, which statement is true?", options: ["The student has certainly topped in every subject", "The student has certainly topped in at least one subject", "The student may not have topped in any subject", "The student has certainly topped in exactly one subject"], correct: ["The student may not have topped in any subject"], type: "single", explanation: "A student can have the highest total by being consistently good (e.g., 2nd or 3rd in all subjects) without being the absolute best in any single one." },
+            { question: "What can you say about the outcome of `Maxmarks(Maths) + Maxmarks(Physics) + Maxmarks(Chemistry) - Maxmarks(Total)`?", options: ["It is always zero", "It is always less than zero", "It is always greater than zero", "It is always less than or equal to zero", "It is always greater than or equal to zero"], correct: ["It is always greater than or equal to zero"], type: "single", explanation: "The sum of the maximums of the parts must be greater than or equal to the maximum of the sums. They are equal only if one student tops all subjects." },
+            { question: "Using a `Minmarks(fld)` procedure, what can you say about `Minmarks(Maths) + Minmarks(Physics) + Minmarks(Chemistry) - Minmarks(Total)`?", options: ["It is always zero", "It is always less than zero", "It is always greater than zero", "It is always less than or equal to zero", "It is always greater than or equal to zero"], correct: ["It is always less than or equal to zero"], type: "single", explanation: "The sum of the minimums of the parts must be less than or equal to the minimum of the sums. They are equal only if one student has the lowest score in all subjects." },
+            { question: "Why is it useful to save the return values of procedures into variables like `MaxMaths` or `MaxPhysics`?", options: ["It makes the code run faster.", "It's the only way to call a procedure.", "To store the results for later use in calculations and comparisons.", "To change the original data on the cards."], correct: ["To store the results for later use in calculations and comparisons."], type: "single", explanation: "Storing the results in variables allows us to use them in subsequent steps, like adding them up or comparing them, without having to re-run the entire procedure." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

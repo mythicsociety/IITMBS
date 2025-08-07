@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Subtypes of Datatypes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --incorrect-color: #ef4444;
+            --correct-color: #22c55e;
+            --sidebar-bg: #1f2937;
+            --main-bg: #f9fafb;
+            --text-color: #111827;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--main-bg);
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #374151;
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+        @media (max-width: 1024px) {
+            #sidebar.hidden-mobile {
+                transform: translateX(-100%);
+            }
+        }
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-question {
+            border: 1px solid #e5e7eb;
+        }
+        .quiz-question.correct {
+            border-left: 5px solid var(--correct-color);
+        }
+        .quiz-question.incorrect {
+            border-left: 5px solid var(--incorrect-color);
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        .quiz-feedback.correct {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .quiz-feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Interactive Sorter */
+        .draggable-item {
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .drop-bin {
+            border: 2px dashed #cbd5e1;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .drop-bin.over {
+            background-color: #e0e7ff;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <button id="menu-btn" class="lg:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+
+    <aside id="sidebar" class="bg-gray-800 text-gray-300 w-64 min-h-screen fixed top-0 left-0 z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <h1 class="text-white text-2xl font-bold">CT Guide</h1>
+            <p class="text-sm text-gray-400">Subtypes of Datatypes</p>
+        </div>
+        <nav id="nav-links" class="mt-4 flex flex-col">
+            <a href="#intro" class="sidebar-link py-2 px-4">Introduction to Subtypes</a>
+            <a href="#integer-subtypes" class="sidebar-link py-2 px-4">1. Subtypes of Integer</a>
+            <a href="#string-subtypes" class="sidebar-link py-2 px-4">2. Subtypes of String & Character</a>
+            <a href="#interactive-classifier" class="sidebar-link py-2 px-4">3. Interactive Subtype Classifier</a>
+            <a href="#quiz" class="sidebar-link py-2 px-4">4. Knowledge Check</a>
+        </nav>
+    </aside>
+
+    <main id="main-content" class="lg:ml-64 p-4 md:p-8">
+        
+        <section id="intro" class="card">
+            <h2>Introduction: Getting More Specific with Subtypes</h2>
+            <p class="mb-4 text-lg">We've learned about basic data types like Integer, String, and Boolean. While useful, they can sometimes be too general for our needs. For instance, a student's mark is an Integer, but it can't be -50 or 500. It has more specific rules.</p>
+            <p>This is where <strong>subtypes</strong> come in. A subtype is a more specific version of a basic data type. It inherits the properties of its "parent" type but adds further constraints on the allowed values or operations. By creating subtypes, we can model our data more accurately and build more robust, error-resistant programs.</p>
+        </section>
+
+        <section id="integer-subtypes" class="card">
+            <h2>1. Subtypes of Integer</h2>
+            <p class="mb-4">The <strong>Integer</strong> data type is a perfect candidate for specialization. Let's look at two examples from our datasets.</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">SeqNo (Sequence Number)</h3>
+                    <p>A card's sequence number is an integer, but with specific rules:</p>
+                    <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                        <li><strong>Value Constraint:</strong> It can't be negative. It's a whole number starting from 0 up to a reasonable maximum (e.g., the size of the dataset).</li>
+                        <li><strong>Operation Constraint:</strong> It doesn't make sense to perform arithmetic on sequence numbers. Adding two sequence numbers together doesn't produce a meaningful result. However, comparing them (e.g., is card 5 before card 10?) is a valid operation.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">Marks</h3>
+                    <p>A student's mark is also a specialized integer:</p>
+                     <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                        <li><strong>Value Constraint:</strong> Marks should fall within a specific range, typically 0 to 100. Negative numbers or numbers like 300 are not valid.</li>
+                        <li><strong>Operation Constraint:</strong> Adding and subtracting marks makes sense (e.g., to find a total or a difference). Comparing them also makes sense. However, multiplying or dividing one student's mark by another is a meaningless operation.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="string-subtypes" class="card">
+            <h2>2. Subtypes of String & Character</h2>
+            <p class="mb-4">The <strong>String</strong> and <strong>Character</strong> data types can also be made more specific.</p>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">Gender</h3>
+                    <p>This is a subtype of the <strong>Character</strong> data type. While a character can be any letter, number, or symbol, the Gender subtype is constrained to only two possible values: 'M' or 'F'.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">Names and City</h3>
+                    <p>These are subtypes of the <strong>String</strong> data type. While a string can contain any sequence of characters, we can constrain these subtypes to not include special characters or numbers, making the data cleaner and more predictable.</p>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">Category</h3>
+                    <p>In our "Paragraph Words" dataset, the 'category' of a word (e.g., Noun, Verb) is a subtype of String with a very specific constraint: its value must be one of a finite set of allowed options ("Noun", "Verb", "Adjective", etc.).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="interactive-classifier" class="card">
+            <h2>3. Interactive Subtype Classifier</h2>
+            <p class="mb-6">Let's see if you can classify data into the correct subtypes. Drag each data item from the bank and drop it into the most appropriate subtype bin.</p>
+            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                <div id="item-bank-subtype" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-100 rounded-lg mb-6">
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="Marks">95</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="City">"Madurai"</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="Gender">'F'</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="SeqNo">28</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="Category">"Noun"</div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="drop-bin p-4 rounded-lg min-h-[100px]" data-target="Marks"><h4 class="font-bold text-center text-lg mb-2">Marks</h4></div>
+                    <div class="drop-bin p-4 rounded-lg min-h-[100px]" data-target="City"><h4 class="font-bold text-center text-lg mb-2">City</h4></div>
+                    <div class="drop-bin p-4 rounded-lg min-h-[100px]" data-target="Gender"><h4 class="font-bold text-center text-lg mb-2">Gender</h4></div>
+                    <div class="drop-bin p-4 rounded-lg min-h-[100px] md:col-span-1" data-target="SeqNo"><h4 class="font-bold text-center text-lg mb-2">SeqNo</h4></div>
+                    <div class="drop-bin p-4 rounded-lg min-h-[100px] md:col-span-2" data-target="Category"><h4 class="font-bold text-center text-lg mb-2">Category</h4></div>
+                </div>
+                <div id="classifier-feedback" class="text-center mt-4 h-6 font-semibold"></div>
+            </div>
+        </section>
+
+        <section id="quiz" class="card">
+            <h2>4. Knowledge Check</h2>
+            <p class="mb-6">Test your understanding of subtypes and their properties.</p>
+            <div id="quiz-container" class="space-y-6"></div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Logic ---
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menu-btn');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('main section');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => { if (window.innerWidth < 1024) sidebar.classList.add('-translate-x-full'); });
+            });
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => { if (pageYOffset >= section.offsetTop - 100) current = section.getAttribute('id'); });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+                });
+            });
+
+            // --- Interactive Classifier Logic ---
+            const draggables = document.querySelectorAll('#item-bank-subtype .draggable-item');
+            const dropBins = document.querySelectorAll('.drop-bin');
+            const classifierFeedback = document.getElementById('classifier-feedback');
+            let draggedItem = null;
+
+            draggables.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    draggedItem = e.target;
+                    setTimeout(() => e.target.classList.add('opacity-50'), 0);
+                });
+                item.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('opacity-50');
+                });
+            });
+
+            dropBins.forEach(bin => {
+                bin.addEventListener('dragover', e => { e.preventDefault(); bin.classList.add('over'); });
+                bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+                bin.addEventListener('drop', e => {
+                    e.preventDefault();
+                    bin.classList.remove('over');
+                    if (draggedItem) {
+                        if (draggedItem.dataset.type === bin.dataset.target) {
+                            bin.appendChild(draggedItem);
+                            draggedItem.draggable = false;
+                            draggedItem.style.cursor = 'default';
+                            classifierFeedback.textContent = 'Correct!';
+                            classifierFeedback.style.color = 'var(--correct-color)';
+                        } else {
+                            classifierFeedback.textContent = 'Not the right bin! Try again.';
+                            classifierFeedback.style.color = 'var(--incorrect-color)';
+                        }
+                        setTimeout(() => classifierFeedback.textContent = '', 1500);
+                    }
+                });
+            });
+
+            // --- Quiz Logic ---
+            const quizData = [
+                {
+                    question: "Consider SeqNo as a subtype of the integer datatype. Which of the following operations on a variable of the SeqNo datatype seem reasonable?",
+                    type: 'single',
+                    options: ["Addition", "Multiplication", "Division", "None of the above"],
+                    correctAnswer: "None of the above",
+                    explanation: "Arithmetic operations like addition, multiplication, or division do not make sense for sequence numbers. Only comparison might be reasonable."
+                },
+                {
+                    question: "Which of the following operations on a variable of the Marks datatype do not make sense? It is a Multiple Select Question (MSQ).",
+                    type: 'multiple',
+                    options: ["Addition", "Subtraction", "Multiplication", "Division", "Comparison"],
+                    correctAnswer: ["Multiplication", "Division"],
+                    explanation: "While you can add, subtract, and compare marks, multiplying or dividing one student's mark by another's is not a meaningful operation."
+                },
+                {
+                    question: "Gender can be seen as a subtype of which of the following basic datatypes?",
+                    type: 'single',
+                    options: ["Boolean", "Integer", "Character"],
+                    correctAnswer: "Character",
+                    explanation: "The Gender subtype uses single characters ('M', 'F') as its values, making it a subtype of the Character data type."
+                },
+                {
+                    question: "Which of the following subtypes are derived from the String datatype?",
+                    type: 'single',
+                    options: ["Names", "City", "Words", "All of the above"],
+                    correctAnswer: "All of the above",
+                    explanation: "Names, City, and Words are all sequences of characters, making them specialized versions (subtypes) of the general String data type."
+                },
+                {
+                    question: "What is the primary reason for creating a subtype?",
+                    type: 'single',
+                    options: ["To make the code run faster.", "To add more specific rules and constraints to a basic data type.", "To allow more operations than the basic data type.", "To combine two data types into one."],
+                    correctAnswer: "To add more specific rules and constraints to a basic data type.",
+                    explanation: "Subtypes are all about adding specificity. They restrict the range of valid values or the set of permitted operations to more accurately model real-world data."
+                },
+                {
+                    question: "If 'Marks' is a subtype of 'Integer', which of the following is true?",
+                    type: 'single',
+                    options: ["Every Integer is a valid Mark.", "Every Mark is a valid Integer.", "Marks and Integers are completely different."],
+                    correctAnswer: "Every Mark is a valid Integer.",
+                    explanation: "Since 'Marks' is a more specific version of 'Integer', any valid mark (like 85) is also a valid integer. However, not every integer (like -10) is a valid mark."
+                },
+                {
+                    question: "The 'Category' subtype (e.g., 'Noun', 'Verb') is a special kind of String subtype because:",
+                    type: 'single',
+                    options: ["It can contain numbers.", "Its value must be one of a predefined, finite list of options.", "It allows mathematical operations."],
+                    correctAnswer: "Its value must be one of a predefined, finite list of options.",
+                    explanation: "This type of subtype, often called an enumeration, is highly constrained because it can only hold values from a specific, pre-approved list."
+                },
+                {
+                    question: "Which of the following would be a good candidate for being a subtype of Integer? (Select all that apply)",
+                    type: 'multiple',
+                    options: ["A person's age in years.", "A person's name.", "The number of pages in a book.", "A True/False value."],
+                    correctAnswer: ["A person's age in years.", "The number of pages in a book."],
+                    explanation: "Age and page count are whole numbers that cannot be negative, making them good candidates for Integer subtypes. A name is a String, and a True/False value is a Boolean."
+                },
+                {
+                    question: "True or False: A subtype can have more permitted operations than its parent type.",
+                    type: 'true-false',
+                    options: ["True", "False"],
+                    correctAnswer: "False",
+                    explanation: "False. A subtype restricts the parent type. It can have fewer or the same number of operations, but it cannot have more."
+                },
+                {
+                    question: "Transforming a date like '31st Jan' to the integer 30 is useful because:",
+                    type: 'single',
+                    options: ["It saves memory.", "It makes it easier to perform comparisons and calculations.", "It makes the date easier to read for humans."],
+                    correctAnswer: "It makes it easier to perform comparisons and calculations.",
+                    explanation: "Comparing numbers (e.g., is 30 less than 60?) is much more straightforward for a computer than comparing strings ('31st Jan' vs '1st Mar')."
+                },
+                {
+                    question: "Which of these is NOT a valid reason to create a 'Price' subtype from a general number type?",
+                    type: 'single',
+                    options: ["To ensure the value is never negative.", "To limit the number of decimal places to two.", "To allow it to be multiplied by another price.", "To ensure it can be added to another price."],
+                    correctAnswer: "To allow it to be multiplied by another price.",
+                    explanation: "Multiplying one price by another (e.g., Rs. 50 * Rs. 20) is not a meaningful real-world operation. The other options are all valid constraints for a 'Price' subtype."
+                },
+                {
+                    question: "If we define a 'Month' subtype of Integer where 1 = January, 2 = February, etc., what is a key value constraint?",
+                    type: 'single',
+                    options: ["The value can be any integer.", "The value must be between 1 and 12.", "The value can be negative.", "The value can be a fraction."],
+                    correctAnswer: "The value must be between 1 and 12.",
+                    explanation: "The primary rule for a 'Month' subtype would be that its integer value must be within the valid range of months, which is 1 through 12."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'quiz-question card p-6';
+                let optionsHtml = '';
+                if (q.type === 'single' || q.type === 'true-false') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="radio" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                } else if (q.type === 'multiple') {
+                     optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="checkbox" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                }
+                questionElem.innerHTML = `<p class="font-semibold mb-4">${index + 1}. ${q.question}</p><div class="options-container">${optionsHtml}</div><button class="submit-btn mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">Submit</button><div class="quiz-feedback"><p class="font-bold feedback-title"></p><p class="feedback-text">${q.explanation}</p></div>`;
+                quizContainer.appendChild(questionElem);
+                questionElem.querySelector('.submit-btn').addEventListener('click', e => {
+                    e.target.disabled = true;
+                    const feedbackElem = questionElem.querySelector('.quiz-feedback');
+                    const feedbackTitle = questionElem.querySelector('.feedback-title');
+                    let isCorrect = false;
+                    if (q.type === 'single' || q.type === 'true-false') {
+                        const selected = questionElem.querySelector(`input[name="q${index}"]:checked`);
+                        if (selected && selected.value === q.correctAnswer) isCorrect = true;
+                    } else if (q.type === 'multiple') {
+                        const selected = Array.from(questionElem.querySelectorAll(`input[name="q${index}"]:checked`)).map(el => el.value);
+                        if (selected.length === q.correctAnswer.length && selected.every(val => q.correctAnswer.includes(val))) isCorrect = true;
+                    }
+                    if (isCorrect) {
+                        questionElem.classList.add('correct');
+                        feedbackElem.classList.add('correct');
+                        feedbackTitle.textContent = 'Correct!';
+                    } else {
+                        questionElem.classList.add('incorrect');
+                        feedbackElem.classList.add('incorrect');
+                        feedbackTitle.textContent = 'Incorrect';
+                    }
+                    feedbackElem.style.display = 'block';
+                    questionElem.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

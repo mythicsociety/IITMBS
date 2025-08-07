@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2.6: One Pass vs. Two Passes for Finding Max</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L2.6: One vs. Two Iterations</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#challenge" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Challenge: Most Frequent Word</a></li>
+                        <li><a href="#solution" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Two-Iteration Solution</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">One Pass or Two?</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We've seen how powerful a single iteration can be for finding maximum values. We can track counts, sums, and maximums all at the same time.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        But some problems can't be solved in just one pass. Sometimes, we need to go through the data once to gather information, and then use that information in a <strong>second, separate iteration</strong> to get our final answer. This section explores when and why this two-iteration (or non-nested) approach is necessary.
+                    </p>
+                </section>
+
+                <!-- The Challenge Section -->
+                <section id="challenge" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Challenge: Finding the Most Frequent Word</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Let's find the most frequently used word in a paragraph. This seems similar to finding the most popular shop, but there's a critical difference.
+                    </p>
+                    <p class="text-lg text-slate-700 mb-4">
+                        In the previous guide, we could find the maximum *count* of bills in a single pass. As we updated a shop's count, we immediately compared it to our `max_bills` variable. This worked because we only cared about the number.
+                    </p>
+                    <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">The Core Problem:</p>
+                        <p>To find the most frequent word, we first need to know the <strong>final frequency</strong> of *every* unique word. We can't know if the word "the" is the most frequent until we have counted all occurrences of "the", "a", "it", "was", etc., throughout the entire paragraph. A word's frequency might increase on the very last card, changing the whole result.</p>
+                    </div>
+                </section>
+
+                <!-- The Solution Section -->
+                <section id="solution" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Two-Iteration Solution</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        This problem requires two distinct, non-nested iterations:
+                    </p>
+                    <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">Iteration 1: Gather Frequencies</h4>
+                        <p class="mt-2">Go through the entire paragraph, word by word. Create a list of unique words and count the frequency of each one. At the end of this pass, we don't know which is most frequent, but we have a complete list of every word and its total count.</p>
+                    </div>
+                     <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">Iteration 2: Find the Maximum</h4>
+                        <p class="mt-2">Now, iterate through the *new list* of unique words and their counts that we just created. Use the standard "max so far" pattern on this list to find which word has the highest frequency. Since all counts are now final, this will give us the correct answer.</p>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Two-Pass Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator demonstrates the two-iteration process. First, click "Run Iteration 1" to count all word frequencies. Once it's done, click "Run Iteration 2" to find the most frequent word from the generated list.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim1-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Run Iteration 1 (Count)</button>
+                            <button id="start-sim2-btn" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition-colors" disabled>Run Iteration 2 (Find Max)</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Run Iteration 1' to begin.</div>
+                         <div class="flex flex-col md:flex-row justify-around items-start space-y-6 md:space-y-0 md:space-x-6">
+                            <div class="flex-1 text-center">
+                                <h4 class="font-bold mb-2">Word Frequencies</h4>
+                                <div id="word-counts-container" class="space-y-2 p-4 bg-slate-100 rounded-lg min-h-[16rem]">
+                                    <!-- Counts will be added here -->
+                                </div>
+                            </div>
+                            <div class="flex-1 text-center">
+                                <h4 class="font-bold mb-2">Most Frequent Word</h4>
+                                <div id="max-word-display" class="w-48 mx-auto h-24 bg-white rounded-lg shadow-lg border-2 border-amber-400 flex flex-col justify-center items-center transition-all duration-300 p-2">
+                                    <span id="max-word-value" class="text-2xl font-bold text-amber-800">...</span>
+                                    <span id="max-word-count" class="text-xl text-slate-600"> </span>
+                                </div>
+                                <div id="sim2-status" class="text-center text-sm h-8 mt-2 text-slate-600"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Let's test your knowledge on single vs. two-iteration procedures.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSim1Btn = document.getElementById('start-sim1-btn');
+        const startSim2Btn = document.getElementById('start-sim2-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const sim2Status = document.getElementById('sim2-status');
+        const wordCountsContainer = document.getElementById('word-counts-container');
+        const maxWordValueEl = document.getElementById('max-word-value');
+        const maxWordCountEl = document.getElementById('max-word-count');
+        
+        const paragraph = "it was Monday and the freedom of Monday was difficult to get into after the freedom of Saturday and Sunday.".toLowerCase().replace(/[.,]/g, '').split(' ');
+        let simInterval;
+        let wordFrequencies = {};
+
+        function resetSimulator() {
+            clearInterval(simInterval);
+            wordFrequencies = {};
+            simStatus.textContent = "Press 'Run Iteration 1' to begin.";
+            sim2Status.textContent = '';
+            wordCountsContainer.innerHTML = '<p class="text-slate-400">No words counted yet.</p>';
+            maxWordValueEl.textContent = '...';
+            maxWordCountEl.textContent = '';
+            startSim1Btn.disabled = false;
+            startSim2Btn.disabled = true;
+        }
+        
+        function renderWordCounts(counts, highlightedWord = null) {
+            wordCountsContainer.innerHTML = '';
+            const sortedWords = Object.keys(counts).sort();
+            sortedWords.forEach(word => {
+                const isUpdated = word === highlightedWord;
+                const el = document.createElement('div');
+                el.className = `flex justify-between p-2 rounded ${isUpdated ? 'bg-sky-200 animate-pulse' : 'bg-white'}`;
+                el.innerHTML = `<span class="font-semibold">${word}:</span><span>${counts[word]}</span>`;
+                wordCountsContainer.appendChild(el);
+                if(isUpdated) setTimeout(() => el.classList.remove('animate-pulse'), 500);
+            });
+        }
+
+        startSim1Btn.addEventListener('click', () => {
+            startSim1Btn.disabled = true;
+            let wordIndex = 0;
+            wordFrequencies = {};
+            
+            simInterval = setInterval(() => {
+                if (wordIndex >= paragraph.length) {
+                    clearInterval(simInterval);
+                    simStatus.textContent = `Iteration 1 Complete! All words counted.`;
+                    startSim2Btn.disabled = false;
+                    return;
+                }
+                const word = paragraph[wordIndex];
+                simStatus.textContent = `Iteration 1: Counting "${word}"...`;
+                wordFrequencies[word] = (wordFrequencies[word] || 0) + 1;
+                renderWordCounts(wordFrequencies, word);
+                wordIndex++;
+            }, 400);
+        });
+
+        startSim2Btn.addEventListener('click', () => {
+            startSim2Btn.disabled = true;
+            let maxCount = 0;
+            let maxWord = '';
+            const words = Object.keys(wordFrequencies).sort();
+            let wordIndex = 0;
+
+            simInterval = setInterval(() => {
+                if (wordIndex >= words.length) {
+                    clearInterval(simInterval);
+                    simStatus.textContent = `All iterations complete!`;
+                    sim2Status.textContent = `Final Result!`;
+                    return;
+                }
+
+                const word = words[wordIndex];
+                const count = wordFrequencies[word];
+                simStatus.textContent = `Iteration 2: Checking "${word}" (Count: ${count})...`;
+                
+                // Highlight the word being checked in the list
+                renderWordCounts(wordFrequencies, word);
+
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxWord = word;
+                    sim2Status.textContent = `New max found!`;
+                    maxWordValueEl.textContent = `"${maxWord}"`;
+                    maxWordCountEl.textContent = `Count: ${maxCount}`;
+                } else {
+                    sim2Status.textContent = ``;
+                }
+                wordIndex++;
+            }, 800);
+        });
+
+        resetSimBtn.addEventListener('click', resetSimulator);
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            // From AQ2_6.docx
+            {
+                question: "Without modifying the procedure shown in the lecture (which only tracks the max frequency number), is it possible to find the word that has the maximum frequency?",
+                options: ["Yes", "No"],
+                correct: ["No"],
+                type: "single",
+                explanation: "No. If the procedure only stores the highest number (e.g., 6), it doesn't store *which* word achieved that count. That information is lost."
+            },
+            {
+                question: "After one iteration, we have a list of unique word counts. We start a second iteration to find the max count, initializing `max` to zero. If the final value of `max` is 6, how many times was it updated?",
+                options: ["Exactly six times.", "Less than six times.", "More than six times.", "At most six times."],
+                correct: ["At most six times."],
+                type: "single",
+                explanation: "`max` is only updated when a larger number is found. It could be updated 6 times (if the counts seen are 1, 2, 3, 4, 5, 6) or just once (if 6 is the first count seen). Therefore, it's updated *at most* six times."
+            },
+            {
+                question: "Is the following statement true or false? The word corresponding to which `max` was updated for the final time is one of the words that has the maximum frequency.",
+                options: ["True", "False"],
+                correct: ["True"],
+                type: "single",
+                explanation: "True. The final update to `max` happens when the procedure encounters a word with a frequency count that is higher than any it has seen before. This word is, by definition, one of the most frequent words."
+            },
+            // New questions
+            {
+                question: "Why is a second iteration necessary to find the most frequent *word*, but not to find the highest *total revenue*?",
+                options: [
+                    "Counting words is harder than adding numbers.",
+                    "Word frequency is a final property of the whole dataset, while total revenue can be tracked incrementally.",
+                    "Finding the most frequent word always requires two loops by definition.",
+                    "The computer needs to sort the words first."
+                ],
+                correct: ["Word frequency is a final property of the whole dataset, while total revenue can be tracked incrementally."],
+                type: "single",
+                explanation: "A word's final frequency isn't known until all words are counted. In contrast, you can always know the shop with the highest revenue *so far* at any point during the iteration."
+            },
+            {
+                question: "In the two-iteration approach, what is the output of the first iteration?",
+                options: [
+                    "The most frequent word.",
+                    "The total number of words in the paragraph.",
+                    "A complete list of unique words and their final frequencies.",
+                    "The length of the longest word."
+                ],
+                correct: ["A complete list of unique words and their final frequencies."],
+                type: "single",
+                explanation: "The sole purpose of the first pass is to gather the raw data (the complete frequency map) needed for the second pass."
+            }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

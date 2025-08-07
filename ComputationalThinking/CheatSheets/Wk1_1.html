@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Introduction to Datasets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --incorrect-color: #ef4444;
+            --correct-color: #22c55e;
+            --sidebar-bg: #1f2937;
+            --main-bg: #f9fafb;
+            --text-color: #111827;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--main-bg);
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #374151;
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+        @media (max-width: 1024px) {
+            #sidebar.hidden-mobile {
+                transform: translateX(-100%);
+            }
+        }
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-question {
+            border: 1px solid #e5e7eb;
+        }
+        .quiz-question.correct {
+            border-left: 5px solid var(--correct-color);
+        }
+        .quiz-question.incorrect {
+            border-left: 5px solid var(--incorrect-color);
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        .quiz-feedback.correct {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .quiz-feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Dataset Explorer Styles */
+        .explorer-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        .explorer-card .front, .explorer-card .back {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+        .explorer-card .back {
+            transform: rotateY(180deg);
+        }
+        .explorer-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <button id="menu-btn" class="lg:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+
+    <aside id="sidebar" class="bg-gray-800 text-gray-300 w-64 min-h-screen fixed top-0 left-0 z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <h1 class="text-white text-2xl font-bold">CT Guide</h1>
+            <p class="text-sm text-gray-400">Introduction to Datasets</p>
+        </div>
+        <nav id="nav-links" class="mt-4 flex flex-col">
+            <a href="#intro" class="sidebar-link py-2 px-4">Introduction</a>
+            <a href="#datasets" class="sidebar-link py-2 px-4">1. Our Example Datasets</a>
+            <a href="#explorer" class="sidebar-link py-2 px-4">2. Interactive Dataset Explorer</a>
+            <a href="#quiz" class="sidebar-link py-2 px-4">3. Knowledge Check</a>
+        </nav>
+    </aside>
+
+    <main id="main-content" class="lg:ml-64 p-4 md:p-8">
+        
+        <section id="intro" class="card">
+            <h2>Introduction to Computational Thinking</h2>
+            <p class="mb-4 text-lg">Welcome! This course is your first step into the world of programming, and it all starts with something called <strong>Computational Thinking</strong>. Before we can write code, we need to learn how to organize our thoughts in a systematic way, much like following a recipe to cook a meal.</p>
+            <p class="mb-4">A recipe gives you ingredients and a sequence of steps. Similarly, programming involves giving a computer a precise sequence of steps to achieve a goal. The amazing thing is that many different problems, from arranging books on a shelf to hanging clothes on a line, can be solved using the same underlying patterns of thinking. Our goal is to learn how to recognize and use these patterns.</p>
+            <p>To make these ideas concrete, we will be working with three simple, hands-on datasets throughout this course.</p>
+        </section>
+
+        <section id="datasets" class="card">
+            <h2>1. Our Example Datasets</h2>
+            <p class="mb-4">To illustrate the patterns of computational thinking, we'll use three different sets of data, each represented as a collection of cards.</p>
+            
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2 text-indigo-700">Dataset 1: Student Marks</h3>
+                    <p>This dataset consists of simplified student report cards. Each card contains specific pieces of information, or "fields," laid out in the same way on every card.</p>
+                    <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                        <li><strong>Fields:</strong> Name, Gender, Date of Birth, Town/City, Marks in Maths, Physics, and Chemistry, and a Total score.</li>
+                        <li><strong>Unique ID:</strong> Each card has a unique number on it so we can tell them apart, even if two students have the same name.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2 text-emerald-700">Dataset 2: Shopping Bills</h3>
+                    <p>Our second dataset represents shopping bills from different stores. Each bill is for a specific customer and lists the items they purchased.</p>
+                     <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                        <li><strong>Bill Fields:</strong> Shop Name, Customer Name, a unique Bill Number, and a Grand Total.</li>
+                        <li><strong>Item Fields:</strong> For each item on the bill, we have its Name, Type (e.g., Food, Toiletries), Quantity, Unit Price, and Total Cost.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2 text-sky-700">Dataset 3: Paragraph Words</h3>
+                    <p>For our third dataset, we've taken a paragraph of text from a book and broken it down, putting each word onto its own card.</p>
+                     <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                        <li><strong>Fields:</strong> The Word itself, a unique Sequence Number (its position in the paragraph), its Part of Speech (e.g., noun, verb, pronoun), and the Number of Letters in the word.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="explorer" class="card">
+            <h2>2. Interactive Dataset Explorer</h2>
+            <p class="mb-6">Click the buttons below to switch between our three datasets. Then, click on a card to "flip it over" and see the raw data fields. This will help you get familiar with the structure of each dataset.</p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                <div class="flex justify-center gap-4 mb-6 border-b pb-4">
+                    <button id="btn-students" class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700">Student Marks</button>
+                    <button id="btn-shopping" class="px-4 py-2 bg-emerald-600 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-700">Shopping Bills</button>
+                    <button id="btn-words" class="px-4 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700">Paragraph Words</button>
+                </div>
+
+                <div class="flex justify-center items-center h-80" style="perspective: 1000px;">
+                    <div id="explorer-card-container" class="explorer-card w-72 h-96 relative cursor-pointer">
+                        <!-- Card Front -->
+                        <div id="card-front" class="front absolute w-full h-full rounded-xl shadow-lg flex flex-col p-6">
+                            <!-- Content will be injected here -->
+                        </div>
+                        <!-- Card Back -->
+                        <div id="card-back" class="back absolute w-full h-full rounded-xl shadow-lg bg-gray-800 text-white p-6">
+                             <!-- Content will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz" class="card">
+            <h2>3. Knowledge Check</h2>
+            <p class="mb-6">Let's check your understanding of the datasets. Answer the questions below for immediate feedback.</p>
+            <div id="quiz-container" class="space-y-6"></div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Logic ---
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menu-btn');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('main section');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => { if (window.innerWidth < 1024) sidebar.classList.add('-translate-x-full'); });
+            });
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => { if (pageYOffset >= section.offsetTop - 100) current = section.getAttribute('id'); });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+                });
+            });
+
+            // --- Dataset Explorer Logic ---
+            const explorerCard = document.getElementById('explorer-card-container');
+            const cardFront = document.getElementById('card-front');
+            const cardBack = document.getElementById('card-back');
+            
+            const datasets = {
+                students: {
+                    bgColor: 'bg-red-100', borderColor: 'border-red-400',
+                    title: 'Student Mark Sheet',
+                    frontContent: `<div class="flex justify-between items-start"><h3 class="text-2xl font-bold text-red-800">Clarence</h3><div class="bg-red-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold">9</div></div><div class="mt-4 text-red-900 space-y-1"><p><strong>Gender:</strong> M</p><p><strong>DOB:</strong> 6 Dec</p><p><strong>City:</strong> Bengaluru</p></div><div class="mt-auto border-t-2 border-red-300 pt-2 space-y-1 text-right"><p>Maths: 63</p><p>Physics: 88</p><p>Chemistry: 73</p><p class="font-bold text-lg">Total: 224</p></div>`,
+                    backContent: `<h4 class="text-xl font-bold mb-4">Data Fields</h4><pre class="text-sm bg-gray-900 p-2 rounded"><code>Name: "Clarence"\nGender: "M"\nDOB: "6 Dec"\nCity: "Bengaluru"\nMaths: 63\nPhysics: 88\nChemistry: 73\nTotal: 224</code></pre>`
+                },
+                shopping: {
+                    bgColor: 'bg-green-100', borderColor: 'border-green-400',
+                    title: 'Shopping Bill',
+                    frontContent: `<div class="flex justify-between items-start"><h3 class="text-2xl font-bold text-green-800">SV Stores</h3><div class="bg-green-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold">1</div></div><p class="text-green-900"><strong>Customer:</strong> Srivatsan</p><div class="mt-4 text-green-900 text-sm space-y-1 flex-grow overflow-y-auto"><div class="flex justify-between"><span>Carrots</span><span>75.00</span></div><div class="flex justify-between"><span>Soap</span><span>128.00</span></div><div class="flex justify-between"><span>Tomatoes</span><span>80.00</span></div><div class="flex justify-between"><span>...etc</span><span></span></div></div><div class="mt-auto border-t-2 border-green-300 pt-2 text-right"><p class="font-bold text-lg">Grand Total: 567.00</p></div>`,
+                    backContent: `<h4 class="text-xl font-bold mb-4">Data Fields</h4><pre class="text-sm bg-gray-900 p-2 rounded"><code>Shop: "SV Stores"\nCustomer: "Srivatsan"\nItems: [\n  {\n    Name: "Carrots",\n    Qty: 1.5,\n    Price: 50\n  },\n  ...\n]</code></pre>`
+                },
+                words: {
+                    bgColor: 'bg-blue-100', borderColor: 'border-blue-400',
+                    title: 'Paragraph Word',
+                    frontContent: `<div class="flex justify-between items-start"><h3 class="text-4xl font-bold text-blue-800">It</h3><div class="bg-blue-500 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold">1</div></div><div class="mt-auto text-blue-900 w-full"><div class="border-t-2 border-blue-300 pt-2 flex justify-between"><span>Part of Speech:</span><span class="font-bold">Pronoun</span></div><div class="flex justify-between"><span>Letter Count:</span><span class="font-bold">2</span></div></div>`,
+                    backContent: `<h4 class="text-xl font-bold mb-4">Data Fields</h4><pre class="text-sm bg-gray-900 p-2 rounded"><code>Word: "It"\nSequence: 1\nPOS: "Pronoun"\nCount: 2</code></pre>`
+                }
+            };
+
+            function updateExplorer(datasetKey) {
+                const data = datasets[datasetKey];
+                explorerCard.classList.remove('is-flipped');
+                setTimeout(() => {
+                    cardFront.className = `front absolute w-full h-full rounded-xl shadow-lg flex flex-col p-6 border-4 ${data.bgColor} ${data.borderColor}`;
+                    cardFront.innerHTML = data.frontContent;
+                    cardBack.innerHTML = data.backContent;
+                }, 150);
+            }
+
+            document.getElementById('btn-students').addEventListener('click', () => updateExplorer('students'));
+            document.getElementById('btn-shopping').addEventListener('click', () => updateExplorer('shopping'));
+            document.getElementById('btn-words').addEventListener('click', () => updateExplorer('words'));
+            explorerCard.addEventListener('click', () => explorerCard.classList.toggle('is-flipped'));
+            
+            updateExplorer('students'); // Initial state
+
+            // --- Quiz Logic ---
+            const quizData = [
+                {
+                    question: "Which of the following is NOT a field in the “Scores” dataset?",
+                    type: 'single',
+                    options: ["Name", "Gender", "Total", "Subject"],
+                    correctAnswer: "Subject",
+                    explanation: "The 'Scores' dataset has fields for specific subjects like Maths, Physics, and Chemistry, but not a general 'Subject' field."
+                },
+                {
+                    question: "What information is present in the “Shopping Bills” dataset?",
+                    type: 'multiple',
+                    options: ["Customer Name", "Item Category", "Date of Purchase", "Item Quantity"],
+                    correctAnswer: ["Customer Name", "Item Category", "Item Quantity"],
+                    explanation: "The simplified shopping bills include Customer Name, Item Category (like Food or Toiletries), and Item Quantity, but not the Date of Purchase."
+                },
+                {
+                    question: "State whether the following statement is true or false: Each card in the “Paragraph Words” dataset has a unique sequence number.",
+                    type: 'true-false',
+                    options: ["True", "False"],
+                    correctAnswer: "True",
+                    explanation: "True. The sequence number represents the word's position in the original paragraph, ensuring each card is unique."
+                },
+                {
+                    question: "In the 'Student Marks' dataset, what is the purpose of the unique card number?",
+                    type: 'single',
+                    options: [
+                        "To rank students by performance.",
+                        "To distinguish between students who might have the same name.",
+                        "To record the student's age.",
+                        "To count the total number of subjects."
+                    ],
+                    correctAnswer: "To distinguish between students who might have the same name.",
+                    explanation: "The unique ID is crucial for identifying each record uniquely, especially in cases where other data, like names, might be duplicated."
+                },
+                {
+                    question: "Which dataset includes a 'Part of Speech' for each of its items?",
+                    type: 'single',
+                    options: ["Student Marks", "Shopping Bills", "Paragraph Words"],
+                    correctAnswer: "Paragraph Words",
+                    explanation: "The 'Paragraph Words' dataset is the one that analyzes text, so it includes linguistic information like the part of speech (noun, verb, etc.)."
+                },
+                {
+                    question: "Which of the following fields are found on EACH item within a shopping bill (not the bill itself)? (Select all that apply)",
+                    type: 'multiple',
+                    options: ["Unit Price", "Customer Name", "Shop Name", "Quantity"],
+                    correctAnswer: ["Unit Price", "Quantity"],
+                    explanation: "For each item listed on a bill, we track its individual price and the quantity purchased. Customer and shop names are part of the overall bill, not each item line."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'quiz-question card p-6';
+                let optionsHtml = '';
+                if (q.type === 'single' || q.type === 'true-false') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="radio" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                } else if (q.type === 'multiple') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="checkbox" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                }
+                questionElem.innerHTML = `<p class="font-semibold mb-4">${index + 1}. ${q.question}</p><div class="options-container">${optionsHtml}</div><button class="submit-btn mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">Submit</button><div class="quiz-feedback"><p class="font-bold feedback-title"></p><p class="feedback-text">${q.explanation}</p></div>`;
+                quizContainer.appendChild(questionElem);
+                questionElem.querySelector('.submit-btn').addEventListener('click', e => {
+                    e.target.disabled = true;
+                    const feedbackElem = questionElem.querySelector('.quiz-feedback');
+                    const feedbackTitle = questionElem.querySelector('.feedback-title');
+                    let isCorrect = false;
+                    if (q.type === 'single' || q.type === 'true-false') {
+                        const selected = questionElem.querySelector(`input[name="q${index}"]:checked`);
+                        if (selected && selected.value === q.correctAnswer) isCorrect = true;
+                    } else if (q.type === 'multiple') {
+                        const selected = Array.from(questionElem.querySelectorAll(`input[name="q${index}"]:checked`)).map(el => el.value);
+                        if (selected.length === q.correctAnswer.length && selected.every(val => q.correctAnswer.includes(val))) isCorrect = true;
+                    }
+                    if (isCorrect) {
+                        questionElem.classList.add('correct');
+                        feedbackElem.classList.add('correct');
+                        feedbackTitle.textContent = 'Correct!';
+                    } else {
+                        questionElem.classList.add('incorrect');
+                        feedbackElem.classList.add('incorrect');
+                        feedbackTitle.textContent = 'Incorrect';
+                    }
+                    feedbackElem.style.display = 'block';
+                    questionElem.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

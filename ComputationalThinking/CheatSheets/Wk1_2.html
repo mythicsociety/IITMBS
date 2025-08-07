@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Variables, Iterators & Filtering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --incorrect-color: #ef4444;
+            --correct-color: #22c55e;
+            --sidebar-bg: #1f2937;
+            --main-bg: #f9fafb;
+            --text-color: #111827;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--main-bg);
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #374151;
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+        @media (max-width: 1024px) {
+            #sidebar.hidden-mobile {
+                transform: translateX(-100%);
+            }
+        }
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-question {
+            border: 1px solid #e5e7eb;
+        }
+        .quiz-question.correct {
+            border-left: 5px solid var(--correct-color);
+        }
+        .quiz-question.incorrect {
+            border-left: 5px solid var(--incorrect-color);
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        .quiz-feedback.correct {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .quiz-feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Interactive Simulator Styles */
+        #card-pile-1, #card-pile-2 {
+            position: relative;
+            height: 150px;
+            width: 100px;
+        }
+        .sim-card {
+            position: absolute;
+            width: 100px;
+            height: 150px;
+            border: 2px solid #6b7280;
+            background-color: #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.5s ease-in-out;
+            transform-origin: bottom center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #4a5568;
+        }
+        #current-card-display.passed {
+            border: 3px solid var(--secondary-color);
+        }
+        #current-card-display.failed {
+             border: 3px solid var(--incorrect-color);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <button id="menu-btn" class="lg:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+
+    <aside id="sidebar" class="bg-gray-800 text-gray-300 w-64 min-h-screen fixed top-0 left-0 z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <h1 class="text-white text-2xl font-bold">CT Guide</h1>
+            <p class="text-sm text-gray-400">Variables, Iterators & Filtering</p>
+        </div>
+        <nav id="nav-links" class="mt-4 flex flex-col">
+            <a href="#intro" class="sidebar-link py-2 px-4">Introduction</a>
+            <a href="#variables" class="sidebar-link py-2 px-4">1. The Concept of a Variable</a>
+            <a href="#iteration" class="sidebar-link py-2 px-4">2. Iteration: Repeating Steps</a>
+            <a href="#iterator-sim" class="sidebar-link py-2 px-4">3. Interactive Iterator</a>
+            <a href="#filtering" class="sidebar-link py-2 px-4">4. Filtering: Selecting Data</a>
+            <a href="#filter-sim" class="sidebar-link py-2 px-4">5. Interactive Filtering</a>
+            <a href="#quiz" class="sidebar-link py-2 px-4">6. Knowledge Check</a>
+        </nav>
+    </aside>
+
+    <main id="main-content" class="lg:ml-64 p-4 md:p-8">
+        
+        <section id="intro" class="card">
+            <h2>Introduction: Thinking Like a Computer</h2>
+            <p class="mb-4 text-lg">Welcome! This guide will walk you through some of the first big ideas in programming: variables, iteration, and filtering. Before we can tell a computer what to do, we have to learn to organize our thinking in a very specific, systematic way.</p>
+            <p class="mb-4">Think about following a recipe to cook a meal. The recipe gives you a list of ingredients and a sequence of steps: chop this, heat that, mix them together. Programming is very similar. We give a computer a sequence of steps to achieve a goal. The level of detail in our instructions depends on what the computer (or person) already knows.</p>
+            <p>You'll find that many problems, even if they look different on the surface (like organizing books on a shelf versus hanging clothes on a line), can be solved using the same general sequence of steps. We call these "patterns," and learning to spot them is the heart of computational thinking.</p>
+        </section>
+
+        <section id="variables" class="card">
+            <h2>1. The Concept of a Variable</h2>
+            <p class="mb-4">Imagine you're counting a large pile of cards. If you get interrupted, you might have to start all over again. A better way is to keep track of your progress. You could make a tick mark on a piece of paper for each card, or you could maintain a running total. This "running total" is a <strong>variable</strong>.</p>
+            <p class="mb-4">In programming, a variable is a named placeholder that stores a piece of information that can change while a program is running. We give it a name, like <code>count</code> or <code>sum</code>, and we can update its value as we go. For example, we start with <code>count = 0</code>. After the first card, we update it to <code>count = 1</code>, then <code>count = 2</code>, and so on.</p>
+            
+            <div class="bg-indigo-50 border-l-4 border-indigo-500 text-indigo-700 p-4 rounded-md" role="alert">
+                <p class="font-bold">Key Idea</p>
+                <p>A <strong>variable</strong> is a storage location with a name that holds a value. This value can be updated or changed during a process.</p>
+            </div>
+
+            <h3 class="mt-6">Variables vs. Constants</h3>
+            <p>A variable's value can change. This is different from a <strong>constant</strong>, which is a value that stays the same. On a student's report card, the student's name (e.g., 'Sofia') or their marks (e.g., Maths: 89) are constants for that specific card. The values we calculate *about* the cards, like the total number of students, are stored in variables because they change as we process each card.</p>
+        </section>
+        
+        <section id="iteration" class="card">
+            <h2>2. Iteration: Repeating Steps Systematically</h2>
+            <p class="mb-4">Let's go back to counting cards. The process of going through each card, one by one, and performing the same action (adding 1 to our count) is called <strong>iteration</strong>. It's a fundamental pattern for processing collections of data.</p>
+            <p class="mb-4">An iteration, or a loop, has three key parts:</p>
+            <ul class="list-disc list-inside space-y-2 mb-4">
+                <li><strong>Initialization:</strong> Setting things up before you start. For counting, this means creating our <code>count</code> variable and setting it to 0.</li>
+                <li><strong>The Repetitive Step:</strong> The action you perform on each item. For counting, it's picking a card, moving it to a "counted" pile, and adding 1 to <code>count</code>.</li>
+                <li><strong>Termination Condition:</strong> The rule that tells you when to stop. For counting, we stop when the original pile of cards is empty.</li>
+            </ul>
+            <p class="mb-4">It doesn't matter what order you count the cards in—top to bottom, bottom to top, or randomly—as long as you process each card exactly once, the final count will be correct.</p>
+            
+            <h3>Flowchart for Counting Cards</h3>
+            <p class="mb-4">We can visualize this process with a flowchart. A flowchart is a diagram that shows the sequence of steps in an algorithm. Here's how we'd represent the card-counting iteration:</p>
+            <div class="bg-white p-4 rounded-lg shadow-inner overflow-x-auto">
+                <svg width="100%" viewBox="0 0 400 520" preserveAspectRatio="xMidYMid meet" aria-labelledby="counting-flowchart-title" role="img">
+                    <title id="counting-flowchart-title">Flowchart showing the process of counting cards through iteration.</title>
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#374151" />
+                        </marker>
+                        <style>
+                            .flow-box { fill: #60a5fa; stroke: #1d4ed8; stroke-width: 1.5; }
+                            .flow-decision { fill: #93c5fd; stroke: #1d4ed8; stroke-width: 1.5; }
+                            .flow-terminal { fill: #3b82f6; stroke: #1e40af; stroke-width: 1.5; }
+                            .flow-text { font-family: 'Inter', sans-serif; font-size: 14px; fill: #1f2937; text-anchor: middle; }
+                            .flow-line { stroke: #374151; stroke-width: 2; marker-end: url(#arrowhead); fill: none; }
+                            .flow-label { font-family: 'Inter', sans-serif; font-size: 12px; fill: #4b5563; }
+                        </style>
+                    </defs>
+                    
+                    <rect x="150" y="10" width="100" height="40" rx="20" class="flow-terminal" /><text x="200" y="35" class="flow-text" fill="white">Start</text>
+                    <path class="flow-line" d="M 200 50 L 200 80" />
+                    <rect x="140" y="80" width="120" height="40" rx="5" class="flow-box" /><text x="200" y="105" class="flow-text">Count = 0</text>
+                    <path class="flow-line" d="M 200 120 L 200 150" />
+                    <polygon points="200,150 280,190 200,230 120,190" class="flow-decision" /><text x="200" y="185" class="flow-text">More cards</text><text x="200" y="205" class="flow-text">in Pile 1?</text>
+                    <path class="flow-line" d="M 280 190 L 320 190" /><text x="295" y="185" class="flow-label">No (False)</text>
+                    <rect x="320" y="170" width="70" height="40" rx="20" class="flow-terminal" /><text x="355" y="195" class="flow-text" fill="white">End</text>
+                    <path class="flow-line" d="M 200 230 L 200 260" /><text x="210" y="245" class="flow-label">Yes (True)</text>
+                    <rect x="125" y="260" width="150" height="40" rx="5" class="flow-box" /><text x="200" y="285" class="flow-text">Pick a card X from Pile 1</text>
+                    <path class="flow-line" d="M 200 300 L 200 330" />
+                    <rect x="140" y="330" width="120" height="40" rx="5" class="flow-box" /><text x="200" y="355" class="flow-text">Move X to Pile 2</text>
+                    <path class="flow-line" d="M 200 370 L 200 400" />
+                    <rect x="140" y="400" width="120" height="40" rx="5" class="flow-box" /><text x="200" y="425" class="flow-text">Increment count</text>
+                    <path class="flow-line" d="M 200 440 L 200 460 L 60 460 L 60 190 L 120 190" />
+                </svg>
+            </div>
+        </section>
+
+        <section id="iterator-sim" class="card">
+            <h2>3. Interactive Iterator</h2>
+            <p class="mb-4">Time to try it yourself! Here's a simple simulation of counting cards. Click "Next Card" to process one card at a time and see the <code>count</code> variable update. "Reset" will start the process over.</p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                <div class="flex flex-col md:flex-row justify-around items-center gap-8">
+                    <div class="flex flex-col items-center text-center">
+                        <h3 class="text-lg font-semibold mb-4">Pile 1 (To Be Counted)</h3>
+                        <div id="card-pile-1" class="bg-gray-200 rounded-lg"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-4">
+                        <div id="current-card-display-iterator" class="w-40 h-24 bg-yellow-100 border-2 border-yellow-400 rounded-lg flex flex-col items-center justify-center p-2 text-center">
+                            <span class="font-bold text-gray-700">Count</span>
+                            <span id="iterator-count-value" class="text-4xl font-bold text-indigo-600">0</span>
+                        </div>
+                        <div class="flex gap-4 mt-4">
+                            <button id="iterator-next-btn" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700">Next Card</button>
+                            <button id="iterator-reset-btn" class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700">Reset</button>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center text-center">
+                        <h3 class="text-lg font-semibold mb-4">Pile 2 (Counted)</h3>
+                        <div id="card-pile-2" class="bg-gray-200 rounded-lg"></div>
+                    </div>
+                </div>
+                <div id="iterator-message" class="text-center mt-4 h-6 font-semibold text-green-600"></div>
+            </div>
+        </section>
+
+        <section id="filtering" class="card">
+            <h2>4. Filtering: Selecting Data</h2>
+            <p class="mb-4">Often, we don't want to process every single item in a collection. We only want to work with items that meet a specific condition. This process of selecting a subset of data is called <strong>filtering</strong>.</p>
+            <p class="mb-4">For example, from a list of words, we might only want to count the verbs. To do this, we iterate through all the word cards, but we only increment our `verbCount` variable if the "Part of Speech" on the card is 'verb'. If it's a noun or an adjective, we simply ignore it and move to the next card.</p>
+            <p>This is like an iteration with an "if" condition inside it. For each card, we ask a question (the filter), and only if the answer is "yes" do we perform our action.</p>
+        </section>
+
+        <section id="filter-sim" class="card">
+            <h2>5. Interactive Filtering</h2>
+            <p class="mb-4">Now, let's add a filter to our simulator. Choose a condition below, then iterate through the cards. Watch how the card is checked against the filter and the count only increases when the condition is met.</p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                <div class="mb-6">
+                    <label for="filter-select" class="block text-lg font-semibold mb-2 text-center">Filter Condition:</label>
+                    <select id="filter-select" class="block w-full max-w-md mx-auto p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="all">Count All Students</option>
+                        <option value="chennai">Students from Chennai</option>
+                        <option value="female">Female Students</option>
+                        <option value="math_above_80">Maths Score > 80</option>
+                    </select>
+                </div>
+                <div class="flex flex-col md:flex-row justify-around items-center gap-8">
+                    <div class="flex flex-col items-center text-center">
+                        <h3 class="text-lg font-semibold mb-4">Pile 1</h3>
+                        <div id="filter-card-pile-1" class="bg-gray-200 rounded-lg w-[120px] h-[180px] relative"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-4">
+                        <div id="current-card-display" class="w-48 h-60 bg-white border-2 border-gray-300 rounded-lg flex flex-col items-center justify-center p-2 text-center transition-all duration-300"></div>
+                        <div id="filter-count-display" class="w-48 h-24 bg-yellow-100 border-2 border-yellow-400 rounded-lg flex flex-col items-center justify-center p-2 text-center">
+                            <span class="font-bold text-gray-700">Filtered Count</span>
+                            <span id="filter-count-value" class="text-4xl font-bold text-indigo-600">0</span>
+                        </div>
+                        <div class="flex gap-4 mt-4">
+                            <button id="filter-next-btn" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700">Next Card</button>
+                            <button id="filter-reset-btn" class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700">Reset</button>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center text-center">
+                        <h3 class="text-lg font-semibold mb-4">Pile 2</h3>
+                        <div id="filter-card-pile-2" class="bg-gray-200 rounded-lg w-[120px] h-[180px] relative"></div>
+                    </div>
+                </div>
+                <div id="filter-message" class="text-center mt-4 h-6 font-semibold"></div>
+            </div>
+        </section>
+
+        <section id="quiz" class="card">
+            <h2>6. Knowledge Check</h2>
+            <p class="mb-6">Let's see what you've learned. Answer the questions below. You'll get immediate feedback for each one.</p>
+            <div id="quiz-container" class="space-y-6"></div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menu-btn');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('main section');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => { if (window.innerWidth < 1024) sidebar.classList.add('-translate-x-full'); });
+            });
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => { if (pageYOffset >= section.offsetTop - 100) current = section.getAttribute('id'); });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+                });
+            });
+
+            const iteratorCountValue = document.getElementById('iterator-count-value');
+            const iteratorNextBtn = document.getElementById('iterator-next-btn');
+            const iteratorResetBtn = document.getElementById('iterator-reset-btn');
+            const iteratorMessage = document.getElementById('iterator-message');
+            const pile1Iterator = document.getElementById('card-pile-1');
+            const pile2Iterator = document.getElementById('card-pile-2');
+            const totalCardsIterator = 10;
+            let currentCardIndexIterator = 0;
+            let countIterator = 0;
+
+            function resetIterator() {
+                currentCardIndexIterator = 0;
+                countIterator = 0;
+                iteratorCountValue.textContent = '0';
+                iteratorMessage.textContent = '';
+                iteratorNextBtn.disabled = false;
+                pile1Iterator.innerHTML = '';
+                pile2Iterator.innerHTML = '';
+                for (let i = 0; i < totalCardsIterator; i++) {
+                    const card = document.createElement('div');
+                    card.className = 'sim-card';
+                    card.style.bottom = `${i * 4}px`;
+                    card.style.zIndex = i;
+                    card.textContent = `Card ${totalCardsIterator - i}`;
+                    pile1Iterator.appendChild(card);
+                }
+            }
+            iteratorNextBtn.addEventListener('click', () => {
+                if (currentCardIndexIterator < totalCardsIterator) {
+                    const cardsInPile1 = pile1Iterator.children;
+                    const cardToMove = cardsInPile1[cardsInPile1.length - 1];
+                    if(cardToMove) {
+                        pile1Iterator.removeChild(cardToMove);
+                        cardToMove.style.zIndex = currentCardIndexIterator;
+                        cardToMove.style.bottom = `${currentCardIndexIterator * 4}px`;
+                        pile2Iterator.appendChild(cardToMove);
+                    }
+                    countIterator++;
+                    iteratorCountValue.textContent = countIterator;
+                    currentCardIndexIterator++;
+                    if (currentCardIndexIterator === totalCardsIterator) {
+                        iteratorMessage.textContent = 'All cards counted!';
+                        iteratorNextBtn.disabled = true;
+                    }
+                }
+            });
+            iteratorResetBtn.addEventListener('click', resetIterator);
+            resetIterator();
+
+            const studentData = [
+                { name: 'Clarence', gender: 'M', city: 'Bengaluru', math: 63 }, { name: 'Rida', gender: 'F', city: 'Chennai', math: 42 },
+                { name: 'Siddharth', gender: 'M', city: 'Madurai', math: 44 }, { name: 'Sophia', gender: 'F', city: 'Trichy', math: 89 },
+                { name: 'Kavya', gender: 'F', city: 'Chennai', math: 64 }, { name: 'Jagan', gender: 'M', city: 'Madurai', math: 81 },
+                { name: 'Aditya', gender: 'M', city: 'Vellore', math: 84 }, { name: 'Geetha', gender: 'F', city: 'Chennai', math: 87 },
+                { name: 'Rahul', gender: 'M', city: 'Bengaluru', math: 97 }, { name: 'Priya', gender: 'F', city: 'Erode', math: 72 },
+            ];
+            const filterSelect = document.getElementById('filter-select');
+            const filterNextBtn = document.getElementById('filter-next-btn');
+            const filterResetBtn = document.getElementById('filter-reset-btn');
+            const currentCardDisplay = document.getElementById('current-card-display');
+            const filterCountValue = document.getElementById('filter-count-value');
+            const filterMessage = document.getElementById('filter-message');
+            const pile1Filter = document.getElementById('filter-card-pile-1');
+            const pile2Filter = document.getElementById('filter-card-pile-2');
+            let currentCardIndexFilter = 0;
+            let filteredCount = 0;
+
+            function createFilterCard(index) {
+                const card = document.createElement('div');
+                card.className = 'sim-card';
+                card.style.width = '120px';
+                card.style.height = '180px';
+                card.style.bottom = `${index * 4}px`;
+                card.style.zIndex = index;
+                card.textContent = `Card ${studentData.length - index}`;
+                return card;
+            }
+            function resetFilterSim() {
+                currentCardIndexFilter = 0;
+                filteredCount = 0;
+                filterCountValue.textContent = '0';
+                filterMessage.textContent = '';
+                filterNextBtn.disabled = false;
+                pile1Filter.innerHTML = '';
+                pile2Filter.innerHTML = '';
+                currentCardDisplay.innerHTML = '<span class="text-gray-400">Click "Next Card"</span>';
+                currentCardDisplay.className = 'w-48 h-60 bg-white border-2 border-gray-300 rounded-lg flex flex-col items-center justify-center p-2 text-center transition-all duration-300';
+                for (let i = 0; i < studentData.length; i++) pile1Filter.appendChild(createFilterCard(i));
+            }
+            filterNextBtn.addEventListener('click', () => {
+                if (currentCardIndexFilter >= studentData.length) return;
+                const cardData = studentData[currentCardIndexFilter];
+                currentCardDisplay.innerHTML = `<div class="font-bold text-lg">${cardData.name}</div><div class="text-sm text-gray-600">${cardData.city}</div><div class="mt-4">Gender: <span class="font-semibold">${cardData.gender}</span></div><div>Maths: <span class="font-semibold">${cardData.math}</span></div>`;
+                const filterValue = filterSelect.value;
+                let passed = false;
+                switch(filterValue) {
+                    case 'all': passed = true; break;
+                    case 'chennai': passed = cardData.city === 'Chennai'; break;
+                    case 'female': passed = cardData.gender === 'F'; break;
+                    case 'math_above_80': passed = cardData.math > 80; break;
+                }
+                currentCardDisplay.classList.remove('passed', 'failed');
+                if (passed) {
+                    filteredCount++;
+                    filterCountValue.textContent = filteredCount;
+                    filterMessage.textContent = 'Passed filter!';
+                    filterMessage.style.color = 'var(--secondary-color)';
+                    currentCardDisplay.classList.add('passed');
+                } else {
+                    filterMessage.textContent = 'Did not pass filter.';
+                    filterMessage.style.color = 'var(--incorrect-color)';
+                    currentCardDisplay.classList.add('failed');
+                }
+                const cardsInPile1 = pile1Filter.children;
+                const cardToMove = cardsInPile1[cardsInPile1.length - 1];
+                if (cardToMove) {
+                    pile1Filter.removeChild(cardToMove);
+                    cardToMove.style.zIndex = currentCardIndexFilter;
+                    cardToMove.style.bottom = `${currentCardIndexFilter * 4}px`;
+                    pile2Filter.appendChild(cardToMove);
+                }
+                currentCardIndexFilter++;
+                if (currentCardIndexFilter >= studentData.length) {
+                    filterMessage.textContent = 'All cards processed!';
+                    filterNextBtn.disabled = true;
+                }
+            });
+            filterResetBtn.addEventListener('click', resetFilterSim);
+            filterSelect.addEventListener('change', resetFilterSim);
+            resetFilterSim();
+
+            const quizData = [
+                {
+                    question: "State whether the following statement is true or false: When moving cards from one pile to the other for counting the number of cards, the order in which the cards are processed is important.",
+                    type: 'true-false', options: ["True", "False"], correctAnswer: "False",
+                    explanation: "False. The order doesn't matter for counting. As long as each card is processed exactly once, the final count will be correct."
+                },
+                {
+                    question: "At any intermediate stage in the process of moving the cards from one pile to the other, what does the value in the variable count represent?",
+                    type: 'single', options: ["It does not mean anything", "It is the number of cards that have been moved from one pile to the other so far", "It is the number of cards that are remaining in the first pile"],
+                    correctAnswer: "It is the number of cards that have been moved from one pile to the other so far",
+                    explanation: "The `count` variable tracks the progress. At any point, its value represents the number of items that have already been processed."
+                },
+                {
+                    question: "Match the following statements with the corresponding concepts: Statements S1: Going through a sequence of objects and performing the same operations on each object. S2: An entity whose value keeps changing as the computation goes on. Concepts C1: Variable C2: Iteration",
+                    type: 'match',
+                    options: ["(S1, C1), (S2, C2)", "(S1, C2), (S2, C1)"],
+                    correctAnswer: "(S1, C2), (S2, C1)",
+                    explanation: "Iteration (C2) is the process of repeating steps over a sequence (S1). A Variable (C1) is a named placeholder for a value that can change (S2)."
+                },
+                {
+                    question: "State whether the following statement is true or false: For finding the average mathematics marks, we need to perform two iterations through the cards. First, to find the number of cards. Second, to find the sum of the marks. We cannot do both in a single iteration.",
+                    type: 'true-false', options: ["True", "False"], correctAnswer: "False",
+                    explanation: "False. You can use two variables, `count` and `sum`, in a single iteration. This is more efficient than two separate passes."
+                },
+                {
+                    question: "We use the variables verbCount, pronounCount and otherCount to maintain counts for the verbs, pronouns and other parts of speech in the “Paragraph Words” dataset. We iterate through all the cards to get these three counts. At the end of the execution, we add the values in all three variables. What can you say about this sum?",
+                    type: 'single', options: ["It represents nothing", "It is equal to the total number of cards in the dataset"],
+                    correctAnswer: "It is equal to the total number of cards in the dataset",
+                    explanation: "If every word is categorized as either a verb, a pronoun, or 'other', then the sum of the counts for these three categories must equal the total number of words."
+                },
+                {
+                    question: "What is the term for a named placeholder that stores a value that can change?",
+                    type: 'single', options: ["Constant", "Variable", "Iterator", "Filter"],
+                    correctAnswer: "Variable",
+                    explanation: "A variable is specifically designed to hold a value that can be updated during a process."
+                },
+                {
+                    question: "Which of these is NOT a fundamental part of an iteration?",
+                    type: 'single', options: ["Initialization", "Termination Condition", "Repetitive Step", "Filtering"],
+                    correctAnswer: "Filtering",
+                    explanation: "While filtering can be done inside an iteration, it is not a required component. Every iteration must have an initialization, a repetitive step, and a termination condition."
+                },
+                 {
+                    question: "If you want to count only the nouns in the 'Paragraph Words' dataset, what is the filter condition?",
+                    type: 'single', options: ["Is the letter count > 5?", "Is the word a Noun?", "Is the sequence number odd?"],
+                    correctAnswer: "Is the word a Noun?",
+                    explanation: "The filter condition is the specific question you ask for each item to decide whether to include it. In this case, you'd check if the 'Part of Speech' is 'noun'."
+                },
+                {
+                    question: "You have two variables: `mathSum = 0` and `studentCount = 0`. For each student card, you add their math score to `mathSum` and add 1 to `studentCount`. What is this process an example of? (Select all that apply)",
+                    type: 'multiple', options: ["Using multiple variables", "A single iteration", "Filtering"],
+                    correctAnswer: ["Using multiple variables", "A single iteration"],
+                    explanation: "This process uses two variables (`mathSum`, `studentCount`) and calculates both values in a single pass (a single iteration) through the data. It does not involve filtering, as every student is included."
+                },
+                {
+                    question: "What is the value of a 'count' variable during the initialization step of an iteration designed for counting?",
+                    type: 'single', options: ["1", "It depends on the number of cards", "0", "Null"],
+                    correctAnswer: "0",
+                    explanation: "Initialization means setting up the starting state. Before we have counted any cards, our count is 0."
+                },
+                 {
+                    question: "If you iterate through 30 student cards to find the average math score, how many times will the main 'repetitive step' of your process be executed?",
+                    type: 'single', options: ["1", "2", "30", "60"],
+                    correctAnswer: "30",
+                    explanation: "An iteration performs its repetitive step once for each item in the dataset. For 30 cards, the step is executed 30 times."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'quiz-question card p-6';
+                let optionsHtml = '';
+                if (q.type === 'single' || q.type === 'true-false') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="radio" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                } else if (q.type === 'multiple') {
+                     optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="checkbox" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                } else if (q.type === 'match') {
+                    optionsHtml = `<div class="mt-4"><label class="block mb-2"><input type="radio" name="q${index}" value="(S1, C1), (S2, C2)" class="mr-2">(S1, C1), (S2, C2)</label><label class="block mb-2"><input type="radio" name="q${index}" value="(S1, C2), (S2, C1)" class="mr-2">(S1, C2), (S2, C1)</label></div>`;
+                }
+                questionElem.innerHTML = `<p class="font-semibold mb-4">${index + 1}. ${q.question}</p><div class="options-container">${optionsHtml}</div><button class="submit-btn mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">Submit</button><div class="quiz-feedback"><p class="font-bold feedback-title"></p><p class="feedback-text">${q.explanation}</p></div>`;
+                quizContainer.appendChild(questionElem);
+                questionElem.querySelector('.submit-btn').addEventListener('click', (e) => {
+                    e.target.disabled = true;
+                    const feedbackElem = questionElem.querySelector('.quiz-feedback');
+                    const feedbackTitle = questionElem.querySelector('.feedback-title');
+                    let isCorrect = false;
+                    if (q.type === 'single' || q.type === 'true-false' || q.type === 'match') {
+                        const selected = questionElem.querySelector(`input[name="q${index}"]:checked`);
+                        if (selected && selected.value === q.correctAnswer) isCorrect = true;
+                    } else if (q.type === 'multiple') {
+                        const selected = Array.from(questionElem.querySelectorAll(`input[name="q${index}"]:checked`)).map(el => el.value);
+                        if (selected.length === q.correctAnswer.length && selected.every(val => q.correctAnswer.includes(val))) isCorrect = true;
+                    }
+                    if (isCorrect) {
+                        questionElem.classList.add('correct');
+                        feedbackElem.classList.add('correct');
+                        feedbackTitle.textContent = 'Correct!';
+                    } else {
+                        questionElem.classList.add('incorrect');
+                        feedbackElem.classList.add('incorrect');
+                        feedbackTitle.textContent = 'Incorrect';
+                    }
+                    feedbackElem.style.display = 'block';
+                    questionElem.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

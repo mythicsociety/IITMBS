@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L3.4: The Three Prizes Problem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .winner-card {
+            background-color: #fef9c3; /* yellow-100 */
+            border: 2px solid #facc15; /* yellow-400 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L3.4: The Three Prizes Problem</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#criteria" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Prize Criteria</a></li>
+                        <li><a href="#algorithm" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Algorithm</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Prize Selector</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">A Complex Decision 🏆</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Let's tackle a more complex problem that combines many of the concepts we've learned: awarding three prizes to the top students in a class.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        This isn't as simple as just finding the three highest total scores. To make the awards fair and meaningful, we need to consider multiple criteria at once. This requires us to build a more sophisticated algorithm by combining simpler procedures.
+                    </p>
+                </section>
+
+                <!-- Criteria Section -->
+                <section id="criteria" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Prize Criteria</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        To win one of the three prizes, a student must satisfy all of the following conditions:
+                    </p>
+                    <ol class="list-decimal list-inside space-y-4 text-lg text-slate-700 bg-white p-6 rounded-lg shadow">
+                        <li>
+                            <strong>Top Overall Performance:</strong> The student's <strong>total marks</strong> must be among the top three of all eligible candidates.
+                        </li>
+                        <li>
+                            <strong>Subject Excellence:</strong> The student must have a score within the <strong>top three</strong> in at least <strong>one subject</strong> (Maths, Physics, or Chemistry). This ensures we reward subject specialists, not just those with average scores across the board.
+                        </li>
+                        <li>
+                            <strong>Gender Diversity:</strong> The final group of three prize winners must include <strong>at least one boy and at least one girl</strong>.
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- The Algorithm Section -->
+                <section id="algorithm" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Algorithm: A Multi-Step Process</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Solving this requires a careful, multi-step approach that builds upon procedures we've already designed.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg">
+                            <h4 class="font-semibold">Step 1: Establish Subject Baselines</h4>
+                            <p>First, we need to know what "top three in a subject" means. We run a procedure (like `TopThreeMarks`) three times—once for Maths, once for Physics, and once for Chemistry. We store the third-highest score for each subject. These scores become our benchmarks.</p>
+                        </div>
+                        <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-4 rounded-r-lg">
+                            <h4 class="font-semibold">Step 2: Find Eligible Toppers</h4>
+                            <p>Next, we iterate through all student cards. For each student, we first check if they meet the "Subject Excellence" criterion (is their Math score >= the Math benchmark, OR their Physics score >= the Physics benchmark, etc.). If they don't, we ignore them. If they do, we then compare their <strong>total score</strong> to our running list of the top three overall totals, updating the list as needed (keeping track of both scores and student IDs).</p>
+                        </div>
+                         <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg">
+                            <h4 class="font-semibold">Step 3: Handle Edge Cases</h4>
+                            <p>After the main iteration, we have our top three eligible students. Now we check the "Gender Diversity" rule. If it's not met (e.g., all three are girls), we would need a further step, like replacing the third-place winner with the next-highest eligible student of the opposite gender. We also need a clear policy for handling ties.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Interactive Prize Selector</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator demonstrates the selection process. It will first determine the subject benchmarks, then iterate through the students to find the top three who meet the criteria. The final prize winners will be highlighted.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Select Winners</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Select Winners' to begin.</div>
+                         <div class="space-y-4">
+                            <h4 class="font-bold text-center">Subject Benchmarks (Top 3 Cutoff)</h4>
+                            <div class="flex justify-around text-center p-2 bg-slate-100 rounded">
+                                <div><span class="font-semibold">Maths ≥</span> <span id="math-min" class="text-xl font-bold text-slate-700">-</span></div>
+                                <div><span class="font-semibold">Physics ≥</span> <span id="phys-min" class="text-xl font-bold text-slate-700">-</span></div>
+                                <div><span class="font-semibold">Chemistry ≥</span> <span id="chem-min" class="text-xl font-bold text-slate-700">-</span></div>
+                            </div>
+                            <h4 class="font-bold text-center mt-4">Student Population</h4>
+                            <div id="card-display" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of this complex prize allocation problem.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const cardDisplay = document.getElementById('card-display');
+        const mathMinEl = document.getElementById('math-min');
+        const physMinEl = document.getElementById('phys-min');
+        const chemMinEl = document.getElementById('chem-min');
+        
+        let simStudents = [];
+        let simInterval;
+
+        function generateStudents() {
+            simStudents = [
+                { id: 1, name: "Rahul", gender: "M", math: 97, phys: 92, chem: 92, total: 281 },
+                { id: 2, name: "Deepika", gender: "F", math: 97, phys: 91, chem: 88, total: 276 },
+                { id: 3, name: "Abirami", gender: "F", math: 72, phys: 92, chem: 97, total: 261 },
+                { id: 4, name: "Aditya", gender: "M", math: 84, phys: 92, chem: 76, total: 252 },
+                { id: 5, name: "Kalyan", gender: "M", math: 93, phys: 68, chem: 91, total: 252 },
+                { id: 6, name: "Priya", gender: "F", math: 62, phys: 80, chem: 85, total: 227 },
+                { id: 7, name: "Suresh", gender: "M", math: 88, phys: 70, chem: 75, total: 233 },
+                { id: 8, name: "Kavya", gender: "F", math: 64, phys: 72, chem: 68, total: 204 }
+            ];
+        }
+
+        function renderCards(winners = []) {
+            cardDisplay.innerHTML = '';
+            simStudents.forEach(s => {
+                const cardEl = document.createElement('div');
+                const isWinner = winners.includes(s.id);
+                cardEl.className = `p-3 rounded-lg text-center transition-all duration-300 shadow ${isWinner ? 'winner-card' : 'bg-white'}`;
+                cardEl.innerHTML = `
+                    <div class="font-bold text-lg">${s.name} (${s.gender})</div>
+                    <div class="text-sm text-slate-600">Total: ${s.total}</div>
+                    <div class="text-xs mt-1">M:${s.math} | P:${s.phys} | C:${s.chem}</div>
+                `;
+                cardDisplay.appendChild(cardEl);
+            });
+        }
+
+        function resetSimulator() {
+            clearInterval(simInterval);
+            generateStudents();
+            simStatus.textContent = "Press 'Select Winners' to begin.";
+            mathMinEl.textContent = '-';
+            physMinEl.textContent = '-';
+            chemMinEl.textContent = '-';
+            renderCards();
+            startSimBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            simStatus.textContent = "Step 1: Calculating subject benchmarks...";
+
+            // Step 1: Benchmarks
+            const mathScores = simStudents.map(s => s.math).sort((a, b) => b - a);
+            const physScores = simStudents.map(s => s.phys).sort((a, b) => b - a);
+            const chemScores = simStudents.map(s => s.chem).sort((a, b) => b - a);
+            
+            const mathBench = mathScores[2];
+            const physBench = physScores[2];
+            const chemBench = chemScores[2];
+
+            mathMinEl.textContent = mathBench;
+            physMinEl.textContent = physBench;
+            chemMinEl.textContent = chemBench;
+
+            setTimeout(() => {
+                simStatus.textContent = "Step 2: Finding eligible toppers...";
+                
+                // Step 2: Find eligible toppers
+                const eligible = simStudents.filter(s => 
+                    s.math >= mathBench || s.phys >= physBench || s.chem >= chemBench
+                );
+
+                eligible.sort((a, b) => b.total - a.total);
+
+                let topThree = eligible.slice(0, 3);
+
+                // Step 3: Check gender diversity
+                const boys = topThree.filter(s => s.gender === 'M').length;
+                const girls = topThree.filter(s => s.gender === 'F').length;
+
+                if (boys === 0 || girls === 0) {
+                    simStatus.textContent = "Adjusting for gender diversity...";
+                    // Simple fix: replace 3rd person with next eligible of other gender
+                    const thirdPlaceGender = topThree[2].gender;
+                    for(let i = 3; i < eligible.length; i++) {
+                        if (eligible[i].gender !== thirdPlaceGender) {
+                            topThree[2] = eligible[i];
+                            break;
+                        }
+                    }
+                }
+                
+                setTimeout(() => {
+                    const winnerIds = topThree.map(s => s.id);
+                    renderCards(winnerIds);
+                    simStatus.textContent = "Prize winners selected!";
+                }, 1500);
+
+            }, 1500);
+        });
+
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "If A, B, and C are the three prize winners, which statements are true? (MSQ)", options: ["All three are girls", "At least one of them is a boy", "All three feature in the list of the top three scorers in every subject", "Each one of them should have come within the top three scorers in at least one subject"], correct: ["At least one of them is a boy", "Each one of them should have come within the top three scorers in at least one subject"], type: "multiple", explanation: "The rules require at least one boy (and by implication, at least one girl) and that each winner is a top-three scorer in at least one subject." },
+            { question: "A student has topped both maths and physics. Will this student get a prize?", options: ["Yes, she will certainly get a prize", "No, she will certainly not get a prize", "She has a good chance of getting a prize"], correct: ["She has a good chance of getting a prize"], type: "single", explanation: "She meets the 'subject excellence' criterion, which makes her eligible. However, her overall total might not be in the top three among all *eligible* students, so a prize is not guaranteed." },
+            { question: "max1=89, max2=78, max3=67. A new card has maths marks of 95. If we compare with max1 first, how many comparisons are needed to update all variables?", options: ["1", "2", "3"], correct: ["1"], type: "single", explanation: "The first comparison is `95 > max1 (89)`. This is true. The procedure then updates all three variables (max3=max2, max2=max1, max1=95) without needing further comparisons." },
+            { question: "After the update (max1=95, max2=89, max3=78), what is the value of max1 + max2 + max3?", options: [], correct: ["262"], type: "custom", explanation: "The new values are 95, 89, and 78. Their sum is 95 + 89 + 78 = 262." },
+            { question: "After that, another card with 50 in maths comes up. How many comparisons are needed?", options: ["1", "2", "3"], correct: ["3"], type: "single", explanation: "Comparing with max1 first: `50 > 95` (False). Compare with max2: `50 > 89` (False). Compare with max3: `50 > 78` (False). All three comparisons are needed to determine no update is necessary." },
+            { question: "max1=89, max2=78, max3=67. A new card has 95. If we compare with max3 first, how many comparisons are needed?", options: ["1", "2", "3"], correct: ["3"], type: "single", explanation: "The comparisons are: `95 > max3 (67)` (True), `95 > max2 (78)` (True), `95 > max1 (89)` (True). All three are needed to correctly place 95 at the top." },
+            { question: "After this update (max1=95, max2=89, max3=78), what is max1 + max2 + max3?", options: [], correct: ["262"], type: "custom", explanation: "The final values are the same regardless of comparison order. The sum is 95 + 89 + 78 = 262." },
+            { question: "After that, another card with 50 in maths comes up. How many comparisons are needed (comparing from max3 first)?", options: ["1", "2", "3"], correct: ["1"], type: "single", explanation: "The first comparison is `50 > max3 (78)`. This is false, so the procedure stops immediately. Only one comparison is needed." },
+            { question: "Max marks are M:95, P:96, C:97. A student scores 94 in all three subjects and has the highest total marks. Will she get a prize?", options: ["Yes, she will certainly get a prize", "No, she will certainly not get a prize", "She has a good chance of getting a prize"], correct: ["No, she will certainly not get a prize"], type: "single", explanation: "Although she is the overall topper, she has not scored in the top three of any individual subject (94 < 95, 94 < 96, 94 < 97). Therefore, she does not meet the 'subject excellence' criterion and is not eligible for a prize." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                let optionsHtml = '';
+                if(q.type === 'custom') {
+                    optionsHtml = `<input type="number" name="q${index}" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">`;
+                } else {
+                    optionsHtml = q.options.map(option => `
+                        <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                            <input type="${q.type === 'multiple' ? 'checkbox' : 'radio'}" name="q${index}" value="${option}" class="mr-3">
+                            ${option}
+                        </label>
+                    `).join('');
+                }
+
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.type === 'number' && input.value !== '') {
+                    selectedAnswers.push(input.value);
+                } else if (input.checked) {
+                    selectedAnswers.push(input.value);
+                }
+                input.disabled = true;
+            });
+
+            let isCorrect;
+            if (questionData.type === 'multiple') {
+                 isCorrect = selectedAnswers.length === questionData.correct.length && selectedAnswers.every(val => questionData.correct.includes(val));
+            } else {
+                isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            }
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (input.type !== 'number' && questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked || (input.type === 'number' && input.value !== '')) {
+                     if(!isCorrect) label.classList.add('incorrect');
+                     else label.classList.add('correct');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+        resetSimulator();
+    </script>
+</body>
+</html>

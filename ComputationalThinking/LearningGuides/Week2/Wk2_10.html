@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2.10: Pseudocode for Iteration with Filtering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .code-block {
+            background-color: #0f172a; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .code-keyword { color: #7dd3fc; } /* sky-300 */
+        .code-variable { color: #f8fafc; } /* slate-50 */
+        .code-value { color: #fcd34d; } /* amber-300 */
+        .code-comment { color: #94a3b8; } /* slate-400 */
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L2.10: Pseudocode & Filtering</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#syntax" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Core Syntax Review</a></li>
+                        <li><a href="#filtering" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Filtering with `if`</a></li>
+                        <li><a href="#branching" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Branching with `if-else`</a></li>
+                        <li><a href="#find-max" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Finding Max with Pseudocode</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Putting It All Together</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We now have all the building blocks to translate our complex flowchart logic into clean, readable pseudocode. This final section will show how to represent iteration with filtering and decision-making using text.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        Understanding this translation is key, as pseudocode is the standard way that programmers and computer scientists plan and communicate algorithms before writing actual code.
+                    </p>
+                </section>
+
+                <!-- Syntax Review Section -->
+                <section id="syntax" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Core Syntax Review</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Let's quickly review the key syntax we've developed:
+                    </p>
+                    <div class="code-block">
+                        <span class="code-variable">myValue</span> = <span class="code-value">10</span> &nbsp;&nbsp;<span class="code-comment">// Assignment: sets a variable's value</span><br>
+                        <span class="code-variable">myValue</span> = <span class="code-variable">myValue</span> + <span class="code-value">1</span> &nbsp;&nbsp;<span class="code-comment">// Update: uses the old value to create a new one</span><br><br>
+                        
+                        <span class="code-keyword">if</span> (<span class="code-variable">X.Gender</span> == <span class="code-value">"M"</span>) { &nbsp;&nbsp;<span class="code-comment">// Comparison: checks if two values are equal</span><br>
+                        &nbsp;&nbsp;<span class="code-comment">// ... do something ...</span><br>
+                        }
+                    </div>
+                     <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">Critical Distinction: `=` vs `==`</p>
+                        <p>A single equals sign (`=`) is for <strong>assignment</strong>. It means "put the value on the right into the variable on the left". A double equals sign (`==`) is for <strong>comparison</strong>. It asks the question, "Are these two values the same?" and results in True or False.</p>
+                    </div>
+                </section>
+
+                <!-- Filtering with if Section -->
+                <section id="filtering" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Filtering with `if`</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Remember our task to sum only the boys' marks? The `if` statement is perfect for this. It acts as a gatekeeper: the update operation only runs if the condition is met.
+                    </p>
+                    <div class="code-block">
+                        <span class="code-variable">BoySum</span> = <span class="code-value">0</span><br><br>
+                        <span class="code-keyword">while</span> (Pile 1 has more cards) {<br>
+                        &nbsp;&nbsp;Pick a card X from Pile 1<br>
+                        &nbsp;&nbsp;Move X to Pile 2<br><br>
+                        &nbsp;&nbsp;<span class="code-keyword">if</span> (<span class="code-variable">X.Gender</span> == <span class="code-value">"M"</span>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-variable">BoySum</span> = <span class="code-variable">BoySum</span> + <span class="code-variable">X.Maths</span><br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </div>
+                </section>
+
+                <!-- Branching with if-else Section -->
+                <section id="branching" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Branching with `if-else`</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        When we wanted to sum both boys' and girls' marks, we needed two different actions based on one condition. The `if-else` structure handles this perfectly, representing a fork in the road.
+                    </p>
+                    <div class="code-block">
+                        <span class="code-variable">BoySum</span> = <span class="code-value">0</span><br>
+                        <span class="code-variable">GirlSum</span> = <span class="code-value">0</span><br><br>
+                        <span class="code-keyword">while</span> (Pile 1 has more cards) {<br>
+                        &nbsp;&nbsp;... pick and move card ...<br><br>
+                        &nbsp;&nbsp;<span class="code-keyword">if</span> (<span class="code-variable">X.Gender</span> == <span class="code-value">"M"</span>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-variable">BoySum</span> = <span class="code-variable">BoySum</span> + <span class="code-variable">X.Maths</span><br>
+                        &nbsp;&nbsp;} <span class="code-keyword">else</span> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-variable">GirlSum</span> = <span class="code-variable">GirlSum</span> + <span class="code-variable">X.Maths</span><br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </div>
+                </section>
+                
+                <!-- Finding Max with Pseudocode Section -->
+                <section id="find-max" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Finding Max with Pseudocode</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Finally, let's translate our "Find Max" flowchart into pseudocode. It uses the same simple `if` structure to conditionally update the `max` variable.
+                    </p>
+                    <div class="code-block">
+                        <span class="code-variable">max</span> = <span class="code-value">0</span><br><br>
+                        <span class="code-keyword">while</span> (Pile 1 has more cards) {<br>
+                        &nbsp;&nbsp;Pick a card X from Pile 1<br>
+                        &nbsp;&nbsp;Move X to Pile 2<br><br>
+                        &nbsp;&nbsp;<span class="code-keyword">if</span> (<span class="code-variable">X.Maths</span> > <span class="code-variable">max</span>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-variable">max</span> = <span class="code-variable">X.Maths</span><br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </div>
+                </section>
+
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of pseudocode for iteration and filtering.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            {
+                question: "What can you say about the two lines of pseudocode shown?",
+                image: "https://i.imgur.com/8a6B6aB.png",
+                options: [
+                    "Statement-1 is an assignment statement, statement-2 tests for equality between two variables",
+                    "Both are assignment statements",
+                    "Statement-1 is an assignment statement, statement-2 is not a valid statement in a pseudocode"
+                ],
+                correct: ["Both are assignment statements"],
+                type: "single",
+                explanation: "Both lines use a single equals sign (`=`), which denotes assignment. The second line assigns the value of the `first` variable to the `second` variable."
+            },
+            {
+                question: "The pseudocode to calculate the sum of physics marks may have incorrect statements. Identify the erroneous lines. (MSQ)",
+                image: "https://i.imgur.com/k2e4s0d.png",
+                options: ["Line-1", "Line-2", "Line-3", "Line-4", "Line-5"],
+                correct: ["Line-1", "Line-5"],
+                type: "multiple",
+                explanation: "Line-1 incorrectly uses `==` (comparison) for an initial assignment. Line-5 tries to add `X.Maths`, but the goal is to sum physics marks, so it should be `X.Physics`."
+            },
+            {
+                question: "Which of the following is (are) equivalent to `Sum = Sum + X.Chemistry`? (MSQ)",
+                options: [
+                    "Sum = X.Chemistry + Sum",
+                    "Sum == Sum + X.Chemistry",
+                    "X.Chemistry = Sum + X.Chemistry",
+                    "X.Chemistry == Sum + X.Chemistry"
+                ],
+                correct: ["Sum = X.Chemistry + Sum"],
+                type: "multiple",
+                explanation: "The order of addition doesn't matter (`a + b` is the same as `b + a`). The other options use the wrong operator (`==`) or attempt to assign a new value to the data on the card (`X.Chemistry`), which is incorrect."
+            },
+            {
+                question: "A programmer wishes to determine the minimum marks in chemistry. Help her complete the pseudocode. (MSQ)",
+                image: "https://i.imgur.com/8Q6b3p9.png",
+                options: [
+                    "statement-1: minC = 0",
+                    "statement-1: minC = 100",
+                    "statement-2: X.Chemistry < minC",
+                    "statement-2: minC < X.Chemistry"
+                ],
+                correct: ["statement-1: minC = 100", "statement-2: X.Chemistry < minC"],
+                type: "multiple",
+                explanation: "To find a minimum, you must initialize the variable to a value guaranteed to be *higher* than any possible value (like 100). The condition inside the loop must then check if the current card's score is *less than* the minimum found so far."
+            }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const isMultiple = q.type === 'multiple';
+                const inputType = isMultiple ? 'checkbox' : 'radio';
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="${inputType}" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const imageHtml = q.image ? `<img src="${q.image}" alt="Quiz question image" class="my-4 border rounded-md">` : '';
+
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        ${imageHtml}
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect;
+            if (questionData.type === 'multiple') {
+                 isCorrect = selectedAnswers.length === questionData.correct.length && selectedAnswers.every(val => questionData.correct.includes(val));
+            } else {
+                isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            }
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

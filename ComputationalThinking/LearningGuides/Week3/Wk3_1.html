@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L3.1: Presentation of Datasets in Tables</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f5f9;
+        }
+        .duplicated {
+            background-color: #fef9c3; /* yellow-100 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L3.1: Data in Tables</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#simple-tables" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Simple Data to Tables</a></li>
+                        <li><a href="#challenge" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Challenge of Variable Data</a></li>
+                        <li><a href="#solution" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">A Better Solution: Multiple Tables</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Table Builder</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Organizing Data with Tables 📊</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        So far, we've imagined our data as being on physical cards. While this is a great way to understand algorithms, it's not how computers typically store and process large amounts of information.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        A much more common and powerful way to organize data is in <strong>tables</strong>. Think of a spreadsheet—it has rows and columns, and each cell holds a specific piece of information. This section explores how we can translate our card-based datasets into this structured, tabular format.
+                    </p>
+                </section>
+
+                <!-- Simple Tables Section -->
+                <section id="simple-tables" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">From Simple Cards to a Table</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Let's start with our "Scores" dataset. Each card represents one student and has the same set of information, or <strong>attributes</strong> (like Name, Gender, Maths score, etc.). This is a perfect fit for a table.
+                    </p>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-slate-700">
+                        <li>Each <strong>attribute</strong> (or field) from the card becomes a <strong>column</strong> in our table.</li>
+                        <li>Each individual <strong>card</strong> becomes a single <strong>row</strong> in the table.</li>
+                    </ul>
+                    <div class="bg-white p-6 rounded-xl shadow-md my-6">
+                        <h4 class="font-semibold text-center mb-2">Example: Student Score Card</h4>
+                        <div class="overflow-x-auto">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Id</th><th>Name</th><th>Gen</th><th>DoB</th><th>City</th><th>Math</th><th>Phys</th><th>Chem</th><th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>10</td><td>Kavya</td><td>F</td><td>12 Jan</td><td>Chennai</td><td>64</td><td>72</td><td>68</td><td>204</td>
+                                    </tr>
+                                    <tr>
+                                        <td>24</td><td>Siddharth</td><td>M</td><td>26 Dec</td><td>Madurai</td><td>44</td><td>72</td><td>58</td><td>174</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p class="text-lg text-slate-700">
+                        This structure is clean and efficient. If you have <strong>N</strong> cards and each card has <strong>F</strong> fields, your table will have <strong>N rows</strong> and <strong>F columns</strong>, resulting in a total of <strong>N × F cells</strong>.
+                    </p>
+                </section>
+
+                <!-- The Challenge Section -->
+                <section id="challenge" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Challenge of Variable Data</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        This simple one-to-one mapping breaks down with more complex data, like our "Shopping Bills" dataset. While some attributes are fixed for each bill (ID, Shop, Customer, Total), the number of purchased items is different for every bill.
+                    </p>
+                     <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">The Problem:</p>
+                        <p>If one bill has 5 items and another has 7, how many "Item" columns should our table have? A table needs a fixed number of columns for every row. This mismatch makes a simple table impossible.</p>
+                    </div>
+                    <p class="text-lg text-slate-700 mb-4">
+                        One solution is to create a new row for each *item* on a bill. However, this leads to a new problem: <strong>data duplication</strong>. We have to repeat the Bill ID, Shop Name, Customer, and Total for every single item, which is inefficient and wastes space.
+                    </p>
+                </section>
+                
+                <!-- The Solution Section -->
+                <section id="solution" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">A Better Solution: Multiple Tables</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        The most efficient and professional way to handle this is to split the data into <strong>multiple tables</strong> that are linked together.
+                    </p>
+                    <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">Table 1: Bill Information</h4>
+                        <p>This table stores the information that is unique to each bill. It has one row per bill.</p>
+                        <table class="bg-white my-2">
+                            <thead><tr><th>Id</th><th>Shop</th><th>Customer</th><th>Total</th></tr></thead>
+                            <tbody><tr><td>5</td><td>Big Bazaar</td><td>Akshaya</td><td>4174</td></tr></tbody>
+                        </table>
+
+                        <h4 class="font-semibold mt-4">Table 2: Bill Items</h4>
+                        <p>This table stores the individual items. It can have multiple rows for each bill.</p>
+                         <table class="bg-white my-2">
+                            <thead><tr><th>Id</th><th>Item</th><th>Category</th><th>Qty</th><th>Price</th><th>Cost</th></tr></thead>
+                            <tbody>
+                                <tr><td>5</td><td>Trousers</td><td>Apparel</td><td>2</td><td>870</td><td>1740</td></tr>
+                                <tr><td>5</td><td>Shirts</td><td>Apparel</td><td>1</td><td>1350</td><td>1350</td></tr>
+                                <tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="mt-4">The two tables are connected by the common <strong>`Id` column</strong>. This unique identifier allows us to look up all the items that belong to a specific bill, solving the problem of variable data without any unnecessary duplication.</p>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Interactive Table Builder</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        See the difference for yourself. Click the button to generate a table for a sample shopping bill. First, you'll see the inefficient single-table version with duplicated data highlighted. Then, it will transform into the efficient two-table solution.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Generate Tables</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-output" class="space-y-6">
+                           <p class="text-center text-slate-500">Click "Generate Tables" to see the visualization.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of representing data in tables.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simOutput = document.getElementById('sim-output');
+
+        const billData = {
+            id: 5, shop: "Big Bazaar", customer: "Akshaya", total: 4174,
+            items: [
+                { item: "Trousers", category: "Apparel", qty: 2, price: 870, cost: 1740 },
+                { item: "Shirts", category: "Apparel", qty: 1, price: 1350, cost: 1350 },
+                { item: "Detergent", category: "Household", qty: 0.5, price: 270, cost: 135 }
+            ]
+        };
+
+        function resetSimulator() {
+            simOutput.innerHTML = '<p class="text-center text-slate-500">Click "Generate Tables" to see the visualization.</p>';
+            startSimBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            
+            // Step 1: Show single, duplicated table
+            let singleTableHTML = `
+                <h3 class="text-lg font-semibold">Solution 1: Single Table (with Duplication)</h3>
+                <p class="text-sm text-slate-600 mb-2">Notice the repeated information highlighted in yellow.</p>
+                <div class="overflow-x-auto">
+                    <table>
+                        <thead><tr><th>Id</th><th>Shop</th><th>Customer</th><th>Total</th><th>Item</th><th>Category</th><th>Qty</th><th>Price</th><th>Cost</th></tr></thead>
+                        <tbody>`;
+            
+            billData.items.forEach(item => {
+                singleTableHTML += `
+                    <tr>
+                        <td class="duplicated">${billData.id}</td>
+                        <td class="duplicated">${billData.shop}</td>
+                        <td class="duplicated">${billData.customer}</td>
+                        <td class="duplicated">${billData.total}</td>
+                        <td>${item.item}</td>
+                        <td>${item.category}</td>
+                        <td>${item.qty}</td>
+                        <td>${item.price}</td>
+                        <td>${item.cost}</td>
+                    </tr>`;
+            });
+            singleTableHTML += `</tbody></table></div>`;
+            simOutput.innerHTML = singleTableHTML;
+
+            // Step 2: After a delay, show the two-table solution
+            setTimeout(() => {
+                let twoTableHTML = `
+                    <h3 class="text-lg font-semibold mt-8">Solution 2: Multiple Tables (Efficient)</h3>
+                    <p class="text-sm text-slate-600 mb-2">The data is split. The 'Id' column links them.</p>
+                    <h4 class="font-semibold mt-4">Bill Info Table</h4>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead><tr><th>Id</th><th>Shop</th><th>Customer</th><th>Total</th></tr></thead>
+                            <tbody><tr><td>${billData.id}</td><td>${billData.shop}</td><td>${billData.customer}</td><td>${billData.total}</td></tr></tbody>
+                        </table>
+                    </div>
+                    <h4 class="font-semibold mt-4">Bill Items Table</h4>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead><tr><th>Id</th><th>Item</th><th>Category</th><th>Qty</th><th>Price</th><th>Cost</th></tr></thead>
+                            <tbody>`;
+                
+                billData.items.forEach(item => {
+                    twoTableHTML += `
+                        <tr>
+                            <td>${billData.id}</td>
+                            <td>${item.item}</td>
+                            <td>${item.category}</td>
+                            <td>${item.qty}</td>
+                            <td>${item.price}</td>
+                            <td>${item.cost}</td>
+                        </tr>`;
+                });
+                twoTableHTML += `</tbody></table></div>`;
+                simOutput.innerHTML += twoTableHTML;
+            }, 2000);
+        });
+
+        resetSimBtn.addEventListener('click', resetSimulator);
+
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "If a dataset has N cards and each card has F fields, how many rows will the table have?", options: ["N", "F", "N + F", "N * F"], correct: ["N"], type: "single", explanation: "Each card corresponds to one row in the table, so there will be N rows." },
+            { question: "Using the same dataset (N cards, F fields), how many columns will the table have?", options: ["N", "F", "N + F", "N * F"], correct: ["F"], type: "single", explanation: "Each field (or attribute) corresponds to one column, so there will be F columns." },
+            { question: "Using the same dataset (N cards, F fields), how many cells will the table have?", options: ["N", "F", "N + F", "N * F"], correct: ["N * F"], type: "single", explanation: "The total number of cells is the number of rows multiplied by the number of columns (N × F)." },
+            { question: "If an operator takes `t` seconds to enter one cell, how long will it take to fill the entire table (N cards, F fields)?", options: ["N * t", "F * t", "(N + F) * t", "N * F * t"], correct: ["N * F * t"], type: "single", explanation: "The total time is the time per cell (`t`) multiplied by the total number of cells (N × F)." },
+            { question: "In the two-table solution for shopping bills, what is the primary purpose of the 'ID' column?", options: ["To count the number of items", "To link the 'Bill Info' table with the 'Bill Items' table", "To store the price of each item", "It can be removed without losing information"], correct: ["To link the 'Bill Info' table with the 'Bill Items' table"], type: "single", explanation: "The shared ID is the crucial link that allows us to connect the general bill information to its specific list of items." },
+            { question: "What is the main problem with representing a shopping bill with a variable number of items in a single table?", options: ["It's impossible to do", "It leads to duplication of data like the customer name and total for every item", "It is too slow for a computer to read", "The table would have too many columns"], correct: ["It leads to duplication of data like the customer name and total for every item"], type: "single", explanation: "To fit a variable number of items into a fixed-column table, we must create a row for each item, which forces us to repeat the general bill information on every one of those rows." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

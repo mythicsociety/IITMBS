@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L5.6: List Construction and Operations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Style for the hamburger menu */
+        .hamburger-icon span {
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L5.6: Construction & Ops</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L5.6</a>
+                <a href="#working-from-both-ends" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Working from Both Ends</a>
+                <a href="#palindrome-procedure" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The `isPalindrome` Procedure</a>
+                <a href="#alternative-deconstruction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Alternative Deconstruction</a>
+                <a href="#interactive-palindrome" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Palindrome Checker</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L5.6: List Construction and Operations</h1>
+                <p class="text-lg">In this section on list fundamentals, we'll explore more sophisticated ways to construct and operate on lists. We've seen how to deconstruct a list from the front using `first()` and `rest()`. Now, we'll complete our toolkit by learning to work from the back of the list using `last()` and `init()`.</p>
+                <p class="text-lg mt-4">This ability to access and modify a list from both ends opens up elegant solutions to interesting problems, such as checking if a word is a palindrome. We'll analyze the `isPalindrome` procedure in detail to see how these operations work together to solve a non-trivial problem efficiently.</p>
+            </section>
+
+            <section id="working-from-both-ends" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Working from Both Ends of a List</h2>
+                <p class="text-lg mb-4">Just as `first()` and `rest()` let us process a list from the beginning, `last()` and `init()` are their counterparts for the end of the list. Mastering all four gives us complete flexibility.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg text-center shadow-sm">
+                        <h4 class="text-xl font-semibold text-blue-800 mb-3"><code>last(L)</code></h4>
+                        <p class="text-gray-700">Returns the very last element of list `L`.</p>
+                        <div class="font-mono mt-4 bg-white p-3 rounded border border-blue-100 text-sm">last([1, 4, 6]) → 6</div>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 p-6 rounded-lg text-center shadow-sm">
+                        <h4 class="text-xl font-semibold text-green-800 mb-3"><code>init(L)</code></h4>
+                        <p class="text-gray-700">Returns a new list containing everything <em>except</em> the last element.</p>
+                        <div class="font-mono mt-4 bg-white p-3 rounded border border-green-100 text-sm">init([1, 4, 6]) → [1, 4]</div>
+                    </div>
+                </div>
+                <p class="text-lg mt-6">The most powerful application of these functions is when they are used together. For example, to "shrink" a list by removing both the first and last elements, we can combine them:</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono mt-4">
+                    <p>// This removes the first element, then the last element of the result</p>
+                    <p>shrunkenList = init(rest(L))</p>
+                </div>
+                 <p class="text-lg mt-4">This specific operation is the key to solving the palindrome problem.</p>
+            </section>
+            
+            <section id="palindrome-procedure" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The `isPalindrome` Procedure</h2>
+                <p class="text-lg mb-4">A palindrome is a word or phrase that reads the same forwards and backwards, like "madam" or "racecar". Let's analyze a procedure that checks if a word `W` is a palindrome.</p>
+                
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Pseudocode Breakdown</h3>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p><span class="text-purple-400">Procedure</span> isPalindrome(W)</p>
+                    <p class="ml-4">// Convert the word into a list of characters</p>
+                    <p class="ml-4">L = explode(W)</p>
+                    <br>
+                    <p class="ml-4"><span class="text-purple-400">while</span> (length(L) >= 2) {</p>
+                    <p class="ml-8">ele1 = first(L)</p>
+                    <p class="ml-8">ele2 = last(L)</p>
+                    <br>
+                    <p class="ml-8"><span class="text-purple-400">if</span> (ele1 != ele2) {</p>
+                    <p class="ml-12"><span class="text-purple-400">return</span> (False) <span class="text-gray-400">// Mismatch found, not a palindrome</span></p>
+                    <p class="ml-8">}</p>
+                    <br>
+                    <p class="ml-8">// Shrink the list from both ends</p>
+                    <p class="ml-8">L = init(rest(L))</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">// If loop finishes, all pairs matched</p>
+                    <p class="ml-4"><span class="text-purple-400">return</span> (True)</p>
+                    <p><span class="text-purple-400">End Procedure</span></p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Analyzing the Logic</h3>
+                <p class="text-lg mb-4">This procedure follows a simple and elegant strategy:</p>
+                <ol class="list-decimal list-inside text-lg space-y-2 mt-2 pl-4">
+                    <li><strong>Base Case:</strong> The loop continues as long as there are at least two characters to compare. If the list has 0 or 1 characters, the loop terminates and the word is considered a palindrome (returning `True`).</li>
+                    <li><strong>Compare Endpoints:</strong> In each iteration, it compares the first character (`first(L)`) with the last character (`last(L)`).</li>
+                    <li><strong>Early Exit:</strong> If these characters do not match, the word cannot be a palindrome. The procedure immediately stops and returns `False`.</li>
+                    <li><strong>Shrink:</strong> If the characters do match, it "eats" them from both ends by setting `L = init(rest(L))` and repeats the process on the smaller inner list.</li>
+                </ol>
+            </section>
+
+            <section id="alternative-deconstruction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Alternative Deconstruction: `isInOrder` from the Back</h2>
+                <p class="text-lg mb-4">We can also use `last()` and `init()` to check for list order, but by working from the back forwards. Let's analyze this alternative `isInOrder` procedure.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p><span class="text-purple-400">Procedure</span> isInOrder(L)</p>
+                    <p class="ml-4"><span class="text-purple-400">while</span> (length(L) >= 2) {</p>
+                    <p class="ml-8">ele1 = last(L) <span class="text-gray-400">// Get the last element</span></p>
+                    <p class="ml-8">initialList = init(L)</p>
+                    <p class="ml-8">ele2 = last(initialList) <span class="text-gray-400">// Get the second-to-last element</span></p>
+                    <br>
+                    <p class="ml-8"><span class="text-purple-400">if</span> (ele1 < ele2) {</p>
+                    <p class="ml-12"><span class="text-purple-400">return</span> (False)</p>
+                    <p class="ml-8">}</p>
+                    <br>
+                    <p class="ml-8">L = initialList <span class="text-gray-400">// Shrink the list from the end</span></p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4"><span class="text-purple-400">return</span> (True)</p>
+                    <p><span class="text-purple-400">End Procedure</span></p>
+                </div>
+                <p class="text-lg mt-4">This procedure compares the last element (`ele1`) with the second-to-last element (`ele2`). It returns `False` if the last element is ever smaller than the one before it. Therefore, this procedure checks if the list is in **ascending order** (e.g., [2, 5, 8, 8, 10]).</p>
+            </section>
+
+            <section id="interactive-palindrome" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Palindrome Checker</h2>
+                <p class="text-lg mb-4">Enter a word below to see a step-by-step visualization of how the `isPalindrome` procedure works.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex flex-wrap gap-4 mb-4">
+                        <input type="text" id="palindrome-input" class="flex-grow p-2 border border-gray-300 rounded-md" placeholder="e.g., racecar">
+                        <button id="palindrome-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Check</button>
+                    </div>
+                    <div id="palindrome-steps" class="mt-4 space-y-3"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">This lesson completed our toolkit for basic list operations, enabling more complex algorithms.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Symmetrical Operations:</strong> `last(L)` and `init(L)` are the logical counterparts to `first(L)` and `rest(L)`, allowing us to deconstruct lists from either end.</li>
+                    <li><strong>The Palindrome Pattern:</strong> A powerful algorithm for checking symmetry is to compare the first and last elements, and if they match, recursively check the sublist formed by `init(rest(L))`.</li>
+                    <li><strong>Problem Solving Flexibility:</strong> Having multiple ways to deconstruct a list (from the front or from the back) gives us more flexibility in designing procedures that are clear and efficient.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these construction and deconstruction operations.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Palindrome Checker Logic
+            const palindromeInput = document.getElementById('palindrome-input');
+            const palindromeBtn = document.getElementById('palindrome-btn');
+            const palindromeSteps = document.getElementById('palindrome-steps');
+
+            palindromeBtn.addEventListener('click', () => {
+                let word = palindromeInput.value.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (!word) return;
+
+                palindromeSteps.innerHTML = '';
+                let list = word.split('');
+                let step = 1;
+                let isPalindrome = true;
+
+                while (list.length >= 2) {
+                    const first = list[0];
+                    const last = list[list.length - 1];
+                    
+                    let stepHtml = `<div class="bg-white p-3 rounded-lg border">`;
+                    stepHtml += `<p class="font-semibold">Step ${step}: Comparing ends of [${list.join(', ')}]</p>`;
+                    stepHtml += `<p class="font-mono ml-4">first() is "${first}", last() is "${last}"</p>`;
+
+                    if (first !== last) {
+                        stepHtml += `<p class="ml-4 font-bold text-red-600">Mismatch! Not a palindrome. Returning False.</p>`;
+                        isPalindrome = false;
+                        palindromeSteps.innerHTML += stepHtml + `</div>`;
+                        break;
+                    } else {
+                         stepHtml += `<p class="ml-4 font-bold text-green-600">Match! Shrinking list...</p>`;
+                         list = list.slice(1, -1); // Corresponds to init(rest(L))
+                         stepHtml += `<p class="font-mono ml-4">New list: [${list.join(', ')}]</p>`;
+                    }
+                    palindromeSteps.innerHTML += stepHtml + `</div>`;
+                    step++;
+                }
+
+                if (isPalindrome) {
+                    let finalHtml = `<div class="bg-white p-3 rounded-lg border">`;
+                    if (list.length < 2) {
+                         finalHtml += `<p class="font-semibold">Loop finished. List has ${list.length} element(s).</p>`;
+                    }
+                    finalHtml += `<p class="font-bold text-xl text-center text-green-700 mt-2">Result: True (It's a palindrome!)</p></div>`;
+                    palindromeSteps.innerHTML += finalHtml;
+                }
+            });
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ5_6.docx (3 questions)
+                {
+                    question: "Consider the alternative `isInOrder(L)` procedure that uses `last()` and `init()`. If the condition is `if(ele1 < ele2)`, what order is it checking for?",
+                    type: "single-choice",
+                    answers: ["Ascending order", "Descending order", "Either ascending or descending order", "Neither ascending nor descending order"],
+                    correct: ["Ascending order"],
+                    explanation: "The procedure compares the last element (`ele1`) with the second-to-last (`ele2`). It returns False if the last is smaller than the one before it. This means it only returns True if every element is greater than or equal to the previous one, which is ascending order."
+                },
+                {
+                    question: "The procedure `isPalindrome(W)` will return True if:",
+                    type: "single-choice",
+                    answers: ["W is a palindrome", "W is a palindrome and letter count is odd", "W is a palindrome and letter count is even", "W is not a palindrome"],
+                    correct: ["W is a palindrome"],
+                    explanation: "The logic correctly handles both odd and even length words. If the length is odd, the loop will end with one character left. If even, it ends with zero. In both cases, the loop completes successfully and returns True."
+                },
+                {
+                    question: "Consider this procedure: `Procedure doSomething(W) { L = explode(W); while(length(L) >= 2){ ele1 = first(L); ele2 = last(L); if(ele1 == ele2){ return(True) } L = init(rest(L)) } return(False) }`. What will `doSomething(\"thinking\")` return?",
+                    type: "single-choice",
+                    answers: ["TRUE", "FALSE"],
+                    correct: ["FALSE"],
+                    explanation: "This procedure returns True as soon as it finds *any* matching pair of outer characters. For 'thinking', the pairs of letters from the outside in are (t,g), (h,n), (i,n), and finally (k). None of these pairs match, so the loop completes and the procedure returns False."
+                },
+                // New questions (6)
+                {
+                    question: "If `L = [10, 20, 30, 40]`, what is the result of `last(init(L))`?",
+                    type: "single-choice",
+                    answers: ["40", "30", "20", "[30]"],
+                    correct: ["30"],
+                    explanation: "`init(L)` returns `[10, 20, 30]`. The `last()` element of that new list is `30`."
+                },
+                {
+                    question: "In the `isPalindrome` procedure, what is the purpose of the `L = init(rest(L))` line?",
+                    type: "single-choice",
+                    answers: [
+                        "To remove the first element.",
+                        "To remove the last element.",
+                        "To remove both the first and last elements.",
+                        "To check if the list is empty."
+                    ],
+                    correct: ["To remove both the first and last elements."],
+                    explanation: "`rest(L)` removes the first element, and `init()` on that result then removes the last element of the remaining list, effectively shrinking the list from both ends."
+                },
+                {
+                    question: "If you call `isPalindrome` with a single-letter word like \"a\", what happens?",
+                    type: "single-choice",
+                    answers: [
+                        "It returns True immediately.",
+                        "It returns False immediately.",
+                        "The `while` loop does not run, and it returns True.",
+                        "It causes an error."
+                    ],
+                    correct: ["The `while` loop does not run, and it returns True."],
+                    explanation: "The word is exploded into `['a']`. The length is 1, so the condition `length(L) >= 2` is false. The loop is skipped, and the procedure returns True, which is the correct behavior."
+                },
+                {
+                    question: "The `explode(W)` function is essential before checking for a palindrome because list operations like `first()` and `last()` work on lists, not directly on words/strings.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "To use our list manipulation toolkit (`first`, `last`, etc.), we must first convert the word into the correct data structure: a list of characters."
+                },
+                {
+                    question: "Which of these lists would cause the `isInOrder` procedure (checking for ascending order from the back) to return `False`?",
+                    type: "multiple-choice",
+                    answers: [
+                        "[10, 20, 30, 40]",
+                        "[40, 30, 20, 10]",
+                        "[10, 10, 10, 10]",
+                        "[10, 30, 20, 40]"
+                    ],
+                    correct: [
+                        "[40, 30, 20, 10]",
+                        "[10, 30, 20, 40]"
+                    ],
+                    explanation: "The procedure checks for ascending order. It will return False for the descending list `[40, 30, 20, 10]` (since 30 < 40, etc.) and for the unsorted list `[10, 30, 20, 40]` (since 20 < 30)."
+                },
+                {
+                    question: "If `L = [5, 10]`, and the check `ele1 != ele2` passes (i.e., they are not equal), what is the value of `L` after one iteration of the `isPalindrome` `while` loop?",
+                    type: "single-choice",
+                    answers: ["[5, 10]", "[] (an empty list)", "[5]", "[10]"],
+                    correct: ["[] (an empty list)"],
+                    explanation: "The question is slightly tricky. The procedure would actually `return(False)` and exit before `L` is reassigned. However, *if* the `if` block were removed, the line `L = init(rest(L))` would execute. `rest(L)` is `[10]`. `init([10])` is `[]`. So `L` would become an empty list."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

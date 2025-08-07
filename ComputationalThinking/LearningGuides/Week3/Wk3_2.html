@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L3.2: Two-Iteration Analysis & Grade Allocation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .grade-A { background-color: #dcfce7; } /* green-100 */
+        .grade-B { background-color: #dbeafe; } /* blue-100 */
+        .grade-C { background-color: #fef9c3; } /* yellow-100 */
+        .grade-D { background-color: #fee2e2; } /* red-100 */
+        .below-average { border: 2px solid #f97316; } /* orange-500 */
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L3.2: Two-Iteration Analysis</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#below-average" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Finding Below-Average Students</a></li>
+                        <li><a href="#grade-allocation" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Grade Allocation</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Grade Assigner</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Why One Pass Isn't Always Enough</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We've seen that many problems can be solved with a single, efficient pass through our data. However, some questions can only be answered after we know something about the *entire dataset*.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        This section explores scenarios like identifying below-average students or assigning grades, where we must first perform one full iteration to calculate a benchmark (like the class average or score range), and then a second full iteration to compare each student against that benchmark.
+                    </p>
+                </section>
+
+                <!-- Below Average Section -->
+                <section id="below-average" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Finding Below-Average Students</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        A common task for a teacher is to identify students who are performing below the class average to offer them extra help. Can we do this in a single pass?
+                    </p>
+                     <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">The Problem:</p>
+                        <p>The class average is a moving target. The average after 10 cards is different from the average after 20 cards. A student who is "above average" halfway through might become "below average" once all scores are tallied. We can only know the true, final average after we've seen every single card.</p>
+                    </div>
+                    <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">The Two-Iteration Solution:</h4>
+                        <ol class="list-decimal list-inside mt-2">
+                            <li><strong>Iteration 1: Calculate the Average.</strong> Go through all the cards once. Sum up all the scores and count the number of cards. After this pass, calculate the final average (`total_sum / total_count`).</li>
+                            <li><strong>Iteration 2: Filter the Students.</strong> Go through all the cards a *second* time. For each card, compare its score to the final average calculated in step 1. If the score is lower, add that student to your "below average" list.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Grade Allocation Section -->
+                <section id="grade-allocation" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Grade Allocation</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Assigning grades (A, B, C, D) is a similar, but slightly more complex, two-iteration problem. A fair way to assign grades is to base them on the actual spread of scores in the class.
+                    </p>
+                    <p class="text-lg text-slate-700 mb-4">
+                        For example, we could divide the range between the minimum and maximum scores into four equal "bands" for A, B, C, and D grades.
+                    </p>
+                    <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">The Two-Iteration Solution for Grading:</h4>
+                        <ol class="list-decimal list-inside mt-2">
+                            <li><strong>Iteration 1: Find Min and Max.</strong> Go through all the cards once. In this single pass, you can find both the minimum and maximum scores using the patterns we've learned.</li>
+                            <li><strong>Post-Iteration Calculation:</strong> After the first pass, use the final `min` and `max` values to define your grade bands. For example, if min=42 and max=97, the range is 56 points. Divided by 4, each grade band is 14 points wide.</li>
+                            <li><strong>Iteration 2: Assign Grades.</strong> Go through all the cards a second time. For each card, check which band its score falls into and assign the corresponding grade.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Interactive Grade Assigner</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator demonstrates the two-pass grading process.
+                        <br><strong>Pass 1</strong> will find the Min, Max, and Average scores.
+                        <br><strong>Pass 2</strong> will use those values to assign a grade and identify below-average students.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim1-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Run Pass 1 (Calculate Stats)</button>
+                            <button id="start-sim2-btn" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition-colors" disabled>Run Pass 2 (Assign Grades)</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Run Pass 1' to begin.</div>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                            <div class="space-y-4">
+                                <h4 class="font-bold text-center">Calculated Stats</h4>
+                                <div class="flex justify-around text-center">
+                                    <div><span class="font-semibold">Min:</span> <span id="min-val" class="text-2xl font-bold text-blue-600">-</span></div>
+                                    <div><span class="font-semibold">Max:</span> <span id="max-val" class="text-2xl font-bold text-red-600">-</span></div>
+                                    <div><span class="font-semibold">Avg:</span> <span id="avg-val" class="text-2xl font-bold text-green-600">-</span></div>
+                                </div>
+                                <div id="grade-bands" class="text-center text-sm text-slate-600 p-2 bg-slate-100 rounded">Grade bands will appear here.</div>
+                            </div>
+                            <div class="space-y-4">
+                                 <h4 class="font-bold text-center">Student Cards</h4>
+                                <div id="card-display" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of two-iteration processes.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSim1Btn = document.getElementById('start-sim1-btn');
+        const startSim2Btn = document.getElementById('start-sim2-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const cardDisplay = document.getElementById('card-display');
+        const minValEl = document.getElementById('min-val');
+        const maxValEl = document.getElementById('max-val');
+        const avgValEl = document.getElementById('avg-val');
+        const gradeBandsEl = document.getElementById('grade-bands');
+        
+        let simCards = [];
+        let simInterval;
+        let stats = {};
+
+        function generateCards() {
+            simCards = Array.from({length: 8}, (_, i) => ({ id: i, score: Math.floor(Math.random() * 50) + 45 }));
+        }
+
+        function renderCards(highlightId = -1, showGrades = false) {
+            cardDisplay.innerHTML = '';
+            simCards.forEach(card => {
+                const cardEl = document.createElement('div');
+                let gradeClass = '';
+                let gradeText = '';
+                if (showGrades) {
+                    gradeClass = `grade-${card.grade}`;
+                    gradeText = `<div class="font-bold text-xs">${card.grade}</div>`;
+                }
+                cardEl.className = `p-2 rounded-lg text-center transition-all duration-300 ${gradeClass} ${highlightId === card.id ? 'ring-2 ring-sky-500' : 'shadow'}`;
+                if (showGrades && card.score < stats.avg) {
+                    cardEl.classList.add('below-average');
+                }
+                cardEl.innerHTML = `
+                    <div class="text-sm">Card #${card.id + 1}</div>
+                    <div class="text-2xl font-bold">${card.score}</div>
+                    ${gradeText}
+                `;
+                cardDisplay.appendChild(cardEl);
+            });
+        }
+
+        function resetSimulator() {
+            clearInterval(simInterval);
+            generateCards();
+            stats = {};
+            simStatus.textContent = "Press 'Run Pass 1' to begin.";
+            minValEl.textContent = '-';
+            maxValEl.textContent = '-';
+            avgValEl.textContent = '-';
+            gradeBandsEl.textContent = 'Grade bands will appear here.';
+            renderCards();
+            startSim1Btn.disabled = false;
+            startSim2Btn.disabled = true;
+        }
+
+        startSim1Btn.addEventListener('click', () => {
+            startSim1Btn.disabled = true;
+            let min = 101, max = -1, sum = 0, count = 0;
+            let cardIndex = 0;
+
+            simInterval = setInterval(() => {
+                if (cardIndex >= simCards.length) {
+                    clearInterval(simInterval);
+                    stats.min = min;
+                    stats.max = max;
+                    stats.count = count;
+                    stats.sum = sum;
+                    stats.avg = sum / count;
+                    
+                    minValEl.textContent = stats.min;
+                    maxValEl.textContent = stats.max;
+                    avgValEl.textContent = stats.avg.toFixed(1);
+
+                    const range = stats.max - stats.min;
+                    const bandSize = range / 4;
+                    stats.bands = {
+                        D: [stats.min, stats.min + bandSize],
+                        C: [stats.min + bandSize, stats.min + 2 * bandSize],
+                        B: [stats.min + 2 * bandSize, stats.min + 3 * bandSize],
+                        A: [stats.min + 3 * bandSize, stats.max]
+                    };
+                    gradeBandsEl.innerHTML = `
+                        <b>A:</b> ${Math.ceil(stats.bands.A[0])}-${stats.bands.A[1].toFixed(0)} |
+                        <b>B:</b> ${Math.ceil(stats.bands.B[0])}-${stats.bands.B[1].toFixed(0)} |
+                        <b>C:</b> ${Math.ceil(stats.bands.C[0])}-${stats.bands.C[1].toFixed(0)} |
+                        <b>D:</b> ${stats.bands.D[0].toFixed(0)}-${stats.bands.D[1].toFixed(0)}
+                    `;
+
+                    simStatus.textContent = `Pass 1 Complete! Stats calculated. Ready for Pass 2.`;
+                    startSim2Btn.disabled = false;
+                    renderCards(-1);
+                    return;
+                }
+                
+                const card = simCards[cardIndex];
+                renderCards(card.id);
+                simStatus.textContent = `Pass 1: Processing Card #${card.id + 1}...`;
+                
+                sum += card.score;
+                count++;
+                if (card.score < min) min = card.score;
+                if (card.score > max) max = card.score;
+
+                cardIndex++;
+            }, 600);
+        });
+
+        startSim2Btn.addEventListener('click', () => {
+             startSim2Btn.disabled = true;
+             let cardIndex = 0;
+             simInterval = setInterval(() => {
+                if (cardIndex >= simCards.length) {
+                    clearInterval(simInterval);
+                    simStatus.textContent = `Pass 2 Complete! All grades assigned.`;
+                    renderCards(-1, true);
+                    return;
+                }
+                const card = simCards[cardIndex];
+                simStatus.textContent = `Pass 2: Grading Card #${card.id + 1}...`;
+
+                if (card.score >= stats.bands.A[0]) card.grade = 'A';
+                else if (card.score >= stats.bands.B[0]) card.grade = 'B';
+                else if (card.score >= stats.bands.C[0]) card.grade = 'C';
+                else card.grade = 'D';
+
+                renderCards(card.id, true);
+                cardIndex++;
+             }, 600);
+        });
+
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "In a group of N students, how many would be below the class average?", options: ["N/2", "N/3", "N/4", "Insufficient information"], correct: ["Insufficient information"], type: "single", explanation: "The number of students below average depends on the distribution of scores. It is not necessarily half. For example, one very high score can pull the average up, making most students fall below it." },
+            { question: "If 29 students score 50 and one student scores 100, how many have scored below the class average?", options: ["15", "20", "29", "30"], correct: ["29"], type: "single", explanation: "The total sum is (29 * 50) + 100 = 1550. The average is 1550 / 30 ≈ 51.67. All 29 students who scored 50 are below this average." },
+            { question: "A pseudocode checks `if (X.Gender == F and avg < X.Maths)`. What does the `count` variable store?", options: ["Number of students above average", "Number of boys below average", "Number of girls below average", "Number of girls above average"], correct: ["Number of girls above average"], type: "single", explanation: "The code filters for two conditions using 'and': the gender must be Female (`F`) AND their Maths score must be greater than the average (`avg < X.Maths`)." },
+            { question: "The range for 'A' grade is 84-97. Which code block correctly checks if a card's Maths score is in this range?", options: ["if (X.Maths >= 84 and X.Maths <= 97)", "if (X.Maths > 83 and X.Maths > 98)", "if (X.Maths == 84 and X.Maths == 97)", "if (X.Maths < 84 and X.Maths > 97)"], correct: ["if (X.Maths >= 84 and X.Maths <= 97)"], type: "single", explanation: "To check if a value is within an inclusive range, you must check if it's greater than or equal to the lower bound AND less than or equal to the upper bound." },
+            { question: "With min=50 and max=99, we create 5 equal grades (A-E). What is the range for D grade?", options: ["60-69", "60-70", "59-69", "61-70"], correct: ["60-69"], type: "single", explanation: "The total range is 99-50 = 49 points. For 5 grades, each band is 49/5 = 9.8 points wide. E: 50-59.8, D: 59.8-69.6. Rounding to whole numbers gives the range 60-69." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const isMultiple = q.type === 'multiple';
+                const inputType = isMultiple ? 'checkbox' : 'radio';
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="${inputType}" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect;
+            if (questionData.type === 'multiple') {
+                 isCorrect = selectedAnswers.length === questionData.correct.length && selectedAnswers.every(val => questionData.correct.includes(val));
+            } else {
+                isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            }
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

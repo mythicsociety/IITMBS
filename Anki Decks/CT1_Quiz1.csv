@@ -1,0 +1,697 @@
+Question,Answer
+"What is computational thinking?
+A) Initializes the dataset to empty
+B) It multiplies all values
+C) Marks all items as invalid
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"Why must instructions to a computer be precise?
+A) It checks for even numbers only
+B) Used for visual formatting
+C) It multiplies all values
+D) Because computers do exactly what they're told and cannot infer or guess.",Correct Answer: D
+"Give an everyday analogy for computational thinking.
+A) It multiplies all values
+B) Following a cooking recipe — it requires ordered, unambiguous steps.
+C) Used for visual formatting
+D) It checks for even numbers only",Correct Answer: B
+"What are the main components of a flowchart?
+A) Marks all items as invalid
+B) Start/End (oval), Process (rectangle), Decision (diamond), Flow (arrow).
+C) Initializes the dataset to empty
+D) It reverses the loop",Correct Answer: B
+"What is the purpose of a flowchart?
+A) Used to sort data
+B) It reverses the loop
+C) To visually represent the logical steps in a process.
+D) Initializes the dataset to empty",Correct Answer: C
+"What symbol is used for decision making in flowcharts?
+A) Incorrect usage of loop
+B) It multiplies all values
+C) Diamond.
+D) None of the above",Correct Answer: C
+"What does a rectangle represent in a flowchart?
+A) Used to sort data
+B) A process or operation.
+C) It reverses the loop
+D) Incorrect usage of loop",Correct Answer: B
+"What does an oval represent in a flowchart?
+A) Initializes the dataset to empty
+B) Start or End of a process.
+C) Applies only to odd rows
+D) Used to sort data",Correct Answer: B
+"In a counting cards flowchart, what is initialized?
+A) It reverses the loop
+B) Initializes the dataset to empty
+C) Marks all items as invalid
+D) A counter variable, usually set to 0.",Correct Answer: D
+"In flowcharts, what is the role of moving cards from Pile 1 to Pile 2?
+A) It multiplies all values
+B) To mark cards as 'visited' or 'processed'.
+C) It checks for even numbers only
+D) Applies only to odd rows",Correct Answer: B
+"What happens if we forget to move cards in an iteration?
+A) Used for visual formatting
+B) Marks all items as invalid
+C) We may reprocess the same item, causing incorrect results.
+D) Initializes the dataset to empty",Correct Answer: C
+"How is summing different from counting in flowcharts?
+A) None of the above
+B) It reverses the loop
+C) Instead of incrementing a counter, a sum variable is updated.
+D) Applies only to odd rows",Correct Answer: C
+"How is filtering implemented in flowcharts?
+A) It multiplies all values
+B) Used to sort data
+C) By adding a decision box inside the loop to check for a condition.
+D) Used for visual formatting",Correct Answer: C
+"What is an iterator?
+A) Applies only to odd rows
+B) A repeated structure that processes each item in a dataset.
+C) Marks all items as invalid
+D) It checks for even numbers only",Correct Answer: B
+"What are the main steps of an iterator?
+A) Initialize, check condition, process item, update, repeat.
+B) Incorrect usage of loop
+C) None of the above
+D) Used for visual formatting",Correct Answer: A
+"What is a variable?
+A) It multiplies all values
+B) A named value that changes during computation.
+C) Initializes the dataset to empty
+D) None of the above",Correct Answer: B
+"Why is initialization important in iteration?
+A) Used for visual formatting
+B) Marks all items as invalid
+C) Applies only to odd rows
+D) To set the starting state for counting, summing, etc.",Correct Answer: D
+"What is the role of 'found = False' in search?
+A) It checks for even numbers only
+B) It flags whether a matching item has been found.
+C) It multiplies all values
+D) Applies only to odd rows",Correct Answer: B
+"What condition terminates a search loop early?
+A) It multiplies all values
+B) Applies only to odd rows
+C) 'not found' becoming False.
+D) Incorrect usage of loop",Correct Answer: C
+"What is filtering?
+A) Marks all items as invalid
+B) Selecting items that match certain conditions during iteration.
+C) It reverses the loop
+D) Applies only to odd rows",Correct Answer: B
+"What does 'if X.Marks > 90 then count++' do?
+A) It reverses the loop
+B) None of the above
+C) Used to sort data
+D) Counts items with marks above 90.",Correct Answer: D
+"What is a boolean variable?
+A) None of the above
+B) It reverses the loop
+C) It checks for even numbers only
+D) A variable with only two values: True or False.",Correct Answer: D
+"How can you check if a dataset contains a value?
+A) Applies only to odd rows
+B) Used for visual formatting
+C) It checks for even numbers only
+D) Use a loop and a flag like 'found = True' if match occurs.",Correct Answer: D
+"Why avoid breaking loops directly?
+A) It multiplies all values
+B) To maintain structure and avoid state inconsistency.
+C) Marks all items as invalid
+D) Applies only to odd rows",Correct Answer: B
+"What is a table in computational thinking?
+A) A structured representation of data using rows and columns.
+B) Initializes the dataset to empty
+C) Used to sort data
+D) Incorrect usage of loop",Correct Answer: A
+"Why are tables useful?
+A) Marks all items as invalid
+B) They organize data for easy access, manipulation, and storage.
+C) None of the above
+D) Used to sort data",Correct Answer: B
+"What is a flat table?
+A) Initializes the dataset to empty
+B) None of the above
+C) It multiplies all values
+D) A table where all information, even if repeated, is stored in each row.",Correct Answer: D
+"What is a normalized table?
+A) Initializes the dataset to empty
+B) A structure using multiple linked tables to avoid data repetition.
+C) It multiplies all values
+D) It checks for even numbers only",Correct Answer: B
+"What is a procedure?
+A) Incorrect usage of loop
+B) Initializes the dataset to empty
+C) It reverses the loop
+D) A reusable block of pseudocode for a specific task.",Correct Answer: D
+"What is a parameter?
+A) An input variable passed to a procedure.
+B) Applies only to odd rows
+C) It multiplies all values
+D) Marks all items as invalid",Correct Answer: A
+"What is a return value?
+A) The result or output produced by a procedure.
+B) Marks all items as invalid
+C) It reverses the loop
+D) Incorrect usage of loop",Correct Answer: A
+"Why use procedures?
+A) Used to sort data
+B) None of the above
+C) It multiplies all values
+D) To avoid repetition, improve clarity, and support modular thinking.",Correct Answer: D
+"What is nested iteration?
+A) It reverses the loop
+B) None of the above
+C) A loop inside another loop, often used to compare all pairs.
+D) Applies only to odd rows",Correct Answer: C
+"What kind of problems need nested loops?
+A) Those involving pairwise comparisons.
+B) Initializes the dataset to empty
+C) It multiplies all values
+D) Used to sort data",Correct Answer: A
+"Formula: total comparisons in nested iteration?
+A) N*(N-1)/2.
+B) Used to sort data
+C) It checks for even numbers only
+D) It multiplies all values",Correct Answer: A
+"What is binning?
+A) Used to sort data
+B) None of the above
+C) Grouping items into bins to reduce number of comparisons.
+D) Used for visual formatting",Correct Answer: C
+"How does binning optimize nested iteration?
+A) Incorrect usage of loop
+B) Reduces unnecessary comparisons by limiting them to same bin.
+C) Used for visual formatting
+D) Used to sort data",Correct Answer: B
+"What is a flowchart pattern for summing values?
+A) Initializes the dataset to empty
+B) Initialize sum = 0; loop through data; add value if condition met.
+C) Incorrect usage of loop
+D) It reverses the loop",Correct Answer: B
+"What is a flag variable?
+A) None of the above
+B) Marks all items as invalid
+C) A variable that keeps track of whether a certain condition has been met.
+D) Used to sort data",Correct Answer: C
+"When do we use a two-table structure in shopping bills?
+A) Incorrect usage of loop
+B) When each bill has multiple items; one for bill info, one for item details.
+C) It reverses the loop
+D) Marks all items as invalid",Correct Answer: B
+"What type of problems use 'found' as a flag?
+A) None of the above
+B) Used to sort data
+C) Used for visual formatting
+D) Search problems, where we want to exit early upon success.",Correct Answer: D
+"Why do we restore cards after inner iteration in nested loops?
+A) It checks for even numbers only
+B) Incorrect usage of loop
+C) Marks all items as invalid
+D) To preserve the dataset for future comparisons.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) Used for visual formatting
+C) None of the above
+D) It reverses the loop",Correct Answer: A
+"What is computational thinking? (example-based)
+A) Initializes the dataset to empty
+B) Used to sort data
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) Applies only to odd rows",Correct Answer: C
+"What is computational thinking? (example-based)
+A) Applies only to odd rows
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Initializes the dataset to empty
+D) It checks for even numbers only",Correct Answer: B
+"What is computational thinking? (example-based)
+A) It checks for even numbers only
+B) Incorrect usage of loop
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) None of the above",Correct Answer: C
+"What is computational thinking? (example-based)
+A) Initializes the dataset to empty
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) It reverses the loop
+D) None of the above",Correct Answer: B
+"What is computational thinking? (example-based)
+A) Used for visual formatting
+B) It checks for even numbers only
+C) Incorrect usage of loop
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) Incorrect usage of loop
+B) It multiplies all values
+C) None of the above
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) Initializes the dataset to empty
+B) It checks for even numbers only
+C) It multiplies all values
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) Applies only to odd rows
+C) Initializes the dataset to empty
+D) It multiplies all values",Correct Answer: A
+"What is computational thinking? (example-based)
+A) None of the above
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Used for visual formatting
+D) It reverses the loop",Correct Answer: B
+"What is computational thinking? (example-based)
+A) It checks for even numbers only
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Applies only to odd rows
+D) Marks all items as invalid",Correct Answer: B
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) It multiplies all values
+C) Marks all items as invalid
+D) Applies only to odd rows",Correct Answer: A
+"What is computational thinking? (example-based)
+A) Initializes the dataset to empty
+B) None of the above
+C) It multiplies all values
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) Incorrect usage of loop
+B) It multiplies all values
+C) Used to sort data
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) It reverses the loop
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Initializes the dataset to empty
+D) Incorrect usage of loop",Correct Answer: B
+"What is computational thinking? (example-based)
+A) It reverses the loop
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Incorrect usage of loop
+D) It checks for even numbers only",Correct Answer: B
+"What is computational thinking? (example-based)
+A) It checks for even numbers only
+B) Marks all items as invalid
+C) It reverses the loop
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) Used to sort data
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) It reverses the loop
+D) Marks all items as invalid",Correct Answer: B
+"What is computational thinking? (example-based)
+A) Incorrect usage of loop
+B) It checks for even numbers only
+C) Used for visual formatting
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) It checks for even numbers only
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Used to sort data
+D) Applies only to odd rows",Correct Answer: B
+"What is computational thinking? (example-based)
+A) Applies only to odd rows
+B) Initializes the dataset to empty
+C) It reverses the loop
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) Used for visual formatting
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) It multiplies all values
+D) Initializes the dataset to empty",Correct Answer: B
+"What is computational thinking? (example-based)
+A) It multiplies all values
+B) Incorrect usage of loop
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) Initializes the dataset to empty",Correct Answer: C
+"What is computational thinking? (example-based)
+A) Used for visual formatting
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Incorrect usage of loop
+D) Applies only to odd rows",Correct Answer: B
+"What is computational thinking? (example-based)
+A) Used to sort data
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Marks all items as invalid
+D) It checks for even numbers only",Correct Answer: B
+"What is computational thinking? (example-based)
+A) Incorrect usage of loop
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) It checks for even numbers only
+D) Applies only to odd rows",Correct Answer: B
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) It multiplies all values
+C) Incorrect usage of loop
+D) Applies only to odd rows",Correct Answer: A
+"What is computational thinking? (example-based)
+A) Initializes the dataset to empty
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Applies only to odd rows
+D) It multiplies all values",Correct Answer: B
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) Initializes the dataset to empty
+C) Used to sort data
+D) It reverses the loop",Correct Answer: A
+"What is computational thinking? (example-based)
+A) It checks for even numbers only
+B) Used for visual formatting
+C) Marks all items as invalid
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) It multiplies all values
+B) It checks for even numbers only
+C) None of the above
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) It checks for even numbers only
+C) It multiplies all values
+D) Applies only to odd rows",Correct Answer: A
+"What is computational thinking? (example-based)
+A) None of the above
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) It multiplies all values
+D) Applies only to odd rows",Correct Answer: B
+"What is computational thinking? (example-based)
+A) None of the above
+B) Used to sort data
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) It multiplies all values",Correct Answer: C
+"What is computational thinking? (example-based)
+A) Used for visual formatting
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) It multiplies all values
+D) It checks for even numbers only",Correct Answer: B
+"What is computational thinking? (example-based)
+A) Initializes the dataset to empty
+B) Used to sort data
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) None of the above",Correct Answer: C
+"What is computational thinking? (example-based)
+A) Initializes the dataset to empty
+B) It reverses the loop
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) None of the above",Correct Answer: C
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) It reverses the loop
+C) It multiplies all values
+D) Used to sort data",Correct Answer: A
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) It checks for even numbers only
+C) Used for visual formatting
+D) It reverses the loop",Correct Answer: A
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) Used for visual formatting
+C) Initializes the dataset to empty
+D) It reverses the loop",Correct Answer: A
+"What is computational thinking? (example-based)
+A) It reverses the loop
+B) Used for visual formatting
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) Used to sort data",Correct Answer: C
+"What is computational thinking? (example-based)
+A) It multiplies all values
+B) It reverses the loop
+C) Used to sort data
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) Used for visual formatting
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Marks all items as invalid
+D) It checks for even numbers only",Correct Answer: B
+"What is computational thinking? (example-based)
+A) Marks all items as invalid
+B) It multiplies all values
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) Used for visual formatting",Correct Answer: C
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) Used to sort data
+C) Used for visual formatting
+D) Applies only to odd rows",Correct Answer: A
+"What is computational thinking? (example-based)
+A) Applies only to odd rows
+B) None of the above
+C) Initializes the dataset to empty
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) None of the above
+C) Incorrect usage of loop
+D) It reverses the loop",Correct Answer: A
+"What is computational thinking? (example-based)
+A) It multiplies all values
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) It checks for even numbers only
+D) It reverses the loop",Correct Answer: B
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) It multiplies all values
+C) It reverses the loop
+D) Incorrect usage of loop",Correct Answer: A
+"What is computational thinking? (example-based)
+A) Initializes the dataset to empty
+B) Used to sort data
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) Used for visual formatting",Correct Answer: C
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) Marks all items as invalid
+C) Initializes the dataset to empty
+D) Used for visual formatting",Correct Answer: A
+"What is computational thinking? (example-based)
+A) It multiplies all values
+B) Marks all items as invalid
+C) Applies only to odd rows
+D) A way of solving problems so that a computer can execute the solution through clear, logical steps.",Correct Answer: D
+"What is computational thinking? (example-based)
+A) Used for visual formatting
+B) Marks all items as invalid
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) Incorrect usage of loop",Correct Answer: C
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) Incorrect usage of loop
+C) None of the above
+D) Used to sort data",Correct Answer: A
+"What is computational thinking? (example-based)
+A) Used to sort data
+B) Incorrect usage of loop
+C) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+D) It multiplies all values",Correct Answer: C
+"What is computational thinking? (example-based)
+A) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+B) It multiplies all values
+C) It checks for even numbers only
+D) Used for visual formatting",Correct Answer: A
+"What is computational thinking? (example-based)
+A) Incorrect usage of loop
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Applies only to odd rows
+D) None of the above",Correct Answer: B
+"What is computational thinking? (example-based)
+A) It reverses the loop
+B) A way of solving problems so that a computer can execute the solution through clear, logical steps.
+C) Applies only to odd rows
+D) It multiplies all values",Correct Answer: B
+"Pseudocode: What does the following do?
+
+A = 0
+while(Table 1 has more rows){
+  Read row X
+  if(X.Score > 90){ A = A + 1 }
+  Move X to Table 2
+}
+A) Counts how many students have a score greater than 90.
+B) Used to sort data
+C) Initializes the dataset to empty
+D) Used for visual formatting",Correct Answer: A
+"Pseudocode: How to sum marks for male students only?
+A) Used for visual formatting
+B) Marks all items as invalid
+C) It reverses the loop
+D) Check if X.Gender == 'M' before summing X.Marks in the loop.",Correct Answer: D
+"What is the role of 'Move X to Table 2' in a pseudocode loop?
+A) Used for visual formatting
+B) It reverses the loop
+C) None of the above
+D) It marks the row as visited to avoid reprocessing.",Correct Answer: D
+"Pseudocode: Initialize max finder.
+A = 0
+while(Table 1 has more rows){ Read X; if(X.Marks > A) A = X.Marks }
+A) Initializes the dataset to empty
+B) It reverses the loop
+C) Finds the maximum value in X.Marks.
+D) None of the above",Correct Answer: C
+"Pseudocode for checking if a student from Chennai scored above 90:
+A) Marks all items as invalid
+B) if(X.City == 'Chennai' and X.Marks > 90) then A = A + 1
+C) Applies only to odd rows
+D) Initializes the dataset to empty",Correct Answer: B
+"How is filtering implemented in pseudocode?
+A) Used for visual formatting
+B) Used to sort data
+C) Use IF condition inside the loop to check property before action.
+D) Initializes the dataset to empty",Correct Answer: C
+"What does this pseudocode capture?
+A = 0
+while(Table 1 has more rows){ Read X; if(X.Subject == 'Math') A = A + X.Marks }
+A) Total Maths marks.
+B) Marks all items as invalid
+C) It multiplies all values
+D) Used to sort data",Correct Answer: A
+"What does a flag like B = False do in nested loops?
+A) It tracks if a condition has ever been satisfied during comparison.
+B) Used to sort data
+C) It reverses the loop
+D) Incorrect usage of loop",Correct Answer: A
+"How do we find the second highest score in pseudocode?
+A) Used for visual formatting
+B) Incorrect usage of loop
+C) Use variables Max and SecondMax; update SecondMax if value < Max but > current SecondMax.
+D) Marks all items as invalid",Correct Answer: C
+"What’s the typical structure of a nested loop in pseudocode?
+A) Incorrect usage of loop
+B) None of the above
+C) It checks for even numbers only
+D) Outer while loop reads X; inner while loop reads Y and compares with X.",Correct Answer: D
+"How do we find duplicate entries using pseudocode?
+A) Marks all items as invalid
+B) Use nested loops and compare keys or values.
+C) It multiplies all values
+D) Incorrect usage of loop",Correct Answer: B
+"Pseudocode: When do we reset a counter inside a loop?
+A) It reverses the loop
+B) When the loop handles groups (e.g., per sentence or per paragraph).
+C) It multiplies all values
+D) Used to sort data",Correct Answer: B
+"Pseudocode for counting verbs with ≤5 letters:
+A) if(X.Type == 'Verb' and X.Length ≤ 5) then A = A + 1
+B) Marks all items as invalid
+C) Incorrect usage of loop
+D) Used for visual formatting",Correct Answer: A
+"Pseudocode: What is the effect of B = True; if vowel then B = False?
+A) It reverses the loop
+B) Incorrect usage of loop
+C) It identifies words with no vowels.
+D) Initializes the dataset to empty",Correct Answer: C
+"How to count number of students who failed all subjects using pseudocode?
+A) Marks all items as invalid
+B) Used to sort data
+C) Initializes the dataset to empty
+D) if(X.Math < 40 and X.Physics < 40 and X.Chem < 40) then A = A + 1",Correct Answer: D
+"Why do we use Table 2 and Table 3 in nested iteration pseudocode?
+A) To manage inner and outer loop states separately.
+B) Initializes the dataset to empty
+C) None of the above
+D) Used to sort data",Correct Answer: A
+"How do we restore Table 1 from Table 3 in nested loops?
+A) Move all rows from Table 3 back to Table 1.
+B) It checks for even numbers only
+C) Used to sort data
+D) It multiplies all values",Correct Answer: A
+"What is the purpose of a procedure like ReverseDigits() in pseudocode?
+A) It checks for even numbers only
+B) Used for visual formatting
+C) It reverses the loop
+D) To reverse a number’s digits for comparison in special matching problems.",Correct Answer: D
+"What does this pseudocode do?
+if(X.Score == Y.Score and X.ID != Y.ID) then C = C + 1
+A) It checks for even numbers only
+B) Used for visual formatting
+C) Counts distinct pairs with equal scores.
+D) It reverses the loop",Correct Answer: C
+"Pseudocode: How do you check if a pair of books shares the same genre and year?
+A) if(X.Genre == Y.Genre and X.Year == Y.Year) then A = True
+B) Used for visual formatting
+C) It reverses the loop
+D) Used to sort data",Correct Answer: A
+"What kind of problems require early termination in pseudocode?
+A) Incorrect usage of loop
+B) Used to sort data
+C) Search problems — use found = True and a loop condition that checks it.
+D) It multiplies all values",Correct Answer: C
+"What is a typical structure of a search pattern in pseudocode?
+A) Marks all items as invalid
+B) It reverses the loop
+C) found = False; while(table has rows and not found){ check; set found = True if match }
+D) Applies only to odd rows",Correct Answer: C
+"What’s the use of a helper procedure like CountVowels()?
+A) It encapsulates logic to count vowels in a word and returns the count.
+B) It multiplies all values
+C) Initializes the dataset to empty
+D) Incorrect usage of loop",Correct Answer: A
+"Pseudocode: How to find number of sentences with at least two nouns with ≤2 vowels?
+A) Marks all items as invalid
+B) It multiplies all values
+C) Maintain noun count per sentence, use CountVowels(), and reset counter at sentence end.
+D) Initializes the dataset to empty",Correct Answer: C
+"How to avoid counting same pair twice in pseudocode nested loop?
+A) Marks all items as invalid
+B) Incorrect usage of loop
+C) Used for visual formatting
+D) Ensure that pairs are only counted once or use a condition like i < j.",Correct Answer: D
+"Why do we use flags like C = False in pseudocode?
+A) None of the above
+B) To combine multiple OR conditions before taking action.
+C) It multiplies all values
+D) Applies only to odd rows",Correct Answer: B
+"How to structure a pair-counting loop with conditions?
+A) It reverses the loop
+B) Use outer while for X, inner while for Y, and condition check inside.
+C) Marks all items as invalid
+D) Used for visual formatting",Correct Answer: B
+"Why move Y to Table 3 in nested loops?
+A) It reverses the loop
+B) Applies only to odd rows
+C) Initializes the dataset to empty
+D) To preserve Y’s state and restore Table 1 after comparisons.",Correct Answer: D
+"Pseudocode: What does this do?
+if(X.Verb == True and X.Length ≤ 5) return(True); else return(False)
+A) Checks for short verbs.
+B) None of the above
+C) Applies only to odd rows
+D) It multiplies all values",Correct Answer: A
+"What does this condition mean?
+if(X.Marks == A) then B = B + 1
+A) Used for visual formatting
+B) Counts how many times the maximum mark appears.
+C) It checks for even numbers only
+D) Initializes the dataset to empty",Correct Answer: B
+"Which line has an error in this pseudocode?
+1: count = 0
+2: while(Table has rows)
+3: Read row X
+4: if(X.Score > 90)
+5: count = count + Score
+6: Move X to Table 2","Correct Answer: E) Line 5 – Score is undefined, should be X.Score"
+"Identify incorrect lines in this pseudocode:
+1: found = True
+2: while(table has more rows and not found)
+3: Read X
+4: if X.ID == 101 then found = True",Correct Answer: A) Line 1 – Initialization should be False
+"Find the error in the procedure call:
+1: SumBB = 0
+2: CountBB = 0
+3: while (Pile has cards)
+4: Read X
+5: SumBB, CountBB = AddIfBigBazaar(X, SumBB)
+6: Move X to Pile2","Correct Answer: E) Line 5 – Procedure expects 3 parameters, but only 2 provided"
+"Spot the mistake:
+1: SumBB = 0
+2: CountBB = 0
+3: while (Pile has cards)
+4: Read X
+5: SumBB, CountBB = AddIfBigBazaar(X, CountBB, SumBB)
+6: Move X to Pile2",Correct Answer: E) Line 5 – Parameters passed in wrong order
+"Which line contains an error?
+1: Procedure Compute()
+2: A = 0
+3: Read X
+4: A = A + Total
+5: return A","Correct Answer: D) Line 4 – 'Total' is undefined, should be X.Total"

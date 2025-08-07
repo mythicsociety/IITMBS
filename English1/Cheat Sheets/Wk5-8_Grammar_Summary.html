@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English 1 (Weeks 5-8) - Interactive Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for active tab and smooth transitions */
+        .tab-content {
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+        .tab.active {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+            color: #4338ca;
+            font-weight: 600;
+        }
+        .tab {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">English 1 (Weeks 5-8)</h1>
+            <p class="text-lg text-slate-600 mt-2">Interactive Summary Sheet</p>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="flex flex-wrap border-b border-slate-300 mb-6">
+            <button class="tab py-3 px-4 text-sm sm:text-base border-b-2 border-transparent hover:bg-slate-200" data-tab="tenses">Verb Tenses</button>
+            <button class="tab py-3 px-4 text-sm sm:text-base border-b-2 border-transparent hover:bg-slate-200" data-tab="agreement">Subject-Verb Agreement</button>
+            <button class="tab py-3 px-4 text-sm sm:text-base border-b-2 border-transparent hover:bg-slate-200" data-tab="reading">Reading Skills</button>
+            <button class="tab py-3 px-4 text-sm sm:text-base border-b-2 border-transparent hover:bg-slate-200" data-tab="listening">Listening Skills</button>
+            <button class="tab py-3 px-4 text-sm sm:text-base border-b-2 border-transparent hover:bg-slate-200" data-tab="phonology">Phonology</button>
+        </div>
+
+        <!-- Content Panels -->
+        <main>
+            <!-- Verb Tenses Content -->
+            <div id="tenses" class="tab-content bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">Verb Tenses: Past, Present & Future</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Past Tense</h3>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li><strong>Simple Past:</strong> Describes a finished event in the past (e.g., "She <span class="font-semibold text-indigo-600">returned</span> yesterday.").</li>
+                            <li><strong>Past Progressive:</strong> An ongoing action in the past, often interrupted (e.g., "He <span class="font-semibold text-indigo-600">was reading</span> when the phone rang.").</li>
+                            <li><strong>Past Perfect:</strong> A 'past before the past'; an action completed before another past action (e.g., "She <span class="font-semibold text-indigo-600">had finished</span> the report before the meeting started.").</li>
+                            <li><strong>Past Perfect Progressive:</strong> Emphasizes the duration of a past action before another past action (e.g., "They <span class="font-semibold text-indigo-600">had been waiting</span> for an hour.").</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Present Tense</h3>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li><strong>Simple Present:</strong> For habitual actions, general truths, and states (e.g., "He <span class="font-semibold text-indigo-600">reads</span> the newspaper every morning.").</li>
+                            <li><strong>Present Progressive:</strong> An action in progress now (e.g., "I <span class="font-semibold text-indigo-600">am looking</span> for an intern.").</li>
+                            <li><strong>Present Perfect:</strong> A past action with relevance to the present (e.g., "The train <span class="font-semibold text-indigo-600">has finally arrived</span>."). Often used with 'for', 'since', 'already', 'yet'.</li>
+                            <li><strong>Present Perfect Progressive:</strong> An action that started in the past and continues to the present (e.g., "The baby <span class="font-semibold text-indigo-600">has been crying</span> for an hour.").</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Future Tense</h3>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li><strong>Simple Future (will):</strong> For predictions and spontaneous decisions (e.g., "The train <span class="font-semibold text-indigo-600">will arrive</span> in 5 minutes.").</li>
+                            <li><strong>Future Progressive:</strong> An action that will be in progress at a specific future time (e.g., "This time tomorrow, I <span class="font-semibold text-indigo-600">will be traveling</span>.").</li>
+                            <li><strong>Future Perfect:</strong> An action that will be completed before another future time (e.g., "By next year, she <span class="font-semibold text-indigo-600">will have completed</span> her degree.").</li>
+                            <li><strong>Future Perfect Progressive:</strong> Emphasizes the duration of an action up to a certain point in the future (e.g., "In June, I <span class="font-semibold text-indigo-600">will have been living</span> here for ten years.").</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject-Verb Agreement Content -->
+            <div id="agreement" class="tab-content bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">Subject-Verb Agreement</h2>
+                <div class="space-y-4 text-slate-700">
+                    <p>The verb in a sentence must agree with its subject in number (singular or plural).</p>
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>Compound Subjects (and):</strong> Use a plural verb (e.g., "Annie and her brothers <span class="font-semibold text-indigo-600">are</span> at school.").</li>
+                        <li><strong>Compound Subjects (or/nor):</strong> The verb agrees with the subject closer to it (e.g., "The dog or the cats <span class="font-semibold text-indigo-600">are</span> outside." vs. "The cats or the dog <span class="font-semibold text-indigo-600">is</span> outside.").</li>
+                        <li><strong>Indefinite Pronouns:</strong> Words like 'each', 'everybody', 'anyone', 'no one' are singular (e.g., "Everybody <span class="font-semibold text-indigo-600">knows</span> Mr. Ram.").</li>
+                        <li><strong>Collective Nouns:</strong> Words like 'team', 'committee', 'family' are typically treated as singular (e.g., "The team <span class="font-semibold text-indigo-600">runs</span> during practice.").</li>
+                        <li><strong>Nouns ending in -s:</strong> Some nouns like 'news', 'mathematics', and 'politics' are singular (e.g., "The news <span class="font-semibold text-indigo-600">is</span> on at six.").</li>
+                        <li><strong>Paired Nouns:</strong> Nouns like 'scissors', 'trousers', 'glasses' are plural (e.g., "These scissors <span class="font-semibold text-indigo-600">are</span> dull.").</li>
+                        <li><strong>Phrases in Between:</strong> The verb agrees with the subject, not a noun in a phrase between them (e.g., "The woman with all the dogs <span class="font-semibold text-indigo-600">walks</span> down my street.").</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Reading Skills Content -->
+            <div id="reading" class="tab-content bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">Reading Skills</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Fundamental Techniques</h3>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li><strong>Skimming:</strong> Reading quickly to get a general overview or main idea. Focus on headings, subheadings, and the first sentences of paragraphs.</li>
+                            <li><strong>Scanning:</strong> Looking for specific keywords or information in a text without reading everything.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Comprehension Methods</h3>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li><strong>SQ3R:</strong> A five-step method: <span class="font-semibold">S</span>urvey, <span class="font-semibold">Q</span>uestion, <span class="font-semibold">R</span>ead, <span class="font-semibold">R</span>ecite, <span class="font-semibold">R</span>eview.</li>
+                            <li><strong>PQRST:</strong> A similar five-step method: <span class="font-semibold">P</span>review, <span class="font-semibold">Q</span>uestion, <span class="font-semibold">R</span>ead, <span class="font-semibold">S</span>tate/Self-recite, <span class="font-semibold">T</span>est.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Critical Reading</h3>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li><strong>Separating Fact from Opinion:</strong> Distinguishing between provable information and the author's beliefs or judgments.</li>
+                            <li><strong>Detecting Propaganda:</strong> Recognizing biased or misleading information used to promote a cause.</li>
+                            <li><strong>Recognizing Errors in Reasoning:</strong> Identifying logical fallacies (e.g., circular reasoning, false cause) that weaken an argument.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listening Skills Content -->
+            <div id="listening" class="tab-content bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">Listening Skills</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Active Listening</h3>
+                        <p class="mb-3 text-slate-700">A conscious effort to hear and understand the complete message being communicated. It involves:</p>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li>Full concentration and removing distractions.</li>
+                            <li>Providing feedback (nodding, verbal affirmations).</li>
+                            <li>Asking clarifying questions.</li>
+                            <li>Listening without assumptions or judgment.</li>
+                            <li>Observing body language.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Passive Listening</h3>
+                        <p class="mb-3 text-slate-700">Hearing without the intention of responding or retaining the information. Often occurs due to:</p>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li>Disinterest in the topic.</li>
+                            <li>Distractions (physical or mental).</li>
+                            <li>Preoccupation with one's own thoughts.</li>
+                            <li>Speaker's presentation style is not engaging.</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-2">Barriers to Effective Listening</h3>
+                    <ul class="list-disc list-inside space-y-2 text-slate-700">
+                        <li><strong>Physical Distractions:</strong> External noise, uncomfortable environment.</li>
+                        <li><strong>Psychological Barriers:</strong> Assumptions, biases, judging the speaker.</li>
+                        <li><strong>Physiological Barriers:</strong> Hearing impairment, fatigue, hunger.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Phonology Content -->
+            <div id="phonology" class="tab-content bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-700">Phonology: Sounds, Syllables & Stress</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Syllables & Stress</h3>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li>A <strong>syllable</strong> is a unit of pronunciation having one vowel sound.</li>
+                            <li><strong>Stress</strong> is the emphasis placed on a particular syllable in a word.</li>
+                            <li>Stress patterns can change a word's meaning or function (e.g., '<strong>RE</strong>cord' (noun) vs. 're<strong>CORD</strong>' (verb)).</li>
+                            <li><strong>General Rule for 2-Syllable Words:</strong> Nouns and adjectives often have stress on the first syllable; verbs often have stress on the second.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Aspiration</h3>
+                        <p class="mb-2 text-slate-700">Aspiration is the strong puff of air that accompanies the release of some consonants.</p>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li>Voiceless stops <strong>/p/, /t/, /k/</strong> are aspirated at the beginning of a stressed syllable.</li>
+                            <li><strong>Example:</strong> The 'p' in '<span class="font-semibold text-indigo-600">p</span>ot' is aspirated, but the 'p' in 's<span class="font-semibold text-indigo-600">p</span>ot' is not.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Plural Markers</h3>
+                        <p class="mb-2 text-slate-700">The pronunciation of the plural '-s' ending depends on the final sound of the word.</p>
+                        <ul class="list-disc list-inside space-y-2 text-slate-700">
+                            <li><strong>/s/ sound:</strong> After voiceless sounds like /p/, /t/, /k/ (e.g., ca<span class="font-semibold text-indigo-600">ts</span>).</li>
+                            <li><strong>/z/ sound:</strong> After voiced sounds like /b/, /d/, /g/, /v/ and vowels (e.g., do<span class="font-semibold text-indigo-600">gs</span>, tre<span class="font-semibold text-indigo-600">es</span>).</li>
+                            <li><strong>/ɪz/ sound:</strong> After sibilant sounds like /s/, /z/, /ʃ/, /tʃ/ (e.g., bus<span class="font-semibold text-indigo-600">es</span>, jud<span class="font-semibold text-indigo-600">ges</span>).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // JavaScript for tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            // Function to switch tabs
+            function switchTab(tab) {
+                // Deactivate all tabs and content panels
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Activate the clicked tab and its corresponding content
+                const targetContentId = tab.dataset.tab;
+                const targetContent = document.getElementById(targetContentId);
+                
+                tab.classList.add('active');
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            }
+
+            // Add click event listeners to all tabs
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab));
+            });
+
+            // Activate the first tab by default
+            if (tabs.length > 0) {
+                switchTab(tabs[0]);
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2.1: Conditional Termination in Iteration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        /* Style for the active navigation link */
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        /* Styles for the quiz feedback */
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L2.1: Conditional Termination</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#problem" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Problem of Waste</a></li>
+                        <li><a href="#solution" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The "Found" Flag Pattern</a></li>
+                        <li><a href="#flowchart" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Visualizing with a Flowchart</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">👋 Welcome! Let's Talk About Stopping Early</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Often in computing, we need to go through a list of items one by one. This process is called <strong>iteration</strong>. Think about looking through a deck of cards to find a specific one, or checking a shopping list to see if you need to buy milk.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        But what happens when you find what you're looking for? If you're searching for the Ace of Spades and you find it on the 10th card, do you keep looking through the other 42 cards? Of course not! You stop. This simple idea of stopping an iteration once your goal is met is called <strong>conditional termination</strong>. It's a powerful way to make our procedures more efficient.
+                    </p>
+                </section>
+
+                <!-- The Problem Section -->
+                <section id="problem" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Problem: A Waste of Time and Effort</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Imagine we have a stack of student report cards and our task is simple: "Find out if at least one student scored above 90 in all subjects."
+                    </p>
+                    <p class="text-lg text-slate-700 mb-4">
+                        A standard iteration would tell us to check <em>every single card</em>. So, we start checking. The first card has a 74, so we move on. The second has a 62, we move on. We keep going... and on the 11th card, we find Rahul, who scored 97, 92, and 92. Success!
+                    </p>
+                    <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">Here's the issue:</p>
+                        <p>Even though we've already found our answer, a basic iterator would just keep going through the rest of the cards. This is wasteful. Why continue searching for something we've already found?</p>
+                    </div>
+                    <p class="text-lg text-slate-700">
+                        Just "jumping out" of the iteration midway can be messy. It can leave our data in a disorganized state (like two piles of cards) and make the logic of our procedure hard to follow. We need a clean, structured way to stop.
+                    </p>
+                </section>
+
+                <!-- The Solution Section -->
+                <section id="solution" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Solution: The "Found" Flag Pattern</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Instead of abruptly jumping out of the loop, we can use a clever trick. We'll use a special variable, often called a <strong>flag</strong>, to keep track of whether we've found what we're looking for. Let's call our flag `found`.
+                    </p>
+                    <ol class="list-decimal list-inside space-y-4 text-lg text-slate-700">
+                        <li><strong>Initialize the Flag:</strong> Before we start iterating, we set our `found` variable to `false`. This means "we haven't found it yet."</li>
+                        <li><strong>Modify the Loop Condition:</strong> We change our loop's condition. Instead of just "while there are more cards", we'll say "while there are more cards <strong>AND</strong> `found` is `false`".</li>
+                        <li><strong>Update the Flag:</strong> Inside the loop, when we finally find the card that meets our criteria (like Rahul's card with scores above 90), we do one extra step: we set `found` to `true`.</li>
+                    </ol>
+                    <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">How it Works:</p>
+                        <p>The loop continues as long as both conditions are met. But as soon as we set `found` to `true`, the second part of our condition (`found` is `false`) fails on the very next check. The loop then terminates naturally and cleanly, without any messy jumps!</p>
+                    </div>
+                </section>
+
+                <!-- Flowchart Section -->
+                <section id="flowchart" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Visualizing with a Flowchart</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This "found flag" pattern can be clearly represented with a flowchart. Notice how there's only one way into the loop and one clean exit point. The `found` variable controls whether the loop continues or stops.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md flex justify-center items-center">
+                        <svg width="100%" height="100%" viewBox="0 0 425 320" xmlns="http://www.w3.org/2000/svg" class="max-w-sm">
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#475569" />
+                                </marker>
+                            </defs>
+                            
+                            <!-- Styles -->
+                            <style>
+                                .box { fill: #e0f2fe; stroke: #38bdf8; stroke-width: 1.5; }
+                                .diamond { fill: #f0f9ff; stroke: #7dd3fc; stroke-width: 1.5; }
+                                .stop { fill: #fee2e2; stroke: #f87171; stroke-width: 1.5; }
+                                .line { stroke: #475569; stroke-width: 1.5; marker-end: url(#arrowhead); fill: none; }
+                                .text { font-family: 'Inter', sans-serif; font-size: 12px; fill: #1e293b; text-anchor: middle; }
+                                .label-text { font-family: 'Inter', sans-serif; font-size: 10px; fill: #475569; text-anchor: middle; }
+                            </style>
+
+                            <!-- Elements -->
+                            <rect x="150" y="10" width="100" height="40" rx="5" class="box" />
+                            <text x="200" y="35" class="text">Found = False</text>
+                            
+                            <path d="M 200 50 v 20" class="line" />
+
+                            <path d="M 100 105 L 200 70 L 300 105 L 200 140 Z" class="diamond" />
+                            <text x="200" y="100" class="text">Another card</text>
+                            <text x="200" y="115" class="text">and not(Found)?</text>
+
+                            <path d="M 300 105 h 50" class="line" />
+                            <text x="325" y="95" class="label-text">No</text>
+                            <rect x="350" y="85" width="50" height="40" rx="20" class="stop" />
+                            <text x="375" y="110" class="text">Stop</text>
+
+                            <path d="M 200 140 v 20" class="line" />
+                            <text x="210" y="155" class="label-text">Yes</text>
+
+                            <path d="M 100 195 L 200 160 L 300 195 L 200 230 Z" class="diamond" />
+                            <text x="200" y="198" class="text">Correct card?</text>
+
+                            <path d="M 300 195 h 25 v 40" class="line" />
+                            <text x="315" y="185" class="label-text">Yes</text>
+                            <rect x="275" y="235" width="100" height="40" rx="5" class="box" />
+                            <text x="325" y="260" class="text">Found = True</text>
+                            
+                            <!-- Rerouted paths to avoid crossing -->
+                            <path d="M 200 230 v 60" class="line" />
+                            <text x="180" y="250" class="label-text">No</text>
+                            
+                            <path d="M 275 255 v 35 h -75" class="line" />
+                            
+                            <path d="M 200 290 h -150 v -185" class="line" />
+                        </svg>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Interactive Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        Let's see this in action. We have a deck of 15 digital "cards", each with a random score. The goal is to find the <strong>first card with a score over 90</strong>. Watch how the iteration stops as soon as the condition is met.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Start Search</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Start Search' to begin.</div>
+                        <div class="flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 md:space-x-6">
+                            <!-- Deck -->
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Deck</h4>
+                                <div id="deck-pile" class="relative w-32 h-44 bg-slate-200 rounded-lg shadow-inner flex items-center justify-center">
+                                    <div class="absolute w-full h-full border-4 border-slate-300 rounded-lg -top-1 -left-1"></div>
+                                    <div class="absolute w-full h-full border-4 border-slate-300 rounded-lg -top-2 -left-2"></div>
+                                    <div id="deck-count" class="relative z-10 text-4xl font-bold text-slate-500">15</div>
+                                </div>
+                            </div>
+                            <!-- Current Card -->
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Checking Card</h4>
+                                <div id="current-card" class="w-32 h-44 bg-white rounded-lg shadow-lg border-2 border-sky-400 flex flex-col justify-center items-center transition-all duration-300">
+                                    <span id="current-card-id" class="text-sm text-slate-500">#?</span>
+                                    <span id="current-card-value" class="text-5xl font-bold text-sky-800">?</span>
+                                </div>
+                            </div>
+                             <!-- Processed Pile -->
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Processed</h4>
+                                <div id="processed-pile" class="relative w-32 h-44 bg-slate-200 rounded-lg shadow-inner flex items-center justify-center">
+                                    <div id="processed-count" class="text-4xl font-bold text-slate-500">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Time to test your understanding! Choose the best answer for each question.
+                    </p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar Navigation Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        // --- Active Link Highlighting on Scroll ---
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100; // Offset for better accuracy
+                if (mainContent.scrollTop >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            links.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const deckCountEl = document.getElementById('deck-count');
+        const processedCountEl = document.getElementById('processed-count');
+        const currentCardIdEl = document.getElementById('current-card-id');
+        const currentCardValueEl = document.getElementById('current-card-value');
+        const currentCardEl = document.getElementById('current-card');
+        
+        let simCards = [];
+        let simInterval;
+        const TOTAL_CARDS = 15;
+
+        function generateSimCards() {
+            simCards = [];
+            for (let i = 0; i < TOTAL_CARDS; i++) {
+                // Ensure at least one card is > 90 for a successful search
+                const score = (i === Math.floor(Math.random() * 10) + 3) ? 
+                    Math.floor(Math.random() * 10) + 91 : 
+                    Math.floor(Math.random() * 50) + 40;
+                simCards.push({ id: i + 1, score: score });
+            }
+        }
+        
+        function resetSimulator() {
+            clearInterval(simInterval);
+            generateSimCards();
+            simStatus.textContent = "Press 'Start Search' to begin.";
+            simStatus.className = 'text-center font-semibold text-lg h-8 mb-4 text-slate-700';
+            deckCountEl.textContent = TOTAL_CARDS;
+            processedCountEl.textContent = 0;
+            currentCardIdEl.textContent = '#?';
+            currentCardValueEl.textContent = '?';
+            currentCardEl.classList.remove('bg-green-100', 'border-green-500');
+            startSimBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            let currentIndex = 0;
+            let found = false;
+
+            simInterval = setInterval(() => {
+                if (currentIndex >= simCards.length || found) {
+                    clearInterval(simInterval);
+                    if (!found) {
+                        simStatus.textContent = 'Searched all cards. None found over 90.';
+                        simStatus.className = 'text-center font-semibold text-lg h-8 mb-4 text-amber-700';
+                    }
+                    startSimBtn.disabled = false;
+                    return;
+                }
+
+                const card = simCards[currentIndex];
+                
+                // Update UI
+                simStatus.textContent = `Checking card #${card.id}...`;
+                deckCountEl.textContent = TOTAL_CARDS - (currentIndex + 1);
+                processedCountEl.textContent = currentIndex + 1;
+                currentCardIdEl.textContent = `#${card.id}`;
+                currentCardValueEl.textContent = card.score;
+                currentCardEl.classList.remove('bg-green-100', 'border-green-500');
+
+
+                if (card.score > 90) {
+                    found = true;
+                    simStatus.textContent = `Found it! Card #${card.id} has a score of ${card.score}. Stopping search.`;
+                    simStatus.className = 'text-center font-semibold text-lg h-8 mb-4 text-green-700';
+                    currentCardEl.classList.add('bg-green-100', 'border-green-500');
+                }
+
+                currentIndex++;
+
+            }, 800);
+        });
+
+        resetSimBtn.addEventListener('click', resetSimulator);
+        
+        // Initialize simulator on load
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            // Questions from AQ2_1.docx
+            {
+                question: "If the variable `Found` stores the value True, what is the outcome of the operation `not(Found)`?",
+                options: ["True", "False"],
+                correct: ["False"],
+                type: "single",
+                explanation: "The `not` operator inverts a boolean value. Therefore, `not(True)` evaluates to `False`."
+            },
+            {
+                question: "Consider the first decision block: `Another card and not(Found)`. After a certain number of steps, the flow transfers to the “No” branch. Which of the following situations are possible?",
+                options: [
+                    "The variable `Found` stores the value True and some cards have not been read.",
+                    "The variable `Found` stores the value False and some cards have not been read.",
+                    "The variable `Found` stores the value False and all cards have been read.",
+                    "The variable `Found` stores the value True and all cards have been read."
+                ],
+                correct: ["The variable `Found` stores the value True and some cards have not been read.", "The variable `Found` stores the value False and all cards have been read.", "The variable `Found` stores the value True and all cards have been read."],
+                type: "multiple",
+                explanation: "The loop stops if there are no more cards OR if `Found` is True. This covers three possibilities: the item was found mid-deck, the item was the very last card, or the item was never found and the deck ran out."
+            },
+            {
+                question: "At the end of the execution, the variable `Found` stores the value True. How many times was it updated?",
+                options: ["0", "1", "As many times as a correct card was discovered", "30"],
+                correct: ["1"],
+                type: "single",
+                explanation: "The logic sets `Found` to True the *first* time a correct card is discovered. Because the loop condition then causes termination, `Found` is only ever updated from False to True once."
+            },
+            {
+                question: "Consider a modified flowchart where a `Count` variable is incremented every time `Found` is set to True. If there are 10 cards that satisfy the condition for the “Correct card”, what will be the value of `Count` at the end?",
+                options: ["10", "0", "1", "30"],
+                correct: ["1"],
+                type: "single",
+                explanation: "Even if 10 cards are correct, the loop terminates after the *first* correct card is found. Therefore, the block that updates `Found` and `Count` is only executed one time."
+            },
+            // Newly created questions
+             {
+                question: "What is the primary purpose of initializing a 'found' flag to `false` before an iteration begins?",
+                options: [
+                    "To ensure the loop runs at least once.",
+                    "To establish a starting state where the target item has not yet been located.",
+                    "To count the total number of items in the collection.",
+                    "To immediately stop the loop if the collection is empty."
+                ],
+                correct: ["To establish a starting state where the target item has not yet been located."],
+                type: "single",
+                explanation: "Initializing the flag to `false` sets the baseline assumption that our search is just beginning and has not yet been successful."
+            },
+            {
+                question: "True or False: Conditional termination makes a procedure less efficient because it adds an extra check (`and not(Found)`) in the loop condition.",
+                options: ["True", "False"],
+                correct: ["False"],
+                type: "single",
+                explanation: "False. While it adds a negligible computational step, it saves a potentially huge amount of work by preventing the loop from processing the rest of the items unnecessarily."
+            },
+            {
+                question: "Which of the following scenarios are good real-world analogies for conditional termination? (Select all that apply)",
+                options: [
+                    "Reading every page of a book to find a specific quote.",
+                    "Looking for your keys in your house and stopping as soon as you find them.",
+                    "Checking every item in your grocery cart at checkout.",
+                    "Searching for the first available parking spot in a row and taking it."
+                ],
+                correct: ["Looking for your keys in your house and stopping as soon as you find them.", "Searching for the first available parking spot in a row and taking it."],
+                type: "multiple",
+                explanation: "Both finding your keys and finding a parking spot are tasks where you stop immediately upon success. The other two scenarios require processing every single item regardless."
+            },
+            {
+                question: "If we did NOT use a `found` flag, what is a potential problem with just 'jumping out' of a loop?",
+                options: [
+                    "The computer might crash.",
+                    "It's impossible to do in modern programming.",
+                    "It can make the program's logic unstructured and hard to follow.",
+                    "It is significantly slower."
+                ],
+                correct: ["It can make the program's logic unstructured and hard to follow."],
+                type: "single",
+                explanation: "Unstructured jumps (like the old 'goto' statements) can create 'spaghetti code' that is difficult to read, debug, and maintain. The flag pattern provides a much cleaner, more structured exit."
+            },
+            {
+                question: "What happens if you iterate through the entire collection and the 'correct card' is never found?",
+                options: [
+                    "The program will result in an error.",
+                    "The loop will run forever.",
+                    "The `Found` variable will remain `false`.",
+                    "The `Found` variable will be set to `true` on the last item."
+                ],
+                correct: ["The `Found` variable will remain `false`."],
+                type: "single",
+                explanation: "If the condition to set `Found` to `true` is never met, the variable will retain its initial value of `false` throughout the entire execution."
+            },
+             {
+                question: "The 'found flag' pattern is a form of...",
+                options: ["State management", "Data storage", "Input validation", "Error handling"],
+                correct: ["State management"],
+                type: "single",
+                explanation: "The flag is used to manage the 'state' of the search (e.g., 'still searching' vs. 'found')."
+            },
+            {
+                question: "True or False: The conditional termination pattern only works for finding one item. It cannot be adapted to find, for example, the first 5 correct items.",
+                options: ["True", "False"],
+                correct: ["False"],
+                type: "single",
+                explanation: "False. The pattern is flexible. You could replace the boolean 'found' flag with a counter and change the loop condition to `while (moreCards and count < 5)`."
+            },
+            {
+                question: "In the flowchart, if the 'Correct card?' check is 'Yes', what happens immediately next?",
+                options: [
+                    "The loop terminates.",
+                    "The procedure checks for another card.",
+                    "The `Found` variable is set to `True`.",
+                    "The procedure goes to the 'Stop' box."
+                ],
+                correct: ["The `Found` variable is set to `True`."],
+                type: "single",
+                explanation: "After a 'Yes' on the inner condition, the immediate next step is to update the flag. The loop termination happens on the *next* evaluation of the main loop condition."
+            }
+        ];
+
+        function buildQuiz() {
+            quizData.forEach((q, index) => {
+                const isMultiple = q.type === 'multiple';
+                const inputType = isMultiple ? 'checkbox' : 'radio';
+
+                const optionsHtml = q.options.map((option, i) => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="${inputType}" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">
+                            ${optionsHtml}
+                        </div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+
+            // Add event listeners
+            quizData.forEach((q, index) => {
+                const optionsContainer = document.getElementById(`q${index}-options`);
+                optionsContainer.addEventListener('change', (event) => {
+                    handleAnswer(q, index);
+                });
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const optionsContainer = document.getElementById(`q${questionIndex}-options`);
+            const inputs = optionsContainer.querySelectorAll('input');
+            
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) {
+                    selectedAnswers.push(input.value);
+                }
+            });
+
+            // Disable further changes
+            inputs.forEach(input => input.disabled = true);
+
+            let isCorrect = false;
+            if (questionData.type === 'single') {
+                isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            } else { // multiple
+                isCorrect = selectedAnswers.length === questionData.correct.length && 
+                            selectedAnswers.every(val => questionData.correct.includes(val));
+            }
+
+            // Provide visual feedback on options
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            if (isCorrect) {
+                feedbackEl.innerHTML = `<strong>Correct!</strong> ${questionData.explanation}`;
+                feedbackEl.className = 'feedback correct';
+            } else {
+                feedbackEl.innerHTML = `<strong>Not quite.</strong> ${questionData.explanation}`;
+                feedbackEl.className = 'feedback incorrect';
+            }
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L4.1: Nested Iterations & The Birthday Paradox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .person-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .person-card.comparing {
+            transform: scale(1.1);
+            border-color: #3b82f6; /* blue-500 */
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+        .person-card.match {
+            border-color: #22c55e; /* green-500 */
+            background-color: #dcfce7; /* green-100 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L4.1: Nested Iterations</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#paradox" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Birthday Paradox</a></li>
+                        <li><a href="#naive" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">A Naive Approach</a></li>
+                        <li><a href="#nested" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Nested Iterations</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">A Loop Inside a Loop 🔁</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Welcome to Week 4! We've mastered how to iterate through a list of items to perform tasks. But what if, for each item, we need to compare it to *every other item* in the same list?
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        This requires a powerful new structure: a <strong>nested iteration</strong>, which is simply a loop running inside another loop. This pattern is essential for solving a wide range of problems involving pairwise comparisons, which we'll explore through the fascinating lens of the Birthday Paradox.
+                    </p>
+                </section>
+
+                <!-- The Birthday Paradox Section -->
+                <section id="paradox" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Birthday Paradox 🎂</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        The Birthday Paradox is a famous probability puzzle. It asks: "How many people do you need in a room for there to be a greater than 50% chance that at least two of them share the same birthday?"
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        The answer is surprisingly low: just <strong>23 people</strong>. With 23 people, there are 253 unique pairs of people to compare, which is enough to make a shared birthday more likely than not.
+                    </p>
+                    <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">Our Goal:</p>
+                        <p>We're not going to calculate the probability. Instead, we'll design an algorithm to solve a related problem: given a list of people and their birthdays, find out if any pair shares a birthday.</p>
+                    </div>
+                </section>
+
+                <!-- A Naive Approach Section -->
+                <section id="naive" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">A Naive Approach: Pairwise Comparison</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        How can we check for a shared birthday in a group of people? The most direct method is to compare every person with every other person.
+                    </p>
+                    <ol class="list-decimal list-inside space-y-3 text-lg text-slate-700">
+                        <li>Take the <strong>first person</strong> and compare their birthday with the second, third, fourth, and so on, to the last person.</li>
+                        <li>Take the <strong>second person</strong> and compare their birthday with the third, fourth, fifth, and so on.</li>
+                        <li>Continue this process until we've compared the second-to-last person with the last person.</li>
+                    </ol>
+                    <p class="text-lg text-slate-700 mt-4">
+                        If at any point we find a match, we can stop and declare that a shared birthday exists. This method is "naive" because it's a brute-force approach, but it's guaranteed to work. The key challenge is how to implement this systematic comparison.
+                    </p>
+                </section>
+                
+                <!-- Nested Iterations Section -->
+                <section id="nested" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Nested Iterations: The "Loop within a Loop"</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        The pairwise comparison logic translates perfectly to a nested iteration.
+                    </p>
+                    <ul class="list-disc list-inside space-y-4 text-lg text-slate-700">
+                        <li>
+                            <strong>The Outer Loop:</strong> This loop picks a person, let's call them Card X. It starts with the first person and goes through to the end.
+                        </li>
+                        <li>
+                            <strong>The Inner Loop:</strong> For *each* Card X selected by the outer loop, this second loop runs. It picks another person, Card Y, starting from the card *after* X, and goes to the end.
+                        </li>
+                        <li>
+                            <strong>The Comparison:</strong> Inside the inner loop, we perform our check: `if X.birthday == Y.birthday`.
+                        </li>
+                    </ul>
+                    <div class="bg-white p-6 rounded-xl shadow-md my-6">
+                        <h4 class="text-center font-semibold mb-2">Visualizing the Comparisons</h4>
+                        <p class="text-center text-sm text-slate-600 mb-4">For a group of 4 people (P1, P2, P3, P4):</p>
+                        <svg width="100%" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+                           <style>.line{stroke:#94a3b8; stroke-width:1.5; marker-end: url(#arrowhead);} .text{font-size:12px; fill:#1e293b;}</style>
+                           <defs><marker id="arrowhead" markerWidth="7" markerHeight="5" refX="0" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#94a3b8" /></marker></defs>
+                           <text x="10" y="20" class="text font-bold">P1 compares with:</text>
+                           <path d="M 120 15 h 40" class="line"/> <text x="170" y="20" class="text">P2</text>
+                           <path d="M 120 15 h 80" class="line"/> <text x="210" y="20" class="text">P3</text>
+                           <path d="M 120 15 h 120" class="line"/> <text x="250" y="20" class="text">P4</text>
+                           <text x="10" y="50" class="text font-bold">P2 compares with:</text>
+                           <path d="M 120 45 h 80" class="line"/> <text x="210" y="50" class="text">P3</text>
+                           <path d="M 120 45 h 120" class="line"/> <text x="250" y="50" class="text">P4</text>
+                           <text x="10" y="80" class="text font-bold">P3 compares with:</text>
+                           <path d="M 120 75 h 120" class="line"/> <text x="250" y="80" class="text">P4</text>
+                        </svg>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Birthday Paradox Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator runs the nested loop algorithm. Click "Find Match" to start. It will highlight the two cards being compared at each step of the inner loop. Watch how quickly a match is often found!
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700">Find Match</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Add people or press 'Find Match'.</div>
+                        <div id="people-container" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-4"></div>
+                        <div class="flex justify-center"><button id="add-person-btn" class="px-4 py-1 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 text-sm">Add Person</button></div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of nested iterations.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const addPersonBtn = document.getElementById('add-person-btn');
+        const simStatus = document.getElementById('sim-status');
+        const peopleContainer = document.getElementById('people-container');
+        
+        let people = [];
+        let simInterval;
+        const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        function createPerson() {
+            const day = Math.floor(Math.random() * 28) + 1;
+            const month = MONTHS[Math.floor(Math.random() * 12)];
+            return { id: people.length, birthday: `${day}-${month}` };
+        }
+
+        function renderPeople() {
+            peopleContainer.innerHTML = '';
+            people.forEach(p => {
+                const personEl = document.createElement('div');
+                personEl.id = `person-${p.id}`;
+                personEl.className = 'person-card p-2 rounded-lg text-center bg-white shadow border-2 border-transparent';
+                personEl.innerHTML = `<div class="font-bold text-sm">${p.birthday}</div>`;
+                peopleContainer.appendChild(personEl);
+            });
+        }
+
+        function resetSimulator() {
+            clearInterval(simInterval);
+            people = [];
+            for(let i=0; i<10; i++) people.push(createPerson());
+            renderPeople();
+            simStatus.textContent = "Add people or press 'Find Match'.";
+            simStatus.classList.remove('text-green-700');
+            startSimBtn.disabled = false;
+            addPersonBtn.disabled = false;
+        }
+
+        addPersonBtn.addEventListener('click', () => {
+            if (people.length < 40) {
+                people.push(createPerson());
+                renderPeople();
+            }
+        });
+
+        async function runSimulation() {
+            startSimBtn.disabled = true;
+            addPersonBtn.disabled = true;
+            for (let i = 0; i < people.length; i++) {
+                const person1 = document.getElementById(`person-${i}`);
+                for (let j = i + 1; j < people.length; j++) {
+                    const person2 = document.getElementById(`person-${j}`);
+                    simStatus.textContent = `Comparing ${people[i].birthday} and ${people[j].birthday}...`;
+                    person1.classList.add('comparing');
+                    person2.classList.add('comparing');
+                    
+                    await new Promise(resolve => setTimeout(resolve, 150));
+
+                    if (people[i].birthday === people[j].birthday) {
+                        simStatus.textContent = `Match found! ${people[i].birthday}`;
+                        simStatus.classList.add('text-green-700');
+                        person1.classList.add('match');
+                        person2.classList.add('match');
+                        return; // Exit simulation
+                    }
+                    
+                    person1.classList.remove('comparing');
+                    person2.classList.remove('comparing');
+                }
+                 person1.classList.remove('comparing');
+            }
+            simStatus.textContent = "No match found after all comparisons.";
+            startSimBtn.disabled = false;
+            addPersonBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', runSimulation);
+        resetSimBtn.addEventListener('click', resetSimulator);
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "For a group of 5 people, how many unique pairwise comparisons are needed to check for a shared birthday?", options: ["5", "10", "20", "25"], correct: ["10"], type: "single", explanation: "The number of pairs is N*(N-1)/2. For N=5, it's 5*4/2 = 10 comparisons." },
+            { question: "In a nested loop for the birthday problem, if the outer loop is on card `i` and the inner loop is on card `j`, what is the correct way to start the inner loop to avoid redundant checks?", options: ["j starts from 0", "j starts from i", "j starts from i + 1", "j starts from N - 1"], correct: ["j starts from i + 1"], type: "single", explanation: "Starting `j` from `i + 1` ensures that each pair is compared only once and a card is not compared with itself." },
+            { question: "What is the primary purpose of a nested iteration?", options: ["To make the code run twice as fast", "To perform an operation for every possible pair of items in a collection", "To process a list in reverse order", "To handle errors in a loop"], correct: ["To perform an operation for every possible pair of items in a collection"], type: "single", explanation: "Nested loops are the standard structure for algorithms that require comparing each element with every other element, like finding duplicates or closest pairs." },
+            { question: "If a match is found in the birthday problem, what is the most efficient next step?", options: ["Continue checking all other pairs to be sure", "Stop both loops immediately and report the match", "Restart the outer loop", "Reverse the order of the cards and check again"], correct: ["Stop both loops immediately and report the match"], type: "single", explanation: "The problem only asks if *any* pair shares a birthday. Once one is found, the goal is achieved, and further computation is unnecessary (an example of conditional termination)." },
+            { question: "For N students, the naive approach to the birthday problem involves approximately how many comparisons?", options: ["N", "2*N", "N*N / 2", "N!"], correct: ["N*N / 2"], type: "single", explanation: "The number of comparisons grows quadratically with the number of students. The exact formula is N*(N-1)/2, which is roughly N*N / 2 for large N." },
+            { question: "True or False: A nested loop is the only way to solve the birthday problem.", options: ["True", "False"], correct: ["False"], type: "single", explanation: "False. A more efficient (but more complex) method involves sorting the birthdays first. If any two adjacent birthdays in the sorted list are the same, a match exists. This can be done faster than N*N/2 comparisons." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

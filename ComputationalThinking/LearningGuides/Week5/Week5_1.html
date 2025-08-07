@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L5.1: Introduction to Collections and Lists</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Style for the hamburger menu */
+        .hamburger-icon span {
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">Collections & Lists</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction</a>
+                <a href="#what-are-collections" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">What are Collections?</a>
+                <a href="#lists" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Understanding Lists</a>
+                <a href="#list-operations" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Basic List Operations</a>
+                <a href="#processing-lists" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Processing Lists</a>
+                <a href="#advanced-list-ops" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Advanced Operations</a>
+                <a href="#list-of-pairs" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Lists of Pairs & Triples</a>
+                <a href="#interactive-list-builder" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive List Builder</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">Welcome! Let's Learn About Collections and Lists</h1>
+                <p class="text-lg">Welcome to the next part of our Computational Thinking journey! So far, we've learned how to use variables to keep track of single pieces of information, like a count or a maximum value. But what happens when we need to manage a whole group of values? For example, how do we handle a list of all students who scored top marks, or all the customers who bought a specific item?</p>
+                <p class="text-lg mt-4">That's where <strong>collections</strong> come in. In this guide, we'll dive into the simplest and one of the most useful types of collections: the <strong>list</strong>. We'll explore what lists are, how to create and manipulate them, and why they're so powerful for solving complex problems. Let's get started! 😊</p>
+            </section>
+
+            <section id="what-are-collections" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">What are Collections?</h2>
+                <p class="text-lg mb-4">In our daily lives and in programming, we often deal with groups of things, not just single items. Think about:</p>
+                <ul class="list-disc list-inside text-lg space-y-2 mb-4 pl-4">
+                    <li>A shopping list</li>
+                    <li>The players on a sports team</li>
+                    <li>A list of contacts on your phone</li>
+                </ul>
+                <p class="text-lg mb-4">These are all <strong>collections</strong>. In computational thinking, a collection is a way to group multiple values together and treat them as a single unit. Instead of creating a new variable for every single student born in May, we can have one variable that holds a collection of all those students.</p>
+                <div class="mt-6 border-l-4 border-blue-500 pl-4 italic">
+                    <p class="text-lg">"The simplest collection is a <strong>list</strong>, which is just a sequence of values. A single variable can refer to the entire sequence."</p>
+                </div>
+                <p class="text-lg mt-4">This is incredibly useful because it allows us to store, manage, and process groups of data efficiently, without knowing in advance how many items will be in the group.</p>
+            </section>
+            
+            <section id="lists" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Understanding Lists</h2>
+                <p class="text-lg mb-4">A <strong>list</strong> is an ordered sequence of values. The "ordered" part is important—it means that each item in the list has a specific position. The first item is different from the second, and so on. Lists can hold numbers, text (strings), or even other lists!</p>
+                
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">How to Write a List</h3>
+                <p class="text-lg mb-4">In pseudocode, we write lists inside square brackets <code>[]</code>, with the items separated by commas.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="font-mono text-lg">[1, 13, 2]</p>
+                        <p class="mt-2 text-md text-gray-600">A list of numbers.</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="font-mono text-lg">["Vedanayagam", "cane", "Monday"]</p>
+                        <p class="mt-2 text-md text-gray-600">A list of strings.</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg col-span-1 md:col-span-2">
+                        <p class="font-mono text-lg">[]</p>
+                        <p class="mt-2 text-md text-gray-600">An <strong>empty list</strong>, which contains no items. This is our starting point when we want to build a list from scratch.</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">The "Bookmark" Analogy</h3>
+                <p class="text-lg mb-4">Imagine you're reading a book and want to mark several important pages. Instead of tearing the pages out (which would mess up the book's order), you use bookmarks. Each bookmark points to a specific page without disturbing the book itself.</p>
+                <p class="text-lg mb-4">This is how we should think about creating lists from a dataset. Instead of pulling the data cards out and changing their order, we create a list of "bookmarks" (like sequence numbers or IDs) that point to the cards we're interested in. This way, the original dataset remains untouched, and we can create multiple lists (e.g., one for students from Chennai, another for students born in May) that all reference the same data.</p>
+            </section>
+
+            <section id="list-operations" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Basic List Operations</h2>
+                <p class="text-lg mb-4">Once we have lists, we need ways to work with them. Here are the most fundamental operations.</p>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Appending and Extending Lists</h3>
+                <p class="text-lg mb-2">The most common thing to do is combine lists or add new items. We use the <code>++</code> operator for this.</p>
+                <ul class="list-disc list-inside text-lg space-y-4 pl-4">
+                    <li>
+                        <strong>Append two lists:</strong> You can stick two lists together to make a longer one.
+                        <div class="bg-gray-100 p-4 rounded-lg mt-2">
+                            <p class="font-mono">If <code>list1</code> is <code>[1, 13]</code> and <code>list2</code> is <code>[2, 17, 1]</code>...</p>
+                            <p class="font-mono mt-2">...then <code>list1 ++ list2</code> becomes <code>[1, 13, 2, 17, 1]</code>.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Extend a list with an item:</strong> To add a single item to the end of a list, you first turn that item into a list of one, and then append it.
+                        <div class="bg-gray-100 p-4 rounded-lg mt-2">
+                            <p class="font-mono">To add the item <code>x</code> to <code>myList</code>, we write:</p>
+                            <p class="font-mono mt-2"><code>myList = myList ++ [x]</code></p>
+                            <p class="mt-2 text-md text-gray-600">This is like saying "count = count + 1" for lists. It's how we gradually build up a collection.</p>
+                        </div>
+                    </li>
+                </ul>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Example: Finding Students Born in May</h3>
+                <p class="text-lg mb-4">Here's how we can use these operations to build a list of students born in May from a table of data.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>// 1. Start with an empty list</p>
+                    <p>mayList = []</p>
+                    <br>
+                    <p>// 2. Go through each row in the student data table</p>
+                    <p>while (Table 1 has more rows) {</p>
+                    <p class="ml-4">Read the first row X in Table 1</p>
+                    <p class="ml-4">// 3. Check the condition</p>
+                    <p class="ml-4">if (X.MonthOfBirth == "May") {</p>
+                    <p class="ml-8">// 4. If it matches, add the student's ID to our list</p>
+                    <p class="ml-8">mayList = mayList ++ [X.Seqno]</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">Move X to Table 2</p>
+                    <p>}</p>
+                </div>
+            </section>
+
+            <section id="processing-lists" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Processing Lists with <code>foreach</code></h2>
+                <p class="text-lg mb-4">Creating lists is just the first step. The real power comes from being able to go through the items in a list and do something with them. For this, we use a special loop called <code>foreach</code>.</p>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <p class="font-mono text-lg">foreach x in myList {</p>
+                    <p class="font-mono text-lg ml-4">Do something with x</p>
+                    <p class="font-mono text-lg">}</p>
+                    <p class="mt-2 text-md text-gray-600">This loop will take each item from <code>myList</code> one by one and assign it to the variable <code>x</code>, allowing you to work with it inside the loop.</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Nested Loops: Finding Common Items</h3>
+                <p class="text-lg mb-4">What if we have two lists and want to find out what they have in common? For example, we have <code>mayList</code> (students born in May) and <code>chennaiList</code> (students from Chennai). To find students who are in <em>both</em> lists, we can use a nested <code>foreach</code> loop.</p>
+                
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="w-full md:w-1/2">
+                        <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                            <p>mayChennaiList = []</p>
+                            <br>
+                            <p>foreach x in mayList {</p>
+                            <p class="ml-4">foreach y in chennaiList {</p>
+                            <p class="ml-8">if (x == y) {</p>
+                            <p class="ml-12">mayChennaiList = mayChennaiList ++ [x]</p>
+                            <p class="ml-8">}</p>
+                            <p class="ml-4">}</p>
+                            <p>}</p>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <svg class="w-full rounded-lg bg-gray-50 p-4" viewBox="0 0 400 250">
+                            <title>Venn Diagram of Two Lists</title>
+                            <!-- List 1 -->
+                            <circle cx="150" cy="125" r="100" fill="rgba(59, 130, 246, 0.5)" stroke="#3B82F6" stroke-width="2"/>
+                            <text x="90" y="125" font-family="Inter, sans-serif" font-size="20" fill="#1E3A8A">mayList</text>
+                            <!-- List 2 -->
+                            <circle cx="250" cy="125" r="100" fill="rgba(239, 68, 68, 0.5)" stroke="#EF4444" stroke-width="2"/>
+                            <text x="260" y="125" font-family="Inter, sans-serif" font-size="20" fill="#991B1B">chennaiList</text>
+                            <!-- Intersection -->
+                            <path d="M 200 125 a 100 100 0 0 1 0 0" fill="rgba(139, 92, 246, 0.6)"/>
+                            <text x="160" y="130" font-family="Inter, sans-serif" font-size="16" fill="#4C1D95" font-weight="bold">Intersection</text>
+                            <text x="155" y="150" font-family="Inter, sans-serif" font-size="14" fill="#4C1D95">(mayChennaiList)</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <p class="text-lg mt-6">This process is called finding the <strong>intersection</strong> of two sets. The outer loop picks an item from <code>mayList</code>. The inner loop then checks that item against every single item in <code>chennaiList</code>. If a match is found, we add it to our new list, <code>mayChennaiList</code>.</p>
+            </section>
+            
+            <section id="advanced-list-ops" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Advanced Operations: Deconstructing Lists</h2>
+                <p class="text-lg mb-4">Sometimes, just looping through a list isn't enough. We might need to look at adjacent items, like checking if a list of numbers is sorted, or if an adjective is followed by a noun in a sentence. To do this, we need to "unpack" or deconstruct the list.</p>
+                <div class="grid md:grid-cols-2 gap-6 text-center">
+                    <div class="bg-blue-100 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold text-blue-800"><code>first(l)</code></h4>
+                        <p class="mt-2">Returns the very first item of list <code>l</code>.</p>
+                        <p class="font-mono mt-2 bg-white p-2 rounded">first([20, 30, 40]) → 20</p>
+                    </div>
+                    <div class="bg-blue-100 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold text-blue-800"><code>rest(l)</code></h4>
+                        <p class="mt-2">Returns a new list containing everything <em>except</em> the first item.</p>
+                        <p class="font-mono mt-2 bg-white p-2 rounded">rest([20, 30, 40]) → [30, 40]</p>
+                    </div>
+                    <div class="bg-green-100 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold text-green-800"><code>last(l)</code></h4>
+                        <p class="mt-2">Returns the very last item of list <code>l</code>.</p>
+                        <p class="font-mono mt-2 bg-white p-2 rounded">last([20, 30, 40]) → 40</p>
+                    </div>
+                    <div class="bg-green-100 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold text-green-800"><code>init(l)</code></h4>
+                        <p class="mt-2">Returns a new list containing everything <em>except</em> the last item.</p>
+                        <p class="font-mono mt-2 bg-white p-2 rounded">init([20, 30, 40]) → [20, 30]</p>
+                    </div>
+                </div>
+                <p class="text-lg mt-6">These operations are powerful because they let us break a problem down. For example, to check if a list is sorted, we can compare <code>first(l)</code> with the first item of <code>rest(l)</code>. If they are in order, we can then repeat the process on the `rest` of the list. This is a common pattern called <strong>recursion</strong>.</p>
+                 <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Other Useful Functions</h3>
+                <div class="grid md:grid-cols-2 gap-6 text-center">
+                    <div class="bg-purple-100 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold text-purple-800"><code>length(l)</code></h4>
+                        <p class="mt-2">Returns the number of items in the list.</p>
+                        <p class="font-mono mt-2 bg-white p-2 rounded">length([20, 30, 40]) → 3</p>
+                    </div>
+                    <div class="bg-purple-100 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold text-purple-800"><code>member(l, e)</code></h4>
+                        <p class="mt-2">Checks if element <code>e</code> is in list <code>l</code>. Returns True or False.</p>
+                        <p class="font-mono mt-2 bg-white p-2 rounded">member([20, 30, 40], 30) → True</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="list-of-pairs" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Lists of Pairs & Triples</h2>
+                <p class="text-lg mb-4">Sometimes, a simple list of numbers or strings isn't enough. We might need to store related pieces of information together. For example, if we want to find the student with the highest physics mark, we need to know both the <strong>mark</strong> and the <strong>student's ID</strong>.</p>
+                <p class="text-lg mb-4">We can do this by creating a list where each item is itself a small list, like a <strong>pair</strong> (a list with two items) or a <strong>triple</strong> (a list with three items).</p>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Example: Storing Student Marks</h3>
+                <p class="text-lg mb-4">Instead of a list of just physics marks like <code>[53, 72, 64]</code>, we can create a list of pairs, where each pair is <code>[StudentID, PhysicsMark]</code>.</p>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <p class="font-mono text-lg">marksList = [ [3, 53], [24, 72], [12, 64], ... ]</p>
+                </div>
+                <p class="text-lg mt-4">Now, when we iterate through this list to find the maximum mark, we can also keep track of the corresponding student ID. This is much more efficient than finding the max mark first and then scanning the entire dataset again to see who got it.</p>
+                
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Storing Relationships</h3>
+                <p class="text-lg mb-4">Pairs are also perfect for storing relationships between two items. For instance, we could create a list of pairs of students whose marks are within 10 points of each other, indicating a similar performance level. Each item in the list would be <code>[StudentID1, StudentID2]</code>.</p>
+            </section>
+            
+            <section id="interactive-list-builder" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive List Builder 🛠️</h2>
+                <p class="text-lg mb-4">Time to get hands-on! Use this tool to build and manipulate your own lists. This will help you get a feel for the operations we've discussed.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex flex-wrap gap-4 mb-4">
+                        <input type="text" id="list-input" class="flex-grow p-2 border border-gray-300 rounded-md" placeholder="Enter an item to add">
+                        <button id="add-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Add to List</button>
+                    </div>
+                    <div class="flex flex-wrap gap-4 mb-6">
+                        <button id="first-btn" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">Get First</button>
+                        <button id="last-btn" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">Get Last</button>
+                        <button id="rest-btn" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">Get Rest</button>
+                        <button id="init-btn" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">Get Init</button>
+                        <button id="clear-btn" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Clear List</button>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold mb-2">Current List:</h4>
+                        <div id="current-list" class="bg-white p-4 rounded-md border min-h-[50px] font-mono text-lg">[ ]</div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="text-xl font-semibold mb-2">Result:</h4>
+                        <div id="list-output" class="bg-white p-4 rounded-md border min-h-[50px] font-mono text-lg text-blue-700 font-bold"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Let's quickly recap the key ideas:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li>A <strong>list</strong> is a sequence of values, written as <code>[x1, x2, ..., xn]</code>.</li>
+                    <li>We can combine lists using <code>++</code> and add new items using <code>list = list ++ [item]</code>.</li>
+                    <li>The <code>foreach</code> loop is our primary tool for iterating through the items in a list.</li>
+                    <li>Nested <code>foreach</code> loops are great for finding common elements between two lists (intersection).</li>
+                    <li>Functions like <code>first</code>, <code>last</code>, <code>rest</code>, and <code>init</code> allow us to deconstruct lists to solve more complex problems.</li>
+                    <li>We can store more complex data by creating lists of <strong>pairs</strong> or <strong>triples</strong>.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding. Choose the best answer for each question.</p>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Quiz questions will be injected here by JavaScript -->
+                </div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const mainContent = document.querySelector('main');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            // Active link highlighting on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Interactive List Builder Logic
+            const listInput = document.getElementById('list-input');
+            const addBtn = document.getElementById('add-btn');
+            const firstBtn = document.getElementById('first-btn');
+            const lastBtn = document.getElementById('last-btn');
+            const restBtn = document.getElementById('rest-btn');
+            const initBtn = document.getElementById('init-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const currentListDiv = document.getElementById('current-list');
+            const listOutputDiv = document.getElementById('list-output');
+
+            let mainList = [];
+
+            function updateListDisplay() {
+                if (mainList.length === 0) {
+                    currentListDiv.textContent = '[ ]';
+                } else {
+                    currentListDiv.textContent = `[ ${mainList.map(item => `"${item}"`).join(', ')} ]`;
+                }
+            }
+            
+            function clearOutput() {
+                listOutputDiv.textContent = '';
+            }
+
+            addBtn.addEventListener('click', () => {
+                const value = listInput.value.trim();
+                if (value) {
+                    mainList.push(value);
+                    listInput.value = '';
+                    updateListDisplay();
+                    clearOutput();
+                }
+            });
+
+            listInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addBtn.click();
+                }
+            });
+
+            firstBtn.addEventListener('click', () => {
+                if (mainList.length > 0) {
+                    listOutputDiv.textContent = `"${mainList[0]}"`;
+                } else {
+                    listOutputDiv.textContent = 'Undefined (list is empty)';
+                }
+            });
+
+            lastBtn.addEventListener('click', () => {
+                if (mainList.length > 0) {
+                    listOutputDiv.textContent = `"${mainList[mainList.length - 1]}"`;
+                } else {
+                    listOutputDiv.textContent = 'Undefined (list is empty)';
+                }
+            });
+
+            restBtn.addEventListener('click', () => {
+                if (mainList.length > 1) {
+                    const rest = mainList.slice(1);
+                    listOutputDiv.textContent = `[ ${rest.map(item => `"${item}"`).join(', ')} ]`;
+                } else {
+                    listOutputDiv.textContent = '[ ]';
+                }
+            });
+
+            initBtn.addEventListener('click', () => {
+                if (mainList.length > 1) {
+                    const init = mainList.slice(0, -1);
+                    listOutputDiv.textContent = `[ ${init.map(item => `"${item}"`).join(', ')} ]`;
+                } else {
+                    listOutputDiv.textContent = '[ ]';
+                }
+            });
+
+            clearBtn.addEventListener('click', () => {
+                mainList = [];
+                updateListDisplay();
+                clearOutput();
+            });
+            
+            updateListDisplay();
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ5_1.docx
+                {
+                    question: "Two subsets of a dataset cannot have any elements in common.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "Subsets can have common elements. The set of their common elements is called the intersection."
+                },
+                {
+                    question: "Consider the 'Paragraph Words' dataset. Procedure-1 filters nouns from cards sorted in ascending order into list X. Procedure-2 filters nouns from cards sorted in descending order into list Y. What can you say about lists X and Y?",
+                    type: "single-choice",
+                    answers: [
+                        "The elements and their order in the lists X and Y will be the same.",
+                        "The elements and their order in the lists X and Y will be different.",
+                        "The elements in the lists X and Y will be the same but their order will be different.",
+                        "Cannot be determined."
+                    ],
+                    correct: ["The elements in the lists X and Y will be the same but their order will be different."],
+                    explanation: "The collection of nouns is the same regardless of the dataset's order. However, since the iteration order is different (ascending vs. descending), the order in which they are added to the lists X and Y will be different."
+                },
+                {
+                    question: "Let X be the list of students from Chennai and Y be the list of students from Madurai. If there are more students from Chennai, which statement is true?",
+                    type: "single-choice",
+                    answers: [
+                        "X > Y",
+                        "Y > X",
+                        "length(X) > length(Y)",
+                        "length(Y) > length(X)"
+                    ],
+                    correct: ["length(X) > length(Y)"],
+                    explanation: "To compare the number of items in two lists, we must use the length() function. Direct comparison of lists (X > Y) is not a valid operation for comparing sizes."
+                },
+                {
+                    question: "Let X and Y be two lists. What should be the datatype of the value returned by a procedure `intersect(X, Y)` that finds common elements?",
+                    type: "single-choice",
+                    answers: ["Integer", "Boolean", "List"],
+                    correct: ["List"],
+                    explanation: "The intersection of two lists is a new collection containing all the common elements. Therefore, the result should be a list."
+                },
+                {
+                    question: "What are the advantages of bookmarking (creating a list of indices for) filtered cards in a dataset? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: [
+                        "Data can be accessed without disturbing the order of cards in the dataset.",
+                        "We can find a particular card without iterating over them.",
+                        "There are no advantages."
+                    ],
+                    correct: [
+                        "Data can be accessed without disturbing the order of cards in the dataset.",
+                        "We can find a particular card without iterating over them."
+                    ],
+                    explanation: "Bookmarking (using lists of indices) allows us to reference items without changing the original dataset's order and provides direct access to those items, which is more efficient than iterating every time."
+                },
+                // New questions
+                {
+                    question: "What is the result of the operation `[] ++ [10, 20]`?",
+                    type: "single-choice",
+                    answers: ["[]", "[10, 20]", "Error", "10, 20"],
+                    correct: ["[10, 20]"],
+                    explanation: "Appending a list to an empty list results in a new list containing the elements of the second list."
+                },
+                {
+                    question: "If `myList` is `[5, 10, 15, 20]`, what does `init(rest(myList))` evaluate to?",
+                    type: "single-choice",
+                    answers: ["[10, 15]", "[5, 10, 15]", "[10, 15, 20]", "[15, 20]"],
+                    correct: ["[10, 15]"],
+                    explanation: "`rest(myList)` is `[10, 15, 20]`. Then, `init()` of that result removes the last element, leaving `[10, 15]`."
+                },
+                {
+                    question: "Which of the following operations would you use to check if the first and last elements of a list are the same?",
+                    type: "multiple-choice",
+                    answers: ["first(l) == last(l)", "init(l) == rest(l)", "member(l, first(l))", "length(l)"],
+                    correct: ["first(l) == last(l)"],
+                    explanation: "`first(l)` gets the first element and `last(l)` gets the last. Comparing them with `==` checks for equality."
+                },
+                {
+                    question: "The `foreach` loop guarantees that it will process list items in ascending sorted order.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "The `foreach` loop processes items in the order they appear in the list, which is not necessarily sorted."
+                },
+                {
+                    question: "To add a new element `z` to the beginning of a list `L`, which pseudocode would you use?",
+                    type: "single-choice",
+                    answers: ["L = L ++ [z]", "L = [z] ++ L", "L = first(L) ++ [z]", "L = z ++ L"],
+                    correct: ["L = [z] ++ L"],
+                    explanation: "The `++` operator appends the right-hand list to the end of the left-hand list. To add to the beginning, the new element (as a list) must be on the left."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    // Disable inputs after submission
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    // Check correctness
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    // Show final score when all questions are answered
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

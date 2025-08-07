@@ -1,0 +1,991 @@
+Front;Back;Extra
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which line appends X to sBooks if it wasn’t inserted earlier in the loop?<br><ul><li>a) Line 6</li><li>b) Line 9</li><li>c) Line 11</li><li>d) Line 14</li></ul>";Correct: c);<b>Explanation:</b> Line 11 is executed only if 'inserted' is False after the loop.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> What is true about the behavior of SortedListInsert(l, x)?<br><ul><li>a) It removes duplicates before inserting</li><li>b) It mutates the original list</li><li>c) It returns a new sorted list with x inserted in place</li><li>d) It appends x to the end</li></ul>;Correct: c);<b>Explanation:</b> It returns a new sorted list with x inserted appropriately.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+<b>QX:</b> Which of the following are true about InsertionSort?<br><ul><li>a) It sorts in-place by swapping elements</li><li>b) It uses SortedListInsert to build the sorted list</li><li>c) It always returns a descending list</li><li>d) It modifies the input list</li></ul>;Correct: b);<b>Explanation:</b> InsertionSort uses SortedListInsert to build up a sorted list incrementally.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+"<b>QX:</b> 
+<pre>
+1.  Procedure SimpleGradeAssignment(l)
+2.    classSize = length(l)
+3.    q4 = classSize / 4
+4.    q3 = classSize / 2
+5.    q2 = 3 * classSize / 4
+6.    gradeA = [], gradeB = [], gradeC = [], gradeD = []
+7.    position = 0
+8.    foreach x in l {
+9.      if (position > q2) {
+10.       gradeA = gradeA ++ [first(x)]
+11.     } else if (position > q3) {
+12.       gradeB = gradeB ++ [first(x)]
+13.     } else if (position > q4) {
+14.       gradeC = gradeC ++ [first(x)]
+15.     } else {
+16.       gradeD = gradeD ++ [first(x)]
+17.     }
+18.     position = position + 1
+19.   }
+20. End Procedure
+</pre>
+What grade is given to students with position > 3 * classSize / 4?<br><ul><li>a) Grade A</li><li>b) Grade B</li><li>c) Grade C</li><li>d) Grade D</li></ul>";Correct: a);<b>Explanation:</b> Line 10 assigns Grade A for position > 3 * classSize / 4.
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> What is the output of rest(init([10, 20, 30, 40]))?<br><ul><li>a) [20, 30]</li><li>b) [10, 20, 30, 40]</li><li>c) [10, 20]</li><li>d) [30, 40]</li></ul>;Correct: a);"<b>Explanation:</b> init removes the last element → [10,20,30]; rest removes first → [20,30]."
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+<b>QX:</b> In the hypothesis test, a student is added to Confirm if they are:<br><ul><li>a) Only in mathsBGrades</li><li>b) In mathsBGrades and in physicsAGrades or physicsBGrades</li><li>c) In any physicsBGrades</li><li>d) In reject</li></ul>;Correct: b);<b>Explanation:</b> Confirm = students in mathsBGrades AND in physicsAGrades or physicsBGrades.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.
+"<b>QX:</b> 
+<pre>
+1.  Procedure Insert(X, books)
+2.    inserted = False
+3.    sBooks = []
+4.    foreach Y in books {
+5.      if (X.Pages <= last(Y)) {
+6.        sBooks = sBooks ++ [X]
+7.        inserted = True
+8.      }
+9.      sBooks = sBooks ++ [Y]
+10.   }
+11.   if (inserted == False) {
+12.     sBooks = sBooks ++ [X]
+13.   }
+14.   return sBooks
+15. End Procedure
+</pre>
+Which lines are executed at least once for every Y in books?<br><ul><li>a) Lines 4 and 6</li><li>b) Lines 4 and 9</li><li>c) Lines 6 and 12</li><li>d) Lines 1 and 2</li></ul>";Correct: b);<b>Explanation:</b> Lines 4 (loop) and 9 (appending Y) execute for every Y.

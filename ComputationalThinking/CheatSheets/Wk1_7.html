@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Introduction to Datatypes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --incorrect-color: #ef4444;
+            --correct-color: #22c55e;
+            --sidebar-bg: #1f2937;
+            --main-bg: #f9fafb;
+            --text-color: #111827;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--main-bg);
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #374151;
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+        @media (max-width: 1024px) {
+            #sidebar.hidden-mobile {
+                transform: translateX(-100%);
+            }
+        }
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-question {
+            border: 1px solid #e5e7eb;
+        }
+        .quiz-question.correct {
+            border-left: 5px solid var(--correct-color);
+        }
+        .quiz-question.incorrect {
+            border-left: 5px solid var(--incorrect-color);
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        .quiz-feedback.correct {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .quiz-feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Interactive Sorter */
+        .draggable-item {
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .drop-bin {
+            border: 2px dashed #cbd5e1;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .drop-bin.over {
+            background-color: #e0e7ff;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <button id="menu-btn" class="lg:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+
+    <aside id="sidebar" class="bg-gray-800 text-gray-300 w-64 min-h-screen fixed top-0 left-0 z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <h1 class="text-white text-2xl font-bold">CT Guide</h1>
+            <p class="text-sm text-gray-400">Introduction to Datatypes</p>
+        </div>
+        <nav id="nav-links" class="mt-4 flex flex-col">
+            <a href="#intro" class="sidebar-link py-2 px-4">Introduction</a>
+            <a href="#basic-types" class="sidebar-link py-2 px-4">1. Basic Data Types</a>
+            <a href="#interactive-sorter" class="sidebar-link py-2 px-4">2. Interactive Data Sorter</a>
+            <a href="#subtypes" class="sidebar-link py-2 px-4">3. Subtypes and Transformation</a>
+            <a href="#quiz" class="sidebar-link py-2 px-4">4. Knowledge Check</a>
+        </nav>
+    </aside>
+
+    <main id="main-content" class="lg:ml-64 p-4 md:p-8">
+        
+        <section id="intro" class="card">
+            <h2>Introduction: What is a Data Type?</h2>
+            <p class="mb-4 text-lg">After looking at data sanity, we saw that every piece of data has rules. A student's mark should be a number between 0 and 100, not text. A name shouldn't contain asterisks. You can add two marks together, but you can't add two names.</p>
+            <p>In programming, we formalize these rules using a concept called a <strong>Data Type</strong>. A data type tells the computer (and other programmers) two critical things about a piece of data:</p>
+            <ul class="list-disc list-inside mt-4 space-y-2">
+                <li>What are the <strong>valid values</strong> it can hold? (e.g., numbers from 0 to 100)</li>
+                <li>What are the <strong>permitted operations</strong> that can be performed on it? (e.g., addition is allowed, but multiplication is not)</li>
+            </ul>
+            <p class="mt-4">By assigning a data type to a variable, we are describing the constraints on that variable, which helps ensure the sanity and correctness of our programs.</p>
+        </section>
+
+        <section id="basic-types" class="card">
+            <h2>1. Basic Data Types</h2>
+            <p class="mb-4">For our datasets, we've encountered three fundamental data types.</p>
+            
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">Integer</h3>
+                    <p>Represents whole numbers, both positive and negative (e.g., ..., -2, -1, 0, 1, 2, ...). Student marks and item quantities are examples of integers.</p>
+                    <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                        <li><strong>Operations:</strong> You can perform arithmetic like addition (+), subtraction (-), multiplication (x), and division (÷).</li>
+                        <li><strong>Comparisons:</strong> You can also compare integers (e.g., `x > y`). A comparison operation doesn't result in another integer; it results in a Boolean value.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">Boolean</h3>
+                    <p>The simplest data type. It can only have one of two values: <strong>True</strong> or <strong>False</strong>. It's the result of any logical question or comparison.</p>
+                     <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                        <li><strong>Examples:</strong> The result of "Is the student a girl?" is a Boolean. The result of "Are marks > 80?" is a Boolean.</li>
+                        <li><strong>Operations:</strong> You can combine Boolean values with logical operators like AND and OR.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">Character & String</h3>
+                    <p>A <strong>Character</strong> is a single letter, number, or symbol (e.g., 'A', 'z', '7', '$'). A <strong>String</strong> is a sequence of characters (e.g., "Chennai", "Socks", "It was Monday morning.").</p>
+                     <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                        <li><strong>Examples:</strong> Student names, cities, and the words from our paragraph are all strings.</li>
+                        <li><strong>Operations:</strong> You can compare strings for equality (e.g., is city == "Chennai"?), but you can't perform mathematical operations like addition on them.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="interactive-sorter" class="card">
+            <h2>2. Interactive Data Sorter</h2>
+            <p class="mb-6">Let's practice identifying data types. Drag each item from the "Data Items" bank and drop it into the correct data type bin below.</p>
+            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                <div id="item-bank" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-100 rounded-lg mb-6">
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="Integer">89</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="String">"Chennai"</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="Boolean">True</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="String">"Srivatsan"</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="Integer">-10</div>
+                    <div class="draggable-item bg-white p-3 rounded shadow" draggable="true" data-type="Boolean">False</div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="drop-bin p-4 rounded-lg min-h-[100px]" data-target="Integer">
+                        <h4 class="font-bold text-center text-lg mb-2">Integer Bin</h4>
+                    </div>
+                    <div class="drop-bin p-4 rounded-lg min-h-[100px]" data-target="String">
+                        <h4 class="font-bold text-center text-lg mb-2">String Bin</h4>
+                    </div>
+                    <div class="drop-bin p-4 rounded-lg min-h-[100px]" data-target="Boolean">
+                        <h4 class="font-bold text-center text-lg mb-2">Boolean Bin</h4>
+                    </div>
+                </div>
+                <div id="sorter-feedback" class="text-center mt-4 h-6 font-semibold"></div>
+            </div>
+        </section>
+
+        <section id="subtypes" class="card">
+            <h2>3. Subtypes and Transformation</h2>
+            <p class="mb-4">Sometimes the basic data types are too general. A student's mark is an integer, but it should only be within the range of 0-100. A gender is a character, but it should only be 'M' or 'F'. We can create <strong>subtypes</strong> to enforce these more specific rules.</p>
+            <p class="mb-4">What about a date, like "4th June"? It looks like a string, but we want to perform comparisons on it (e.g., is "4th June" before "30th June"?), which is easier with numbers. We can handle this through <strong>transformation</strong>:</p>
+            <ul class="list-disc list-inside mt-2 ml-4 text-gray-700">
+                <li>We can represent each date as an integer: the day of the year (e.g., Jan 1st = 0, Jan 2nd = 1, ..., Feb 1st = 31).</li>
+                <li>We perform all our logic and comparisons using these integers.</li>
+                <li>When we need to display the date, we transform the integer back into a readable string like "4th June".</li>
+            </ul>
+            <p class="mt-4">This clever trick lets us use the power of integer operations on data that doesn't initially look like a simple number.</p>
+        </section>
+
+        <section id="quiz" class="card">
+            <h2>4. Knowledge Check</h2>
+            <p class="mb-6">Test your understanding of data types and their properties.</p>
+            <div id="quiz-container" class="space-y-6"></div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Logic ---
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menu-btn');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('main section');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => { if (window.innerWidth < 1024) sidebar.classList.add('-translate-x-full'); });
+            });
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => { if (pageYOffset >= section.offsetTop - 100) current = section.getAttribute('id'); });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+                });
+            });
+
+            // --- Interactive Sorter Logic ---
+            const draggables = document.querySelectorAll('.draggable-item');
+            const dropBins = document.querySelectorAll('.drop-bin');
+            const sorterFeedback = document.getElementById('sorter-feedback');
+            let draggedItem = null;
+
+            draggables.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    draggedItem = e.target;
+                    setTimeout(() => e.target.classList.add('opacity-50'), 0);
+                });
+                item.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('opacity-50');
+                });
+            });
+
+            dropBins.forEach(bin => {
+                bin.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    bin.classList.add('over');
+                });
+                bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+                bin.addEventListener('drop', e => {
+                    e.preventDefault();
+                    bin.classList.remove('over');
+                    if (draggedItem) {
+                        const itemType = draggedItem.dataset.type;
+                        const targetType = bin.dataset.target;
+                        if (itemType === targetType) {
+                            bin.appendChild(draggedItem);
+                            draggedItem.draggable = false;
+                            draggedItem.style.cursor = 'default';
+                            sorterFeedback.textContent = 'Correct!';
+                            sorterFeedback.style.color = 'var(--correct-color)';
+                        } else {
+                            sorterFeedback.textContent = 'Not quite! Try again.';
+                            sorterFeedback.style.color = 'var(--incorrect-color)';
+                        }
+                         setTimeout(() => sorterFeedback.textContent = '', 1500);
+                    }
+                });
+            });
+
+            // --- Quiz Logic ---
+            const quizData = [
+                {
+                    question: "What are the basic datatypes that we have come across in this lecture? It is a Multiple Select Question (MSQ).",
+                    type: 'multiple',
+                    options: ["Boolean", "Integer", "Character"],
+                    correctAnswer: ["Boolean", "Integer", "Character"],
+                    explanation: "The lecture introduced three fundamental data types: Boolean (True/False), Integer (whole numbers), and Character (single letters/symbols)."
+                },
+                {
+                    question: "Let x and y be two variables of integer type. What is the datatype of the outcome of the following operation: x > y",
+                    type: 'single',
+                    options: ["Boolean", "Integer", "Character"],
+                    correctAnswer: "Boolean",
+                    explanation: "Any comparison operation (like >, <, ==) results in a logical outcome, which is always a Boolean (True or False)."
+                },
+                {
+                    question: "In the “Scores” dataset, what is the datatype of the variable used to store the physics marks of the students?",
+                    type: 'single',
+                    options: ["Integer", "Character", "Boolean"],
+                    correctAnswer: "Integer",
+                    explanation: "Marks are represented as whole numbers, which fall under the Integer data type."
+                },
+                {
+                    question: "State whether the following statement is true or false: A variable’s datatype does not constrain the operations that can be performed on it.",
+                    type: 'true-false',
+                    options: ["True", "False"],
+                    correctAnswer: "False",
+                    explanation: "False. A primary purpose of a data type is to constrain operations. For example, you can add Integers but you cannot add Strings."
+                },
+                {
+                    question: "Which data type would be most appropriate for storing a student's name?",
+                    type: 'single',
+                    options: ["Integer", "Boolean", "String"],
+                    correctAnswer: "String",
+                    explanation: "A name is a sequence of characters, which is defined as a String data type."
+                },
+                {
+                    question: "If you check whether a student's city is 'Chennai', what is the data type of the result?",
+                    type: 'single',
+                    options: ["String", "Integer", "Boolean"],
+                    correctAnswer: "Boolean",
+                    explanation: "The question 'is the city Chennai?' can only be answered with True or False, which is a Boolean data type."
+                },
+                {
+                    question: "A variable `isFinished` is used to track whether a task is complete. What is the most suitable data type for this variable?",
+                    type: 'single',
+                    options: ["Integer", "String", "Boolean"],
+                    correctAnswer: "Boolean",
+                    explanation: "A variable tracking completion status only needs two states: complete (True) or not complete (False). This is a perfect use case for a Boolean."
+                },
+                {
+                    question: "Which of the following operations is generally NOT permitted on a String data type?",
+                    type: 'single',
+                    options: ["Comparison for equality (==)", "Subtraction (-)", "Checking if it contains a character"],
+                    correctAnswer: "Subtraction (-)",
+                    explanation: "While you can compare strings, you cannot perform mathematical operations like subtraction on them. Subtracting 'World' from 'HelloWorld' is not a defined operation."
+                },
+                {
+                    question: "The process of converting a date like '1st Feb' into the number 31 for easier processing is an example of:",
+                    type: 'single',
+                    options: ["Subtyping", "Initialization", "Transformation"],
+                    correctAnswer: "Transformation",
+                    explanation: "Transformation involves changing data from one representation to another (e.g., String to Integer) to make certain operations easier, while preserving the original meaning."
+                },
+                {
+                    question: "Which of the following are examples of an Integer data type? (Select all that apply)",
+                    type: 'multiple',
+                    options: ["-50", "3.14", "100", "'A'"],
+                    correctAnswer: ["-50", "100"],
+                    explanation: "Integers are whole numbers, which can be positive or negative. 3.14 is a fractional number (often called a float), and 'A' is a character."
+                },
+                {
+                    question: "A subtype is created to:",
+                    type: 'single',
+                    options: ["Combine two different data types into one.", "Further restrict the values or operations of a basic data type.", "Make a data type less restrictive."],
+                    correctAnswer: "Further restrict the values or operations of a basic data type.",
+                    explanation: "Subtypes add more specific rules to a general data type. For example, 'Marks' is a subtype of 'Integer' that restricts the values to the range 0-100."
+                },
+                {
+                    question: "True or False: The operation `5 + 10` and the operation `'5' + '10'` will produce the same result in most programming contexts.",
+                    type: 'true-false',
+                    options: ["True", "False"],
+                    correctAnswer: "False",
+                    explanation: "False. The first is integer addition, resulting in the integer 15. The second is often string concatenation, resulting in the string '510'. Data type matters!"
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'quiz-question card p-6';
+                let optionsHtml = '';
+                if (q.type === 'single' || q.type === 'true-false') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="radio" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                } else if (q.type === 'multiple') {
+                     optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="checkbox" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                }
+                questionElem.innerHTML = `<p class="font-semibold mb-4">${index + 1}. ${q.question}</p><div class="options-container">${optionsHtml}</div><button class="submit-btn mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">Submit</button><div class="quiz-feedback"><p class="font-bold feedback-title"></p><p class="feedback-text">${q.explanation}</p></div>`;
+                quizContainer.appendChild(questionElem);
+                questionElem.querySelector('.submit-btn').addEventListener('click', e => {
+                    e.target.disabled = true;
+                    const feedbackElem = questionElem.querySelector('.quiz-feedback');
+                    const feedbackTitle = questionElem.querySelector('.feedback-title');
+                    let isCorrect = false;
+                    if (q.type === 'single' || q.type === 'true-false') {
+                        const selected = questionElem.querySelector(`input[name="q${index}"]:checked`);
+                        if (selected && selected.value === q.correctAnswer) isCorrect = true;
+                    } else if (q.type === 'multiple') {
+                        const selected = Array.from(questionElem.querySelectorAll(`input[name="q${index}"]:checked`)).map(el => el.value);
+                        if (selected.length === q.correctAnswer.length && selected.every(val => q.correctAnswer.includes(val))) isCorrect = true;
+                    }
+                    if (isCorrect) {
+                        questionElem.classList.add('correct');
+                        feedbackElem.classList.add('correct');
+                        feedbackTitle.textContent = 'Correct!';
+                    } else {
+                        questionElem.classList.add('incorrect');
+                        feedbackElem.classList.add('incorrect');
+                        feedbackTitle.textContent = 'Incorrect';
+                    }
+                    feedbackElem.style.display = 'block';
+                    questionElem.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L3.9: Side Effects of Procedures</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .code-block {
+            background-color: #0f172a; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .code-keyword { color: #7dd3fc; } /* sky-300 */
+        .code-variable { color: #f8fafc; } /* slate-50 */
+        .code-value { color: #fcd34d; } /* amber-300 */
+        .code-comment { color: #94a3b8; } /* slate-400 */
+        .code-proc { color: #a5b4fc; } /* indigo-300 */
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L3.9: Side Effects</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#side-effects" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">What are Side Effects?</a></li>
+                        <li><a href="#types" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Types of Side Effects</a></li>
+                        <li><a href="#interface" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interface vs. Implementation</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Unintended Consequences</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        When we use a procedure, we expect it to perform a task and maybe return a value. But what if it does more than that? What if it changes the data we gave it in unexpected ways?
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        These changes to data that exist outside the procedure itself are called <strong>side effects</strong>. Understanding, managing, and documenting side effects is a critical skill for writing reliable and predictable code.
+                    </p>
+                </section>
+
+                <!-- Side Effects Section -->
+                <section id="side-effects" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">What are Side Effects?</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        A side effect occurs when a procedure modifies a parameter or any other data that is outside its own local scope.
+                    </p>
+                     <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">Example: The Shuffled Deck</p>
+                        <p>Our `SumMarks` procedure takes a deck of cards as a parameter. To process the cards, it moves them one by one to a "seen" pile. At the end, the original deck is empty! If we restore the cards by moving them back, their original order is reversed. This reordering is a side effect—the procedure returned the correct sum, but it also changed the state of the deck we passed into it.</p>
+                    </div>
+                </section>
+
+                <!-- Types of Side Effects Section -->
+                <section id="types" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Good, Bad, and Ugly Side Effects</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Not all side effects are bad. We can categorize them:
+                    </p>
+                    <ul class="list-disc list-inside space-y-4 text-lg text-slate-700">
+                        <li>
+                            <strong>Acceptable/Harmless:</strong> Reordering the deck of score cards is a harmless side effect if our next task is just to calculate another sum (since addition doesn't depend on order).
+                        </li>
+                        <li>
+                            <strong>Intentional:</strong> Sometimes, the side effect is the entire point of the procedure! A procedure called `SortCards` is *supposed* to change the order of the deck. Its main purpose is to produce a side effect.
+                        </li>
+                        <li>
+                            <strong>Unacceptable/Harmful:</strong> If we had a procedure to find a pronoun's antecedent in a paragraph, reordering the words in the paragraph would be a harmful side effect, as it would break the meaning and logic of subsequent operations.
+                        </li>
+                    </ul>
+                </section>
+                
+                <!-- Interface vs Implementation Section -->
+                <section id="interface" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Interface vs. Implementation</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        This leads to the crucial concept of a procedure's "contract" or <strong>interface</strong>. The interface is a promise about what the procedure does.
+                    </p>
+                    <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">A Procedure's Interface Specifies:</h4>
+                        <ul class="list-disc list-inside mt-2">
+                            <li><strong>Parameters:</strong> What data it accepts as input.</li>
+                            <li><strong>Return Value:</strong> What data it gives back as output.</li>
+                            <li><strong>Side Effects:</strong> What changes it is allowed to make to the data it receives.</li>
+                        </ul>
+                    </div>
+                    <p class="text-lg text-slate-700">
+                        The actual code inside the procedure is its <strong>implementation</strong>. The great power of procedures is that we can change the implementation (e.g., to make it faster) as long as we don't break the contract defined by the interface.
+                    </p>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Side Effect Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator demonstrates an intentional side effect. We have a list of numbers in a random order. The `SortList` procedure doesn't return a new list; instead, it modifies the original list directly.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700">Call SortList Procedure</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press the button to see the side effect.</div>
+                        <div class="text-center">
+                            <h4 class="font-bold mb-2">My Number List</h4>
+                            <div id="list-display" class="flex justify-center gap-2 p-4 bg-slate-100 rounded-lg"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of side effects and procedures.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const listDisplay = document.getElementById('list-display');
+        
+        let numberList = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        function renderList() {
+            listDisplay.innerHTML = '';
+            numberList.forEach(num => {
+                const el = document.createElement('div');
+                el.className = 'w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow font-bold text-xl';
+                el.textContent = num;
+                listDisplay.appendChild(el);
+            });
+        }
+
+        function resetSimulator() {
+            numberList = [10, 5, 88, 23, 42];
+            shuffleArray(numberList);
+            simStatus.textContent = "Press the button to see the side effect.";
+            renderList();
+            startSimBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            simStatus.textContent = "Procedure called. Sorting the list in place...";
+            
+            // The procedure's side effect
+            numberList.sort((a, b) => a - b);
+            
+            setTimeout(() => {
+                simStatus.textContent = "Procedure finished. The original list has been modified.";
+                renderList();
+            }, 1500);
+        });
+
+        resetSimBtn.addEventListener('click', resetSimulator);
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "True or False: Side effects always harm the end goal of the program.", options: ["True", "False"], correct: ["False"], type: "single", explanation: "False. Sometimes the side effect is the desired outcome, such as in a procedure designed to sort a list of items." },
+            { question: "What is the point of adding `deck` as an argument in the procedure `SumMarks(gen, fld, deck)`?", options: ["This is because a procedure should have at least three arguments", "This gives us the flexibility of working with different decks"], correct: ["This gives us the flexibility of working with different decks"], type: "single", explanation: "Passing the deck as a parameter allows the same procedure to be used on different datasets (e.g., different classes' score cards) without being rewritten." },
+            { question: "Two procedures are functionally identical and produce identical side effects. Which statement is true?", options: ["Both have the same interface but could have different implementations", "Both have the same implementation but could have different interfaces", "Neither is common across the two", "Insufficient information"], correct: ["Both have the same interface but could have different implementations"], type: "single", explanation: "The interface is the 'contract' of what the procedure does (functionality + side effects). If both are identical, the interface is the same. The internal code (implementation) could be different but still achieve the same result." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

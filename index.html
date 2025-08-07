@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Learning Guides</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the <details> accordion */
+        details > summary {
+            list-style: none; /* Remove default marker */
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none; /* Hide marker for Chrome/Safari */
+        }
+        details > summary::before {
+            content: '►'; /* Collapsed state icon */
+            margin-right: 0.5rem;
+            font-size: 0.8em;
+            transition: transform 0.2s;
+        }
+        details[open] > summary::before {
+            transform: rotate(90deg); /* Expanded state icon */
+        }
+        /* Active state for sidebar */
+        .sidebar-item.active {
+            background-color: #e0e7ff; /* indigo-100 */
+            color: #3730a3; /* indigo-800 */
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-1/3 lg:w-1/4 bg-white border-r border-gray-200 p-6 flex flex-col">
+            <h2 class="text-2xl font-bold mb-6">IITM BDS Material</h2>
+            <nav id="course-sidebar" class="flex flex-col space-y-2">
+                <!-- Sidebar items will be dynamically inserted here -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="w-2/3 lg:w-3/4 p-8 overflow-y-auto">
+            <!-- Content will be loaded here -->
+            <div class="text-center text-gray-500">
+                <p>Select a course from the left to view its learning guides.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            // This is where you will add all your course information.
+            const courses = [
+                { 
+                    id: 'eng1',
+                    title: 'English 1', 
+                    folder: 'English1', 
+                    description: 'Guides, slides, and other materials for English 1.',
+                    guides: [
+                        { week: 1, topic: 'Introduction to Literature', file: 'LearningGuides/Week1/subtopic1.html' },
+                        { week: 1, topic: 'The Short Story', file: 'LearningGuides/Week1/subtopic2.html' },
+                        { week: 2, topic: 'Poetry Fundamentals', file: 'LearningGuides/Week2/subtopic1.html' },
+                    ]
+                },
+                { 
+                    id: 'math-ds1',
+                    title: 'Math 1', 
+                    folder: 'Math1', 
+                    description: 'Core mathematical concepts for data analysis and machine learning.',
+                    guides: [
+                        { week: 4, topic: 'Advanced Topic', file: 'LearningGuides/Week4/Wk4_4.html' },
+                    ]
+                },
+                { 
+                    id: 'comp-think',
+                    title: 'Computational Thinking', 
+                    folder: 'ComputationalThinking', 
+                    description: 'Problem-solving techniques using computer science principles.',
+                    guides: [
+                        { week: 3, topic: 'L3.1: Presentation of Datasets in Tables', file: 'LearningGuides/Week3/Wk3_1.html' },
+                        { week: 3, topic: 'L3.2: Two-Iteration Analysis & Grade Allocation', file: 'LearningGuides/Week3/Wk3_2.html' },
+                        { week: 3, topic: 'L3.3: Hypothesis Verification', file: 'LearningGuides/Week3/Wk3_3.html' },
+                        { week: 3, topic: 'L3.4: The Three Prizes Problem', file: 'LearningGuides/Week3/Wk3_4.html' },
+                        { week: 3, topic: 'L3.5: Introduction to Procedures and Parameters', file: 'LearningGuides/Week3/Wk3_5.html' },
+                        { week: 3, topic: 'L3.6: Pseudocode for Procedures (Part 1)', file: 'LearningGuides/Week3/Wk3_6.html' },
+                        { week: 3, topic: 'L3.7: Pseudocode for Procedures (Part 2)', file: 'LearningGuides/Week3/Wk3_7.html' },
+                        { week: 3, topic: 'L3.8: Pseudocode for Three Prizes Problem', file: 'LearningGuides/Week3/Wk3_8.html' },
+                        { week: 3, topic: 'L3.9: Side Effects of Procedures', file: 'LearningGuides/Week3/Wk3_9.html' }
+                    ]
+                }
+            ];
+
+            const sidebar = document.getElementById('course-sidebar');
+            const mainContent = document.getElementById('main-content');
+
+            // --- FUNCTIONS ---
+
+            // Function to render the main content for a selected course
+            function renderCourseContent(course) {
+                // Group guides by week
+                const guidesByWeek = course.guides.reduce((acc, guide) => {
+                    (acc[guide.week] = acc[guide.week] || []).push(guide);
+                    return acc;
+                }, {});
+
+                let accordionHtml = '';
+                if (course.guides.length > 0) {
+                    // Sort weeks numerically
+                    const sortedWeeks = Object.keys(guidesByWeek).sort((a, b) => a - b);
+                    
+                    sortedWeeks.forEach(week => {
+                        accordionHtml += `
+                            <details class="bg-white rounded-lg shadow-sm mb-3 border border-gray-200" open>
+                                <summary class="p-4 font-semibold text-lg">Week ${week}</summary>
+                                <div class="p-4 border-t border-gray-200">
+                                    <ul class="space-y-2">
+                        `;
+                        guidesByWeek[week].forEach(guide => {
+                            const fullPath = `./${course.folder}/${guide.file}`;
+                            const path = `./guide_viewer.html?path=${fullPath}`;
+                            accordionHtml += `<li><a href="${path}" class="text-blue-600 hover:text-blue-800 hover:underline">${guide.topic}</a></li>`;
+                        });
+                        accordionHtml += `</ul></div></details>`;
+                    });
+                } else {
+                    accordionHtml = '<p class="text-gray-500 italic">No learning guides available for this course yet.</p>';
+                }
+
+                mainContent.innerHTML = `
+                    <h1 class="text-4xl font-bold mb-2">${course.title}</h1>
+                    <p class="text-lg text-gray-600 mb-8">${course.description}</p>
+                    <div class="space-y-4">${accordionHtml}</div>
+                `;
+            }
+
+            // Function to handle clicks on sidebar items
+            function handleSidebarClick(courseId, clickedElement) {
+                const selectedCourse = courses.find(c => c.id === courseId);
+                if (selectedCourse) {
+                    renderCourseContent(selectedCourse);
+                    // Update active state
+                    document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+                    clickedElement.classList.add('active');
+                }
+            }
+            
+            // --- INITIALIZATION ---
+
+            // Populate the sidebar
+            courses.forEach(course => {
+                const item = document.createElement('a');
+                item.href = '#';
+                item.className = 'sidebar-item p-3 rounded-md hover:bg-gray-100 transition-colors duration-200';
+                item.textContent = course.title;
+                item.dataset.courseId = course.id;
+                
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    handleSidebarClick(course.id, item);
+                });
+                sidebar.appendChild(item);
+            });
+
+            // Load the first course by default
+            if (courses.length > 0) {
+                const firstSidebarItem = sidebar.querySelector('.sidebar-item');
+                handleSidebarClick(courses[0].id, firstSidebarItem);
+            }
+        });
+    </script>
+</body>
+</html>

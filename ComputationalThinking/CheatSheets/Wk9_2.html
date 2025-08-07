@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive learning guide on the introduction to matrices and their implementation using nested dictionaries, based on the L9.2 lecture.">
+    <title>L9.2: Introduction to matrices and implementation of matrix using nested dictionary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Internal Planning Comments */
+        /*
+            I. Application Structure Plan:
+            1.  Layout: A responsive two-column layout using Flexbox. The left sidebar will be fixed (`sticky`) for persistent navigation, and the right main content area will be scrollable.
+            2.  Navigation: The sidebar will contain an unordered list of links. Clicking a link will trigger a smooth scroll to the corresponding section ID in the main content.
+            3.  Active Section Highlighting: JavaScript will be used to detect the current scroll position and apply an 'active' class to the corresponding link in the sidebar for better user experience.
+            4.  Responsiveness: On smaller screens (e.g., mobile), the layout will stack, with the navigation potentially moving to a hamburger menu or a less intrusive position if needed, but for this implementation, a simple stack will suffice.
+
+            II. Content & Visualization Choices:
+            1.  Content Scoping: The content is strictly scoped by the provided benchmark CSV file. I have analyzed the questions to create the section topics, ensuring complete coverage.
+            2.  Source Integration: The conversational tone and core explanations are drawn from the lecture transcript. Formal definitions and pseudocode are taken from the slides, which are more structured. This blend makes the guide both accessible and precise.
+            3.  Pseudocode Styling: All pseudocode and code blocks will be placed in `<pre><code>` tags with a light gray background and monospace font for readability, clearly separating them from the explanatory text.
+            4.  Interactive Element: A multiple-choice quiz is the chosen interactive element. This is the most direct and effective way to reinforce the concepts required by the benchmark activity. The quiz will provide immediate feedback and explanations, which are also sourced from the benchmark file's 'Extra' column, making it a powerful learning tool.
+
+            III. JavaScript Plan:
+            1.  Namespace: All JS code will be wrapped in a DOMContentLoaded event listener to ensure the DOM is ready.
+            2.  Smooth Scrolling: Event listeners on sidebar links will use `element.scrollIntoView({ behavior: 'smooth' })`.
+            3.  Scrollspy (Active Link Highlighting): A 'scroll' event listener on the window will track which section is currently in view and update the sidebar links' styling accordingly.
+            4.  Quiz Logic: A simple, self-contained quiz engine will manage questions, check answers, and display feedback. The quiz data will be stored in a JavaScript array of objects for easy management.
+        */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active {
+            color: #1D4ED8; /* blue-700 */
+            font-weight: 600;
+            border-left-color: #1D4ED8;
+        }
+        .sidebar-link {
+            border-left-width: 2px;
+            border-left-color: transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        pre {
+            background-color: #f3f4f6; /* gray-100 */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto flex flex-col md:flex-row py-8 md:py-12 px-4 gap-8 md:gap-12">
+
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-1/4 lg:w-1/5">
+            <div class="sticky top-8">
+                <h2 class="text-lg font-bold mb-4 text-gray-900">Learning Guide</h2>
+                <nav id="sidebar-nav">
+                    <ul class="space-y-2">
+                        <li><a href="#intro" class="block p-2 sidebar-link text-gray-600 hover:text-blue-700">From Lists to Matrices</a></li>
+                        <li><a href="#what-is-a-matrix" class="block p-2 sidebar-link text-gray-600 hover:text-blue-700">What is a Matrix?</a></li>
+                        <li><a href="#implementation" class="block p-2 sidebar-link text-gray-600 hover:text-blue-700">How to Build a Matrix</a></li>
+                        <li><a href="#creating" class="block p-2 sidebar-link text-gray-600 hover:text-blue-700">Creating a Matrix</a></li>
+                        <li><a href="#processing" class="block p-2 sidebar-link text-gray-600 hover:text-blue-700">Processing a Matrix</a></li>
+                        <li><a href="#matrices-for-graphs" class="block p-2 sidebar-link text-gray-600 hover:text-blue-700">Matrices for Graphs</a></li>
+                        <li><a href="#quiz" class="block p-2 sidebar-link text-gray-600 hover:text-blue-700">Check Your Knowledge</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="w-full md:w-3/4 lg:w-4/5">
+
+            <section id="intro" class="mb-16 scroll-mt-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">L9.2: Introduction to matrices and implementation of matrix using nested dictionary</h1>
+                <p class="text-lg text-gray-600 mb-6">Welcome! In this guide, we'll explore a new type of data collection called a matrix. Think of it as a powerful tool for organizing data in a grid, like a spreadsheet or a chessboard.</p>
+                <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-r-lg" role="alert">
+                    <p class="font-bold">From Lists to Dictionaries to Matrices</p>
+                    <p>So far, we've seen two main types of collections:</p>
+                    <ul class="list-disc list-inside mt-2">
+                        <li><strong>Lists:</strong> Great for keeping items in a sequence, but slow if you want to jump to a specific item (no "random access"). To get the 100th item, you have to walk past the first 99!</li>
+                        <li><strong>Dictionaries:</strong> Super fast for looking up values using a specific key (they support "random access").</li>
+                    </ul>
+                    <p class="mt-2">But what if our data isn't a simple list or a key-value pair? What if it's naturally a two-dimensional table? That's where matrices come in.</p>
+                </div>
+            </section>
+
+            <section id="what-is-a-matrix" class="mb-16 scroll-mt-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">What Exactly is a Matrix?</h2>
+                <p class="mb-4">A matrix is simply a <strong>two-dimensional table</strong> of values, arranged in rows and columns. Imagine a grid. That's a matrix!</p>
+                <ul class="space-y-3 list-disc list-inside bg-white p-6 rounded-lg shadow-sm">
+                    <li>It has a specific number of rows (let's call it `m`) and columns (`n`).</li>
+                    <li>It supports <strong>random access</strong>, meaning you can instantly get the value at any position, say row `i` and column `j`, using `matrix[i][j]`.</li>
+                    <li><strong>Important Convention:</strong> In computing, we almost always start counting from 0. So, for a matrix with `m` rows, the row numbers go from `0` to `m-1`. For `n` columns, the column numbers go from `0` to `n-1`.</li>
+                </ul>
+                <div class="mt-6 p-4 border rounded-lg bg-gray-100">
+                    <h4 class="font-semibold text-lg mb-2">Rule for Indices</h4>
+                    <p>For a matrix with `m` rows and `n` columns, the valid range for indices `i` (row) and `j` (column) is:</p>
+                    <pre><code class="language-text">0 ≤ i < m  (or 0 to m-1)
+0 ≤ j < n  (or 0 to n-1)</code></pre>
+                </div>
+            </section>
+
+            <section id="implementation" class="mb-16 scroll-mt-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">How to Build a Matrix with Dictionaries</h2>
+                <p class="mb-4">We don't need a brand-new tool to create a matrix. We can cleverly use what we already have: dictionaries! Since dictionaries give us fast, random access, we can build a matrix by creating a <strong>nested dictionary</strong>.</p>
+                <p class="mb-4">Here's the big idea:</p>
+                <div class="flex flex-col md:flex-row gap-4 items-center bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex-1">
+                        <ul class="space-y-2 list-disc list-inside">
+                            <li>The main, or <strong>outer dictionary</strong>, holds the rows. Its keys are the row numbers (0, 1, 2, ...).</li>
+                            <li>The value for each row key is another, <strong>inner dictionary</strong>.</li>
+                            <li>This inner dictionary holds the columns for that specific row. Its keys are the column numbers (0, 1, 2, ...), and its values are the actual data in the matrix cell.</li>
+                        </ul>
+                    </div>
+                    <div class="flex-1">
+                        <img src="https://placehold.co/400x250/E0F2FE/0EA5E9?text=Outer+Dict+(Rows)\nInner+Dicts+(Columns)" alt="Diagram of a nested dictionary representing a matrix" class="rounded-lg">
+                    </div>
+                </div>
+                <p class="mt-4">So, when we write `matrix[i][j]`, we're really saying: "In the outer dictionary (`matrix`), find the key `i` to get the row dictionary. Then, inside that row dictionary, find the key `j` to get the value."</p>
+            </section>
+
+            <section id="creating" class="mb-16 scroll-mt-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Creating a Matrix: The Pseudocode</h2>
+                <p class="mb-4">Let's formalize this with a procedure. Here’s a simple way to create a new matrix of a given size, filled with zeros.</p>
+                <pre><code class="language-pseudocode">Procedure CreateMatrix(rows, cols)
+  // 1. Start with an empty dictionary for the whole matrix
+  mat = {}
+  i = 0
+
+  // 2. Loop through each row number
+  while (i < rows) {
+    // 3. For each row, create an empty inner dictionary
+    mat[i] = {}
+    j = 0
+
+    // 4. Loop through each column number for the current row
+    while (j < cols) {
+      // 5. Initialize the cell at [i][j] to 0
+      mat[i][j] = 0
+      j = j + 1
+    }
+
+    i = i + 1
+  }
+
+  // 6. Return the fully-built nested dictionary
+  return(mat)
+End CreateMatrix</code></pre>
+                <p class="mt-4">To use it, you'd just call it with the dimensions you want:</p>
+                <pre><code class="language-pseudocode">// Creates a matrix with 30 rows and 45 columns
+mymatrix = CreateMatrix(30, 45)</code></pre>
+            </section>
+
+            <section id="processing" class="mb-16 scroll-mt-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Processing a Matrix: Row by Row</h2>
+                <p class="mb-4">Once we have a matrix, we often need to visit every single element to do some work. This is usually done with nested loops, either going row-by-row or column-by-column.</p>
+                <h3 class="text-2xl font-semibold text-gray-800 my-4">Iterating Through Rows</h3>
+                <p class="mb-4">To go through a matrix in order, we need to get the row keys and column keys. But there's a catch: a dictionary's keys don't come in any guaranteed order! If we just ask for `keys(mat)`, we might get `[5, 0, 2, 1, 4, 3]` instead of `[0, 1, 2, 3, 4, 5]`.</p>
+                <p class="mb-4">To fix this, we need to <strong>sort the keys</strong> before we loop through them.</p>
+                <pre><code class="language-pseudocode">// Get keys for rows, sort them, then loop
+foreach r in sort(keys(mymatrix)) {
+  // Get keys for columns, sort them, then loop
+  // (We can use any row, like row 0, to get the column keys)
+  foreach c in sort(keys(mymatrix[0])) {
+    Do something with mymatrix[r][c]
+  }
+}</code></pre>
+                <h3 class="text-2xl font-semibold text-gray-800 my-4">A Simpler Way: `rows()` and `columns()`</h3>
+                <p class="mb-4">Writing `sort(keys(...))` all the time is tedious. To make our code cleaner and more readable, we can assume we have helper functions that do this for us:</p>
+                <ul class="list-disc list-inside mb-4">
+                    <li>`rows(mymatrix)` is a shortcut for `sort(keys(mymatrix))`.</li>
+                    <li>`columns(mymatrix)` is a shortcut for `sort(keys(mymatrix[0]))`.</li>
+                </ul>
+                <p>Now, our iteration code looks much nicer:</p>
+                <pre><code class="language-pseudocode">// Process row-by-row
+foreach r in rows(mymatrix) {
+  foreach c in columns(mymatrix) {
+    Do something with mymatrix[r][c]
+  }
+}
+
+// Or, process column-by-column
+foreach c in columns(mymatrix) {
+  foreach r in rows(mymatrix) {
+    Do something with mymatrix[r][c]
+  }
+}</code></pre>
+            </section>
+            
+            <section id="matrices-for-graphs" class="mb-16 scroll-mt-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">A Powerful Use: Representing Graphs</h2>
+                <p class="mb-4">Matrices are incredibly useful for representing relationships. A common example is a <strong>graph</strong>, which is just a set of items (called nodes or vertices) and the connections (called edges) between them.</p>
+                <p class="mb-4">We can use a matrix, often called an <strong>adjacency matrix</strong>, to store a graph:</p>
+                <ul class="space-y-3 list-disc list-inside bg-white p-6 rounded-lg shadow-sm">
+                    <li>If we have `n` students (nodes), we can create an `n x n` matrix.</li>
+                    <li>An entry `matrix[i][j] = 1` means there is a directed edge from node `i` to node `j`. (e.g., "Student `i` can mentor student `j`").</li>
+                    <li>An entry `matrix[i][j] = 0` means there is no direct edge from `i` to `j`.</li>
+                </ul>
+                <div class="mt-6 p-4 border rounded-lg bg-gray-100">
+                    <h4 class="font-semibold text-lg mb-2">Symmetry in Graphs</h4>
+                    <p>What if the relationship is mutual? For example, "Student `i` is similar to student `j`". This is an <strong>undirected edge</strong>. In the matrix, this means if `i` is similar to `j`, then `j` must be similar to `i`.</p>
+                    <p>This leads to a <strong>symmetric matrix</strong>, where `matrix[i][j]` is always equal to `matrix[j][i]` for all `i` and `j`.</p>
+                </div>
+            </section>
+
+            <section id="quiz" class="scroll-mt-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Check Your Knowledge</h2>
+                <p class="mb-6 text-gray-600">Time for a quick quiz to see what you've learned. Choose the best answer for each question.</p>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Quiz questions will be injected here by JavaScript -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SCROLLSPY LOGIC ---
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('#sidebar-nav a');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3 // Trigger when 30% of the section is visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // --- QUIZ LOGIC ---
+            const quizData = [
+                {
+                    question: "Which of the following statements are correct regarding a matrix with 'm' rows and 'n' columns, as described in the lecture?",
+                    options: [
+                        "It is a two-dimensional table.",
+                        "It supports random access to its elements.",
+                        "By convention, its rows and columns are numbered starting from 0.",
+                        "All of the above."
+                    ],
+                    correct: 3,
+                    explanation: "<b>Explanation:</b> The lecture defines a matrix as a two-dimensional table that supports random access (accessing any element matrix[i][j] takes a constant amount of time). It also explicitly states the convention of numbering rows from 0 to m-1 and columns from 0 to n-1."
+                },
+                {
+                    question: "For a matrix with 'm' rows and 'n' columns, represented as matrix[i][j], which of the following correctly defines the valid range for indices 'i' and 'j'?",
+                    options: [
+                        "0 ≤ i < m and 0 ≤ j < n",
+                        "1 ≤ i ≤ m and 1 ≤ j ≤ n",
+                        "0 ≤ i ≤ m and 0 ≤ j ≤ n",
+                        "0 ≤ i < m-1 and 0 ≤ j < n-1"
+                    ],
+                    correct: 0,
+                    explanation: "<b>Explanation:</b> The lecture follows the standard computing convention where collections are 0-indexed. For 'm' rows, the indices are 0, 1, ..., m-1, which is captured by 0 ≤ i < m. Similarly for 'n' columns, the indices are 0, 1, ..., n-1, captured by 0 ≤ j < n."
+                },
+                {
+                    question: "How can we implement a matrix to support random access, according to the lecture?",
+                    options: [
+                        "Using a simple list and calculating the position.",
+                        "Using a nested dictionary, where the outer dictionary keys are rows and inner dictionary keys are columns.",
+                        "Using a special hardware component.",
+                        "Using a sorted list of lists."
+                    ],
+                    correct: 1,
+                    explanation: "<b>Explanation:</b> The lecture explicitly proposes implementing a matrix as a nested dictionary. The outer dictionary's keys map to rows, and the value for each row is another dictionary whose keys map to columns. This structure leverages the random-access capability of dictionaries to provide random access for the matrix."
+                },
+                {
+                    question: "In the pseudocode `foreach r in sort(keys(mymatrix))`, why is the `sort()` function necessary for predictable processing?",
+                    options: [
+                        "To make the code run faster.",
+                        "To handle matrices with negative indices.",
+                        "Because dictionary keys are not stored or returned in any guaranteed order.",
+                        "To remove duplicate rows from the matrix."
+                    ],
+                    correct: 2,
+                    explanation: "<b>Explanation:</b> The `keys()` function for a dictionary returns a list of its keys, but the order is arbitrary and not guaranteed to be sequential. To process the matrix in a predictable order (e.g., row 0, then row 1, then row 2), we must explicitly `sort()` the list of keys first."
+                },
+                {
+                    question: "What does an entry `M[i][j] = 1` typically represent in an adjacency matrix `M` for a directed graph?",
+                    options: [
+                        "The distance from node i to node j is 1.",
+                        "There is an edge from node i to node j.",
+                        "Node i and node j are not connected.",
+                        "There is an edge from node j to node i."
+                    ],
+                    correct: 1,
+                    explanation: "<b>Explanation:</b> In a standard adjacency matrix representation for a directed graph, a value of 1 at `M[i][j]` indicates the presence of a directed edge starting at node `i` and ending at node `j`. A 0 indicates the absence of such an edge."
+                },
+                {
+                    question: "To find study pairs, the pseudocode checks if `mathMentorGraph[i][j] == 1` and `phyMentorGraph[j][i] == 1`. What does this condition identify?",
+                    options: [
+                        "Two students who can both mentor each other in both subjects.",
+                        "A pair where student i can mentor student j in Maths, and student j can mentor student i in Physics.",
+                        "A pair where student i can mentor student j in both Maths and Physics.",
+                        "Two students who are not compatible for a study group."
+                    ],
+                    correct: 1,
+                    explanation: "<b>Explanation:</b> `mathMentorGraph[i][j] == 1` means there is an edge from i to j in the Maths graph (i can mentor j). `phyMentorGraph[j][i] == 1` means there is an edge from j to i in the Physics graph (j can mentor i). The condition finds pairs with this reciprocal mentoring relationship across two different subjects."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+
+            quizData.forEach((quizItem, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-white p-6 rounded-lg shadow-sm';
+                
+                const questionText = document.createElement('p');
+                questionText.className = 'font-semibold text-lg mb-4';
+                questionText.textContent = `${index + 1}. ${quizItem.question}`;
+                questionDiv.appendChild(questionText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'space-y-3';
+                questionDiv.appendChild(optionsDiv);
+
+                quizItem.options.forEach((option, optionIndex) => {
+                    const optionButton = document.createElement('button');
+                    optionButton.className = 'block w-full text-left p-3 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500';
+                    optionButton.textContent = option;
+                    optionButton.onclick = () => checkAnswer(index, optionIndex);
+                    optionsDiv.appendChild(optionButton);
+                });
+
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.id = `feedback-${index}`;
+                feedbackDiv.className = 'mt-4 p-4 rounded-lg hidden';
+                questionDiv.appendChild(feedbackDiv);
+
+                quizContainer.appendChild(questionDiv);
+            });
+
+            window.checkAnswer = (questionIndex, selectedOptionIndex) => {
+                const quizItem = quizData[questionIndex];
+                const feedbackDiv = document.getElementById(`feedback-${questionIndex}`);
+                const options = quizContainer.children[questionIndex].querySelectorAll('button');
+
+                // Disable all buttons for this question after an answer is selected
+                options.forEach(button => button.disabled = true);
+
+                if (selectedOptionIndex === quizItem.correct) {
+                    feedbackDiv.className = 'mt-4 p-4 rounded-lg bg-green-100 border-l-4 border-green-500 text-green-800';
+                    feedbackDiv.innerHTML = `<p class="font-bold">Correct!</p><div class="mt-2">${quizItem.explanation}</div>`;
+                    options[selectedOptionIndex].classList.add('bg-green-200', 'ring-2', 'ring-green-500');
+                } else {
+                    feedbackDiv.className = 'mt-4 p-4 rounded-lg bg-red-100 border-l-4 border-red-500 text-red-800';
+                    feedbackDiv.innerHTML = `<p class="font-bold">Not quite.</p><div class="mt-2">${quizItem.explanation}</div>`;
+                    options[selectedOptionIndex].classList.add('bg-red-200', 'ring-2', 'ring-red-500');
+                    options[quizItem.correct].classList.add('bg-green-200');
+                }
+                feedbackDiv.classList.remove('hidden');
+            };
+        });
+    </script>
+    <!-- 
+        Generation Date: August 3, 2025
+        Data Sources:
+        - WK9CT1TranscriptsCombined.pdf
+        - WK9CT1SlidesCombined.pdf
+        - WK9CT1ACT_9_2_MatrixIntro.CSV
+    -->
+</body>
+</html>

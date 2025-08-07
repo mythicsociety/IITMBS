@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English 1 - Week 8 Interactive Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-button svg {
+            transition: transform 0.3s ease-in-out;
+        }
+        .accordion-item.open .accordion-button svg {
+            transform: rotate(180deg);
+        }
+        .accordion-item.open .accordion-content {
+            max-height: 1000px; /* Adjust as needed */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">English 1: Week 8 Summary Sheet</h1>
+            <p class="mt-2 text-lg text-gray-600">An interactive overview of key phonetic concepts.</p>
+        </header>
+
+        <div class="space-y-4 max-w-4xl mx-auto">
+            <!-- Accordion Item 1: Syllabification -->
+            <div class="accordion-item bg-white rounded-lg shadow-md border border-gray-200">
+                <h2>
+                    <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-semibold text-left text-gray-700 hover:bg-gray-100 rounded-t-lg">
+                        <span>1. Syllabification</span>
+                        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </h2>
+                <div class="accordion-content">
+                    <div class="p-5 border-t border-gray-200">
+                        <p class="mb-3 text-gray-600"><strong>Syllabification</strong> is the process of dividing a word into its constituent syllables. A syllable is a single, unbroken unit of pronunciation that must contain one vowel sound.</p>
+                        <h4 class="font-semibold mb-2 text-gray-700">Key Principles:</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li>Every syllable has exactly one vowel sound (the nucleus).</li>
+                            <li>A syllable can be a single vowel sound or be surrounded by consonants.</li>
+                            <li>The number of syllables in a word is determined by the number of vowel sounds you hear when pronouncing it.</li>
+                        </ul>
+                        <h4 class="font-semibold mt-4 mb-2 text-gray-700">Examples:</h4>
+                        <div class="bg-gray-100 p-3 rounded-md">
+                            <code class="text-sm">
+                                <span class="block"><strong>One Syllable:</strong> cat, run, strength</span>
+                                <span class="block"><strong>Two Syllables:</strong> wa-ter, po-lice, hap-py</span>
+                                <span class="block"><strong>Three Syllables:</strong> de-part-ment, mos-qui-to</span>
+                                <span class="block"><strong>Four+ Syllables:</strong> in-for-ma-tion, un-be-liev-a-ble</span>
+                            </code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion Item 2: Word Stress -->
+            <div class="accordion-item bg-white rounded-lg shadow-md border border-gray-200">
+                <h2>
+                    <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-semibold text-left text-gray-700 hover:bg-gray-100">
+                        <span>2. Word Stress</span>
+                        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </h2>
+                <div class="accordion-content">
+                    <div class="p-5 border-t border-gray-200">
+                        <p class="mb-3 text-gray-600"><strong>Word Stress</strong> is the emphasis placed on a particular syllable within a multi-syllable word. The stressed syllable is pronounced longer, louder, and often at a higher pitch.</p>
+                        <h4 class="font-semibold mb-2 text-gray-700">Common Stress Patterns:</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li><strong>Two-Syllable Nouns & Adjectives:</strong> Stress usually on the <strong>first</strong> syllable (e.g., <span class="font-bold">PRE</span>-sent, <span class="font-bold">HAP</span>-py).</li>
+                            <li><strong>Two-Syllable Verbs:</strong> Stress usually on the <strong>second</strong> syllable (e.g., pre-<span class="font-bold">SENT</span>, re-<span class="font-bold">CEIVE</span>).</li>
+                            <li><strong>Compound Nouns:</strong> Stress on the <strong>first</strong> part (e.g., <span class="font-bold">TOOTH</span>-paste, <span class="font-bold">SEA</span>-food).</li>
+                            <li><strong>Words ending in -tion, -ic:</strong> Stress on the syllable <strong>before</strong> the ending (e.g., edu-<span class="font-bold">CA</span>-tion, stra-<span class="font-bold">TE</span>-gic).</li>
+                            <li><strong>Words ending in -ee, -ique:</strong> Stress on the <strong>final</strong> syllable (e.g., guaran-<span class="font-bold">TEE</span>, u-<span class="font-bold">NIQUE</span>).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion Item 3: Aspiration -->
+            <div class="accordion-item bg-white rounded-lg shadow-md border border-gray-200">
+                <h2>
+                    <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-semibold text-left text-gray-700 hover:bg-gray-100">
+                        <span>3. Aspiration</span>
+                        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </h2>
+                <div class="accordion-content">
+                    <div class="p-5 border-t border-gray-200">
+                        <p class="mb-3 text-gray-600"><strong>Aspiration</strong> refers to the audible puff of air that accompanies the pronunciation of voiceless stop consonants: /p/, /t/, and /k/.</p>
+                        <h4 class="font-semibold mb-2 text-gray-700">Rules of Aspiration:</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li><strong>Aspirated [pʰ, tʰ, kʰ]:</strong> Occurs at the beginning of a word or a stressed syllable.
+                                <ul class="pl-5 mt-2 list-square">
+                                    <li>Examples: <span class="font-mono">pot, top, key, attend, apply</span></li>
+                                </ul>
+                            </li>
+                            <li><strong>Unaspirated [p, t, k]:</strong> Occurs when the sound follows an /s/ sound, or when it is in an unstressed syllable.
+                                <ul class="pl-5 mt-2 list-square">
+                                    <li>Examples: <span class="font-mono">spot, stop, sky, baker, happy</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion Item 4: Pluralization -->
+            <div class="accordion-item bg-white rounded-lg shadow-md border border-gray-200">
+                <h2>
+                    <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-semibold text-left text-gray-700 hover:bg-gray-100 rounded-b-lg">
+                        <span>4. Pluralization Rules (by Sound)</span>
+                        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </h2>
+                <div class="accordion-content">
+                    <div class="p-5 border-t border-gray-200">
+                        <p class="mb-3 text-gray-600">The sound of the plural marker (-s, -es) in English depends on the final sound of the singular noun.</p>
+                        <h4 class="font-semibold mb-2 text-gray-700">The Three Plural Sounds:</h4>
+                        <ul class="list-none space-y-3">
+                            <li>
+                                <strong class="text-blue-600">/s/ sound:</strong> Used after voiceless consonants (except sibilants).
+                                <div class="text-sm text-gray-600 mt-1">Examples: cat<span class="font-bold">s</span>, book<span class="font-bold">s</span>, laptop<span class="font-bold">s</span>, myth<span class="font-bold">s</span></div>
+                            </li>
+                            <li>
+                                <strong class="text-green-600">/z/ sound:</strong> Used after voiced consonants (except sibilants) and all vowel sounds.
+                                <div class="text-sm text-gray-600 mt-1">Examples: dog<span class="font-bold">s</span>, bed<span class="font-bold">s</span>, key<span class="font-bold">s</span>, pencil<span class="font-bold">s</span></div>
+                            </li>
+                            <li>
+                                <strong class="text-purple-600">/ɪz/ or /əz/ sound:</strong> Used after sibilant sounds (/s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/).
+                                <div class="text-sm text-gray-600 mt-1">Examples: box<span class="font-bold">es</span>, wish<span class="font-bold">es</span>, church<span class="font-bold">es</span>, judg<span class="font-bold">es</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.accordion-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.closest('.accordion-item');
+                item.classList.toggle('open');
+            });
+        });
+    </script>
+
+</body>
+</html>

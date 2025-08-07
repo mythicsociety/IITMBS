@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Introduction to Flowcharts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --incorrect-color: #ef4444;
+            --correct-color: #22c55e;
+            --sidebar-bg: #1f2937;
+            --main-bg: #f9fafb;
+            --text-color: #111827;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--main-bg);
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #374151;
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+        @media (max-width: 1024px) {
+            #sidebar.hidden-mobile {
+                transform: translateX(-100%);
+            }
+        }
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-question {
+            border: 1px solid #e5e7eb;
+        }
+        .quiz-question.correct {
+            border-left: 5px solid var(--correct-color);
+        }
+        .quiz-question.incorrect {
+            border-left: 5px solid var(--incorrect-color);
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        .quiz-feedback.correct {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .quiz-feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Interactive Symbol Matcher */
+        .symbol-container {
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+        .symbol-container:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .drop-zone {
+            border: 2px dashed #cbd5e1;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .drop-zone.over {
+            background-color: #e0e7ff;
+            border-color: var(--primary-color);
+        }
+        .drop-zone.correct {
+            border-style: solid;
+            border-color: var(--correct-color);
+            background-color: #dcfce7;
+        }
+        .drop-zone.incorrect {
+            border-style: solid;
+            border-color: var(--incorrect-color);
+            background-color: #fee2e2;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <button id="menu-btn" class="lg:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+
+    <aside id="sidebar" class="bg-gray-800 text-gray-300 w-64 min-h-screen fixed top-0 left-0 z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <h1 class="text-white text-2xl font-bold">CT Guide</h1>
+            <p class="text-sm text-gray-400">Intro to Flowcharts</p>
+        </div>
+        <nav id="nav-links" class="mt-4 flex flex-col">
+            <a href="#intro" class="sidebar-link py-2 px-4">Introduction</a>
+            <a href="#symbols" class="sidebar-link py-2 px-4">1. Core Flowchart Symbols</a>
+            <a href="#interactive-match" class="sidebar-link py-2 px-4">2. Interactive Symbol Matcher</a>
+            <a href="#example" class="sidebar-link py-2 px-4">3. Example: Counting Cards</a>
+            <a href="#quiz" class="sidebar-link py-2 px-4">4. Knowledge Check</a>
+        </nav>
+    </aside>
+
+    <main id="main-content" class="lg:ml-64 p-4 md:p-8">
+        
+        <section id="intro" class="card">
+            <h2>Introduction: Visualizing Procedures</h2>
+            <p class="mb-4 text-lg">So far, we've talked about procedures and step-by-step instructions. But how do we write these down so someone else—or even a computer—can understand them clearly? Before we start writing code, it's helpful to have a formal way to map out our logic.</p>
+            <p>A <strong>flowchart</strong> is a perfect tool for this. It's a diagram that visually represents the sequence of steps and decisions in a process. By using standard symbols, we can create a clear, language-independent map of our algorithm that anyone can follow.</p>
+        </section>
+
+        <section id="symbols" class="card">
+            <h2>1. Core Flowchart Symbols</h2>
+            <p class="mb-4">For our purposes, we only need to learn four basic symbols. Mastering these will allow you to map out almost any process we'll encounter.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Terminal -->
+                <div class="flex items-center gap-4">
+                    <svg width="100" height="50" viewBox="0 0 100 50"><rect x="5" y="5" width="90" height="40" rx="20" fill="#3b82f6" stroke="#1e40af" stroke-width="1.5" /></svg>
+                    <div>
+                        <h3 class="text-xl font-bold mt-0 mb-1">Terminal</h3>
+                        <p class="text-gray-600">The oval shape indicates the "Start" or "End" of the program.</p>
+                    </div>
+                </div>
+                <!-- Process / Activity -->
+                <div class="flex items-center gap-4">
+                    <svg width="100" height="50" viewBox="0 0 100 50"><rect x="5" y="5" width="90" height="40" rx="5" fill="#60a5fa" stroke="#1d4ed8" stroke-width="1.5" /></svg>
+                    <div>
+                        <h3 class="text-xl font-bold mt-0 mb-1">Process / Activity</h3>
+                        <p class="text-gray-600">A rectangle represents an action, like changing the value of a variable (e.g., `Count = 0`).</p>
+                    </div>
+                </div>
+                <!-- Decision -->
+                <div class="flex items-center gap-4">
+                    <svg width="100" height="50" viewBox="0 0 100 50"><polygon points="50,5 95,25 50,45 5,25" fill="#93c5fd" stroke="#1d4ed8" stroke-width="1.5" /></svg>
+                    <div>
+                        <h3 class="text-xl font-bold mt-0 mb-1">Decision</h3>
+                        <p class="text-gray-600">A diamond is used for questions or conditions that determine which path the program takes (e.g., "Are there more cards?").</p>
+                    </div>
+                </div>
+                <!-- Flowline -->
+                <div class="flex items-center gap-4">
+                    <svg width="100" height="50" viewBox="0 0 100 50">
+                        <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#374151" /></marker></defs>
+                        <line x1="10" y1="25" x2="90" y2="25" stroke="#374151" stroke-width="2" marker-end="url(#arrow)" />
+                    </svg>
+                    <div>
+                        <h3 class="text-xl font-bold mt-0 mb-1">Flowline</h3>
+                        <p class="text-gray-600">An arrow shows the order of execution, connecting one symbol to the next.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="interactive-match" class="card">
+            <h2>2. Interactive Symbol Matcher</h2>
+            <p class="mb-6">Let's practice! Drag each symbol from the left and drop it onto its correct description on the right. You'll get instant feedback.</p>
+            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                <div class="flex flex-col md:flex-row gap-8 justify-center">
+                    <!-- Draggable Symbols -->
+                    <div id="symbol-bank" class="flex md:flex-col gap-4 items-center p-4 bg-gray-100 rounded-lg">
+                        <div class="symbol-container" draggable="true" data-symbol="process">
+                            <svg width="100" height="60" viewBox="0 0 100 60"><rect x="5" y="10" width="90" height="40" rx="5" fill="#60a5fa" stroke="#1d4ed8" stroke-width="1.5" /></svg>
+                        </div>
+                        <div class="symbol-container" draggable="true" data-symbol="terminal">
+                            <svg width="100" height="60" viewBox="0 0 100 60"><rect x="5" y="10" width="90" height="40" rx="20" fill="#3b82f6" stroke="#1e40af" stroke-width="1.5" /></svg>
+                        </div>
+                        <div class="symbol-container" draggable="true" data-symbol="decision">
+                            <svg width="100" height="60" viewBox="0 0 100 60"><polygon points="50,5 95,30 50,55 5,30" fill="#93c5fd" stroke="#1d4ed8" stroke-width="1.5" /></svg>
+                        </div>
+                    </div>
+                    <!-- Drop Zones -->
+                    <div class="flex-grow space-y-4">
+                        <div class="drop-zone p-4 rounded-lg flex items-center h-20" data-target="terminal">Indicates the START or END of a process.</div>
+                        <div class="drop-zone p-4 rounded-lg flex items-center h-20" data-target="decision">Asks a YES/NO question to decide the path.</div>
+                        <div class="drop-zone p-4 rounded-lg flex items-center h-20" data-target="process">Represents an action or an operation.</div>
+                    </div>
+                </div>
+                 <div class="text-center mt-4">
+                    <button id="reset-matcher-btn" class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="example" class="card">
+            <h2>3. Example: The "Counting Cards" Flowchart</h2>
+            <p class="mb-4">Now let's see how these symbols work together. Here is the full flowchart for our card-counting algorithm. Trace the arrows from "Start" to see how the process flows, how the decision diamond creates a loop, and how the process ends.</p>
+            <div class="bg-white p-4 rounded-lg shadow-inner overflow-x-auto">
+                <svg width="100%" viewBox="0 0 400 520" preserveAspectRatio="xMidYMid meet" aria-labelledby="counting-flowchart-title" role="img">
+                    <title id="counting-flowchart-title">Flowchart showing the process of counting cards through iteration.</title>
+                    <defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#374151" /></marker></defs>
+                    <style>.flow-box { fill: #60a5fa; stroke: #1d4ed8; stroke-width: 1.5; } .flow-decision { fill: #93c5fd; stroke: #1d4ed8; stroke-width: 1.5; } .flow-terminal { fill: #3b82f6; stroke: #1e40af; stroke-width: 1.5; } .flow-text { font-family: 'Inter', sans-serif; font-size: 14px; fill: #1f2937; text-anchor: middle; } .flow-line { stroke: #374151; stroke-width: 2; marker-end: url(#arrowhead); fill: none; } .flow-label { font-family: 'Inter', sans-serif; font-size: 12px; fill: #4b5563; }</style>
+                    <rect x="150" y="10" width="100" height="40" rx="20" class="flow-terminal" /><text x="200" y="35" class="flow-text" fill="white">Start</text>
+                    <path class="flow-line" d="M 200 50 L 200 80" />
+                    <rect x="140" y="80" width="120" height="40" rx="5" class="flow-box" /><text x="200" y="105" class="flow-text">Count = 0</text>
+                    <path class="flow-line" d="M 200 120 L 200 150" />
+                    <polygon points="200,150 280,190 200,230 120,190" class="flow-decision" /><text x="200" y="185" class="flow-text">More cards</text><text x="200" y="205" class="flow-text">in Pile 1?</text>
+                    <path class="flow-line" d="M 280 190 L 320 190" /><text x="295" y="185" class="flow-label">No (False)</text>
+                    <rect x="320" y="170" width="70" height="40" rx="20" class="flow-terminal" /><text x="355" y="195" class="flow-text" fill="white">End</text>
+                    <path class="flow-line" d="M 200 230 L 200 260" /><text x="210" y="245" class="flow-label">Yes (True)</text>
+                    <rect x="125" y="260" width="150" height="40" rx="5" class="flow-box" /><text x="200" y="285" class="flow-text">Pick a card X from Pile 1</text>
+                    <path class="flow-line" d="M 200 300 L 200 330" />
+                    <rect x="140" y="330" width="120" height="40" rx="5" class="flow-box" /><text x="200" y="355" class="flow-text">Move X to Pile 2</text>
+                    <path class="flow-line" d="M 200 370 L 200 400" />
+                    <rect x="140" y="400" width="120" height="40" rx="5" class="flow-box" /><text x="200" y="425" class="flow-text">Increment count</text>
+                    <path class="flow-line" d="M 200 440 L 200 460 L 60 460 L 60 190 L 120 190" />
+                </svg>
+            </div>
+        </section>
+
+        <section id="quiz" class="card">
+            <h2>4. Knowledge Check</h2>
+            <p class="mb-6">Test your knowledge of flowchart symbols and their meanings.</p>
+            <div id="quiz-container" class="space-y-6"></div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Logic ---
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menu-btn');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('main section');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => { if (window.innerWidth < 1024) sidebar.classList.add('-translate-x-full'); });
+            });
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => { if (pageYOffset >= section.offsetTop - 100) current = section.getAttribute('id'); });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+                });
+            });
+
+            // --- Interactive Symbol Matcher Logic ---
+            const symbols = document.querySelectorAll('.symbol-container');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const resetMatcherBtn = document.getElementById('reset-matcher-btn');
+            let draggedSymbol = null;
+
+            function resetMatcher() {
+                const symbolBank = document.getElementById('symbol-bank');
+                dropZones.forEach(zone => {
+                    zone.classList.remove('correct', 'incorrect', 'over');
+                    zone.innerHTML = zone.dataset.originalText;
+                    zone.style.pointerEvents = 'auto';
+                });
+                symbols.forEach(symbol => {
+                    symbolBank.appendChild(symbol);
+                    symbol.style.opacity = '1';
+                });
+            }
+
+            dropZones.forEach(zone => {
+                zone.dataset.originalText = zone.innerHTML;
+            });
+
+            symbols.forEach(symbol => {
+                symbol.addEventListener('dragstart', (e) => {
+                    draggedSymbol = e.target.closest('.symbol-container');
+                    setTimeout(() => e.target.style.opacity = '0.5', 0);
+                });
+                symbol.addEventListener('dragend', (e) => {
+                    e.target.style.opacity = '1';
+                    draggedSymbol = null;
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('over');
+                });
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('over');
+                });
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('over');
+                    if (draggedSymbol) {
+                        const symbolType = draggedSymbol.dataset.symbol;
+                        const targetType = zone.dataset.target;
+                        if (symbolType === targetType) {
+                            zone.classList.add('correct');
+                            zone.innerHTML = '';
+                            zone.appendChild(draggedSymbol);
+                            draggedSymbol.style.opacity = '1';
+                            zone.style.pointerEvents = 'none';
+                        } else {
+                            zone.classList.add('incorrect');
+                            setTimeout(() => zone.classList.remove('incorrect'), 1000);
+                        }
+                    }
+                });
+            });
+            
+            resetMatcherBtn.addEventListener('click', resetMatcher);
+
+
+            // --- Quiz Logic ---
+            const quizData = [
+                {
+                    question: "Map some of the commonly used flowchart symbols with the operations for which they stand for. From left to right, we have:",
+                    type: 'single',
+                    image: `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAzMDAgNjAiPgo8cmVjdCB4PSI1IiB5PSIxMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjQwIiByeD0iNSIgZmlsbD0iIzYwYTVmYSIgc3Ryb2tlPSIjMWQ0ZWQ4IiBzdHJvazUtd2lkdGg9IjEuNSIgLz4KPGxpbmUgeDE9Ijk1IiB5MT0iMzAiIHgyPSIxMjUiIHkyPSIzMCIgc3Ryb2tlPSIjMzc0MTUxIiBzdHJvazUtd2lkdGg9IjIiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cxKSIgLz4KPHBvbHlnb24gcG9pbnRzPSIxNjAsMTAgMTk1LDMwIDE2MCw1MCAxMjUsMzAiIGZpbGw9IiM5M2M1ZmQiIHN0cm9rZT0iIzFkNGVkOCIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CjxyZWN0IHg9IjIxNSIgeT0iMTAiIHdpZHRoPSI4MCIgaGVpZGh0PSI0MCIgcng9IjIwIiBmaWxsPSIjM2I4MmY2IiBzdHJvazU9IiMxZTRkYWYiIHN0cm9rZS13aWR0aD0iMS41IiAvPgo8ZGVmcz48bWFya2VyIGlkPSJhcnJvdzEiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iNSIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjYiIG1hcmtlckhlaWdodD0iNiIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0gMCAwIEwgMTAgNSBMIDAgMTAgeiIgZmlsbD0iIzM3NDE1MSIgLz48L21hcmtlcj48L2RlZnM+Cjwvc3ZnPg==`,
+                    options: [
+                        "Flowline, Decision, Terminal, Process",
+                        "Terminal, Flowline, Decision, Activity",
+                        "Process, Flowline, Decision, Terminal",
+                        "Activity, Flowline, Decision, Terminal"
+                    ],
+                    correctAnswer: "Process, Flowline, Decision, Terminal",
+                    explanation: "The symbols are: Rectangle (Process/Activity), Arrow (Flowline), Diamond (Decision), and Rounded Rectangle (Terminal)."
+                },
+                {
+                    question: "Which of the following flowchart symbols is used to change the value of a variable?",
+                    type: 'single',
+                    options: ["Activity", "Flowline", "Terminal", "Decision"],
+                    correctAnswer: "Activity",
+                    explanation: "The Activity or Process symbol (a rectangle) is used for actions, which includes assigning or changing the value of a variable (e.g., `count = count + 1`)."
+                },
+                {
+                    question: "A start block in a flowchart is represented by which of the following flowchart symbols?",
+                    type: 'single',
+                    options: ["Activity", "Decision", "Terminal"],
+                    correctAnswer: "Terminal",
+                    explanation: "The Terminal symbol (a rounded rectangle or oval) is used to indicate both the starting and ending points of a flowchart."
+                },
+                {
+                    question: "What does a diamond shape in a flowchart represent?",
+                    type: 'single',
+                    options: [
+                        "The end of the program.",
+                        "A calculation or operation.",
+                        "A point where a decision is made.",
+                        "Input or output of data."
+                    ],
+                    correctAnswer: "A point where a decision is made.",
+                    explanation: "The diamond symbol is always used for a condition or question that has multiple outcomes, such as 'Yes' or 'No', which direct the flow of the process."
+                },
+                {
+                    question: "What is the main purpose of using a flowchart?",
+                    type: 'single',
+                    options: [
+                        "To write computer code directly.",
+                        "To visually represent the steps and logic of a process.",
+                        "To store data and variables.",
+                        "To test the speed of a program."
+                    ],
+                    correctAnswer: "To visually represent the steps and logic of a process.",
+                    explanation: "Flowcharts are a planning tool used to map out the logic and sequence of an algorithm before writing any code, making the process easier to understand and communicate."
+                },
+                {
+                    question: "In a flowchart for counting items, the process 'Count = 0' is an example of what?",
+                    type: 'single',
+                    options: ["Termination", "Decision", "Initialization", "Flowline"],
+                    correctAnswer: "Initialization",
+                    explanation: "Setting the starting value for a variable before a loop begins is called initialization."
+                },
+                {
+                    question: "An arrow in a flowchart is called a Flowline. What does it indicate?",
+                    type: 'single',
+                    options: ["The start of the program", "The end of the program", "The order of operations", "A point of user input"],
+                    correctAnswer: "The order of operations",
+                    explanation: "Flowlines are the connectors that show the direction or 'flow' of the process from one step to the next."
+                },
+                {
+                    question: "If a flowchart has a loop, which symbol is essential for that loop to eventually end?",
+                    type: 'single',
+                    options: ["Terminal", "Activity", "Flowline", "Decision"],
+                    correctAnswer: "Decision",
+                    explanation: "A decision symbol is required to check a condition (e.g., 'Are there more cards?'). When the condition is no longer met, the flow can exit the loop."
+                },
+                {
+                    question: "Which of the following would be represented by a Process/Activity symbol (rectangle) in a flowchart? (Select all that apply)",
+                    type: 'multiple',
+                    options: ["Start", "Sum = Sum + Marks", "End", "Increment Count"],
+                    correctAnswer: ["Sum = Sum + Marks", "Increment Count"],
+                    explanation: "'Start' and 'End' are represented by Terminal symbols. 'Sum = Sum + Marks' and 'Increment Count' are both actions that change the value of a variable, so they are Process steps."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'quiz-question card p-6';
+                let imageHtml = q.image ? `<img src="${q.image}" alt="Flowchart symbols" class="mb-4 mx-auto">` : '';
+                let optionsHtml = '';
+                if (q.type === 'single' || q.type === 'true-false') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="radio" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                } else if (q.type === 'multiple') {
+                     optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="checkbox" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                }
+                questionElem.innerHTML = `<p class="font-semibold mb-4">${index + 1}. ${q.question}</p>${imageHtml}<div class="options-container">${optionsHtml}</div><button class="submit-btn mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">Submit</button><div class="quiz-feedback"><p class="font-bold feedback-title"></p><p class="feedback-text">${q.explanation}</p></div>`;
+                quizContainer.appendChild(questionElem);
+                questionElem.querySelector('.submit-btn').addEventListener('click', e => {
+                    e.target.disabled = true;
+                    const feedbackElem = questionElem.querySelector('.quiz-feedback');
+                    const feedbackTitle = questionElem.querySelector('.feedback-title');
+                    let isCorrect = false;
+                     if (q.type === 'single' || q.type === 'true-false') {
+                        const selected = questionElem.querySelector(`input[name="q${index}"]:checked`);
+                        if (selected && selected.value === q.correctAnswer) isCorrect = true;
+                    } else if (q.type === 'multiple') {
+                        const selected = Array.from(questionElem.querySelectorAll(`input[name="q${index}"]:checked`)).map(el => el.value);
+                        if (selected.length === q.correctAnswer.length && selected.every(val => q.correctAnswer.includes(val))) isCorrect = true;
+                    }
+                    
+                    if (isCorrect) {
+                        questionElem.classList.add('correct');
+                        feedbackElem.classList.add('correct');
+                        feedbackTitle.textContent = 'Correct!';
+                    } else {
+                        questionElem.classList.add('incorrect');
+                        feedbackElem.classList.add('incorrect');
+                        feedbackTitle.textContent = 'Incorrect';
+                    }
+                    feedbackElem.style.display = 'block';
+                    questionElem.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

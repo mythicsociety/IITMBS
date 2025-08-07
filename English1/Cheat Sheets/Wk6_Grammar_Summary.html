@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English 1 - Week 6: Interactive Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 1.5rem;
+        }
+        .accordion-button.active + .accordion-content {
+            max-height: 1000px; /* Adjust as needed */
+            padding: 1.5rem;
+        }
+        .accordion-button .icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .accordion-button.active .icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">English 1: Week 6 Review</h1>
+            <p class="mt-2 text-lg text-gray-600">Click on a topic to expand and review the key concepts.</p>
+        </header>
+
+        <div id="accordion-container" class="space-y-4">
+            <!-- Topic 1: Vocabulary and Word Meaning -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-6 text-left font-semibold text-lg text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>1. Vocabulary and Word Meaning</span>
+                    <span class="icon text-gray-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </button>
+                <div class="accordion-content">
+                    <div class="prose max-w-none">
+                        <p>Building a strong vocabulary is fundamental to language learning. The materials emphasize understanding words in context, as demonstrated in the graded assignment.</p>
+                        <h4 class="font-semibold">Key Concepts:</h4>
+                        <ul>
+                            <li><strong>Contextual Meaning:</strong> The meaning of a word can be determined by the surrounding text.</li>
+                            <li><strong>Synonyms:</strong> Identifying words with similar meanings is a key skill.</li>
+                        </ul>
+                        <h4 class="font-semibold">Examples from Graded Assignment:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Ennoble:</strong> To dignify or make noble; to honor. (e.g., Athenians were <em>ennobled</em> by their participation in rule).</li>
+                            <li><strong>Expedite:</strong> To make a process happen more quickly. (e.g., Praying to the gods to <em>expedite</em> their victory).</li>
+                            <li><strong>Refurbish:</strong> To restore to good condition; to give a new look. (e.g., The Athenians <em>refurbished</em> their weapons).</li>
+                             <li><strong>Combat:</strong> A fight or struggle. (e.g., Athenians defeated Persians in hand <em>combat</em>).</li>
+                             <li><strong>Intercede:</strong> To intervene on behalf of another. (e.g., Athens had <em>interceded</em> for other Greek city-states).</li>
+                             <li><strong>Impulsive:</strong> Acting suddenly without careful thought.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 2: Reading Comprehension Strategies -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-6 text-left font-semibold text-lg text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>2. Reading Comprehension Strategies</span>
+                     <span class="icon text-gray-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </button>
+                <div class="accordion-content">
+                    <div class="prose max-w-none">
+                        <p>Effective reading involves specific strategies to quickly understand and extract information from a text.</p>
+                        <h4 class="font-semibold">Key Strategies:</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Skimming:</strong> Reading quickly to get a general overview or the main idea of a text. This involves looking at headings, subheadings, and the first and last sentences of paragraphs. It provides an "eagle's eye view."</li>
+                            <li><strong>Scanning:</strong> Rapidly searching for specific keywords, names, dates, or answers to questions without reading the entire text. This is a targeted search for details.</li>
+                            <li><strong>Handling Jargon:</strong> When encountering difficult or technical terms (jargons), circle them and try to infer their meaning from the surrounding context before looking them up.</li>
+                            <li><strong>Paraphrasing:</strong> Restating what you've read in your own words to check for understanding.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 3: Critical Reading Skills -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-6 text-left font-semibold text-lg text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>3. Critical Reading Skills</span>
+                     <span class="icon text-gray-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </button>
+                <div class="accordion-content">
+                     <div class="prose max-w-none">
+                        <p>Critical reading is an active, conscious, and focused process of evaluating a text, not just passively absorbing it.</p>
+                        <h4 class="font-semibold">Core Abilities:</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Preparing to Read:</strong> Research the author and the context of the work to better understand the perspective.</li>
+                            <li><strong>Reading with an Open Mind:</strong> Set aside personal biases and judgments to evaluate the author's argument on its own merits.</li>
+                            <li><strong>Detecting Propaganda:</strong> Recognizing techniques used to influence opinions emotionally rather than logically (e.g., the 'transfer' technique, which associates a product with something admired).</li>
+                            <li><strong>Recognizing Errors in Reasoning:</strong> Identifying logical fallacies that weaken an argument.
+                                <ul>
+                                    <li>A <strong>Valid Point</strong> is supported by a rock-like foundation of solid evidence.</li>
+                                    <li>A <strong>Fallacious Point</strong> is based on a 'house of cards' with no real support.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 4: Fact vs. Opinion -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-6 text-left font-semibold text-lg text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>4. Fact vs. Opinion</span>
+                     <span class="icon text-gray-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </button>
+                <div class="accordion-content">
+                    <div class="prose max-w-none">
+                        <p>A fundamental skill in critical reading is distinguishing between objective statements and subjective beliefs.</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Fact:</strong> Information that can be proved true through objective, verifiable evidence.
+                                <br><em>Example: "China is the most populous country in the world." (This can be verified with data).</em>
+                            </li>
+                            <li><strong>Opinion:</strong> A belief, judgment, or conclusion that cannot be objectively proven true. It is subjective.
+                                <br><em>Example: "The best treatment for thyroid is homeopathy." (This is a belief, as there is no scientific consensus).</em>
+                            </li>
+                        </ul>
+                        <p class="mt-4"><strong>Note:</strong> Many texts contain a mixture of facts and opinions. A critical reader must be able to separate them.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Topic 5: Logical Fallacies -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-6 text-left font-semibold text-lg text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>5. Logical Fallacies</span>
+                     <span class="icon text-gray-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </button>
+                <div class="accordion-content">
+                    <div class="prose max-w-none">
+                        <p>Fallacies are errors in reasoning that make an argument invalid. Recognizing them is key to critical evaluation.</p>
+                        <h4 class="font-semibold">Common Fallacies Mentioned:</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Circular Reasoning:</strong> The argument's conclusion is the same as its supporting reason. It proves nothing.
+                                <br><em>Example: "Mahesh is a great swimmer because he is so wonderful at swimming."</em>
+                            </li>
+                            <li><strong>False Cause:</strong> Assuming that because Event B happened after Event A, Event A must have caused Event B.
+                                <br><em>Example: "I had a dosa for breakfast instead of my usual parata, and then there was an earthquake. The dosa caused the earthquake."</em>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 6: Reading Different Text Types -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-6 text-left font-semibold text-lg text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>6. Reading Different Text Types</span>
+                     <span class="icon text-gray-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </button>
+                <div class="accordion-content">
+                    <div class="prose max-w-none">
+                        <p>The approach to reading should adapt to the length and complexity of the text.</p>
+                        <h4 class="font-semibold">Shorter Texts (e.g., essays, articles):</h4>
+                        <ul>
+                            <li>Can be completed quickly.</li>
+                            <li>Easier to remember key points without extensive notes.</li>
+                            <li>Require concentration on details.</li>
+                        </ul>
+                        <h4 class="font-semibold">Longer Texts (e.g., textbooks, novels):</h4>
+                        <ul>
+                            <li>Can be overwhelming; avoid trying to read in one sitting.</li>
+                            <li><strong>Strategy:</strong> Break it down ("chunk it") into chapters or sections.</li>
+                            <li><strong>Essential:</strong> Make notes, highlight, and summarize each chapter to aid comprehension and recall.</li>
+                            <li>Plan a schedule for reading to make the process manageable.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 7: Effective Reading Methods -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-6 text-left font-semibold text-lg text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>7. Effective Reading Methods (SQ3R & PQRST)</span>
+                     <span class="icon text-gray-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </button>
+                <div class="accordion-content">
+                   <div class="prose max-w-none">
+                        <p>Structured methods can significantly improve reading comprehension and retention.</p>
+                        <h4 class="font-semibold">SQ3R Method:</h4>
+                        <ol class="list-decimal pl-5">
+                            <li><strong>Survey:</strong> Get an overview of the text (headings, intro).</li>
+                            <li><strong>Question:</strong> Turn headings into questions to create a purpose for reading.</li>
+                            <li><strong>Read:</strong> Actively read the section to find answers to your questions.</li>
+                            <li><strong>Recite:</strong> Summarize what you just read in your own words.</li>
+                            <li><strong>Review:</strong> Look over the entire chapter and your notes to solidify your understanding.</li>
+                        </ol>
+                        <h4 class="font-semibold mt-4">PQRST Method:</h4>
+                         <ol class="list-decimal pl-5">
+                            <li><strong>Preview:</strong> Similar to Survey, get a sense of the chapter.</li>
+                            <li><strong>Question:</strong> Formulate questions about the material.</li>
+                            <li><strong>Read:</strong> Read carefully to answer the questions.</li>
+                            <li><strong>State/Self-Recite:</strong> Explain the concepts to yourself.</li>
+                            <li><strong>Test:</strong> Evaluate your own knowledge and recall of the chapter.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 8: Test-Taking Strategies for Reading -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-6 text-left font-semibold text-lg text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    <span>8. Test-Taking Strategies for Reading</span>
+                     <span class="icon text-gray-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </span>
+                </button>
+                <div class="accordion-content">
+                    <div class="prose max-w-none">
+                        <p>Specific strategies are needed to perform well on timed reading tests like the IELTS.</p>
+                        <h4 class="font-semibold">Key Tips:</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Identify Keywords:</strong> Before reading the passage, identify keywords in the questions to focus your search.</li>
+                            <li><strong>Manage Time:</strong> Don't get stuck on one difficult question. Mark it and come back later.</li>
+                            <li><strong>Understand Question Order:</strong> Know which question types appear in order (e.g., True/False) and which do not (e.g., Multiple Choice). This dictates your reading strategy.</li>
+                            <li><strong>Beware of Paraphrasing:</strong> Correct answers are often paraphrased, not direct quotes. A "trap" can be an option that uses the exact words from the text but has the wrong meaning. Always check the meaning.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for accordion functionality
+        const accordionButtons = document.querySelectorAll('.accordion-button');
+
+        accordionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Close all other accordions
+                accordionButtons.forEach(otherButton => {
+                    if (otherButton !== button) {
+                        otherButton.classList.remove('active');
+                    }
+                });
+
+                // Toggle the clicked accordion
+                button.classList.toggle('active');
+            });
+        });
+    </script>
+
+</body>
+</html>

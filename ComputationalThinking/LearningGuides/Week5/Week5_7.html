@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L5.7: List of Pairs and List of Triples</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Style for the hamburger menu */
+        .hamburger-icon span {
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L5.7: Pairs & Triples</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L5.7</a>
+                <a href="#why-nested-lists" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Why Use Nested Lists?</a>
+                <a href="#creating-pairs" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Creating Lists of Pairs</a>
+                <a href="#accessing-nested-data" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Accessing Nested Data</a>
+                <a href="#complex-procedures" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Complex Procedures</a>
+                <a href="#interactive-inspector" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Nested List Inspector</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L5.7: List of Pairs and List of Triples</h1>
+                <p class="text-lg">Welcome to the final topic of the week! We're now going to explore one of the most powerful features of lists: their ability to contain other lists. This allows us to create more complex data structures, such as a list of **pairs** or a list of **triples**.</p>
+                <p class="text-lg mt-4">This is a crucial concept in computational thinking. By grouping related pieces of information into a single "package" (like a pair or triple), we can process our data much more efficiently and write clearer, more logical pseudocode. We'll explore why this is so useful and how to access the data once it's nested inside these structures.</p>
+            </section>
+
+            <section id="why-nested-lists" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Why Use Nested Lists?</h2>
+                <p class="text-lg mb-4">Imagine you want to find the student with the highest Physics mark. If you only create a list of marks, like <code>[53, 72, 64, ...]</code>, you can find that the highest mark is 92. But who got that mark? You'd have to search through the entire dataset a second time to find the student.</p>
+                <p class="text-lg mt-4">A much better way is to store the related information together from the start. Instead of a list of just marks, we can create a list of **pairs**, where each pair contains both the student's ID and their mark:</p>
+                <div class="bg-gray-100 p-4 rounded-lg font-mono">
+                    <p>marksList = [ [3, 53], [24, 72], [12, 64], ... ]</p>
+                </div>
+                <p class="text-lg mt-4">Now, when you find the pair with the highest mark, you instantly have the student's ID as well. This saves an entire iteration through the data, making your procedure much more efficient.</p>
+                <div class="mt-6 border-l-4 border-blue-500 p-4">
+                    <p class="text-lg font-semibold">Key Idea:</p>
+                    <p class="text-lg">Use lists of pairs or triples to bundle related data into a single, cohesive unit. This preserves the relationships between data points and simplifies processing.</p>
+                </div>
+            </section>
+            
+            <section id="creating-pairs" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Creating Lists of Pairs</h2>
+                <p class="text-lg mb-4">Let's look at a practical example from the benchmark file. This procedure reads a table of student scores and creates a list of pairs, where each pair contains the student's Maths and Physics marks. It cleverly uses an `if/else` statement to ensure the higher of the two marks is always the first element in the pair.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>pairList = []</p>
+                    <p><span class="text-purple-400">while</span> (Table 1 has more rows) {</p>
+                    <p class="ml-4">Read the first row X in Table 1</p>
+                    <p class="ml-4"><span class="text-purple-400">if</span> (X.Mathematics > X.Physics) {</p>
+                    <p class="ml-8">// If Maths is greater, create pair [Maths, Physics]</p>
+                    <p class="ml-8">pairList = pairList ++ [[X.Mathematics, X.Physics]]</p>
+                    <p class="ml-4">} <span class="text-purple-400">else</span> {</p>
+                    <p class="ml-8">// Otherwise, create pair [Physics, Maths]</p>
+                    <p class="ml-8">pairList = pairList ++ [[X.Physics, X.Mathematics]]</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">Move row X to Table 2</p>
+                    <p>}</p>
+                </div>
+                <p class="text-lg mt-4">Notice the double square brackets: <code>[[...]]</code>. We are adding a single item, which is a list (the pair), to our `pairList`. This is the standard way to extend a list with a new element.</p>
+            </section>
+
+            <section id="accessing-nested-data" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Accessing Nested Data</h2>
+                <p class="text-lg mb-4">Once you have a nested list, how do you get the data back out? You simply apply the list functions one after another to "peel back" the layers.</p>
+                <p class="text-lg mb-4">Let's use the `pairList` from the previous example. How would we get the higher score of the first student? The expression is <strong><code>first(first(pairList))</code></strong>.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono mt-4 text-sm">
+                    <p>// Assume pairList = [ [85, 70], [90, 92], ... ]</p>
+                    <p class="mt-2 text-cyan-400">// Step 1: Get the first element of pairList</p>
+                    <p>first(pairList)  →  [85, 70]</p>
+                    <p class="mt-2 text-cyan-400">// Step 2: Get the first element of that result</p>
+                    <p>first(first(pairList))  →  85</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">More Complex Example</h3>
+                <p class="text-lg mb-4">Let `L = [[2, 'M', "Chennai"], [4, 'F', "Madurai"]]`. How do we get the gender 'F'?</p>
+                 <div class="bg-gray-800 text-white p-6 rounded-lg font-mono mt-4 text-sm">
+                    <p class="text-cyan-400">// To get the second triple: [4, 'F', "Madurai"]</p>
+                    <p>first(rest(L))</p>
+                    <p class="mt-2 text-cyan-400">// To get the gender from that triple, we can use either:</p>
+                    <p>first(rest(first(rest(L)))) <span class="text-gray-400">// Get rest ['F', "Madurai"], then get first</span></p>
+                    <p>last(init(first(rest(L)))) <span class="text-gray-400">// Get init [4, 'F'], then get last</span></p>
+                </div>
+            </section>
+            
+            <section id="complex-procedures" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Analyzing a Complex Procedure</h2>
+                <p class="text-lg mb-4">Let's break down the complex procedure from the benchmark file. Its goal is to find pairs of students who are from different cities AND have different genders.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono text-sm">
+                    <p>L = [[2, 'M', "C"], [4, 'F', "M"], [11, 'M', "B"], [10, 'F', "C"]]</p>
+                    <p>idList = []</p>
+                    <p><span class="text-purple-400">while</span>(length(L) > 1){</p>
+                    <p class="ml-4">x = first(L)</p>
+                    <p class="ml-4">M = rest(L)</p>
+                    <p class="ml-4"><span class="text-purple-400">while</span>(length(M) > 0){</p>
+                    <p class="ml-8">y = first(M)</p>
+                    <p class="ml-8"><span class="text-purple-400">if</span>(last(x) != last(y) <span class="text-gray-400">// Cities differ</span></p>
+                    <p class="ml-12">and first(rest(x)) != last(init(y)) <span class="text-gray-400">// Genders differ</span>){</p>
+                    <p class="ml-12">idList = idList ++ [[first(x), first(y)]]</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-8">M = rest(M)</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">L = rest(L)</p>
+                    <p>}</p>
+                </div>
+                 <p class="text-lg mt-4">This is a nested loop that compares each student `x` with every student `y` that comes *after* it in the list. The outer loop shrinks `L` from the front, ensuring each student is only used as `x` once. The inner loop iterates through the remaining students `M`. The complex `if` condition checks both city and gender, and if both are different, the pair of IDs is added to `idList`.</p>
+            </section>
+
+            <section id="interactive-inspector" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Nested List Inspector</h2>
+                <p class="text-lg mb-4">Practice accessing nested data. Enter a nested list (e.g., `[[1,2],[3,4]]`) and an access pattern (e.g., `first(last(L))`) to see the result.</p>
+                 <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="mb-4">
+                        <label class="block font-semibold mb-2">Enter a nested list:</label>
+                        <input type="text" id="nested-input" class="w-full p-2 border border-gray-300 rounded-md font-mono" value="[[2, M, Chennai], [4, F, Madurai], [11, M, Bengaluru]]">
+                    </div>
+                     <div class="mb-4">
+                        <label class="block font-semibold mb-2">Enter access pattern on list 'L':</label>
+                        <input type="text" id="pattern-input" class="w-full p-2 border border-gray-300 rounded-md font-mono" value="first(rest(first(rest(L))))">
+                    </div>
+                    <button id="inspect-btn" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Inspect</button>
+                    <div class="mt-4">
+                        <h4 class="text-xl font-semibold mb-2">Result:</h4>
+                        <div id="inspector-output" class="bg-white p-4 rounded-md border min-h-[50px] font-mono text-lg text-blue-700 font-bold"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">This final tutorial has equipped you with advanced data structuring techniques.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Data Cohesion:</strong> Lists of pairs and triples are essential for keeping related data together, which makes algorithms simpler and more efficient.</li>
+                    <li><strong>Nested Access:</strong> To access data inside a nested list, you apply the basic list functions sequentially, as if peeling back layers.</li>
+                    <li><strong>Complex Logic:</strong> With these tools, you can now construct and analyze complex, multi-level procedures that filter and compare data based on multiple criteria.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of nested lists and their operations.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Inspector Logic
+            const nestedInput = document.getElementById('nested-input');
+            const patternInput = document.getElementById('pattern-input');
+            const inspectBtn = document.getElementById('inspect-btn');
+            const inspectorOutput = document.getElementById('inspector-output');
+            
+            // A simple parser and evaluator for the list functions
+            function evaluatePattern(pattern, list) {
+                try {
+                    let result = list;
+                    // Sanitize and reverse to evaluate from inside-out
+                    const operations = pattern.replace(/L/g, '').replace(/\s/g, '').split('(').slice(0, -1).reverse();
+                    for (const op of operations) {
+                        if (result === undefined || result === null) throw new Error("Cannot operate on undefined value");
+                        switch (op) {
+                            case 'first':
+                                if (result.length < 1) throw new Error("first() on empty list");
+                                result = result[0];
+                                break;
+                            case 'last':
+                                if (result.length < 1) throw new Error("last() on empty list");
+                                result = result[result.length - 1];
+                                break;
+                            case 'rest':
+                                result = result.slice(1);
+                                break;
+                            case 'init':
+                                result = result.slice(0, -1);
+                                break;
+                            default:
+                                throw new Error(`Unknown function: ${op}`);
+                        }
+                    }
+                    return JSON.stringify(result);
+                } catch (e) {
+                    return `Error: ${e.message}`;
+                }
+            }
+            
+            inspectBtn.addEventListener('click', () => {
+                try {
+                    // A very basic parser for the nested list string
+                    const listStr = nestedInput.value.replace(/(\w+)/g, '"$1"');
+                    const list = JSON.parse(listStr);
+                    const pattern = patternInput.value;
+                    inspectorOutput.textContent = evaluatePattern(pattern, list);
+                } catch (e) {
+                    inspectorOutput.textContent = 'Error: Invalid list format. Use brackets and commas.';
+                }
+            });
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ5_7.docx (5 questions)
+                {
+                    question: "A procedure creates a `pairList` where each element is `[Mark1, Mark2]`, with the larger mark always first. What does `first(first(pairList))` represent for the first student in the original table? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: [
+                        "Mathematics marks of the student in the first row of Table 1",
+                        "Physics marks of the student in the first row of Table 1",
+                        "Mathematics marks of the student if it's higher than Physics marks",
+                        "Physics marks of the student if it's higher than Mathematics marks"
+                    ],
+                    correct: [
+                        "Mathematics marks of the student if it's higher than Physics marks",
+                        "Physics marks of the student if it's higher than Mathematics marks"
+                    ],
+                    explanation: "The pseudocode puts the larger mark first. `first(pairList)` gets the first pair `[Mark_Larger, Mark_Smaller]`. `first()` of that pair gets `Mark_Larger`, which could be either Maths or Physics depending on which was greater."
+                },
+                {
+                    question: "In the same `pairList` procedure, if the Maths and Physics marks for the first student are the same, what will `first(first(pairList))` represent?",
+                    type: "single-choice",
+                    answers: [
+                        "Mathematics marks of the student in the first row",
+                        "Physics marks of the student in the first row",
+                        "Could be either Mathematics or Physics marks",
+                        "Could be either Mathematics or Physics marks of the student in the last row"
+                    ],
+                    correct: [ "Physics marks of the student in the first row" ],
+                    explanation: "The `if` condition is `X.Mathematics > X.Physics`. If they are equal, this is false, so the `else` block runs, placing Physics marks first in the pair. Thus, `first(first(pairList))` will be the Physics mark."
+                },
+                {
+                    question: "What is the final value of C? `A = [1,2,3,4,5]`, `B = [5,4,3,2,1]`, `C = []`, `foreach x in A { foreach y in B { if(x-y == 2){ C = C ++ [[x, y]] } } }`",
+                    type: "single-choice",
+                    answers: ["[[3, 1], [4, 2], [5, 3]]", "[[5, 3], [4, 2], [3, 1]]", "[[1, 3], [2, 4], [3, 5]]", "[[1, 3], [2, 4], [3, 5], [3, 1], [4, 2], [5, 3]]"],
+                    correct: ["[[3, 1], [4, 2], [5, 3]]"],
+                    explanation: "The code finds pairs `[x, y]` where `x` is from A, `y` is from B, and their difference is 2. The pairs that satisfy this are (3,1), (4,2), and (5,3)."
+                },
+                {
+                    question: "Let `L = [[2, 'M', 'C'], [4, 'F', 'M'], [11, 'M', 'B'], [10, 'F', 'C']]`. Which expressions evaluate to 'F'? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: [
+                        "A = first(rest(first(rest(L))))",
+                        "A = last(init(first(rest(L))))",
+                        "A = first(rest(last(L)))",
+                        "A = last(init(last(L)))"
+                    ],
+                    correct: [
+                        "A = first(rest(first(rest(L))))",
+                        "A = last(init(first(rest(L))))"
+                    ],
+                    explanation: "Both expressions correctly isolate the triple `[4, 'F', 'M']` and then extract the 'F'. The first does it by taking the `first` of `['F', 'M']`. The second does it by taking the `last` of `[4, 'F']`."
+                },
+                {
+                    question: "Analyze the complex nested loop procedure from the benchmark file that compares students. What will be the final value of `idList`?",
+                    type: "single-choice",
+                    answers: ["[[2, 4], [4, 11], [11, 10]]", "[[2, 4], [4, 11]]", "[[4, 11], [11, 10]]", "[[4, 11]]"],
+                    correct: ["[[2, 4], [4, 11], [11, 10]]"],
+                    explanation: "The procedure correctly finds all pairs of students (x, y) where x appears before y in the list, and they have different cities and different genders. A full trace shows that the pairs [2,4], [4,11], and [11,10] all meet these criteria."
+                },
+                // New questions (10)
+                {
+                    question: "A list of pairs is defined as `pairList = [[ID, Score]]`. Which expression correctly extracts the Score of the first student in the list?",
+                    type: "single-choice",
+                    answers: ["first(pairList)", "rest(first(pairList))", "last(first(pairList))", "first(rest(pairList))"],
+                    correct: ["last(first(pairList))"],
+                    explanation: "`first(pairList)` gets the first pair, e.g., `[ID, Score]`. `last()` of that pair will return the Score."
+                },
+                {
+                    question: "If a procedure is designed to compare each element of a list with every other element in the same list, what is the most appropriate structure to use?",
+                    type: "single-choice",
+                    answers: ["A single `while` loop", "A single `foreach` loop", "A nested `foreach` loop", "The `member()` function"],
+                    correct: ["A nested `foreach` loop"],
+                    explanation: "A nested `foreach` loop (`foreach x in L { foreach y in L { ... } }`) is the standard pattern for performing all possible pairwise comparisons within a single list."
+                },
+                {
+                    question: "Given `L = [1, [2, 3], 4]`, the expression `first(rest(L))` evaluates to `[2, 3]`.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "`rest(L)` is `[[2, 3], 4]`. The first element of this new list is the list `[2, 3]`."
+                },
+                {
+                    question: "What is a key advantage of storing data as a list of triples, like `[StoreID, CustomerID, ItemCategory]`, over separate lists?",
+                    type: "single-choice",
+                    answers: ["It uses less memory", "The lists are always shorter", "It keeps related data for a single transaction bundled together", "It is faster to sort"],
+                    correct: ["It keeps related data for a single transaction bundled together"],
+                    explanation: "Using triples (or pairs) ensures that the relationship between different pieces of data (like who bought what and where) is preserved within a single, structured element."
+                },
+                {
+                    question: "If `L1 = [1, 2]` and `L2 = [3, 4]`, what is `first(rest(L1 ++ L2))`?",
+                    type: "single-choice",
+                    answers: ["1", "2", "3", "4"],
+                    correct: ["2"],
+                    explanation: "`L1 ++ L2` results in `[1, 2, 3, 4]`. `rest()` of that is `[2, 3, 4]`. `first()` of that is `2`."
+                },
+                 {
+                    question: "The expression `init(rest(L))` will always result in a list that is two elements shorter than the original list `L`.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "This is only true if `length(L)` is 2 or more. If `L` has 0 or 1 elements, the resulting list will be empty, not necessarily two elements shorter."
+                },
+                {
+                    question: "Which function would you use to check if a specific item exists anywhere within a list without needing to write your own loop?",
+                    type: "single-choice",
+                    answers: ["length()", "first()", "rest()", "member()"],
+                    correct: ["member()"],
+                    explanation: "The `member(list, element)` function is specifically designed to check for the presence of an element in a list, returning True or False."
+                },
+                {
+                    question: "Let `L = [[1,2],[3,4]]`. The expression `first(last(L))` evaluates to what?",
+                    type: "single-choice",
+                    answers: ["1", "2", "3", "4"],
+                    correct: ["3"],
+                    explanation: "`last(L)` returns the last element, which is the list `[3,4]`. `first()` of `[3,4]` is `3`."
+                },
+                {
+                    question: "It is possible to have a list that contains a mix of numbers, strings, and other lists as its elements.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Lists are versatile collections and can hold elements of different data types, including other lists, creating nested structures."
+                },
+                {
+                    question: "Let `L = [[1,2],[3,4]]`. What does `last(first(L))` evaluate to?",
+                    type: "single-choice",
+                    answers: ["1", "2", "3", "4"],
+                    correct: ["2"],
+                    explanation: "`first(L)` returns the first element, which is the list `[1,2]`. `last()` of `[1,2]` is `2`."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

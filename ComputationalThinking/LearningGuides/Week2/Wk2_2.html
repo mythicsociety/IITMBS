@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2.2: Local Operations and Max in a Single Iteration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L2.2: Finding the Max</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#the-pattern" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The "Max So Far" Pattern</a></li>
+                        <li><a href="#initialization" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Importance of Initialization</a></li>
+                        <li><a href="#flowchart" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Flowchart for Finding Max</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Finding the Biggest One 🏆</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Welcome! We often need to find the largest value in a set of data. Who has the highest score? What's the most expensive item on a bill? Which sentence in a paragraph is the longest?
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        You might think you need to look at all the data, write down all the values, and then look through your notes to find the biggest one. But there's a much smarter way! We can find the maximum value by going through the data just <strong>once</strong>. This is what we call finding the max in a <strong>single iteration</strong>.
+                    </p>
+                </section>
+
+                <!-- The Pattern Section -->
+                <section id="the-pattern" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The "Max So Far" Pattern</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        The logic is simple and elegant. We use a single variable to keep track of the highest value we've seen *so far* as we iterate through the cards.
+                    </p>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Let's find the student with the best total marks:
+                    </p>
+                    <ol class="list-decimal list-inside space-y-4 text-lg text-slate-700">
+                        <li><strong>Create a Variable:</strong> We make a variable, let's call it `max_score`.</li>
+                        <li><strong>Initialize It:</strong> We give `max_score` a starting value that is guaranteed to be less than or equal to any real score (we'll talk more about this next!). A safe bet is `0`.</li>
+                        <li><strong>Iterate and Compare:</strong> We look at the first card. Is its total score greater than our current `max_score`? Yes, 240 is greater than 0. So, we update `max_score` to 240.</li>
+                        <li><strong>Repeat:</strong> We look at the next card, which has a score of 196. Is 196 greater than our `max_score` (which is 240)? No. So, we do nothing and move on.</li>
+                        <li><strong>Update When Needed:</strong> The next card is 252. Is 252 greater than 240? Yes! We update `max_score` to 252.</li>
+                    </ol>
+                    <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">The Core Idea:</p>
+                        <p>At any point during the iteration, the `max_score` variable holds the maximum value found among all the cards we have already looked at. By the time we reach the end of the deck, it will hold the maximum value for the entire dataset.</p>
+                    </div>
+                </section>
+
+                <!-- Initialization Section -->
+                <section id="initialization" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Importance of a Good Start</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        How we <strong>initialize</strong> our `max_score` variable is crucial.
+                    </p>
+                     <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">What if we initialized `max_score` to 300?</p>
+                        <p>If no student scored higher than 300, our variable would never get updated. At the end, our procedure would incorrectly report 300 as the maximum score! </p>
+                    </div>
+                    <p class="text-lg text-slate-700">
+                        There are two common and safe ways to initialize:
+                    </p>
+                     <ul class="list-disc list-inside space-y-3 text-lg text-slate-700 mt-4">
+                        <li><strong>Use a Known Minimum:</strong> If we know scores can't be negative, initializing `max_score` to `0` is perfectly safe. The very first card's score will be greater than or equal to 0, correctly starting the update process.</li>
+                        <li><strong>Use the First Card's Value:</strong> A very robust method is to read the first card's value and use that as the initial value for `max_score`. Then, you start your iteration from the *second* card. This works for any dataset, even if you don't know the possible range of values.</li>
+                    </ul>
+                </section>
+                
+                <!-- Flowchart Section -->
+                <section id="flowchart" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Flowchart for Finding Max</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        Here is a flowchart that visualizes the "Max So Far" pattern. Notice the key comparison step inside the loop.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md flex justify-center items-center">
+                        <svg width="100%" height="100%" viewBox="0 0 400 450" xmlns="http://www.w3.org/2000/svg" class="max-w-sm">
+                            <defs>
+                                <marker id="arrowhead-max" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#475569" />
+                                </marker>
+                            </defs>
+                            <style>
+                                .box { fill: #e0f2fe; stroke: #38bdf8; stroke-width: 1.5; }
+                                .diamond { fill: #f0f9ff; stroke: #7dd3fc; stroke-width: 1.5; }
+                                .stop { fill: #fee2e2; stroke: #f87171; stroke-width: 1.5; }
+                                .line { stroke: #475569; stroke-width: 1.5; marker-end: url(#arrowhead-max); fill: none; }
+                                .text { font-family: 'Inter', sans-serif; font-size: 12px; fill: #1e293b; text-anchor: middle; }
+                                .label-text { font-family: 'Inter', sans-serif; font-size: 10px; fill: #475569; text-anchor: middle; }
+                            </style>
+
+                            <rect x="150" y="10" width="100" height="40" rx="5" class="box" />
+                            <text x="200" y="35" class="text">max = 0</text>
+                            
+                            <path d="M 200 50 v 20" class="line" />
+
+                            <path d="M 100 105 L 200 70 L 300 105 L 200 140 Z" class="diamond" />
+                            <text x="200" y="108" class="text">More cards?</text>
+
+                            <path d="M 300 105 h 50" class="line" />
+                            <text x="325" y="95" class="label-text">No</text>
+                            <rect x="350" y="85" width="50" height="40" rx="20" class="stop" />
+                            <text x="375" y="110" class="text">End</text>
+
+                            <path d="M 200 140 v 20" class="line" />
+                            <text x="210" y="155" class="label-text">Yes</text>
+                            
+                            <rect x="125" y="160" width="150" height="40" rx="5" class="box" />
+                            <text x="200" y="185" class="text">Pick card X, Move to Pile 2</text>
+                            
+                            <path d="M 200 200 v 20" class="line" />
+
+                            <path d="M 100 255 L 200 220 L 300 255 L 200 290 Z" class="diamond" />
+                            <text x="200" y="250" class="text">CardX.score > max?</text>
+                            
+                            <path d="M 300 255 h 25 v 40" class="line" />
+                            <text x="315" y="245" class="label-text">Yes</text>
+                            <rect x="275" y="295" width="100" height="40" rx="5" class="box" />
+                            <text x="325" y="320" class="text">max = CardX.score</text>
+                            
+                            <path d="M 200 290 v 60" class="line" />
+                            <text x="180" y="310" class="label-text">No</text>
+                            
+                            <path d="M 275 315 h -75" class="line" />
+                            
+                            <path d="M 200 350 h -150 v -245" class="line" />
+                        </svg>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Find the Max Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        Try it yourself! Click "Start" to iterate through the cards. The simulator will check each card and update the "Max Score So Far" only when it finds a new highest score.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Start</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Start' to begin.</div>
+                        <div class="flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 md:space-x-6">
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Deck</h4>
+                                <div class="relative w-32 h-44 bg-slate-200 rounded-lg shadow-inner flex items-center justify-center">
+                                    <div id="deck-count" class="relative z-10 text-4xl font-bold text-slate-500">15</div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Current Card</h4>
+                                <div id="current-card" class="w-32 h-44 bg-white rounded-lg shadow-lg border-2 border-sky-400 flex flex-col justify-center items-center transition-all duration-300">
+                                    <span id="current-card-value" class="text-5xl font-bold text-sky-800">?</span>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Max Score So Far</h4>
+                                <div id="max-score-display" class="w-32 h-44 bg-white rounded-lg shadow-lg border-2 border-amber-400 flex flex-col justify-center items-center transition-all duration-300">
+                                     <span id="max-score-value" class="text-5xl font-bold text-amber-600">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Let's check your understanding of finding the maximum value.
+                    </p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const deckCountEl = document.getElementById('deck-count');
+        const currentCardValueEl = document.getElementById('current-card-value');
+        const maxScoreValueEl = document.getElementById('max-score-value');
+        const maxScoreDisplayEl = document.getElementById('max-score-display');
+        
+        let simCards = [];
+        let simInterval;
+        const TOTAL_CARDS = 15;
+
+        function generateSimCards() {
+            simCards = Array.from({ length: TOTAL_CARDS }, () => Math.floor(Math.random() * 90) + 10);
+        }
+        
+        function resetSimulator() {
+            clearInterval(simInterval);
+            generateSimCards();
+            simStatus.textContent = "Press 'Start' to begin.";
+            simStatus.className = 'text-center font-semibold text-lg h-8 mb-4 text-slate-700';
+            deckCountEl.textContent = TOTAL_CARDS;
+            currentCardValueEl.textContent = '?';
+            maxScoreValueEl.textContent = '0';
+            startSimBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            let currentIndex = 0;
+            let maxSoFar = 0;
+            maxScoreValueEl.textContent = '0';
+
+            simInterval = setInterval(() => {
+                if (currentIndex >= simCards.length) {
+                    clearInterval(simInterval);
+                    simStatus.textContent = `Done! The maximum score is ${maxSoFar}.`;
+                    simStatus.className = 'text-center font-semibold text-lg h-8 mb-4 text-green-700';
+                    startSimBtn.disabled = false;
+                    return;
+                }
+
+                const cardValue = simCards[currentIndex];
+                simStatus.textContent = `Checking card with score ${cardValue}...`;
+                deckCountEl.textContent = TOTAL_CARDS - (currentIndex + 1);
+                currentCardValueEl.textContent = cardValue;
+
+                if (cardValue > maxSoFar) {
+                    maxSoFar = cardValue;
+                    simStatus.textContent = `New max found! Updating to ${maxSoFar}.`;
+                    simStatus.className = 'text-center font-semibold text-lg h-8 mb-4 text-amber-600';
+                    maxScoreValueEl.textContent = maxSoFar;
+                    maxScoreDisplayEl.classList.add('animate-pulse');
+                    setTimeout(() => maxScoreDisplayEl.classList.remove('animate-pulse'), 500);
+                }
+
+                currentIndex++;
+            }, 800);
+        });
+
+        resetSimBtn.addEventListener('click', resetSimulator);
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            {
+                question: "While finding the maximum marks, the variable `max` was initialised to 0. Is the following claim true: the variable `max` can also be initialised with the marks of any card in the “Scores” dataset.",
+                options: ["True", "False"],
+                correct: ["True"],
+                type: "single",
+                explanation: "True. Initializing with the first card's value is a robust strategy. The loop would then start comparing from the second card."
+            },
+            {
+                question: "At any intermediate stage in the procedure’s execution, what does the variable `max` store?",
+                options: [
+                    "It stores the total marks of the most recent card that was removed from the first pile.",
+                    "It stores the maximum marks among the cards that have been moved to the second pile.",
+                    "It stores the maximum marks among the cards that are remaining in the first pile.",
+                    "It stores the maximum marks among all the cards in the dataset."
+                ],
+                correct: ["It stores the maximum marks among the cards that have been moved to the second pile."],
+                type: "single",
+                explanation: "The `max` variable always holds the maximum value found *so far* among the cards that have already been processed (i.e., moved to the second pile)."
+            },
+            {
+                question: "If you are trying to find the *minimum* score in a test where scores range from 0 to 100, what would be a poor choice for an initial value for a `min_score` variable?",
+                options: ["101", "The score of the first student", "0", "100"],
+                correct: ["0"],
+                type: "single",
+                explanation: "Initializing `min_score` to 0 is a poor choice because no score can be lower. The variable would never be updated, leading to an incorrect result unless a student actually scored 0."
+            },
+            {
+                question: "True or False: The 'Max So Far' algorithm requires storing all the values in memory before it can determine the maximum.",
+                options: ["True", "False"],
+                correct: ["False"],
+                type: "single",
+                explanation: "False. This is the main advantage of the algorithm. It only needs to store one value (the max so far) and can process items one by one, making it very memory-efficient."
+            },
+            {
+                question: "In a single iteration to find the maximum, how many times is the `max` variable updated?",
+                options: [
+                    "Exactly once.",
+                    "For every card in the dataset.",
+                    "Only when a card's value is greater than the current `max` value.",
+                    "It is never updated after initialization."
+                ],
+                correct: ["Only when a card's value is greater than the current `max` value."],
+                type: "single",
+                explanation: "The update operation is conditional. It only happens when a new champion (a new highest value) is found."
+            },
+            {
+                question: "What is the final value of `max` after iterating through the following list of numbers: [17, 25, 8, 32, 25]?",
+                options: ["17", "25", "8", "32"],
+                correct: ["32"],
+                type: "single",
+                explanation: "The process would be: max starts at 0 -> 17 -> 25. 8 is skipped. max becomes 32. 25 is skipped. The final value is 32."
+            }
+        ];
+
+        function buildQuiz() {
+            quizData.forEach((q, index) => {
+                const isMultiple = q.type === 'multiple';
+                const inputType = isMultiple ? 'checkbox' : 'radio';
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="${inputType}" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = (questionData.type === 'single') ?
+                (selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0]) :
+                (selectedAnswers.length === questionData.correct.length && selectedAnswers.every(val => questionData.correct.includes(val)));
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Undirected Graphs and Cliques</title>
+    <meta name="description" content="An interactive, mobile-friendly guide to understanding undirected graphs, subgraphs, cliques, and the Handshake Lemma, with a knowledge check quiz.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #e0f2fe; /* light-blue-100 */
+            color: #0c4a6e; /* light-blue-800 */
+            font-weight: 600;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        pre {
+            background-color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+        }
+        .quiz-option {
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .quiz-option:disabled {
+            cursor: not-allowed;
+        }
+        .correct {
+            background-color: #dcfce7 !important; /* green-100 */
+            border-color: #22c55e !important; /* green-500 */
+        }
+        .incorrect {
+            background-color: #fee2e2 !important; /* red-100 */
+            border-color: #ef4444 !important; /* red-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- 
+    INTERNAL PLANNING (v7 - Full Pseudocode):
+    
+    1.  **Objective:** Add all relevant pseudocode blocks from the source files.
+    2.  **Analysis:** The user correctly identified that more pseudocode exists in the slides. Reviewing the slides PDF reveals procedures for `CreateMatrix`, `ReadMarks`, and `CreateMentorGraph` in addition to `CreateSimilarityGraph`.
+    3.  **Strategy:**
+        * Expand the "From Concept to Code: Pseudocode" section.
+        * Add each new pseudocode block in a logical order (Matrix -> Read Marks -> Mentor Graph -> Similarity Graph).
+        * Provide a brief explanation for each block to clarify its purpose.
+        * Ensure the formatting remains clean and readable.
+    4.  **Structural Changes:**
+        * No new sections needed, just expansion of the existing pseudocode section.
+        * No changes to navigation or other sections.
+    -->
+
+    <!-- Hamburger Menu Button (Mobile Only) -->
+    <button id="menu-button" class="md:hidden fixed top-4 right-4 z-40 p-2 rounded-md bg-white/80 backdrop-blur-sm text-gray-600 shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="fixed inset-0 z-50 bg-white border-r p-6 hidden md:flex flex-col md:w-64 md:h-screen md:overflow-y-auto md:relative md:inset-auto md:sticky md:top-0">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-sky-800">Learning Guide</h2>
+                <button id="close-menu-button" class="md:hidden p-2 rounded-md text-gray-500 hover:bg-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav id="sidebar-nav">
+                <ul class="space-y-2">
+                    <li><a href="#section-intro" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">Introduction</a></li>
+                    <li><a href="#section-undirected" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">Undirected Graphs</a></li>
+                    <li><a href="#section-subgraph-clique" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">Subgraphs and Cliques</a></li>
+                    <li><a href="#section-handshake" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">The Handshake Lemma</a></li>
+                    <li><a href="#section-pseudocode" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">Pseudocode Examples</a></li>
+                    <li><a href="#section-interactive" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">Interactive: Clique Finder</a></li>
+                    <li><a href="#section-analysis" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">Finding Cliques in Data</a></li>
+                    <li><a href="#section-rules" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">Changing the Rules</a></li>
+                    <li><a href="#section-quiz" class="nav-link block px-4 py-2 rounded-md hover:bg-gray-100">Knowledge Check</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <header class="mb-10">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Undirected Graphs and Cliques</h1>
+                <p class="mt-2 text-lg text-gray-600">Understanding groups of "similar" things using graphs.</p>
+            </header>
+
+            <!-- Sections 1-4 -->
+            <section id="section-intro" class="mb-12 scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">1. A Quick Refresher: What's a Graph?</h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <p>In computational thinking, a graph is a collection of <strong class="font-semibold">nodes</strong> (or vertices) and <strong class="font-semibold">edges</strong> that connect them to show relationships.</p>
+                </div>
+            </section>
+
+            <section id="section-undirected" class="mb-12 scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">2. When Relationships Go Both Ways: Undirected Graphs</h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <p>When a relationship is mutual (like student A is "similar" to student B), we use an <strong class="font-semibold">undirected edge</strong>—a simple line with no arrows. A graph made of these is an <strong class="font-semibold">undirected graph</strong>.</p>
+                </div>
+            </section>
+
+            <section id="section-subgraph-clique" class="mb-12 scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">3. Subgraphs and Cliques</h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <p>A <strong class="font-semibold">subgraph</strong> is simply a graph that is part of a larger graph. It's made up of a selection of nodes and edges from the original graph.</p>
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
+                        <p>A <strong class="font-semibold">clique</strong> is a special kind of subgraph where every single node is directly connected to every other node <strong class="font-semibold">within that subgraph</strong>. It is a <strong class="font-semibold">fully connected subgraph</strong>.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="section-handshake" class="mb-12 scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">4. A Neat Trick: The Handshake Lemma</h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <p>The <strong class="font-semibold">degree</strong> of a node is the number of edges connected to it. The Handshake Lemma states that the sum of the degrees of all nodes in a graph is equal to <strong class="font-semibold">twice the number of edges</strong>.</p>
+                </div>
+            </section>
+
+            <!-- Pseudocode Section -->
+            <section id="section-pseudocode" class="mb-12 scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">5. From Concept to Code: Pseudocode</h2>
+                <div class="space-y-6 text-gray-700 leading-relaxed">
+                    <p>How would we computationally build the graphs we've been discussing? The lecture provides clear procedures. Here is the logical sequence of pseudocode from the slides.</p>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Step 1: Create a Matrix</h3>
+                        <p class="mb-2">Graphs are often represented by matrices. This procedure creates a basic matrix (a nested dictionary) of a given size, initializing all values to 0 (representing a graph with no edges).</p>
+                        <pre>
+Procedure CreateMatrix(rows, cols)
+  mat = {}
+  i = 0
+  while (i < rows) {
+    mat[i] = {}
+    j = 0
+    while (j < cols) {
+      mat[i][j] = 0
+      j = j + 1
+    }
+    i = i + 1
+  }
+  return(mat)
+End CreateMatrix
+                        </pre>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Step 2: Read Marks Data</h3>
+                        <p class="mb-2">Next, we need to get the student data. This procedure reads a table of student records and creates a dictionary mapping each student's ID to their marks in a specific subject.</p>
+                        <pre>
+Procedure ReadMarks(subj)
+  marks = {}
+  while (Table 1 has more rows) {
+    Read the first row X in Table 1
+    marks[X.Seqno] = X.subj
+    Move X to Table 2
+  }
+  return(marks)
+End ReadMarks
+                        </pre>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Step 3 (Example): Create a Mentor Graph</h3>
+                        <p class="mb-2">This procedure builds a <strong class="font-semibold">directed graph</strong> for mentoring. It checks if the mark difference is between 10 and 20, creating a one-way edge.</p>
+                        <pre>
+Procedure CreateMentorGraph(marks)
+  n = length(keys(marks))
+  mentorGraph = CreateMatrix(n, n)
+  foreach i in keys(marks) {
+    foreach j in keys(marks) {
+      ijMarksDiff = marks[i] - marks[j]
+      if (10 <= ijMarksDiff and ijMarksDiff <= 20) {
+        mentorGraph[i][j] = 1
+      }
+    }
+  }
+  return(mentorGraph)
+End CreateMentorGraph
+                        </pre>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Step 4: Create a Similarity Graph</h3>
+                        <p class="mb-2">Finally, this procedure builds the <strong class="font-semibold">undirected graph</strong> for similarity. It checks if the mark difference is within 10 for ALL subjects to create a mutual edge.</p>
+                        <pre>
+Procedure CreateSimilarityGraph(marks1, marks2, marks3)
+  n = length(keys(marks1))
+  similarityGraph = CreateMatrix(n, n)
+
+  foreach i in keys(marks1) {
+    foreach j in keys(marks1) {
+      ijDiff1 = abs(marks1[i] - marks1[j])
+      ijDiff2 = abs(marks2[i] - marks2[j])
+      ijDiff3 = abs(marks3[i] - marks3[j])
+
+      if (ijDiff1 <= 10 and ijDiff2 <= 10 and ijDiff3 <= 10) {
+        similarityGraph[i][j] = 1
+      }
+    }
+  }
+  return(similarityGraph)
+End CreateSimilarityGraph
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Section -->
+            <section id="section-interactive" class="mb-12 scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">6. Interactive: Clique Finder</h2>
+                <p class="text-gray-600 mb-4">Let's try to build a clique! The graph below has 6 students. Click two different students to check if they are "similar". If they are, an edge will be drawn. Your goal is to find the hidden <strong class="font-semibold">clique of 4</strong> students.</p>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                    <canvas id="clique-canvas" class="w-full h-96 rounded-md bg-gray-50"></canvas>
+                    <div class="mt-4 flex justify-between items-center">
+                        <button id="reset-button" class="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors">Reset</button>
+                        <p id="message-area" class="text-lg font-semibold text-gray-700 text-center"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-analysis" class="mb-12 scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">7. Finding Cliques in Data</h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <p>Finding cliques is useful. It can help us identify clusters of students who are performing at a similar level across the board. The process involves building the graph based on similarity criteria and then searching for fully connected subgraphs.</p>
+                </div>
+            </section>
+            
+            <section id="section-rules" class="mb-12 scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">8. What if We Change the Rules?</h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <p>What would happen if we weakened the similarity rule (e.g., requiring similarity in only 2 of 3 subjects)? The number of edges in the graph would increase, making it more likely to find larger cliques.</p>
+                </div>
+            </section>
+
+            <!-- Quiz Section -->
+            <section id="section-quiz" class="scroll-mt-20">
+                <h2 class="text-2xl md:text-3xl font-semibold text-sky-700 mb-4">9. Knowledge Check</h2>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions -->
+                    <div class="quiz-question bg-white p-6 rounded-lg shadow">
+                        <p class="font-semibold text-lg mb-4">1. Which of the following best describes a clique?</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button data-question="1" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">Any part of a larger graph.</button>
+                            <button data-question="1" data-correct="true" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">A fully connected subgraph.</button>
+                            <button data-question="1" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">A subgraph that forms a straight line.</button>
+                            <button data-question="1" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">A subgraph with no edges.</button>
+                        </div>
+                        <p id="explanation-1" class="mt-4 text-gray-600 hidden"></p>
+                    </div>
+                    <div class="quiz-question bg-white p-6 rounded-lg shadow">
+                        <p class="font-semibold text-lg mb-4">2. In a group of 5 students that forms a clique, what is the degree of each student within that clique?</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button data-question="2" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">3</button>
+                            <button data-question="2" data-correct="true" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">4</button>
+                            <button data-question="2" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">5</button>
+                            <button data-question="2" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">It depends on the graph</button>
+                        </div>
+                        <p id="explanation-2" class="mt-4 text-gray-600 hidden"></p>
+                    </div>
+                    <div class="quiz-question bg-white p-6 rounded-lg shadow">
+                        <p class="font-semibold text-lg mb-4">3. An undirected graph has 10 edges. According to the Handshake Lemma, what is the sum of the degrees of all its vertices?</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button data-question="3" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">10</button>
+                            <button data-question="3" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">15</button>
+                            <button data-question="3" data-correct="true" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">20</button>
+                            <button data-question="3" data-correct="false" class="quiz-option w-full text-left p-3 border-2 border-gray-300 rounded-md hover:bg-gray-100">Cannot be determined</button>
+                        </div>
+                        <p id="explanation-3" class="mt-4 text-gray-600 hidden"></p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // --- SCRIPT FOR MOBILE NAVIGATION ---
+        const menuButton = document.getElementById('menu-button');
+        const closeMenuButton = document.getElementById('close-menu-button');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarNav = document.getElementById('sidebar-nav');
+
+        menuButton.addEventListener('click', () => {
+            sidebar.classList.remove('hidden');
+        });
+
+        closeMenuButton.addEventListener('click', () => {
+            sidebar.classList.add('hidden');
+        });
+
+        sidebarNav.addEventListener('click', (e) => {
+            if (e.target.matches('.nav-link')) {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('hidden');
+                }
+            }
+        });
+
+
+        // --- SCRIPT FOR SIDEBAR NAVIGATION HIGHLIGHTING ---
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const activeId = entry.target.id;
+                    navLinks.forEach(link => {
+                        link.classList.remove('active-link');
+                        if (link.getAttribute('href') === `#${activeId}`) {
+                            link.classList.add('active-link');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- SCRIPT FOR INTERACTIVE CLIQUE FINDER ---
+        const canvas = document.getElementById('clique-canvas');
+        const ctx = canvas.getContext('2d');
+        const resetButton = document.getElementById('reset-button');
+        const messageArea = document.getElementById('message-area');
+
+        let students = [];
+        let edges = [];
+        let selectedStudent = null;
+        
+        const CLIQUE_MEMBERS = [0, 2, 3, 5];
+
+        function setup() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            students = [
+                { id: 0, name: 'A', x: canvas.width * 0.2, y: canvas.height * 0.2, radius: 20 },
+                { id: 1, name: 'B', x: canvas.width * 0.5, y: canvas.height * 0.2, radius: 20 },
+                { id: 2, name: 'C', x: canvas.width * 0.8, y: canvas.height * 0.2, radius: 20 },
+                { id: 3, name: 'D', x: canvas.width * 0.2, y: canvas.height * 0.8, radius: 20 },
+                { id: 4, name: 'E', x: canvas.width * 0.5, y: canvas.height * 0.8, radius: 20 },
+                { id: 5, name: 'F', x: canvas.width * 0.8, y: canvas.height * 0.8, radius: 20 },
+            ];
+            edges = [];
+            selectedStudent = null;
+            messageArea.textContent = 'Click two students to connect them.';
+            messageArea.classList.remove('text-green-600');
+            draw();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 2;
+            edges.forEach(edge => {
+                const start = students.find(s => s.id === edge.from);
+                const end = students.find(s => s.id === edge.to);
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(end.x, end.y);
+                ctx.stroke();
+            });
+            students.forEach(student => {
+                ctx.beginPath();
+                ctx.arc(student.x, student.y, student.radius, 0, Math.PI * 2);
+                ctx.fillStyle = (selectedStudent && selectedStudent.id === student.id) ? '#38bdf8' : '#0ea5e9';
+                ctx.fill();
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 16px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(student.name, student.x, student.y);
+            });
+        }
+
+        function getClickedStudent(x, y) {
+            return students.find(student => Math.sqrt((x - student.x)**2 + (y - student.y)**2) < student.radius);
+        }
+
+        function areSimilar(s1, s2) {
+            return CLIQUE_MEMBERS.includes(s1.id) && CLIQUE_MEMBERS.includes(s2.id);
+        }
+
+        function addEdge(s1, s2) {
+            const exists = edges.some(e => (e.from === s1.id && e.to === s2.id) || (e.from === s2.id && e.to === s1.id));
+            if (!exists) edges.push({ from: s1.id, to: s2.id });
+        }
+
+        function checkClique() {
+            const cliqueEdges = edges.filter(e => CLIQUE_MEMBERS.includes(e.from) && CLIQUE_MEMBERS.includes(e.to));
+            if (cliqueEdges.length === 6) {
+                messageArea.textContent = 'Congratulations! You found the clique!';
+                messageArea.classList.add('text-green-600');
+                ctx.strokeStyle = '#16a34a';
+                ctx.lineWidth = 4;
+                cliqueEdges.forEach(edge => {
+                    const start = students.find(s => s.id === edge.from);
+                    const end = students.find(s => s.id === edge.to);
+                    ctx.beginPath();
+                    ctx.moveTo(start.x, start.y);
+                    ctx.lineTo(end.x, end.y);
+                    ctx.stroke();
+                });
+            }
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const clicked = getClickedStudent(x, y);
+            if (clicked) {
+                if (!selectedStudent) {
+                    selectedStudent = clicked;
+                    messageArea.textContent = `Selected Student ${selectedStudent.name}. Click another.`;
+                } else {
+                    if (selectedStudent.id !== clicked.id) {
+                        messageArea.textContent = areSimilar(selectedStudent, clicked) ? `Success! They are similar.` : `Not similar. Try another pair.`;
+                        if (areSimilar(selectedStudent, clicked)) addEdge(selectedStudent, clicked);
+                        selectedStudent = null;
+                        checkClique();
+                    }
+                }
+                draw();
+            }
+        });
+
+        resetButton.addEventListener('click', setup);
+        window.addEventListener('load', setup);
+        window.addEventListener('resize', setup);
+
+        // --- SCRIPT FOR QUIZ ---
+        const quizContainer = document.getElementById('quiz-container');
+        const explanations = {
+            1: "Correct! A clique is a fully connected subgraph. The other options describe general subgraphs, paths, or independent sets.",
+            2: "Correct! In a clique of 'n' nodes, each node is connected to every other node, so its degree is n-1. For n=5, the degree is 4.",
+            3: "Correct! The Handshake Lemma states the sum of degrees is twice the number of edges. So, 2 * 10 = 20."
+        };
+
+        quizContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.quiz-option')) {
+                const button = e.target;
+                const qNum = button.dataset.question;
+                const isCorrect = button.dataset.correct === 'true';
+                const options = quizContainer.querySelectorAll(`button[data-question='${qNum}']`);
+
+                options.forEach(opt => {
+                    opt.disabled = true;
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct');
+                    }
+                });
+
+                if (!isCorrect) {
+                    button.classList.add('incorrect');
+                }
+
+                const explanationEl = document.getElementById(`explanation-${qNum}`);
+                explanationEl.textContent = explanations[qNum];
+                explanationEl.classList.remove('hidden');
+            }
+        });
+
+    </script>
+
+    <!-- 
+    Author/Source Notes:
+    Generated on: August 4, 2025
+    Data Sources: WK9CT1TranscriptsCombined.pdf, WK9CT1SlidesCombined.pdf, WK9CT1ACT_9_3.csv
+    -->
+</body>
+</html>

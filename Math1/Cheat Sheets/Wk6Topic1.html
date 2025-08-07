@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Exponential & Logarithmic Functions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 
+    Chosen Palette: Warm Neutral (Slate Gray, Beige, Soft Amber)
+    Application Structure Plan: A single-page application with a persistent sidebar for thematic navigation (Intro, Exponential, Logarithmic, The Laws, Solver). This non-linear structure promotes user-driven exploration. The core interaction is dynamic content swapping in the main view, supplemented by interactive charts and a step-by-step equation solver to enhance understanding and engagement, which is more effective for learning than a static report.
+    Visualization & Content Choices: 
+    - Exponential/Logarithmic Functions -> Goal: Visualize behavior -> Viz: Chart.js line chart -> Interaction: Slider to change function base, chart updates in real-time. Justification: Shows direct relationship between base and curve steepness.
+    - Laws of Logarithms -> Goal: Explain rules -> Presentation: Tabbed interface -> Interaction: Click tabs to reveal each rule and example. Justification: Organizes related but distinct information cleanly.
+    - Solving Equations -> Goal: Demonstrate application -> Presentation: Interactive Solver Tool -> Interaction: User inputs equation, JS displays step-by-step solution. Justification: Reinforces the primary practical use of logarithms in an engaging, hands-on way.
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f0; /* Warm Beige */
+            color: #4a4a4a;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .sidebar-link.active {
+            background-color: #d4ac0d; /* Soft Amber */
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .sidebar-link:not(.active):hover {
+            background-color: #e0e0d1;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .tab-button.active {
+            border-bottom-color: #d4ac0d;
+            color: #d4ac0d;
+            font-weight: 600;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-full md:w-64 bg-slate-800 text-white p-4 md:p-6 shadow-lg">
+            <h1 class="text-2xl font-bold mb-6 text-amber-300">Math Explorer</h1>
+            <nav id="sidebar-nav">
+                <a href="#" data-target="intro" class="sidebar-link active block py-3 px-4 rounded-lg mb-2">Introduction</a>
+                <a href="#" data-target="exponential" class="sidebar-link block py-3 px-4 rounded-lg mb-2">Exponential Functions</a>
+                <a href="#" data-target="logarithmic" class="sidebar-link block py-3 px-4 rounded-lg mb-2">Logarithmic Functions</a>
+                <a href="#" data-target="laws" class="sidebar-link block py-3 px-4 rounded-lg mb-2">The Laws of Logs</a>
+                <a href="#" data-target="solver" class="sidebar-link block py-3 px-4 rounded-lg mb-2">Interactive Solver</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <!-- Introduction Section -->
+            <section id="intro" class="content-section active">
+                <h2 class="text-3xl font-bold mb-4 text-slate-700">The Core Idea: Perfect Opposites</h2>
+                <p class="mb-6 text-lg">The most important thing to remember is that exponential and logarithmic functions are inverses. They are two sides of the same coin and exist to "undo" one another. This interactive guide will help you explore their properties and applications.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="mb-4"><span class="font-semibold text-amber-600">An exponential function</span> tells you how big something gets after a certain amount of growth. For example, $2^3 = 8$ means doubling something for 3 steps results in 8.</p>
+                    <p><span class="font-semibold text-amber-600">A logarithmic function</span> tells you how much time it took to grow to a certain size. For example, $\log_2(8) = 3$ asks "how many doubling steps does it take to get to 8?".</p>
+                </div>
+            </section>
+
+            <!-- Exponential Section -->
+            <section id="exponential" class="content-section">
+                <h2 class="text-3xl font-bold mb-4 text-slate-700">Exponential Functions: The "Growth" Function</h2>
+                <p class="mb-6 text-lg">This function describes repeated multiplication, leading to rapid, accelerating growth. The general form is $f(x) = a^x$. Use the slider below to see how changing the base 'a' affects the growth curve.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="mb-4">
+                        <label for="exp-base" class="block font-medium mb-2">Base 'a': <span id="exp-base-value" class="font-bold text-amber-600">2.0</span></label>
+                        <input type="range" id="exp-base" min="1.1" max="5" step="0.1" value="2" class="w-full">
+                    </div>
+                    <p class="text-center font-mono text-xl mb-4">Current Function: <span id="exp-function-display">y = 2.0<sup>x</sup></span></p>
+                    <div class="chart-container">
+                        <canvas id="expChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Logarithmic Section -->
+            <section id="logarithmic" class="content-section">
+                <h2 class="text-3xl font-bold mb-4 text-slate-700">Logarithmic Functions: The "How Long?" Function</h2>
+                <p class="mb-6 text-lg">This function is the inverse of the exponential. It finds the exponent needed to reach a certain value. The general form is $f(x) = \log_a(x)$. Notice the vertical asymptote at x=0, which reinforces the rule that you can only take the log of a positive number.</p>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="mb-4">
+                        <label for="log-base" class="block font-medium mb-2">Base 'a': <span id="log-base-value" class="font-bold text-amber-600">2.0</span></label>
+                        <input type="range" id="log-base" min="1.1" max="10" step="0.1" value="2" class="w-full">
+                    </div>
+                    <p class="text-center font-mono text-xl mb-4">Current Function: <span id="log-function-display">y = log<sub>2.0</sub>(x)</span></p>
+                    <div class="chart-container">
+                        <canvas id="logChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Laws Section -->
+            <section id="laws" class="content-section">
+                <h2 class="text-3xl font-bold mb-4 text-slate-700">The Laws of Logarithms</h2>
+                <p class="mb-6 text-lg">These three essential rules let you simplify and solve complex equations. Click on each tab to explore the rule and an example.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-8" id="laws-tabs">
+                            <button class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg" data-target="product-rule">Product Rule</button>
+                            <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg" data-target="quotient-rule">Quotient Rule</button>
+                            <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg" data-target="power-rule">Power Rule</button>
+                        </nav>
+                    </div>
+                    <div class="mt-6">
+                        <div id="product-rule" class="law-content">
+                            <h3 class="text-xl font-semibold text-amber-600">$\log_a(A \cdot B) = \log_a(A) + \log_a(B)$</h3>
+                            <p class="mt-2">Multiplying inside a log is the same as adding the logs outside.</p>
+                            <p class="mt-4 p-4 bg-slate-100 rounded-md font-mono">Example: $\log_2(8 \cdot 16) = \log_2(128) = 7$<br>is the same as<br>$\log_2(8) + \log_2(16) = 3 + 4 = 7$</p>
+                        </div>
+                        <div id="quotient-rule" class="law-content hidden">
+                            <h3 class="text-xl font-semibold text-amber-600">$\log_a(A / B) = \log_a(A) - \log_a(B)$</h3>
+                            <p class="mt-2">Dividing inside a log is the same as subtracting the logs outside.</p>
+                             <p class="mt-4 p-4 bg-slate-100 rounded-md font-mono">Example: $\log_3(81 / 3) = \log_3(27) = 3$<br>is the same as<br>$\log_3(81) - \log_3(3) = 4 - 1 = 3$</p>
+                        </div>
+                        <div id="power-rule" class="law-content hidden">
+                            <h3 class="text-xl font-semibold text-amber-600">$\log_a(A^n) = n \cdot \log_a(A)$</h3>
+                            <p class="mt-2">An exponent inside a log can be moved to the front as a multiplier. This is the most important rule for solving equations.</p>
+                            <p class="mt-4 p-4 bg-slate-100 rounded-md font-mono">Example: $\log_{10}(100^3) = \log_{10}(1,000,000) = 6$<br>is the same as<br>$3 \cdot \log_{10}(100) = 3 \cdot 2 = 6$</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Solver Section -->
+            <section id="solver" class="content-section">
+                <h2 class="text-3xl font-bold mb-4 text-slate-700">Interactive Equation Solver</h2>
+                <p class="mb-6 text-lg">The main application of logarithms is to solve equations where the variable is in the exponent. Enter values for 'b' and 'v' in the equation $b^x = v$ and see how logarithms are used to find 'x'.</p>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center space-x-4 text-2xl mb-6">
+                        <input type="number" id="solver-b" value="5" class="w-24 p-2 border rounded-md text-center">
+                        <span class="font-mono text-3xl"><sup>x</sup></span>
+                        <span>=</span>
+                        <input type="number" id="solver-v" value="90" class="w-24 p-2 border rounded-md text-center">
+                        <button id="solve-btn" class="px-6 py-2 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors">Solve</button>
+                    </div>
+                    <div id="solver-output" class="space-y-3 p-4 bg-slate-100 rounded-md min-h-[200px]">
+                        <p class="text-gray-500">Solution steps will appear here...</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let expChart, logChart;
+
+            const navLinks = document.querySelectorAll('#sidebar-nav a');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function navigateTo(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.dataset.target === targetId);
+                });
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.currentTarget.dataset.target;
+                    navigateTo(targetId);
+                });
+            });
+
+            // Exponential Chart
+            const expCtx = document.getElementById('expChart').getContext('2d');
+            const expBaseSlider = document.getElementById('exp-base');
+            const expBaseValue = document.getElementById('exp-base-value');
+            const expFunctionDisplay = document.getElementById('exp-function-display');
+
+            function getExpData(base) {
+                const data = [];
+                for (let x = -2; x <= 4; x += 0.25) {
+                    data.push({ x: x, y: Math.pow(base, x) });
+                }
+                return data;
+            }
+
+            function createExpChart() {
+                const base = parseFloat(expBaseSlider.value);
+                expChart = new Chart(expCtx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: `y = ${base}^x`,
+                            data: getExpData(base),
+                            borderColor: '#d4ac0d',
+                            backgroundColor: 'rgba(212, 172, 13, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { title: { display: true, text: 'x' } },
+                            y: { title: { display: true, text: 'y' }, beginAtZero: true }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+            
+            expBaseSlider.addEventListener('input', () => {
+                const base = parseFloat(expBaseSlider.value);
+                expBaseValue.textContent = base.toFixed(1);
+                expFunctionDisplay.innerHTML = `y = ${base.toFixed(1)}<sup>x</sup>`;
+                expChart.data.datasets[0].data = getExpData(base);
+                expChart.data.datasets[0].label = `y = ${base}^x`;
+                expChart.update();
+            });
+
+            // Logarithmic Chart
+            const logCtx = document.getElementById('logChart').getContext('2d');
+            const logBaseSlider = document.getElementById('log-base');
+            const logBaseValue = document.getElementById('log-base-value');
+            const logFunctionDisplay = document.getElementById('log-function-display');
+
+            function getLogData(base) {
+                const data = [];
+                for (let x = 0.1; x <= 10; x += 0.25) {
+                    data.push({ x: x, y: Math.log(x) / Math.log(base) });
+                }
+                return data;
+            }
+
+            function createLogChart() {
+                const base = parseFloat(logBaseSlider.value);
+                logChart = new Chart(logCtx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: `y = log_${base}(x)`,
+                            data: getLogData(base),
+                            borderColor: '#4a5568',
+                            backgroundColor: 'rgba(74, 85, 104, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { title: { display: true, text: 'x' }, beginAtZero: true },
+                            y: { title: { display: true, text: 'y' } }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            logBaseSlider.addEventListener('input', () => {
+                const base = parseFloat(logBaseSlider.value);
+                logBaseValue.textContent = base.toFixed(1);
+                logFunctionDisplay.innerHTML = `y = log<sub>${base.toFixed(1)}</sub>(x)`;
+                logChart.data.datasets[0].data = getLogData(base);
+                logChart.data.datasets[0].label = `y = log_${base}(x)`;
+                logChart.update();
+            });
+
+            // Laws Tabs
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const lawContents = document.querySelectorAll('.law-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const targetId = button.dataset.target;
+                    lawContents.forEach(content => {
+                        content.classList.toggle('hidden', content.id !== targetId);
+                    });
+                });
+            });
+
+            // Solver
+            const solveBtn = document.getElementById('solve-btn');
+            const solverOutput = document.getElementById('solver-output');
+            
+            function solveEquation() {
+                const b = parseFloat(document.getElementById('solver-b').value);
+                const v = parseFloat(document.getElementById('solver-v').value);
+
+                if (isNaN(b) || isNaN(v) || b <= 0 || b === 1 || v <= 0) {
+                    solverOutput.innerHTML = `<p class="text-red-600">Error: Please enter valid numbers. Base 'b' must be positive and not equal to 1. Value 'v' must be positive.</p>`;
+                    return;
+                }
+
+                const result = Math.log(v) / Math.log(b);
+
+                const steps = `
+                    <p><strong>1. Original Equation:</strong></p>
+                    <p class="font-mono pl-4">${b}<sup>x</sup> = ${v}</p>
+                    <p><strong>2. Take the natural log (ln) of both sides:</strong></p>
+                    <p class="font-mono pl-4">ln(${b}<sup>x</sup>) = ln(${v})</p>
+                    <p><strong>3. Apply the Power Rule to bring 'x' down:</strong></p>
+                    <p class="font-mono pl-4">x &middot; ln(${b}) = ln(${v})</p>
+                    <p><strong>4. Isolate 'x' by dividing:</strong></p>
+                    <p class="font-mono pl-4">x = ln(${v}) / ln(${b})</p>
+                    <p><strong>5. Final Answer:</strong></p>
+                    <p class="font-mono pl-4 text-amber-600 font-bold">x &approx; ${result.toFixed(4)}</p>
+                `;
+                solverOutput.innerHTML = steps;
+            }
+
+            solveBtn.addEventListener('click', solveEquation);
+            
+            // Initializations
+            createExpChart();
+            createLogChart();
+            solveEquation();
+        });
+    </script>
+</body>
+</html>

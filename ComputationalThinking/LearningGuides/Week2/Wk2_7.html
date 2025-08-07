@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2.7: Max Without Losing Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L2.7: Retaining Information</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#problem" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Problem of Lost Info</a></li>
+                        <li><a href="#solution" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Lock-Step Update</a></li>
+                        <li><a href="#application" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Application: Frequency Counts</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">More Than Just a Number</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We've become experts at finding the maximum value in a dataset with a single, efficient pass. But knowing the maximum value is often only half the story.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        If we find out the highest score in a class is 97, the next logical question is, "<strong>Who</strong> got that score?" This section focuses on a simple but crucial enhancement to our algorithm: how to find the maximum value *and* keep track of the item it belongs to, all without losing information.
+                    </p>
+                </section>
+
+                <!-- The Problem Section -->
+                <section id="problem" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Problem of Lost Information</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Our previous "max so far" algorithm is excellent at finding the maximum value. We use one variable, `max_score`, and by the end of the iteration, it holds the highest number.
+                    </p>
+                    <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">The Missing Piece:</p>
+                        <p>The `max_score` variable only stores a number. It has no memory of which card that number came from. When we update `max_score` from 87 to 97, we remember the 97, but we forget all about the student who scored 87, and we don't store any info about the new student with 97.</p>
+                    </div>
+                    <p class="text-lg text-slate-700">
+                        To answer "who" has the max score, we need to explicitly store identifying information, like a card number or a student's name.
+                    </p>
+                </section>
+
+                <!-- The Solution Section -->
+                <section id="solution" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Lock-Step Update Pattern</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        The solution is to add a second variable that we update in "lock-step" with our `max_score` variable.
+                    </p>
+                    <ol class="list-decimal list-inside space-y-4 text-lg text-slate-700">
+                        <li><strong>Two Variables:</strong> We initialize two variables before the loop: `max_score = 0` and `max_card_id = -1` (or another invalid ID).</li>
+                        <li><strong>The Condition:</strong> The core logic remains the same. Inside the loop, we check: `if current_card.score > max_score`.</li>
+                        <li><strong>The Paired Update:</strong> If the condition is true, we now perform <strong>two</strong> updates together:
+                            <ul class="list-disc list-inside ml-6 mt-2 bg-sky-50 p-4 rounded-lg">
+                                <li>Update the score: `max_score = current_card.score`</li>
+                                <li>Update the identifier: `max_card_id = current_card.id`</li>
+                            </ul>
+                        </li>
+                    </ol>
+                     <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">Handling Ties:</h4>
+                        <p>What if two students both score 97? We can adapt our second variable to be a list. If `current_card.score > max_score`, we start a new list: `max_card_ids = [current_card.id]`. If `current_card.score == max_score`, we simply add to the existing list: `max_card_ids.append(current_card.id)`.</p>
+                    </div>
+                </section>
+
+                <!-- Application Section -->
+                <section id="application" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Application: Using Frequency Counts</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        This idea of gathering data first has powerful applications. For instance, search engines need to find relevant documents. A simple way to do this is to match keywords from your search query with words in documents.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        However, very common words like "the", "is", and "a" appear in almost every document. They don't help distinguish one document from another. A useful strategy is to first count the frequency of all words (Iteration 1) and then filter out the most common ones to create a list of more meaningful, "rare" words for matching (Iteration 2). This helps the search engine provide much better results.
+                    </p>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Find the Topper(s) Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator finds the highest score and the card number(s) of the student(s) who achieved it. Watch how the "Top Score" and "Topper Card(s)" are updated together. The simulator is set up to handle ties!
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Start</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Start' to begin.</div>
+                         <div class="flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 md:space-x-6">
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Current Card</h4>
+                                <div class="w-40 h-24 bg-white rounded-lg shadow-lg border-2 border-sky-400 flex flex-col justify-center items-center">
+                                    <span id="current-card-id" class="text-lg text-slate-500">#?</span>
+                                    <span id="current-card-value" class="text-4xl font-bold text-sky-800">?</span>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Top Score</h4>
+                                <div class="w-40 h-24 bg-white rounded-lg shadow-lg border-2 border-amber-400 flex justify-center items-center">
+                                     <span id="max-score-value" class="text-5xl font-bold text-amber-600">0</span>
+                                </div>
+                            </div>
+                             <div class="text-center">
+                                <h4 class="font-bold mb-2">Topper Card(s)</h4>
+                                <div class="w-40 h-24 bg-white rounded-lg shadow-lg border-2 border-green-400 flex justify-center items-center p-2">
+                                     <span id="max-card-id" class="text-2xl font-bold text-green-700 text-center">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Let's test your knowledge on retaining information while iterating.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const currentCardIdEl = document.getElementById('current-card-id');
+        const currentCardValueEl = document.getElementById('current-card-value');
+        const maxScoreValueEl = document.getElementById('max-score-value');
+        const maxCardIdEl = document.getElementById('max-card-id');
+        
+        let simCards = [];
+        let simInterval;
+
+        function generateCards() {
+            simCards = [];
+            let maxScore = Math.floor(Math.random() * 10) + 90; // 90-99
+            let tiePosition1 = Math.floor(Math.random() * 15);
+            let tiePosition2 = tiePosition1;
+            while(tiePosition2 === tiePosition1) {
+                tiePosition2 = Math.floor(Math.random() * 15);
+            }
+
+            for(let i=0; i<15; i++) {
+                let score = (i === tiePosition1 || i === tiePosition2) ? maxScore : Math.floor(Math.random() * 40) + 50;
+                simCards.push({id: i + 1, score: score});
+            }
+        }
+
+        function resetSimulator() {
+            clearInterval(simInterval);
+            generateCards();
+            simStatus.textContent = "Press 'Start' to begin.";
+            currentCardIdEl.textContent = '#?';
+            currentCardValueEl.textContent = '?';
+            maxScoreValueEl.textContent = '0';
+            maxCardIdEl.textContent = '-';
+            startSimBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            let currentIndex = 0;
+            let maxScore = 0;
+            let maxCardIds = [];
+
+            simInterval = setInterval(() => {
+                if (currentIndex >= simCards.length) {
+                    clearInterval(simInterval);
+                    simStatus.textContent = `Done! Final Topper(s) found.`;
+                    startSimBtn.disabled = false;
+                    return;
+                }
+
+                const card = simCards[currentIndex];
+                currentCardIdEl.textContent = `Card #${card.id}`;
+                currentCardValueEl.textContent = card.score;
+                simStatus.textContent = `Checking Card #${card.id}...`;
+
+                if (card.score > maxScore) {
+                    maxScore = card.score;
+                    maxCardIds = [card.id];
+                    simStatus.textContent = `New high score! Topper is now #${card.id}.`;
+                } else if (card.score === maxScore) {
+                    maxCardIds.push(card.id);
+                    simStatus.textContent = `A tie! Adding #${card.id} to the toppers list.`;
+                }
+                
+                maxScoreValueEl.textContent = maxScore;
+                maxCardIdEl.textContent = maxCardIds.join(', ');
+
+                currentIndex++;
+            }, 800);
+        });
+
+        resetSimBtn.addEventListener('click', resetSimulator);
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            // From AQ2_7.docx
+            {
+                question: "If `maxMarks` is updated `n` times, how many times is `maxCard` updated? (Assume no two cards have the same total marks).",
+                options: ["n-1", "n", "n+1"],
+                correct: ["n"],
+                type: "single",
+                explanation: "The variables are updated in lock-step. Every time `maxMarks` is updated because a new maximum is found, `maxCard` must also be updated to store the ID of that new card. So they are updated the same number of times."
+            },
+            {
+                question: "A pile of N cards is arranged in ascending order of total marks. How many times will `maxCard` be updated?",
+                options: ["N/2", "N-1", "N", "N+1"],
+                correct: ["N"],
+                type: "single",
+                explanation: "Since the cards are in ascending order, every single card will have a higher score than the one before it. Therefore, `maxMarks` and `maxCard` will be updated for every one of the N cards."
+            },
+            {
+                question: "Based on the answers from the above questions, what is the correct relationship between `n` (number of updates) and `N` (number of cards)?",
+                options: ["N = n", "N <= n", "n <= N", "We cannot reach any conclusion."],
+                correct: ["n <= N"],
+                type: "single",
+                explanation: "The number of updates (`n`) can, at most, be equal to the total number of cards (`N`), which happens if the cards are sorted. In all other cases, `n` will be less than `N`. Therefore, `n` is always less than or equal to `N`."
+            },
+            {
+                question: "A procedure has `prev = \"None\"`. It reads a card, checks `If word == \"was\" and prev == \"it\"`, then stores the current word in `prev`. What does it compute?",
+                options: [
+                    "The number of times the word “was” occurs.",
+                    "The number of times the phrase “it was” occurs.",
+                    "The number of times the word “it” occurs."
+                ],
+                correct: ["The number of times the phrase “it was” occurs."],
+                type: "single",
+                explanation: "The procedure only increments the count when the current word is 'was' AND the immediately preceding word (stored in `prev`) was 'it'. This is how you detect a specific two-word phrase."
+            }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

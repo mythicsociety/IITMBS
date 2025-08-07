@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L3.5: Introduction to Procedures and Parameters</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .code-block {
+            background-color: #0f172a; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .code-keyword { color: #7dd3fc; } /* sky-300 */
+        .code-variable { color: #f8fafc; } /* slate-50 */
+        .code-value { color: #fcd34d; } /* amber-300 */
+        .code-comment { color: #94a3b8; } /* slate-400 */
+        .code-proc { color: #a5b4fc; } /* indigo-300 */
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L3.5: Procedures & Parameters</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#problem" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Repetition Problem</a></li>
+                        <li><a href="#solution" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Solution: Procedures</a></li>
+                        <li><a href="#parameters" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Making Procedures Flexible</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Procedure Caller</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Don't Repeat Yourself! 🔄</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        As we build more complex algorithms, we often find ourselves performing the same basic task over and over again with only minor changes. This is inefficient and makes our code harder to manage.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        This section introduces a fundamental concept in programming: the <strong>procedure</strong>. A procedure is a named, reusable block of code that performs a specific task. By using procedures, we can write a piece of logic once and then "call" it whenever we need it, making our algorithms more modular, readable, and efficient.
+                    </p>
+                </section>
+
+                <!-- The Repetition Problem Section -->
+                <section id="problem" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Repetition Problem</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Consider the task of finding the maximum score for Maths, then for Physics, then for Chemistry, and finally for the Total. The underlying algorithm is identical every time:
+                    </p>
+                    <ol class="list-decimal list-inside space-y-3 text-lg text-slate-700">
+                        <li>Initialize a `max` variable to 0.</li>
+                        <li>Iterate through all the cards.</li>
+                        <li>For each card, compare a specific field's value to `max`.</li>
+                        <li>If the card's value is greater, update `max`.</li>
+                    </ol>
+                    <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">The Inefficiency:</p>
+                        <p>Without procedures, we would have to write this same block of code four separate times. The only thing that changes is the field we are looking at (`X.Maths`, `X.Physics`, etc.). This is a classic sign that we need a more general, reusable solution.</p>
+                    </div>
+                </section>
+
+                <!-- The Solution Section -->
+                <section id="solution" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Solution: Creating a Procedure</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We can encapsulate this repeated logic into a single <strong>procedure</strong>. A procedure is like a mini-program that we can call upon to do a specific job. We give it a name and define the steps it should take.
+                    </p>
+                    <div class="code-block">
+                        <span class="code-keyword">Procedure</span> <span class="code-proc">Maxmarks</span>() {<br>
+                        &nbsp;&nbsp;<span class="code-variable">Maxval</span> = <span class="code-value">0</span><br>
+                        &nbsp;&nbsp;<span class="code-keyword">while</span> (Pile 1 has more cards) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;... pick and move card X ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> (<span class="code-variable">X.Maths</span> > <span class="code-variable">Maxval</span>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-variable">Maxval</span> = <span class="code-variable">X.Maths</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;<span class="code-keyword">return</span>(<span class="code-variable">Maxval</span>)<br>
+                        }
+                    </div>
+                    <p class="text-lg text-slate-700 mt-4">This is a good start, but it's not flexible. It's hardcoded to only find the maximum for Maths. How do we tell it which subject to check?</p>
+                </section>
+                
+                <!-- Parameters Section -->
+                <section id="parameters" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Making Procedures Flexible with Parameters</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We make procedures flexible by using <strong>parameters</strong> (also called arguments). A parameter is a piece of information we pass *into* the procedure when we call it, which the procedure can then use in its logic.
+                    </p>
+                    <div class="code-block">
+                        <span class="code-keyword">Procedure</span> <span class="code-proc">Maxmarks</span>(<span class="code-variable">fld</span>) {<br>
+                        &nbsp;&nbsp;<span class="code-variable">Maxval</span> = <span class="code-value">0</span><br>
+                        &nbsp;&nbsp;<span class="code-keyword">while</span> (Pile 1 has more cards) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;... pick and move card X ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> (<span class="code-variable">X</span>.<span class="code-proc">fld</span> > <span class="code-variable">Maxval</span>) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-variable">Maxval</span> = <span class="code-variable">X</span>.<span class="code-proc">fld</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;<span class="code-keyword">return</span>(<span class="code-variable">Maxval</span>)<br>
+                        }
+                    </div>
+                    <p class="text-lg text-slate-700 mt-4">
+                        Now, our procedure is generic! The `fld` parameter acts as a placeholder. When we call the procedure, we provide a specific field name:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 text-lg text-slate-700 mt-4">
+                        <li>Calling `Maxmarks(Maths)` will find the max Maths score.</li>
+                        <li>Calling `Maxmarks(Physics)` will find the max Physics score.</li>
+                        <li>Calling `Maxmarks(Total)` will find the max Total score.</li>
+                    </ul>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Interactive Procedure Caller</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        Use the buttons below to "call" the `Maxmarks` procedure with different parameters. The simulator will iterate through the cards and return the maximum value for the subject you choose.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex flex-wrap justify-center gap-4 mb-4">
+                            <button data-subject="math" class="subject-btn px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Find Max(Maths)</button>
+                            <button data-subject="phys" class="subject-btn px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition-colors">Find Max(Physics)</button>
+                            <button data-subject="chem" class="subject-btn px-6 py-2 bg-emerald-600 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-75 transition-colors">Find Max(Chemistry)</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Select a subject to find the maximum score.</div>
+                         <div class="flex justify-center items-center gap-8">
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Cards Remaining</h4>
+                                <div id="deck-count" class="text-4xl font-bold text-slate-500 p-4">8</div>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="font-bold mb-2">Return Value</h4>
+                                <div class="w-32 h-32 bg-white rounded-full shadow-lg border-4 border-amber-400 flex flex-col justify-center items-center">
+                                     <span id="return-value" class="text-5xl font-bold text-amber-600">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of procedures and parameters.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const simStatus = document.getElementById('sim-status');
+        const deckCountEl = document.getElementById('deck-count');
+        const returnValueEl = document.getElementById('return-value');
+        const subjectBtns = document.querySelectorAll('.subject-btn');
+        
+        const simStudents = [
+            { id: 1, name: "Rahul", math: 97, phys: 92, chem: 92 },
+            { id: 2, name: "Deepika", math: 97, phys: 91, chem: 88 },
+            { id: 3, name: "Abirami", math: 72, phys: 92, chem: 97 },
+            { id: 4, name: "Aditya", math: 84, phys: 92, chem: 76 },
+            { id: 5, name: "Kalyan", math: 93, phys: 68, chem: 91 },
+            { id: 6, name: "Priya", math: 62, phys: 80, chem: 85 },
+            { id: 7, name: "Suresh", math: 88, phys: 70, chem: 75 },
+            { id: 8, name: "Kavya", math: 64, phys: 72, chem: 68 }
+        ];
+        let simInterval;
+
+        function runProcedure(subject) {
+            clearInterval(simInterval);
+            subjectBtns.forEach(btn => btn.disabled = true);
+            simStatus.textContent = `Calling Maxmarks(${subject})...`;
+            
+            let maxVal = 0;
+            let cardIndex = 0;
+            returnValueEl.textContent = '...';
+
+            simInterval = setInterval(() => {
+                if (cardIndex >= simStudents.length) {
+                    clearInterval(simInterval);
+                    simStatus.textContent = `Procedure finished. Returned ${maxVal}.`;
+                    subjectBtns.forEach(btn => btn.disabled = false);
+                    return;
+                }
+                
+                const card = simStudents[cardIndex];
+                const score = card[subject];
+                deckCountEl.textContent = simStudents.length - (cardIndex + 1);
+                simStatus.textContent = `Checking ${card.name}'s ${subject} score: ${score}`;
+
+                if (score > maxVal) {
+                    maxVal = score;
+                    returnValueEl.textContent = maxVal;
+                }
+
+                cardIndex++;
+            }, 500);
+        }
+
+        subjectBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                runProcedure(btn.dataset.subject);
+            });
+        });
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "What is the datatype of the value returned by the procedure MAX?", options: ["Integer", "Boolean", "Character"], correct: ["Integer"], type: "single", explanation: "The MAX procedure calculates and returns a number (the maximum mark), which is an Integer." },
+            { question: "True or False: The logic used by the procedure MAX to compute the maximum marks depends on the parameter that is passed to it.", options: ["True", "False"], correct: ["False"], type: "single", explanation: "False. The core logic (initialize, loop, compare, update) is always the same. The parameter only changes *which data field* the logic operates on." },
+            { question: "True or False: The maximum total is equal to the sum of the maximum marks in the three subjects.", options: ["True", "False"], correct: ["False"], type: "single", explanation: "False. It's very unlikely that one student is the topper in all three subjects. The max total will belong to a student with a good overall balance, while the sum of individual maxes is a theoretical total that may not be achievable by any single student." },
+            { question: "A cloned dataset has `maths-clone = 100 - original_maths`. After running the code shown, what does the variable `max` store?", image: "https://i.imgur.com/v8tT9oY.png", options: ["The minimum maths marks in the original dataset", "The maximum maths marks in the cloned dataset", "The minimum maths marks in the cloned dataset", "The maximum maths marks in the original dataset"], correct: ["The minimum maths marks in the original dataset"], type: "single", explanation: "Finding the maximum of (100 - score) is the same as finding the minimum of the original scores. If the original minimum was 20, the cloned maximum would be 80. Then `100 - 80` gives you 20 back." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const imageHtml = q.image ? `<img src="${q.image}" alt="Quiz question image" class="my-4 border rounded-md">` : '';
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        ${imageHtml}
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

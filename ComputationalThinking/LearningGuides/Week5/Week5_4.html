@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L5.4: Advanced List Operations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Style for the hamburger menu */
+        .hamburger-icon span {
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L5.4: Advanced Operations</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L5.4</a>
+                <a href="#intersection-procedure" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Intersection Procedure</a>
+                <a href="#four-list-problem" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Four-List Problem</a>
+                <a href="#strategy-visualizer" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Strategy Visualizer</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L5.4: Generalizing List Operations</h1>
+                <p class="text-lg">In our previous lesson, we solved the "Three Prizes Problem" by finding the intersection of three lists. But what if we had four subjects? Or five? Writing a new set of nested loops every time isn't practical.</p>
+                <p class="text-lg mt-4">This guide focuses on a more powerful approach: creating a reusable <strong>procedure</strong> for our intersection logic. We'll define a formal `Intersection` procedure and then explore different strategies for using it to solve a more complex "Four-List Problem." This demonstrates a core principle of programming: write code that is general, reusable, and adaptable to new challenges.</p>
+            </section>
+
+            <section id="intersection-procedure" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The `Intersection` Procedure</h2>
+                <p class="text-lg mb-4">The nested `foreach` loop we've been using to find common elements is a perfect candidate for a reusable procedure. A procedure is a named block of code that performs a specific task. By defining it once, we can call it anytime we need it, making our main logic cleaner and easier to understand.</p>
+                <p class="text-lg mb-4">Here is the formal pseudocode for an `Intersection` procedure. It takes two lists as input (<code>aList</code> and <code>bList</code>) and returns a new list (<code>cList</code>) containing only the elements found in both.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p><span class="text-purple-400">Procedure</span> Intersection(aList, bList)</p>
+                    <p class="ml-4">cList = []</p>
+                    <p class="ml-4"><span class="text-purple-400">foreach</span> a <span class="text-purple-400">in</span> aList {</p>
+                    <p class="ml-8"><span class="text-purple-400">foreach</span> b <span class="text-purple-400">in</span> bList {</p>
+                    <p class="ml-12"><span class="text-purple-400">if</span> (a == b) {</p>
+                    <p class="ml-16">cList = cList ++ [a]</p>
+                    <p class="ml-12">}</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4"><span class="text-purple-400">return</span> (cList)</p>
+                    <p><span class="text-purple-400">End Procedure</span></p>
+                </div>
+                <p class="text-lg mt-4">With this procedure, finding the toppers in Maths and Physics is as simple as calling: <code>K = Intersection(M, P)</code>.</p>
+            </section>
+            
+            <section id="four-list-problem" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The Four-List Problem</h2>
+                <p class="text-lg mb-4">Now, let's expand our problem. Imagine we have four lists of top students: <code>list1</code>, <code>list2</code>, <code>list3</code>, and <code>list4</code>. How can we find the students common to all four lists using our new `Intersection` procedure?</p>
+                <p class="text-lg mb-4">There isn't just one right way to do this. We can combine our pairwise intersections in different orders. Let's look at two valid strategies.</p>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Strategy 1: Sequential Intersection</h3>
+                <p class="text-lg mb-4">This strategy works like a chain. We intersect the first two lists, then take that result and intersect it with the third list, and so on, until all lists have been processed.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>// Find common elements in list1 and list2</p>
+                    <p>list12 = Intersection(list1, list2)</p>
+                    <br>
+                    <p>// Take that result and find common elements with list3</p>
+                    <p>list123 = Intersection(list12, list3)</p>
+                    <br>
+                    <p>// Take that result and find common elements with list4</p>
+                    <p>list1234 = Intersection(list123, list4)</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Strategy 2: Parallel (Paired) Intersection</h3>
+                <p class="text-lg mb-4">This strategy works by pairing up the lists, finding the intersections of the pairs, and then finding the intersection of the results. This can be visualized as a tournament bracket.</p>
+                 <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>// Find intersection of the first pair</p>
+                    <p>list12 = Intersection(list1, list2)</p>
+                    <br>
+                    <p>// Find intersection of the second pair</p>
+                    <p>list34 = Intersection(list3, list4)</p>
+                    <br>
+                    <p>// Find the final intersection of the two intermediate results</p>
+                    <p>list1234 = Intersection(list12, list34)</p>
+                </div>
+                <p class="text-lg mt-4 font-bold text-green-700">Both strategies are correct and will produce the exact same final list. The choice between them might depend on the specific problem or opportunities for parallel processing.</p>
+            </section>
+
+            <section id="strategy-visualizer" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Strategy Visualizer</h2>
+                <p class="text-lg mb-4">Use the buttons below to visualize the flow of data for the two different intersection strategies. This will help you see how both paths lead to the same result.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex justify-center mb-4 space-x-4">
+                        <button id="strat1-btn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sequential Strategy</button>
+                        <button id="strat2-btn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Parallel Strategy</button>
+                        <button id="strat-reset-btn" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Reset</button>
+                    </div>
+                    <svg id="strategy-svg" class="w-full max-w-4xl mx-auto" viewBox="0 0 800 550"></svg>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">This lesson expanded on our list-processing skills by introducing more abstract and reusable approaches.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Abstraction with Procedures:</strong> By encapsulating the nested-loop logic into a reusable `Intersection` procedure, we can simplify our main code and think about the problem at a higher level.</li>
+                    <li><strong>Multiple Correct Strategies:</strong> For complex problems like finding the intersection of many lists, there can be several different, equally correct algorithms (e.g., sequential vs. parallel).</li>
+                    <li><strong>Generalization:</strong> The strategies we learned for four lists can be extended to any number of lists, demonstrating the power of generalizable solutions in computational thinking.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these advanced pseudocode operations.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Strategy Visualizer Logic
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.getElementById('strategy-svg');
+
+            const elements = {
+                list1: { x: 50, y: 50, w: 100, h: 50, text: 'list1' },
+                list2: { x: 250, y: 50, w: 100, h: 50, text: 'list2' },
+                list3: { x: 450, y: 50, w: 100, h: 50, text: 'list3' },
+                list4: { x: 650, y: 50, w: 100, h: 50, text: 'list4' },
+                list12: { x: 150, y: 200, w: 100, h: 50, text: 'list12' },
+                list34: { x: 550, y: 200, w: 100, h: 50, text: 'list34' },
+                list123: { x: 350, y: 350, w: 100, h: 50, text: 'list123' },
+                list1234: { x: 350, y: 450, w: 100, h: 50, text: 'list1234' }
+            };
+
+            const allArrows = [];
+
+            function createVisualElements() {
+                svg.innerHTML = ''; // Clear previous
+                const defs = document.createElementNS(svgNS, 'defs');
+                const marker = document.createElementNS(svgNS, 'marker');
+                marker.setAttribute('id', 'arrowhead');
+                marker.setAttribute('viewBox', '0 0 10 10');
+                marker.setAttribute('refX', '5');
+                marker.setAttribute('refY', '5');
+                marker.setAttribute('markerWidth', '6');
+                marker.setAttribute('markerHeight', '6');
+                marker.setAttribute('orient', 'auto-start-reverse');
+                const path = document.createElementNS(svgNS, 'path');
+                path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+                path.setAttribute('fill', '#9CA3AF');
+                marker.appendChild(path);
+                defs.appendChild(marker);
+                svg.appendChild(defs);
+
+                Object.entries(elements).forEach(([key, el]) => {
+                    const group = document.createElementNS(svgNS, 'g');
+                    const rect = document.createElementNS(svgNS, 'rect');
+                    rect.setAttribute('x', el.x);
+                    rect.setAttribute('y', el.y);
+                    rect.setAttribute('width', el.w);
+                    rect.setAttribute('height', el.h);
+                    rect.setAttribute('rx', 10);
+                    rect.setAttribute('fill', '#E0E7FF');
+                    rect.setAttribute('stroke', '#6366F1');
+                    rect.setAttribute('stroke-width', 2);
+                    const text = document.createElementNS(svgNS, 'text');
+                    text.setAttribute('x', el.x + el.w / 2);
+                    text.setAttribute('y', el.y + el.h / 2 + 5);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('fill', '#4338CA');
+                    text.style.fontFamily = 'Inter, sans-serif';
+                    text.style.fontWeight = '600';
+                    text.textContent = el.text;
+                    group.appendChild(rect);
+                    group.appendChild(text);
+                    group.setAttribute('id', `group-${key}`);
+                    group.style.opacity = '0.3';
+                    svg.appendChild(group);
+                });
+            }
+
+            function createArrow(fromKey, toKey, isParallel = false) {
+                const from = elements[fromKey];
+                const to = elements[toKey];
+                const line = document.createElementNS(svgNS, 'line');
+                const fromX = from.x + from.w / 2;
+                const fromY = from.y + from.h;
+                let toX = to.x + to.w / 2;
+                let toY = to.y;
+                
+                if (isParallel) {
+                   if (fromKey === 'list12') toX -= 20;
+                   if (fromKey === 'list34') toX += 20;
+                   if (fromKey === 'list3' || fromKey === 'list4') toY = elements.list34.y;
+                }
+
+                line.setAttribute('x1', fromX);
+                line.setAttribute('y1', fromY);
+                line.setAttribute('x2', fromX); // Start straight down
+                line.setAttribute('y2', fromY);
+                line.setAttribute('stroke', '#9CA3AF');
+                line.setAttribute('stroke-width', 2);
+                line.setAttribute('marker-end', 'url(#arrowhead)');
+                line.style.transition = 'all 1s ease-in-out';
+                svg.appendChild(line);
+                allArrows.push({line, fromX, fromY, toX, toY});
+                return {line, fromX, fromY, toX, toY};
+            }
+            
+            function animateArrow({line, fromX, fromY, toX, toY}) {
+                 setTimeout(() => {
+                    line.setAttribute('x2', toX);
+                    line.setAttribute('y2', toY);
+                }, 100);
+            }
+
+            function showElements(ids) {
+                Object.keys(elements).forEach(key => {
+                    document.getElementById(`group-${key}`).style.opacity = ids.includes(key) ? '1' : '0.3';
+                });
+            }
+
+            function resetVisualization() {
+                allArrows.forEach(({line}) => line.remove());
+                allArrows.length = 0;
+                showElements(['list1', 'list2', 'list3', 'list4', 'list12', 'list34', 'list123', 'list1234']);
+            }
+
+            document.getElementById('strat1-btn').addEventListener('click', () => {
+                resetVisualization();
+                showElements(['list1', 'list2', 'list3', 'list4', 'list12', 'list123', 'list1234']);
+                animateArrow(createArrow('list1', 'list12'));
+                animateArrow(createArrow('list2', 'list12'));
+                setTimeout(() => animateArrow(createArrow('list12', 'list123')), 1000);
+                setTimeout(() => animateArrow(createArrow('list3', 'list123')), 1000);
+                setTimeout(() => animateArrow(createArrow('list123', 'list1234')), 2000);
+                setTimeout(() => animateArrow(createArrow('list4', 'list1234')), 2000);
+            });
+
+            document.getElementById('strat2-btn').addEventListener('click', () => {
+                resetVisualization();
+                const finalNode = elements.list1234;
+                finalNode.y = 350; // Move up for parallel view
+                createVisualElements(); // Redraw with new position
+                showElements(['list1', 'list2', 'list3', 'list4', 'list12', 'list34', 'list1234']);
+                
+                animateArrow(createArrow('list1', 'list12'));
+                animateArrow(createArrow('list2', 'list12'));
+                animateArrow(createArrow('list3', 'list34'));
+                animateArrow(createArrow('list4', 'list34'));
+                setTimeout(() => animateArrow(createArrow('list12', 'list1234', true)), 1000);
+                setTimeout(() => animateArrow(createArrow('list34', 'list1234', true)), 1000);
+                finalNode.y = 450; // Reset for next time
+            });
+            
+            document.getElementById('strat-reset-btn').addEventListener('click', resetVisualization);
+
+            createVisualElements();
+            showElements(['list1', 'list2', 'list3', 'list4', 'list12', 'list34', 'list123', 'list1234']);
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ5_4.docx (1 question)
+                {
+                    question: "Let `list1`, `list2`, `list3`, and `list4` be four non-empty lists. Select the correct code fragments that find the elements common among all four lists, using the provided `Intersection` procedure. (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: [
+                        "list12 = Intersection(list1, list2); list34 = Intersection(list3, list4); list1234 = Intersection(list12, list34);",
+                        "list13 = Intersection(list1, list3); list24 = Intersection(list2, list4); list1234 = Intersection(list13, list24);",
+                        "list12 = Intersection(list1, list2); list23 = Intersection(list2, list3); list1234 = Intersection(list12, list23);",
+                        "list12 = Intersection(list1, list2); list123 = Intersection(list12, list3); list1234 = Intersection(list123, list4);"
+                    ],
+                    correct: [
+                        "list12 = Intersection(list1, list2); list34 = Intersection(list3, list4); list1234 = Intersection(list12, list34);",
+                        "list13 = Intersection(list1, list3); list24 = Intersection(list2, list4); list1234 = Intersection(list13, list24);",
+                        "list12 = Intersection(list1, list2); list123 = Intersection(list12, list3); list1234 = Intersection(list123, list4);"
+                    ],
+                    explanation: "The sequential strategy (last option) and both variations of the parallel/paired strategy (first two options) are correct. The third option is incorrect because it never includes `list4` in the intersection and incorrectly intersects `list12` with `list23`, which doesn't logically lead to the overall intersection."
+                },
+                // New questions (2)
+                {
+                    question: "You are given a reusable procedure `Union(aList, bList)` that returns all unique elements from both lists. If you are asked to find the intersection of `listA` and `listB`, can you do it using only the `Union` procedure and basic list operations?",
+                    type: "single-choice",
+                    answers: [
+                        "Yes, by calculating Union(listA, listB) - listA - listB",
+                        "No, finding an intersection is fundamentally different and cannot be done with a Union procedure",
+                        "Yes, by finding elements that are in Union(listA, listB) but not in the lists of unique elements",
+                        "No, because Union might introduce duplicates"
+                    ],
+                    correct: ["No, finding an intersection is fundamentally different and cannot be done with a Union procedure"],
+                    explanation: "Intersection (AND logic) and Union (OR logic) are distinct set operations. You cannot derive the intersection of two lists by only using a union function, as you have no way to identify only the elements that were common to both original lists."
+                },
+                {
+                    question: "Using a reusable `Intersection` procedure is an example of what programming principle?",
+                    type: "single-choice",
+                    answers: ["Iteration", "Conditionals", "Abstraction", "Data Storage"],
+                    correct: ["Abstraction"],
+                    explanation: "Abstraction is the principle of hiding complex reality while exposing only the essential parts. By creating an `Intersection` procedure, we hide the complex nested loops and can simply think about the high-level idea of 'intersecting two lists'."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="font-mono text-sm">${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join('<br>')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

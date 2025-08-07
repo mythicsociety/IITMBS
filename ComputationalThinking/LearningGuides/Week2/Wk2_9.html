@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2.9: Introduction to Pseudocode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .code-block {
+            background-color: #f1f5f9;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L2.9: Intro to Pseudocode</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#why-text" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Why Not Just Flowcharts?</a></li>
+                        <li><a href="#what-is-pseudo" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">What is Pseudocode?</a></li>
+                        <li><a href="#example" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Flowchart vs. Pseudocode</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">From Pictures to Text ✍️</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        So far, we've used flowcharts to visualize our algorithms. They are a fantastic tool for understanding the logical flow, decisions, and loops in a process.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        However, as our procedures become more complex, drawing and sharing flowcharts can become cumbersome. In this section, we'll introduce a powerful, text-based way to describe algorithms called <strong>pseudocode</strong>.
+                    </p>
+                </section>
+
+                <!-- Why Text Section -->
+                <section id="why-text" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Why Not Just Flowcharts?</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        While flowcharts are great for visualization, they have some practical limitations:
+                    </p>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-slate-700">
+                        <li><strong>Size:</strong> Complex algorithms result in large, sprawling flowcharts that are hard to fit on a single screen or page.</li>
+                        <li><strong>Collaboration:</strong> Sharing and editing a diagram is much harder than sharing and editing a text document. It's difficult for multiple people to work on the same flowchart.</li>
+                        <li><strong>Versioning:</strong> Tracking changes between different versions of a flowchart is not easy. It's hard to see exactly what was added or modified.</li>
+                    </ul>
+                </section>
+
+                <!-- What is Pseudocode Section -->
+                <section id="what-is-pseudo" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">What is Pseudocode?</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        <strong>Pseudocode</strong> (which means "fake code") is a bridge between plain English and a real programming language. It's a structured way of writing out an algorithm using text, without worrying about the strict syntax of a specific language like Python or Java.
+                    </p>
+                    <p class="text-lg text-slate-700 mb-4">
+                        It uses keywords and indentation to make the structure clear. Key features include:
+                    </p>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-slate-700">
+                        <li><strong>Assignments:</strong> Setting the value of a variable, like `count = 0`.</li>
+                        <li><strong>Conditional Execution:</strong> Performing an action only if a condition is true, using keywords like `if`.</li>
+                        <li><strong>Repeated Execution (Loops):</strong> Repeating a block of actions as long as a condition is true, using keywords like `while`.</li>
+                    </ul>
+                </section>
+                
+                <!-- Example Section -->
+                <section id="example" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Flowchart vs. Pseudocode: Counting Cards</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        Let's look at our simple card-counting algorithm in both formats. Notice how the pseudocode captures the exact same logic as the flowchart in a more compact, text-based way.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-center mb-4">Flowchart</h3>
+                            <div class="bg-white p-4 rounded-xl shadow-md">
+                                <img src="https://i.imgur.com/8a3eY2g.png" alt="Flowchart for counting cards" class="mx-auto w-full max-w-xs">
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-center mb-4">Pseudocode</h3>
+                            <div class="bg-white p-4 rounded-xl shadow-md h-full">
+                                <div class="code-block text-slate-800">
+                                    count = 0<br><br>
+                                    while (Pile 1 has more cards) {<br>
+                                    &nbsp;&nbsp;Pick a card X from Pile 1<br>
+                                    &nbsp;&nbsp;Move X to Pile 2<br>
+                                    &nbsp;&nbsp;Increment count<br>
+                                    }
+                                </div>
+                                <div class="mt-4 text-slate-600">
+                                    <p><strong class="text-sky-700">while (...) { ... }</strong> creates a loop. The indented code inside the curly braces `{}` is repeated as long as the condition in the parentheses is true.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of pseudocode basics.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            {
+                question: "Is the following representation a pseudocode?",
+                image: "https://i.imgur.com/5J3g3i4.png",
+                options: ["Yes", "No"],
+                correct: ["No"],
+                type: "single",
+                explanation: "No. This is a textual description of an algorithm using numbered steps and 'go to' instructions, which is less structured than formal pseudocode that uses keywords like 'while' or 'if'."
+            },
+            {
+                question: "If there are N cards in the dataset, what will the variable `count` store at the end of this execution?",
+                image: "https://i.imgur.com/KqW4f4X.png",
+                options: ["N", "N+1", "2N", "0"],
+                correct: ["2N"],
+                type: "single",
+                explanation: "The loop runs N times. Inside the loop, `count` is incremented twice for each card. Therefore, the final value will be 2 * N."
+            },
+            {
+                question: "What will happen when the following code is executed?",
+                image: "https://i.imgur.com/k6iG1eC.png",
+                options: [
+                    "The code will terminate after all cards have been seen",
+                    "The code will never terminate and will keep running forever"
+                ],
+                correct: ["The code will never terminate and will keep running forever"],
+                type: "single",
+                explanation: "The card is moved to the *bottom* of Pile 1, not to a separate pile. This means Pile 1 will never be empty, and the condition 'Pile 1 has more cards' will always be true, creating an infinite loop."
+            },
+            {
+                question: "What is the main advantage of pseudocode over a simple numbered list of steps?",
+                options: [
+                    "It uses fewer words.",
+                    "It can be directly run on a computer.",
+                    "It uses structured keywords like `while` and `if` to clearly show loops and decisions.",
+                    "It must be written in English."
+                ],
+                correct: ["It uses structured keywords like `while` and `if` to clearly show loops and decisions."],
+                type: "single",
+                explanation: "The structure provided by keywords and indentation makes the logic of loops and conditionals much clearer and less ambiguous than 'go to step X' instructions."
+            }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const imageHtml = q.image ? `<img src="${q.image}" alt="Quiz question image" class="my-4 border rounded-md">` : '';
+
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        ${imageHtml}
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+MASTER PROMPT FOR ANKI DECK GENERATION (WEEK 6 – COMPUTATIONAL THINKING)
+
+I want you to build a complete Anki deck based on Week 6 of the Computational Thinking 1 course.  
+The deck should strictly follow the style, tone, and difficulty level of the Week 6 Graded Assignment.  
+Here's what I need you to follow exactly:
+
+INPUTS
+
+- Use both the slides and the lecture transcripts for Week 6.
+- Also refer to the graded assignment file (I will upload this) as the main benchmark.
+- Do not assume the student remembers pseudocode — include it when required.
+
+CONTENT REQUIREMENTS
+
+1. Topics to Cover:
+   - Insert(X, books)
+   - SortedListInsert
+   - InsertionSort
+   - SimpleGradeAssignment
+   - List Functions (first, rest, init, last)
+   - Hypothesis Testing
+   - Pseudocode Line Logic
+
+2. Number of Questions:
+   - 15 unique questions per topic (total 105 cards)
+
+3. Question Format:
+   - Use MCQ/MSQ format modeled after the graded assignment
+   - Embed answer options with HTML <ul><li> for Anki compatibility
+   - Include the correct answer(s) and a clear, GA-style explanation
+
+4. Pseudocode Inclusion:
+   - For any “which line” or structure-based question, include the full relevant pseudocode block (with line numbers) as shown in the graded assignment
+   - Do not expect memorization
+
+5. Difficulty and Style:
+   - Match or slightly exceed the difficulty level of the graded assignment
+   - Use similar wording, phrasing, and logic reasoning
+
+6. Duplicates and Variations:
+   - No duplicate questions
+   - A maximum of 3 controlled variations per logic concept is allowed (with changed inputs or structure)
+
+OUTPUT FORMAT
+
+1. Provide the output as:
+   - A CSV file (Anki-ready, ; -separated, with "Front", "Back", "Extra")
+   - A PDF file for printable revision
+
+2. Each flashcard should include:
+   - Question (with pseudocode if needed)
+   - Options (formatted as <ul><li>a) ...</li>...)
+   - Answer (Correct: a), b) style)
+   - Explanation (<b>Explanation:</b> ... style)
+
+EXAMPLE STYLE
+
+Question:
+<pre>1. Procedure Insert(X, books)
+2.   inserted = False
+3.   sBooks = []
+4.   foreach Y in books {
+5.     if (X.Pages <= last(Y)) {
+6.       sBooks = sBooks ++ [X]
+7.       inserted = True
+8.     }
+9.     sBooks = sBooks ++ [Y]
+10.  }
+11.  if (inserted == False) {
+12.    sBooks = sBooks ++ [X]
+13.  }
+14.  return sBooks
+15. End Procedure</pre>
+Which line appends X to sBooks if it wasn't inserted earlier?<br>
+<ul>
+<li>a) Line 6</li>
+<li>b) Line 9</li>
+<li>c) Line 11</li>
+<li>d) Line 14</li>
+</ul>
+
+Answer:
+Correct: c)
+
+Extra:
+<b>Explanation:</b> Line 11 handles the case where X.Pages was greater than all Y.Pages and was never inserted in the loop.
+
+EXPECTED FILE NAMES
+
+- Wk6_AnkiDeck_GradedAssignmentStyle.csv
+- Wk6_AnkiDeck_GradedAssignmentStyle.pdf

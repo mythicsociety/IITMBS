@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2.4: Max with an Unknown Number of Categories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L2.4: Max with Dynamic Variables</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#challenge" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Dynamic Challenge</a></li>
+                        <li><a href="#solution" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Combined Approach</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">What if We Don't Know Who's Playing?</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        So far, we've dealt with situations where we knew our categories in advance (e.g., boys and girls) or where we were calculating a single value from a group (like sentence length).
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        But what happens when we don't know how many categories we'll need to track? This section tackles the challenge of finding a maximum value when new categories can appear at any point during our single iteration.
+                    </p>
+                </section>
+
+                <!-- The Challenge Section -->
+                <section id="challenge" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Dynamic Challenge: Finding the Most Popular Shop</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Imagine our task is to find which shop is the most popular by counting the number of bills for each one. We have a large stack of shopping bills from various stores.
+                    </p>
+                    <p class="text-lg text-slate-700 mb-4">
+                        When we start, we have no idea how many different shops are in our stack. The first bill is from "SV Stores". The second is from "Big Bazaar". The sixth is from "Sun General". A new shop could appear on the 100th bill! We can't set up variables for each shop at the beginning because we don't know which shops exist.
+                    </p>
+                    <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">The Core Problem:</p>
+                        <p>We need a way to create new counters on the fly as we encounter new shops, all while still keeping track of the maximum count we've seen so far in a single pass.</p>
+                    </div>
+                </section>
+
+                <!-- The Solution Section -->
+                <section id="solution" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Combined Approach: Dynamic Counters + Max So Far</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We can solve this by combining our previous patterns. We'll track the count for each shop dynamically and simultaneously track the overall maximum.
+                    </p>
+                    <ol class="list-decimal list-inside space-y-4 text-lg text-slate-700">
+                        <li><strong>Initialize `max_bills`:</strong> We start with a variable `max_bills = 0`. This will hold our "max so far" value.</li>
+                        <li><strong>Process the First Bill:</strong> We see a bill from "SV Stores". Since we've never seen this shop, we create a new counter for it, `sv_stores_count`, and set it to 1. Because 1 is greater than `max_bills` (0), we update `max_bills` to 1.</li>
+                        <li><strong>Process a New Shop:</strong> The next bill is from "Big Bazaar". It's a new shop, so we create `big_bazaar_count = 1`. This is not greater than `max_bills` (which is 1), so `max_bills` remains unchanged.</li>
+                        <li><strong>Process a Known Shop:</strong> The next bill is another one from "SV Stores". We find its existing counter, `sv_stores_count`, and increment it to 2. Now, we compare this new value (2) to `max_bills` (1). Since 2 is greater, we update `max_bills` to 2.</li>
+                    </ol>
+                     <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">The Key Insight:</h4>
+                        <p>Every single time we increment a shop's counter, we immediately perform a comparison: <strong>Is this shop's new count greater than our current `max_bills`?</strong> If yes, we update `max_bills`. This ensures that `max_bills` is always synchronized with the highest count seen so far, across all dynamically created counters.</p>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Most Popular Shop Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator processes a series of shopping bills. Watch how new counters are added to the "Shop Counts" list as new stores appear. Pay close attention to how the "Max Bills So Far" value is only updated when one of the shop counts surpasses it.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 transition-colors">Start</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-75 transition-colors">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Start' to begin.</div>
+                         <div class="flex flex-col md:flex-row justify-around items-start space-y-6 md:space-y-0 md:space-x-6">
+                            <div class="flex-1 text-center">
+                                <h4 class="font-bold mb-2">Current Bill</h4>
+                                <div id="current-bill-display" class="w-48 mx-auto h-20 bg-white rounded-lg shadow-lg border-2 border-sky-400 flex flex-col justify-center items-center transition-all duration-300">
+                                    <span id="current-bill-value" class="text-2xl font-bold text-sky-800">...</span>
+                                </div>
+                                <h4 class="font-bold mt-6 mb-2">Max Bills So Far</h4>
+                                <div id="max-bills-display" class="w-32 h-32 mx-auto bg-white rounded-full shadow-lg border-2 border-amber-400 flex flex-col justify-center items-center">
+                                     <span id="max-bills-value" class="text-5xl font-bold text-amber-600">0</span>
+                                </div>
+                            </div>
+                            <div class="flex-1 text-center">
+                                <h4 class="font-bold mb-2">Shop Counts</h4>
+                                <div id="shop-counts-container" class="space-y-2 p-4 bg-slate-100 rounded-lg min-h-[16rem]">
+                                    <!-- Counts will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Let's check your understanding of this dynamic counting and maximizing process.
+                    </p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const currentBillValueEl = document.getElementById('current-bill-value');
+        const maxBillsValueEl = document.getElementById('max-bills-value');
+        const maxBillsDisplayEl = document.getElementById('max-bills-display');
+        const shopCountsContainer = document.getElementById('shop-counts-container');
+        
+        const bills = ["SV Stores", "Big Bazaar", "SV Stores", "Sun General", "Big Bazaar", "SV Stores", "SV Stores", "Sun General", "Big Bazaar", "Sun General", "SV Stores", "Big Bazaar"];
+        let simInterval;
+
+        function resetSimulator() {
+            clearInterval(simInterval);
+            simStatus.textContent = "Press 'Start' to begin.";
+            currentBillValueEl.textContent = '...';
+            maxBillsValueEl.textContent = '0';
+            shopCountsContainer.innerHTML = '<p class="text-slate-400">No shops seen yet.</p>';
+            startSimBtn.disabled = false;
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            let billIndex = 0;
+            let shopCounts = {};
+            let maxBills = 0;
+            shopCountsContainer.innerHTML = '';
+
+            simInterval = setInterval(() => {
+                if (billIndex >= bills.length) {
+                    clearInterval(simInterval);
+                    simStatus.textContent = `Done! The most popular shop had ${maxBills} bills.`;
+                    startSimBtn.disabled = false;
+                    return;
+                }
+
+                const shopName = bills[billIndex];
+                currentBillValueEl.textContent = shopName;
+                simStatus.textContent = `Processing bill from ${shopName}...`;
+
+                // Update shop counts
+                if (shopCounts[shopName]) {
+                    shopCounts[shopName]++;
+                } else {
+                    shopCounts[shopName] = 1;
+                }
+                
+                // Re-render shop counts
+                shopCountsContainer.innerHTML = '';
+                Object.keys(shopCounts).sort().forEach(shop => {
+                    const isUpdated = shop === shopName;
+                    const el = document.createElement('div');
+                    el.className = `flex justify-between p-2 rounded ${isUpdated ? 'bg-sky-200 animate-pulse' : 'bg-white'}`;
+                    el.innerHTML = `<span class="font-semibold">${shop}:</span><span>${shopCounts[shop]}</span>`;
+                    shopCountsContainer.appendChild(el);
+                    if(isUpdated) setTimeout(() => el.classList.remove('animate-pulse'), 900);
+                });
+
+                // Check for new max
+                if (shopCounts[shopName] > maxBills) {
+                    maxBills = shopCounts[shopName];
+                    maxBillsValueEl.textContent = maxBills;
+                    maxBillsDisplayEl.classList.add('animate-pulse');
+                    setTimeout(() => maxBillsDisplayEl.classList.remove('animate-pulse'), 900);
+                }
+
+                billIndex++;
+            }, 1200);
+        });
+
+        resetSimBtn.addEventListener('click', resetSimulator);
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            // From AQ2_4.docx
+            {
+                question: "At an intermediate stage, we have: BB = 1, SV = 3, SG = 2, MAX = 3. A new card for “SV stores” comes up. After updating, which variables are compared?",
+                options: ["MAX and BB", "MAX and SV", "SG and MAX", "SG and SV"],
+                correct: ["MAX and SV"],
+                type: "single",
+                explanation: "First, the counter for 'SV' is updated (from 3 to 4). Then, that updated value (SV=4) is immediately compared with MAX (3) to see if a new maximum has been found."
+            },
+            {
+                question: "We have found the MAX number of bills is 15. Now, a new pile of 30 cards from three new shops is added. What is the least number of cards we must iterate over to find the new maximum?",
+                options: ["30", "60", "6", "0"],
+                correct: ["30"],
+                type: "single",
+                explanation: "We must process all 30 new cards. We don't know the distribution of bills among the three new shops until we've counted them all."
+            },
+            {
+                question: "In a new dataset of 1000 bills, apart from MAX, what is the maximum number of variables we might need to find the most popular shop?",
+                options: ["3", "6", "1000"],
+                correct: ["1000"],
+                type: "single",
+                explanation: "In the worst-case scenario, every single one of the 1000 bills could be from a different, unique shop, requiring us to create 1000 separate counter variables."
+            },
+            // New questions
+            {
+                question: "Why can't we just pre-define variables for each shop at the start of the procedure?",
+                options: [
+                    "It would use too much memory.",
+                    "We don't know in advance which shops, or how many, will appear in the data.",
+                    "It is against programming rules.",
+                    "It would be slower."
+                ],
+                correct: ["We don't know in advance which shops, or how many, will appear in the data."],
+                type: "single",
+                explanation: "The core of the problem is that the set of categories (shops) is unknown before the iteration starts, so we must create counters dynamically."
+            },
+            {
+                question: "True or False: In this combined algorithm, the `MAX` variable is updated only once at the very end of the iteration.",
+                options: ["True", "False"],
+                correct: ["False"],
+                type: "single",
+                explanation: "False. The `MAX` variable is updated in real-time, *during* the iteration, every time a shop's count is incremented to a value that is larger than the current `MAX`."
+            }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const isMultiple = q.type === 'multiple';
+                const inputType = isMultiple ? 'checkbox' : 'radio';
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="${inputType}" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect = (questionData.type === 'single') ?
+                (selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0]) :
+                (selectedAnswers.length === questionData.correct.length && selectedAnswers.every(val => questionData.correct.includes(val)));
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1266 @@
+Front;Back;Extra
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+<b>QX:</b> In the hypothesis pseudocode, which condition places an ID into <code>confirm</code>?;The ID is in mathsBGrades and in (physicsAGrades or physicsBGrades);<b>Explanation:</b> The pseudocode checks if a student is in mathsBGrades AND (physicsAGrades OR physicsBGrades).
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>QX:</b> What is the output of the following pseudocode?<br>
+<pre>
+l = [5, 3, 4]
+sorted = []
+foreach x in l {
+  sorted = SortedListInsert(sorted, x)
+}
+</pre>";[3, 4, 5];<b>Explanation:</b> This is InsertionSort using SortedListInsert. Each element is inserted in sorted order.
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+<b>QX:</b> What does <code>rest(rest([1,2,3,4]))</code> return?;rest(rest([1,2,3,4])) → [3, 4];"<b>Explanation:</b> Each rest removes the first element; applied twice, gives [3, 4]."
+<b>QX:</b> What does the <code>member()</code> function return?;"True if the item exists in the list; otherwise, false";<b>Explanation:</b> <code>member(x, L)</code> checks for membership of x in list L.
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size.
+"<b>Q3:</b> Which of the following are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates.
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+<b>QX:</b> Which part of the InsertionSort algorithm maintains the sorted portion?;Each call to SortedListInsert adds one element to the sorted portion;<b>Explanation:</b> InsertionSort builds the sorted list one element at a time using SortedListInsert.
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+<b>QX:</b> Evaluate: <code>last(init([1,2,3,4]))</code>;last(init([1,2,3,4])) → 3;"<b>Explanation:</b> <code>init()</code> removes the last element → [1,2,3]; <code>last()</code> returns 3."
+<b>QX:</b> What is the result of <code>first([[1,2], [3,4], [5,6]])</code>?;first([[1,2], [3,4], [5,6]]) → [1, 2];<b>Explanation:</b> The <code>first()</code> function returns the first element of the list.
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q1:</b> Which of the following lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes.
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q2:</b> The following pseudocode implements a grade assignment procedure. Which statements are TRUE about it?<br><br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";<ul><li>Position 0 always maps to grade D</li><li>The quartile boundaries must be recalculated if classSize changes</li><li>A student in position > q2 will always get grade A</li></ul>;The mapping is based on position in the sorted list. First item goes to gradeD. The quartile values depend on class size. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>Q3:</b> Identify all lines/statements that are correct applications of the function <code>SortedListInsert</code>?<br><br>
+<pre>
+Procedure SortedListInsert(l, x)
+  newList = []
+  inserted = False
+  foreach z in l {
+    if (not(inserted) and x < z) {
+      newList = newList ++ [x]
+      inserted = True
+    }
+    newList = newList ++ [z]
+  }
+  if (not(inserted)) {
+    newList = newList ++ [x]
+  }
+  return(newList)
+End Procedure
+</pre>";<ul><li>It maintains ascending order</li><li>Inserting into an empty list gives a list with one element</li><li>Duplicates are allowed</li></ul>;This procedure inserts x into the first position where x < z holds true, or appends at the end. It doesn’t remove duplicates. (Varied form)
+"<b>Q1:</b> Identify all lines/statements that lines in the pseudocode <code>Insert</code> will always execute at least once when inserting into a non-empty <i>books</i> list?<br><br>
+<pre>
+Procedure Insert(X, books)
+  sBooks = []
+  inserted = False
+  foreach Y in books {
+    if (X.Pages <= last(Y) and not(inserted)) {
+      sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+      inserted = True
+    }
+    sBooks = sBooks ++ [Y]
+  }
+  if (not(inserted)) {
+    sBooks = sBooks ++ [[X.SeqNo, X.Pages]]
+  }
+  return(sBooks)
+End Procedure
+</pre>";<ul><li>Line 4</li><li>Line 9</li><li>Line 11</li></ul>;In any call to Insert with a non-empty list, the foreach loop executes, so line 4 runs at least once. Line 9 executes for each element. If X is inserted at the end, Line 11 also executes. (Varied form)
+"<b>QX:</b> What grade will a student at position 0 receive in the following pseudocode?<br>
+<pre>
+Procedure SimpleGradeAssignment(l)
+  q4 = classSize / 4
+  q3 = classSize / 2
+  q2 = 3 * classSize / 4
+  gradeA, B, C, D = [], [], [], []
+  position = 0
+  foreach x in l {
+    if (position > q2) { gradeA = gradeA ++ [first(x)] }
+    else if (position > q3) { gradeB = gradeB ++ [first(x)] }
+    else if (position > q4) { gradeC = gradeC ++ [first(x)] }
+    else { gradeD = gradeD ++ [first(x)] }
+    position = position + 1
+  }
+End Procedure
+</pre>";Grade D;<b>Explanation:</b> position = 0, so none of the > conditions are true, hence student is added to gradeD.
+<b>QX:</b> What happens if classSize is not divisible by 4 in SimpleGradeAssignment?;The quartiles (q2, q3, q4) may not be integers, causing incorrect grade distribution;<b>Explanation:</b> Division results in floats. Without flooring/rounding, this can cause index mismatch.
+<b>QX:</b> In the Insert pseudocode, which line inserts X at the end if no earlier match?;Line 11;<b>Explanation:</b> If X.Pages is greater than all Y values, it is inserted in line 11.
+<b>QX:</b> Which lines in Insert pseudocode execute regardless of X’s value?;Lines 4, 9;<b>Explanation:</b> Line 4 always starts loop, and line 9 always appends Y to sBooks.
+<b>QX:</b> If a student is in physicsAGrades but not in mathsBGrades, what list will they go into?;Reject;<b>Explanation:</b> They do not satisfy the hypothesis condition (mathsBGrades AND physicsA/B), so go into reject.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> Consider a student in <code>mathsBGrades</code> but not in <code>physicsAGrades</code> or <code>physicsBGrades</code>. Which list will they be added to in the hypothesis test?;Reject;<b>Explanation:</b> The condition for <code>confirm</code> is being in mathsBGrades AND in (physicsAGrades OR physicsBGrades). This student fails the second part.
+<b>QX:</b> What is the result of <code>first([[10,20], [30,40], [50,60]])</code>?;[10, 20];<b>Explanation:</b> The first element of the outer list is [10, 20].
+<b>QX:</b> Evaluate: <code>rest([5, 10, 15, 20])</code>;[10, 15, 20];<b>Explanation:</b> <code>rest</code> removes the first element.
+<b>QX:</b> Evaluate: <code>last([1, 3, 5, 7])</code>;7;<b>Explanation:</b> <code>last</code> returns the final element.
+<b>QX:</b> Evaluate: <code>init([100, 200, 300])</code>;[100, 200];<b>Explanation:</b> <code>init</code> removes the last element.
+<b>QX:</b> What is the result of <code>first([[10,20], [30,40], [50,60]])</code>?;[10, 20];<b>Explanation:</b> The first element of the outer list is [10, 20].
+<b>QX:</b> Evaluate: <code>rest([5, 10, 15, 20])</code>;[10, 15, 20];<b>Explanation:</b> <code>rest</code> removes the first element.
+<b>QX:</b> Evaluate: <code>last([1, 3, 5, 7])</code>;7;<b>Explanation:</b> <code>last</code> returns the final element.
+<b>QX:</b> Evaluate: <code>init([100, 200, 300])</code>;[100, 200];<b>Explanation:</b> <code>init</code> removes the last element.
+<b>QX:</b> What is the result of <code>first([[10,20], [30,40], [50,60]])</code>?;[10, 20];<b>Explanation:</b> The first element of the outer list is [10, 20].
+<b>QX:</b> Evaluate: <code>rest([5, 10, 15, 20])</code>;[10, 15, 20];<b>Explanation:</b> <code>rest</code> removes the first element.
+<b>QX:</b> Evaluate: <code>last([1, 3, 5, 7])</code>;7;<b>Explanation:</b> <code>last</code> returns the final element.
+<b>QX:</b> Evaluate: <code>init([100, 200, 300])</code>;[100, 200];<b>Explanation:</b> <code>init</code> removes the last element.
+<b>QX:</b> What quartile cutoff is used to assign grade B?;position > classSize / 2;<b>Explanation:</b> Grade B is assigned if the position is greater than q3 = classSize/2.
+<b>QX:</b> In SimpleGradeAssignment, how many students get grade A if classSize = 80?;20;<b>Explanation:</b> The top 25% (last 20 students) get grade A.
+<b>QX:</b> What quartile cutoff is used to assign grade B?;position > classSize / 2;<b>Explanation:</b> Grade B is assigned if the position is greater than q3 = classSize/2.
+<b>QX:</b> In SimpleGradeAssignment, how many students get grade A if classSize = 80?;20;<b>Explanation:</b> The top 25% (last 20 students) get grade A.
+<b>QX:</b> What quartile cutoff is used to assign grade B?;position > classSize / 2;<b>Explanation:</b> Grade B is assigned if the position is greater than q3 = classSize/2.
+<b>QX:</b> In SimpleGradeAssignment, how many students get grade A if classSize = 80?;20;<b>Explanation:</b> The top 25% (last 20 students) get grade A.
+<b>QX:</b> What quartile cutoff is used to assign grade B?;position > classSize / 2;<b>Explanation:</b> Grade B is assigned if the position is greater than q3 = classSize/2.
+<b>QX:</b> In SimpleGradeAssignment, how many students get grade A if classSize = 80?;20;<b>Explanation:</b> The top 25% (last 20 students) get grade A.
+<b>QX:</b> What quartile cutoff is used to assign grade B?;position > classSize / 2;<b>Explanation:</b> Grade B is assigned if the position is greater than q3 = classSize/2.
+<b>QX:</b> In SimpleGradeAssignment, how many students get grade A if classSize = 80?;20;<b>Explanation:</b> The top 25% (last 20 students) get grade A.
+<b>QX:</b> What quartile cutoff is used to assign grade B?;position > classSize / 2;<b>Explanation:</b> Grade B is assigned if the position is greater than q3 = classSize/2.
+<b>QX:</b> In SimpleGradeAssignment, how many students get grade A if classSize = 80?;20;<b>Explanation:</b> The top 25% (last 20 students) get grade A.
+<b>QX:</b> What quartile cutoff is used to assign grade B?;position > classSize / 2;<b>Explanation:</b> Grade B is assigned if the position is greater than q3 = classSize/2.
+<b>QX:</b> In SimpleGradeAssignment, how many students get grade A if classSize = 80?;20;<b>Explanation:</b> The top 25% (last 20 students) get grade A.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> Which line inserts the student when no match is found in Insert procedure?;Line 11;<b>Explanation:</b> Line 11 appends X if it wasn’t inserted during the loop.
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What is the result of evaluating <code>rest(init([1,2,3,4]))</code>?;[2, 3];<b>Explanation:</b> <code>init</code> removes the last item → [1,2,3], then <code>rest</code> removes the first → [2,3].
+<b>QX:</b> What happens if the classSize is 60? What is the q3 cutoff for assigning grade B?;30;<b>Explanation:</b> q3 = classSize / 2 = 30
+<b>QX:</b> If a student is in position 45 in a class of 60, which grade do they receive?;Grade A;<b>Explanation:</b> Top quartile = positions > 45 ⇒ grade A
+<b>QX:</b> What happens if the classSize is 60? What is the q3 cutoff for assigning grade B?;30;<b>Explanation:</b> q3 = classSize / 2 = 30
+<b>QX:</b> If a student is in position 45 in a class of 60, which grade do they receive?;Grade A;<b>Explanation:</b> Top quartile = positions > 45 ⇒ grade A
+<b>QX:</b> What happens if the classSize is 60? What is the q3 cutoff for assigning grade B?;30;<b>Explanation:</b> q3 = classSize / 2 = 30
+<b>QX:</b> If a student is in position 45 in a class of 60, which grade do they receive?;Grade A;<b>Explanation:</b> Top quartile = positions > 45 ⇒ grade A
+<b>QX:</b> What happens if the classSize is 60? What is the q3 cutoff for assigning grade B?;30;<b>Explanation:</b> q3 = classSize / 2 = 30
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.
+<b>QX:</b> In Insert pseudocode, which line sets the inserted flag to true?;Line 6;<b>Explanation:</b> When X.Pages <= last(Y), line 6 sets inserted = True.

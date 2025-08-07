@@ -1,0 +1,361 @@
+"Front";"Back";"Extra"
+"What do 'confirm' and 'reject' lists represent in hypothesis testing pseudocode?
+
+a) Sorting results
+b) Students who pass/fail
+c) Matching and mismatching IDs
+d) Quartile scores";"Matching and mismatching IDs";"'Confirm' holds IDs that match the hypothesis, 'Reject' holds those that don't."
+"What is the worst-case time complexity of repeatedly using SortedListInsert to sort n elements?
+
+a) O(n)
+b) O(n log n)
+c) O(n^2)
+d) O(1)";"O(n^2)";"Each insert can take up to n steps. Repeating for n elements leads to O(n^2)."
+"Which invariant holds during each iteration of InsertionSort?
+
+a) The list becomes reverse sorted
+b) The first part of the list is always sorted
+c) The list contains no duplicates
+d) The inserted element goes to the end";"The first part of the list is always sorted";"InsertionSort maintains a sorted sublist at the beginning."
+"What happens in Insert(X, books) if books is an empty list?
+
+a) Error
+b) X is never inserted
+c) X is added at end in line 12
+d) X is skipped";"X is added at end in line 12";"The loop is skipped and line 12 inserts X."
+"What does SortedListInsert([4, 7, 9], 8) return?
+
+a) [4, 7, 8, 9]
+b) [4, 8, 7, 9]
+c) [4, 7, 9, 8]
+d) [8, 4, 7, 9]";"[4, 7, 8, 9]";"8 is inserted before 9 to maintain sort order."
+"If list is [1, 3, 5, 7] and x = 0, where is x inserted by SortedListInsert?
+
+a) At the end
+b) At index 0
+c) After 1
+d) Before 5";"At index 0";"Since 0 is less than all values, it is inserted at the start."
+"What is the result of InsertionSort([6, 4, 2])?
+
+a) [2, 4, 6]
+b) [6, 4, 2]
+c) [4, 2, 6]
+d) [6, 2, 4]";"[2, 4, 6]";"Each element is inserted in the right place, keeping the list sorted."
+"Which data structure is best for checking if a student ID exists in a large dataset of 10,000 students?
+
+a) A sorted list
+b) A set or hash map
+c) An unsorted list
+d) A queue";"A set or hash map";"Sets/hash maps provide average O(1) lookup time, which is most efficient for large datasets."
+"How do you get the second element from a list L using 'first' and 'rest'?
+
+a) first(rest(L))
+b) rest(first(L))
+c) rest(rest(L))
+d) first(first(L))";"first(rest(L))";"rest(L) gives the tail of the list, and first() of that tail is the second element."
+"What is the base case for a recursive function that finds the length of a list?
+
+a) When the list has one element
+b) When the list is empty
+c) When the list is sorted
+d) It has no base case";"When the list is empty";"An empty list has a length of 0, which terminates the recursion."
+"What is the primary purpose of sorting a list of grades before assigning quartiles?
+
+a) To make the list easier to read
+b) To ensure quartiles are based on rank
+c) To remove duplicate scores
+d) To speed up the program";"To ensure quartiles are based on rank";"Quartiles are rank-based divisions, so the data must be sorted first."
+"What will 'member(5, [1, [5], 3])' return?
+
+a) True
+b) False
+c) Error
+d) 1";"False";"The list contains the list [5], not the number 5 as a direct element."
+"What is the result of 'last([1, 2, 3, 4])'?
+
+a) 1
+b) 4
+c) [4]
+d) 3";"4";"The 'last' function returns the final element of a list."
+"If you build a list by appending elements to the end, what is the complexity of adding one element?
+
+a) O(1)
+b) O(log n)
+c) O(n)
+d) O(n^2)";"O(n)";"To append, you must traverse the entire list to find the end, making it an O(n) operation."
+"Which operation is faster for linked lists?
+
+a) Appending to the end
+b) Prepending to the beginning
+c) Accessing the 50th element
+d) Finding the median";"Prepending to the beginning";"Prepending (adding to the head) is an O(1) operation as it only requires updating the head pointer."
+"What is the best-case time complexity for InsertionSort?
+
+a) O(n^2)
+b) O(n log n)
+c) O(n)
+d) O(1)";"O(n)";"The best case occurs when the list is already sorted. Each element is compared only once."
+"In the expression 'U = U ++ [x]', what is the type of U and [x]?
+
+a) Both are elements
+b) Both are lists
+c) U is a list, [x] is an element
+d) U is an element, [x] is a list";"Both are lists";"The '++' operator concatenates two lists. [x] creates a list containing the single element x."
+"What does 'first(rest(rest([10, 20, 30, 40])))' return?
+
+a) 10
+b) 20
+c) 30
+d) 40";"30";"rest() is applied twice, resulting in [30, 40]. 'first' of that is 30."
+"What is a predicate in the context of list filtering?
+
+a) The list itself
+b) A function that returns a boolean value
+c) The first element of the list
+d) A sorted list";"A function that returns a boolean value";"A predicate is a function used to test elements for a certain condition (evaluating to true or false)."
+"What is the defining property of a set?
+
+a) All elements are sorted
+b) It can contain lists
+c) All elements are unique
+d) It has a fixed size";"All elements are unique";"Sets are collections of distinct elements; duplicates are not allowed."
+"To find the union of two lists A and B, what is the most straightforward approach?
+
+a) Concatenate A and B, then remove duplicates
+b) Find the intersection first
+c) Sort both lists
+d) Use binary search";"Concatenate A and B, then remove duplicates";"The simplest method is to combine the lists and then filter out any repeated elements."
+"What is the time complexity of finding an element in an unsorted list of size n?
+
+a) O(1)
+b) O(log n)
+c) O(n)
+d) O(n^2)";"O(n)";"In the worst case, you have to check every element until you find the one you're looking for."
+"What is the time complexity of finding an element in a sorted list using binary search?
+
+a) O(1)
+b) O(log n)
+c) O(n)
+d) O(n^2)";"O(log n)";"Binary search halves the search space with each step, making it very efficient."
+"If you have a list of student records, what data structure would be best to quickly look up a student's grade by their ID?
+
+a) A list of lists
+b) A hash map or dictionary
+c) A sorted list of grades
+d) A set of student IDs";"A hash map or dictionary";"A hash map allows for direct, fast lookups using the student ID as a key."
+"What does the 'map' function do?
+
+a) Creates a geographic map
+b) Applies a function to each element of a list, returning a new list
+c) Checks if an element is in a list
+d) Sorts the list";"Applies a function to each element of a list, returning a new list";"'map' transforms a list by applying a given function to all of its elements."
+"What does the 'filter' function do?
+
+a) Removes all elements from a list
+b) Returns a new list with elements that satisfy a predicate
+c) Sorts the list based on a condition
+d) Applies a function to each element";"Returns a new list with elements that satisfy a predicate";"'filter' creates a new list containing only the elements for which a given predicate function returns true."
+"What is a higher-order function?
+
+a) A function that is very complex
+b) A function that operates on numbers greater than 100
+c) A function that takes another function as an argument or returns a function
+d) A function that is defined first in the code";"A function that takes another function as an argument or returns a function";"'map' and 'filter' are examples of higher-order functions because they take a function as one of their arguments."
+"What is the result of 'rest([])'?
+
+a) 0
+b) An error
+c) An empty list
+d) null";"An error";"Applying 'rest' to an empty list is typically an undefined operation and should result in an error."
+"How can you get the last element of a list L recursively?
+
+a) if rest(L) is empty, return first(L)
+b) if first(L) is empty, return L
+c) return last(rest(L))
+d) return first(L)";"if rest(L) is empty, return first(L)";"The recursion continues down the list until the tail is empty; the 'first' of the final non-empty list is the last element."
+"What is a potential problem with deeply nested recursive functions?
+
+a) They are hard to read
+b) They run too fast
+c) Stack overflow error
+d) They use too much heap memory";"Stack overflow error";"Each recursive call adds a frame to the call stack, which has a finite size."
+"How would you flatten a list of lists like [[1, 2], [3], [4, 5]]?
+
+a) By sorting it
+b) By using the 'first' function repeatedly
+c) By concatenating the sublists
+d) It is not possible";"By concatenating the sublists";"A common way is to recursively concatenate the first sublist with the flattened version of the rest of the list of lists."
+"What is data abstraction?
+
+a) Using abstract variable names
+b) Hiding the complex implementation details of a data structure
+c) Storing data in the cloud
+d) Converting data to binary";"Hiding the complex implementation details of a data structure";"It allows us to use data structures like lists (with 'first', 'rest') without needing to know how they are stored in memory."
+"What is the main trade-off when choosing a data structure?
+
+a) Readability vs. writability
+b) Time complexity vs. space complexity
+c) Integers vs. strings
+d) Recursive vs. iterative solutions";"Time complexity vs. space complexity";"Often, a data structure that allows for faster operations (time) will require more memory (space), and vice versa."
+"In a list of key-value pairs like [['id1', 90], ['id2', 85]], how would you access the score 90?
+
+a) first(first(L))
+b) first(rest(first(L)))
+c) rest(first(first(L)))
+d) rest(rest(L))";"first(rest(first(L)))";"first(L) is ['id1', 90]. rest(...) of that is [90]. first(...) of that is 90."
+"How would you check if a list is a palindrome?
+
+a) Check if the first and last elements are the same
+b) Compare the list to its reverse
+c) Sort the list and check for duplicates
+d) Count the number of elements";"Compare the list to its reverse";"A list is a palindrome if it reads the same forwards and backward. The easiest check is to see if L is equal to reverse(L)."
+"What is the output of SortedListInsert(10, [2, 4, 6, 8])?
+
+a) [10, 2, 4, 6, 8]
+b) [2, 4, 6, 8, 10]
+c) [2, 4, 10, 6, 8]
+d) Error";"[2, 4, 6, 8, 10]";"Since 10 is the largest element, it is inserted at the end of the sorted list."
+"Which of these is NOT a good use case for a list?
+
+a) Storing a sequence of moves in a game
+b) Storing a student's grades over time
+c) Extremely fast lookups in a huge, unordered collection
+d) A to-do list";"Extremely fast lookups in a huge, unordered collection";"Lists have O(n) lookup time. A hash map or set (O(1) average) would be far better."
+"What does 'difference(A, B)' for two sets A and B produce?
+
+a) All elements that are in both A and B
+b) All elements from A and B combined
+c) Elements that are in A but not in B
+d) Elements that are in B but not in A";"Elements that are in A but not in B";"Set difference returns a new set containing only the elements from the first set that are not present in the second set."
+"How can you represent a 2D grid or matrix using lists?
+
+a) As a single, flat list
+b) As a list of lists
+c) As a set
+d) It is not possible";"As a list of lists";"A list of lists is a natural way to represent a matrix, where each inner list corresponds to a row."
+"What is the result of 'first(rest([[1,2],[3,4],[5,6]]))'?
+
+a) 1
+b) 2
+c) [1,2]
+d) [3,4]";"[3,4]";"rest(...) on the main list results in [[3,4],[5,6]]. The 'first' element of that new list is [3,4]."
+"If you have a sorted list, what is the most efficient way to find the maximum value?
+
+a) Check the first element
+b) Check the last element
+c) Iterate through the whole list
+d) Use binary search";"Check the last element";"In a standard ascending sorted list, the maximum value is always the last element, which is an O(1) access if the list structure allows it (or O(n) to traverse)."
+"Why is 'member' a recursive function?
+
+a) It has to be
+b) It's a natural fit: check the head, if not a match, check the rest (a smaller problem)
+c) For better performance
+d) To use less memory";"It's a natural fit: check the head, if not a match, check the rest (a smaller problem)";"The problem of checking membership in a list can be broken down into checking the first element and then solving the same problem for the rest of the list."
+"What is the purpose of an accumulator in a recursive function?
+
+a) To count the number of recursive calls
+b) To pass an intermediate result down through the calls
+c) To make the function harder to read
+d) To store the base case";"To pass an intermediate result down through the calls";"An accumulator is used to build up the result as the recursion progresses, often allowing for tail-call optimization."
+"How would you merge two sorted lists, A and B, into a single sorted list?
+
+a) Concatenate them and then sort the result
+b) Repeatedly compare the heads of A and B and move the smaller one to the result list
+c) Use the 'union' operation
+d) Use binary search";"Repeatedly compare the heads of A and B and move the smaller one to the result list";"This is the fundamental step of the merge sort algorithm. It's more efficient than a full sort after concatenation."
+"What is the primary characteristic of a queue data structure?
+
+a) Last-In, First-Out (LIFO)
+b) First-In, First-Out (FIFO)
+c) All elements are sorted
+d) Random access";"First-In, First-Out (FIFO)";"A queue operates like a line of people; the first one to get in is the first one to be served."
+"What is the primary characteristic of a stack data structure?
+
+a) Last-In, First-Out (LIFO)
+b) First-In, First-Out (FIFO)
+c) All elements are unique
+d) It must contain numbers";"Last-In, First-Out (LIFO)";"A stack operates like a pile of plates; the last one you put on top is the first one you take off."
+"In a list of student scores, how would you find the lowest score?
+
+a) Sort the list and take the first element
+b) Iterate through the list, keeping track of the minimum value seen
+c) Use a hash map
+d) Both A and B are valid and efficient";"Both A and B are valid and efficient";"Sorting and then picking the first element works (O(n log n)). Iterating to find the minimum also works (O(n)) and is often more direct if you don't need the full sorted list."
+"What is the time complexity of accessing the k-th element in a standard linked list?
+
+a) O(1)
+b) O(log k)
+c) O(k)
+d) O(n)";"O(k)";"You must traverse the first k-1 elements from the head of the list to reach the k-th element."
+"If a function's only recursive call is the very last operation it performs, it is called...
+
+a) A higher-order function
+b) A predicate
+c) Tail-recursive
+d) An accumulator";"Tail-recursive";"Tail-recursive functions can be optimized by compilers to avoid using extra stack space for the recursive call."
+"Which of these sorting algorithms exhibits O(n^2) worst-case complexity?
+
+a) Merge Sort
+b) Quick Sort
+c) Heap Sort
+d) Insertion Sort";"Insertion Sort";"Insertion Sort, Bubble Sort, and Selection Sort all have O(n^2) worst-case performance. Merge Sort and Heap Sort are O(n log n)."
+"What is the result of init(rest([1, 2, 3, 4]))?
+
+a) [1, 2, 3]
+b) [2, 3]
+c) [2, 3, 4]
+d) [1, 4]";"[2, 3]";"rest removes 1, leaving [2, 3, 4]. init removes 4, leaving [2, 3]."
+"What is the purpose of 'init(L)'?
+
+a) To get the first element
+b) To initialize a list
+c) To return the list without its last element
+d) To check if the list is empty";"To return the list without its last element";"init is the opposite of rest; it removes the last element."
+"How can you simulate a queue using two stacks?
+
+a) It's not possible
+b) By using one stack for enqueue and one for dequeue
+c) By using both stacks for enqueue
+d) By using one stack and a temporary variable";"By using one stack for enqueue and one for dequeue";"To dequeue, you pour elements from the enqueue stack to the dequeue stack, reversing the order."
+"What is the complexity of enqueue and dequeue operations for a list-based queue where you add to the head and remove from the tail?
+
+a) Enqueue: O(1), Dequeue: O(n)
+b) Enqueue: O(n), Dequeue: O(1)
+c) Both are O(1)
+d) Both are O(n)";"Enqueue: O(1), Dequeue: O(n)";"Adding to the head is O(1). Removing from the tail requires traversing the list, which is O(n)."
+"What is the 'cons' operation?
+
+a) Removing an element from a list
+b) Adding an element to the head of a list
+c) Concatenating two lists
+d) Checking list membership";"Adding an element to the head of a list";"Cons (construct) is the fundamental operation for building lists, often represented as `cons(element, list)`."
+"In a functional programming paradigm, data is typically...
+
+a) Mutable
+b) Immutable
+c) Global
+d) Stored in classes";"Immutable";"Data structures are not changed in place. Instead, functions return new, modified data structures."
+"What is the result of 'filter(is_even, [1, 2, 3, 4, 5])'?
+
+a) [1, 3, 5]
+b) [2, 4]
+c) [1, 2, 3, 4, 5]
+d) True";"[2, 4]";"The filter function keeps only the elements for which the predicate (is_even) returns true."
+"What is the result of 'map(add_one, [10, 20, 30])'?
+
+a) [10, 20, 30]
+b) [11, 21, 31]
+c) 60
+d) 63";"[11, 21, 31]";"The map function applies the add_one function to every element in the list."
+"What is the primary advantage of immutability?
+
+a) It makes programs faster
+b) It uses less memory
+c) It makes programs easier to reason about and less prone to bugs
+d) It is required for recursion";"It makes programs easier to reason about and less prone to bugs";"When data doesn't change, you can avoid side effects and complex state management issues."
+"How would you get the middle element of a list with an odd number of elements?
+
+a) By using 'first' and 'last'
+b) By repeatedly applying 'rest' and 'init'
+c) By sorting the list
+d) It's not possible with basic list operations";"By repeatedly applying 'rest' and 'init'";"You can remove one element from the front and one from the back until only one element is left."

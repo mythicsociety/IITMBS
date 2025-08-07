@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Sanity of Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --incorrect-color: #ef4444;
+            --correct-color: #22c55e;
+            --sidebar-bg: #1f2937;
+            --main-bg: #f9fafb;
+            --text-color: #111827;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--main-bg);
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #374151;
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+        @media (max-width: 1024px) {
+            #sidebar.hidden-mobile {
+                transform: translateX(-100%);
+            }
+        }
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-question {
+            border: 1px solid #e5e7eb;
+        }
+        .quiz-question.correct {
+            border-left: 5px solid var(--correct-color);
+        }
+        .quiz-question.incorrect {
+            border-left: 5px solid var(--incorrect-color);
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        .quiz-feedback.correct {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .quiz-feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Interactive Error Spotter */
+        .data-card {
+            border: 3px solid #e5e7eb;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .data-card.selected.correct {
+            border-color: var(--correct-color);
+        }
+        .data-card.selected.incorrect {
+            border-color: var(--incorrect-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <button id="menu-btn" class="lg:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+
+    <aside id="sidebar" class="bg-gray-800 text-gray-300 w-64 min-h-screen fixed top-0 left-0 z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <h1 class="text-white text-2xl font-bold">CT Guide</h1>
+            <p class="text-sm text-gray-400">Sanity of Data</p>
+        </div>
+        <nav id="nav-links" class="mt-4 flex flex-col">
+            <a href="#intro" class="sidebar-link py-2 px-4">Introduction</a>
+            <a href="#error-types" class="sidebar-link py-2 px-4">1. Types of Data Errors</a>
+            <a href="#interactive-spotter" class="sidebar-link py-2 px-4">2. Interactive Error Spotter</a>
+            <a href="#quiz" class="sidebar-link py-2 px-4">3. Knowledge Check</a>
+        </nav>
+    </aside>
+
+    <main id="main-content" class="lg:ml-64 p-4 md:p-8">
+        
+        <section id="intro" class="card">
+            <h2>Introduction: Is Your Data Correct?</h2>
+            <p class="mb-4 text-lg">When we work with data, we usually assume it's correct. But what if it isn't? A simple typo, a missing value, or a number that doesn't make sense can lead to wrong calculations and incorrect conclusions. Before we perform any operations, it's crucial to check the <strong>sanity of our data</strong>.</p>
+            <p>Data sanity checking is the process of ensuring that the information we're working with is valid, reasonable, and consistent. It's like proofreading an essay before submitting it. In this guide, we'll explore the common types of data errors you might encounter and learn how to spot them.</p>
+        </section>
+
+        <section id="error-types" class="card">
+            <h2>1. Types of Data Errors</h2>
+            <p class="mb-4">Data errors can come in many forms. Let's look at some common examples found in our datasets.</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">A. Invalid Value or Type</h3>
+                    <p>This happens when a value doesn't match the expected format. For example, a student's card number is 'Q' instead of a number, or a date is "32nd of January". We need to ensure data is of the right type (e.g., number, text) and follows basic rules (e.g., April only has 30 days).</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">B. Out of Range</h3>
+                    <p>A value might be the correct type, but it's not within a reasonable range. A chemistry mark of 766 out of 100 is a clear example. This often points to a typo during data entry.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">C. Internal Inconsistency</h3>
+                    <p>Sometimes, individual values look correct on their own, but they contradict each other. For example, if a student's marks are 72, 66, and 81, but the total is listed as 290. The numbers don't add up, indicating an error in at least one of the values.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">D. Incorrect Labeling or Placement</h3>
+                    <p>The data itself might be correct, but it's in the wrong field. We saw an example where a student's city was listed as 'Sameer' (their name), or their date of birth and city were swapped. This can cause major issues for automated processing.</p>
+                </div>
+                 <div>
+                    <h3 class="text-xl font-bold mt-0 mb-2">E. Missing Information</h3>
+                    <p>Sometimes, a value is just not there. A shopping bill might be missing the quantity for an item or its price. Our procedures need to be able to handle these missing values gracefully, perhaps by flagging them for review instead of trying to perform a calculation that would result in an error.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="interactive-spotter" class="card">
+            <h2>2. Interactive Error Spotter</h2>
+            <p class="mb-6">Let's test your error-spotting skills. In each round, three data cards will be displayed. Two are correct, but one has a data sanity error. Click on the card you think is incorrect.</p>
+            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                <div id="card-display-area" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Data cards will be injected here -->
+                </div>
+                <div id="spotter-feedback" class="text-center mt-6 h-10 font-semibold text-lg"></div>
+                <div class="text-center mt-4">
+                    <button id="next-round-btn" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700">Next Round</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz" class="card">
+            <h2>3. Knowledge Check</h2>
+            <p class="mb-6">Now, let's check your understanding with a few questions based on the concepts we've discussed.</p>
+            <div id="quiz-container" class="space-y-6"></div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Logic ---
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menu-btn');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('main section');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => { if (window.innerWidth < 1024) sidebar.classList.add('-translate-x-full'); });
+            });
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => { if (pageYOffset >= section.offsetTop - 100) current = section.getAttribute('id'); });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+                });
+            });
+
+            // --- Interactive Error Spotter Logic ---
+            const errorScenarios = [
+                {
+                    correct: [
+                        { type: 'student', name: 'Rida', math: 42, physics: 53, total: 173 },
+                        { type: 'student', name: 'Jagan', math: 81, physics: 76, total: 209 }
+                    ],
+                    incorrect: { type: 'student', name: 'Aditya', math: 84, physics: 766, total: 252, reason: "Out of Range: Physics mark of 766 is impossible." }
+                },
+                {
+                    correct: [
+                        { type: 'word', word: 'and', pos: 'conjunction', count: 3 },
+                        { type: 'word', word: 'open', pos: 'verb', count: 4 }
+                    ],
+                    incorrect: { type: 'word', word: 'Saturday', pos: 'noun', count: 4, reason: "Inconsistent Data: 'Saturday' has 8 letters, not 4." }
+                },
+                {
+                    correct: [
+                        { type: 'student', name: 'Kavya', math: 64, physics: 72, total: 204 },
+                        { type: 'student', name: 'Rahul', math: 97, physics: 92, total: 281 }
+                    ],
+                    incorrect: { type: 'student', name: 'Naveen', math: 72, physics: 66, total: 290, reason: "Internal Inconsistency: 72 + 66 + 81 should be 219, not 290." }
+                },
+                {
+                    correct: [
+                        { type: 'bill', item: 'Shampoo', cost: 150, qty: 1, total: 150 },
+                        { type: 'bill', item: 'Horlicks', cost: 270, qty: 1, total: 270 }
+                    ],
+                    incorrect: { type: 'bill', item: 'Socks', cost: 60, qty: 2, total: 150, reason: "Internal Inconsistency: 60 * 2 should be 120, not 150." }
+                }
+            ];
+            
+            let currentRound = 0;
+            const cardDisplayArea = document.getElementById('card-display-area');
+            const spotterFeedback = document.getElementById('spotter-feedback');
+            const nextRoundBtn = document.getElementById('next-round-btn');
+
+            function loadRound(roundIndex) {
+                cardDisplayArea.innerHTML = '';
+                spotterFeedback.textContent = 'Click the card with the error.';
+                spotterFeedback.style.color = 'var(--text-color)';
+                
+                const scenario = errorScenarios[roundIndex];
+                const cards = [...scenario.correct, scenario.incorrect];
+                // Shuffle cards
+                for (let i = cards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cards[i], cards[j]] = [cards[j], cards[i]];
+                }
+
+                cards.forEach(cardData => {
+                    const cardEl = document.createElement('div');
+                    cardEl.className = 'data-card p-4 rounded-lg bg-gray-50';
+                    if (cardData.reason) { // This is the incorrect card
+                        cardEl.dataset.correct = "true";
+                        cardEl.dataset.reason = cardData.reason;
+                    }
+
+                    if (cardData.type === 'student') {
+                        cardEl.innerHTML = `<h4 class="font-bold text-lg">${cardData.name}</h4><p>Maths: ${cardData.math}</p><p>Physics: ${cardData.physics}</p><p class="font-bold mt-2">Total: ${cardData.total}</p>`;
+                    } else if (cardData.type === 'word') {
+                        cardEl.innerHTML = `<h4 class="font-bold text-lg">${cardData.word}</h4><p>Part of Speech: ${cardData.pos}</p><p class="font-bold mt-2">Letter Count: ${cardData.count}</p>`;
+                    } else if (cardData.type === 'bill') {
+                        cardEl.innerHTML = `<h4 class="font-bold text-lg">${cardData.item}</h4><p>Cost/Unit: ${cardData.cost}</p><p>Quantity: ${cardData.qty}</p><p class="font-bold mt-2">Total Cost: ${cardData.total}</p>`;
+                    }
+                    
+                    cardDisplayArea.appendChild(cardEl);
+                });
+
+                cardDisplayArea.querySelectorAll('.data-card').forEach(card => {
+                    card.addEventListener('click', handleCardClick);
+                });
+            }
+
+            function handleCardClick(e) {
+                const selectedCard = e.currentTarget;
+                if (selectedCard.classList.contains('selected')) return;
+
+                cardDisplayArea.querySelectorAll('.data-card').forEach(card => {
+                    card.classList.add('selected');
+                    card.removeEventListener('click', handleCardClick);
+                });
+
+                if (selectedCard.dataset.correct === "true") {
+                    selectedCard.classList.add('correct');
+                    spotterFeedback.textContent = `Correct! ${selectedCard.dataset.reason}`;
+                    spotterFeedback.style.color = 'var(--correct-color)';
+                } else {
+                    selectedCard.classList.add('incorrect');
+                    spotterFeedback.textContent = 'Incorrect. Try the next round!';
+                    spotterFeedback.style.color = 'var(--incorrect-color)';
+                    cardDisplayArea.querySelector('[data-correct="true"]').classList.add('correct');
+                }
+            }
+
+            nextRoundBtn.addEventListener('click', () => {
+                currentRound = (currentRound + 1) % errorScenarios.length;
+                loadRound(currentRound);
+            });
+
+            loadRound(currentRound);
+
+
+            // --- Quiz Logic ---
+            const quizData = [
+                {
+                    question: "How many data entry errors does the above table have?",
+                    type: 'single',
+                    table: {
+                        headers: ["Word", "Part of speech", "Letter count"],
+                        rows: [
+                            ["and", "conjunction", "3"],
+                            ["Saturday", "noun", "4"],
+                            ["was", "adjective", "3"]
+                        ]
+                    },
+                    options: ["1", "2", "3", "0"],
+                    correctAnswer: "2",
+                    explanation: "There are two errors. 1) 'Saturday' has 8 letters, not 4. 2) 'was' is typically a verb, not an adjective in most contexts."
+                },
+                {
+                    question: "Are there any data entry errors with respect to the sanity of data?",
+                    type: 'single',
+                    table: {
+                        headers: ["Item", "Cost per unit", "Number of units", "Total cost"],
+                        rows: [
+                            ["Socks", "60", "2", "150"],
+                            ["Shampoo", "150", "1", "150"],
+                            ["Horlicks", "270", "1", "270"],
+                            ["", "Grand total", "570"]
+                        ]
+                    },
+                    options: [
+                        "Yes. The error is in summing the total cost of all items to get the grand total.",
+                        "Yes. The error is in computing the total cost of the item “Socks”.",
+                        "No. The sanity of data has not been compromised."
+                    ],
+                    correctAnswer: "Yes. The error is in computing the total cost of the item “Socks”.",
+                    explanation: "The total cost for 'Socks' is inconsistent. Cost per unit (60) * Number of units (2) should be 120, not 150. The Grand Total is correctly calculated based on the listed (but incorrect) total costs (150+150+270 = 570)."
+                },
+                {
+                    question: "A student card has a 'Date of Birth' field with the value '31 April'. What type of error is this?",
+                    type: 'single',
+                    options: ["Out of Range", "Invalid Value", "Internal Inconsistency", "Missing Information"],
+                    correctAnswer: "Invalid Value",
+                    explanation: "This is an invalid value because the month of April does not have 31 days. It violates the rules of the calendar system."
+                },
+                {
+                    question: "If a student's individual subject marks are 80, 85, and 90, but their 'Total' mark is listed as 200, this is an example of:",
+                    type: 'single',
+                    options: ["Incorrect Labeling", "Out of Range", "Internal Inconsistency"],
+                    correctAnswer: "Internal Inconsistency",
+                    explanation: "The individual values are all valid, but they contradict each other. The sum of 80, 85, and 90 is 255, not 200."
+                },
+                {
+                    question: "A shopping bill lists 'Milk' under the category 'Stationery'. What kind of error is this?",
+                    type: 'single',
+                    options: ["Missing Information", "Incorrect Labeling", "Out of Range", "Invalid Value"],
+                    correctAnswer: "Incorrect Labeling",
+                    explanation: "The data ('Milk', 'Stationery') is valid on its own, but the relationship between them is wrong. Milk should be in a category like 'Dairy/Food'."
+                },
+                {
+                    question: "True or False: An 'Internal Inconsistency' check can always tell you exactly which piece of data is wrong.",
+                    type: 'true-false',
+                    options: ["True", "False"],
+                    correctAnswer: "False",
+                    explanation: "False. An inconsistency check (like a total not matching the sum of its parts) tells you that *an* error exists, but it doesn't specify whether one of the parts is wrong or if the total itself is wrong."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'quiz-question card p-6';
+                
+                let tableHtml = '';
+                if (q.table) {
+                    const headers = q.table.headers.map(h => `<th>${h}</th>`).join('');
+                    const rows = q.table.rows.map(r => `<tr>${r.map((d, i) => `<td ${q.table.rows.length > 1 && i > 0 ? 'class="text-center"' : ''} ${r.length === 2 ? 'colspan="2"' : ''}>${d}</td>`).join('')}</tr>`).join('');
+                    tableHtml = `<div class="overflow-x-auto my-4"><table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table></div>`;
+                }
+
+                let optionsHtml = '';
+                if(q.type === 'single' || q.type === 'true-false') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="radio" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                }
+                
+                questionElem.innerHTML = `<p class="font-semibold mb-4">${index + 1}. ${q.question}</p>${tableHtml}<div class="options-container">${optionsHtml}</div><button class="submit-btn mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">Submit</button><div class="quiz-feedback"><p class="font-bold feedback-title"></p><p class="feedback-text">${q.explanation}</p></div>`;
+                quizContainer.appendChild(questionElem);
+
+                questionElem.querySelector('.submit-btn').addEventListener('click', e => {
+                    e.target.disabled = true;
+                    const feedbackElem = questionElem.querySelector('.quiz-feedback');
+                    const feedbackTitle = questionElem.querySelector('.feedback-title');
+                    let isCorrect = false;
+                    const selected = questionElem.querySelector(`input[name="q${index}"]:checked`);
+                    if (selected && selected.value === q.correctAnswer) isCorrect = true;
+                    if (isCorrect) {
+                        questionElem.classList.add('correct');
+                        feedbackElem.classList.add('correct');
+                        feedbackTitle.textContent = 'Correct!';
+                    } else {
+                        questionElem.classList.add('incorrect');
+                        feedbackElem.classList.add('incorrect');
+                        feedbackTitle.textContent = 'Incorrect';
+                    }
+                    feedbackElem.style.display = 'block';
+                    questionElem.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

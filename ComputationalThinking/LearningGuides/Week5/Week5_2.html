@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L5.2: Pseudocode for Lists</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Style for the hamburger menu */
+        .hamburger-icon span {
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L5.2: Pseudocode</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L5.2</a>
+                <a href="#top-students-problem" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The "Top Students" Problem</a>
+                <a href="#constructing-lists" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Constructing the Lists</a>
+                <a href="#finding-toppers" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Finding Overall Toppers</a>
+                <a href="#interactive-flowchart" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Flowchart</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L5.2: Pseudocode for Lists</h1>
+                <p class="text-lg">Now that we understand what lists are and the basic operations we can perform on them, let's put it all together. This section focuses on using pseudocode to solve a more complex, multi-step problem.</p>
+                <p class="text-lg mt-4">We'll walk through a practical example: identifying the "top students" across multiple subjects. This will show us how to combine list creation, iteration, and nested loops to filter and compare data, moving from raw information to a specific, insightful answer. This is where the power of computational thinking truly shines!</p>
+            </section>
+
+            <section id="top-students-problem" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The "Top Students" Problem</h2>
+                <p class="text-lg mb-4">Let's define our goal: we want to find students who are performing well across the board. We'll define a "top student" in a particular subject as someone who scored among the <strong>top 3 marks</strong> in that subject.</p>
+                <p class="text-lg mb-4">The ultimate goal is to find the students who are top performers in <strong>all three subjects</strong>: Mathematics, Physics, and Chemistry.</p>
+                <div class="mt-6 border-l-4 border-blue-500 pl-4">
+                    <p class="text-lg font-semibold">Our strategy will be:</p>
+                    <ol class="list-decimal list-inside text-lg space-y-2 mt-2 pl-4">
+                        <li>Determine the cutoff mark (the 3rd highest score) for each subject.</li>
+                        <li>Create a separate list of student IDs for each subject, containing all students who scored at or above the cutoff.</li>
+                        <li>Find the students who appear in all three lists. This will be our final group of overall top performers.</li>
+                    </ol>
+                </div>
+                <p class="text-lg mt-4">This approach breaks a big problem down into smaller, manageable steps, each of which can be solved using the list operations we've learned.</p>
+            </section>
+            
+            <section id="constructing-lists" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Constructing the Lists</h2>
+                <p class="text-lg mb-4">The first step is to build our initial lists of top students for each subject. This involves two main parts.</p>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Step 1: Get the Cutoff Marks</h3>
+                <p class="text-lg mb-4">First, we need to find the 3rd highest mark for each subject. We can assume we have a procedure, <code>TopThreeMarks(Subject)</code>, that does this for us. We call it for each subject to get our cutoffs.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>cutoffMaths = TopThreeMarks(Mathematics)</p>
+                    <p>cutoffPhys = TopThreeMarks(Physics)</p>
+                    <p>cutoffChem = TopThreeMarks(Chemistry)</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Step 2: Build the Lists</h3>
+                <p class="text-lg mb-4">Now, we iterate through the main student data table one time. For each student, we check their mark in each subject against the cutoffs we just found. If their mark is high enough, we add their Student ID to the corresponding list.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>// Initialize empty lists</p>
+                    <p>mathsList = [], physList = [], chemList = []</p>
+                    <br>
+                    <p>// Iterate through all students</p>
+                    <p>while (Table 1 has more rows) {</p>
+                    <p class="ml-4">Read the first row X in Table 1</p>
+                    <p class="ml-4">if (X.Mathematics >= cutoffMaths) {</p>
+                    <p class="ml-8">mathsList = mathsList ++ [X.SeqNo]</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">if (X.Physics >= cutoffPhys) {</p>
+                    <p class="ml-8">physList = physList ++ [X.SeqNo]</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">if (X.Chemistry >= cutoffChem) {</p>
+                    <p class="ml-8">chemList = chemList ++ [X.SeqNo]</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">Move X to Table 2</p>
+                    <p>}</p>
+                </div>
+                <p class="text-lg mt-4">After this loop finishes, we will have three lists: <code>mathsList</code>, <code>physList</code>, and <code>chemList</code>, each containing the IDs of the top students for that subject.</p>
+            </section>
+
+            <section id="finding-toppers" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Finding Overall Toppers</h2>
+                <p class="text-lg mb-4">We now have three lists. To find students who are in all three, we can find the intersection step-by-step. A more efficient way than a three-way nested loop is to do it in pairs.</p>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Step 1: Find Toppers in Maths AND Physics</h3>
+                <p class="text-lg mb-4">First, we find the intersection of <code>mathsList</code> and <code>physList</code>. This gives us a new, smaller list of students who are toppers in the first two subjects.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>mathsPhysList = []</p>
+                    <p>foreach x in mathsList {</p>
+                    <p class="ml-4">foreach y in physList {</p>
+                    <p class="ml-8">if (x == y) {</p>
+                    <p class="ml-12">mathsPhysList = mathsPhysList ++ [x]</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-4">}</p>
+                    <p>}</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Step 2: Find Toppers in (Maths+Physics) AND Chemistry</h3>
+                <p class="text-lg mb-4">Now, we only need to check the students in our new <code>mathsPhysList</code> against the <code>chemList</code>. This is another intersection operation.</p>
+                 <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>overallToppersList = []</p>
+                    <p>foreach x in mathsPhysList {</p>
+                    <p class="ml-4">foreach y in chemList {</p>
+                    <p class="ml-8">if (x == y) {</p>
+                    <p class="ml-12">overallToppersList = overallToppersList ++ [x]</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-4">}</p>
+                    <p>}</p>
+                </div>
+                <p class="text-lg mt-4 font-bold text-green-700">The final <code>overallToppersList</code> contains only the students who are top performers in all three subjects. We have successfully solved the problem!</p>
+            </section>
+
+            <section id="interactive-flowchart" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Process Flowchart</h2>
+                <p class="text-lg mb-4">This flowchart visualizes the process of finding toppers across four lists. Click on the steps to see how the data is filtered down.</p>
+                <div id="flowchart-container" class="p-4 bg-gray-50 rounded-lg border border-gray-200 flex justify-center items-center">
+                    <svg id="flowchart-svg" class="w-full max-w-4xl" viewBox="0 0 800 500"></svg>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">This example demonstrates key strategies in computational thinking:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Breaking Down Problems:</strong> We tackled a complex goal by splitting it into smaller, sequential steps (get cutoffs, build lists, find intersections).</li>
+                    <li><strong>Filtering Data:</strong> Lists are excellent tools for filtering a large dataset to create smaller, more relevant collections of items that share a property.</li>
+                    <li><strong>Combining Information:</strong> Nested iteration is the fundamental pattern for finding common elements (intersections) between two or more lists.</li>
+                    <li><strong>Efficiency:</strong> By finding the intersection of two lists first, we created a smaller intermediate list, making the final comparison with the third list much faster than a single, three-level nested loop.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these pseudocode concepts.</p>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Quiz questions will be injected here by JavaScript -->
+                </div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Flowchart Logic
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.getElementById('flowchart-svg');
+            
+            const elements = {
+                list1: { x: 50, y: 50, w: 100, h: 50, text: 'list1' },
+                list2: { x: 200, y: 50, w: 100, h: 50, text: 'list2' },
+                list3: { x: 500, y: 50, w: 100, h: 50, text: 'list3' },
+                list4: { x: 650, y: 50, w: 100, h: 50, text: 'list4' },
+                list12: { x: 125, y: 200, w: 100, h: 50, text: 'list12' },
+                list34: { x: 575, y: 200, w: 100, h: 50, text: 'list34' },
+                list1234: { x: 350, y: 350, w: 100, h: 50, text: 'list1234' }
+            };
+
+            const connections = [
+                { from: 'list1', to: 'list12' }, { from: 'list2', to: 'list12' },
+                { from: 'list3', to: 'list34' }, { from: 'list4', to: 'list34' },
+                { from: 'list12', to: 'list1234' }, { from: 'list34', to: 'list1234' }
+            ];
+
+            function createBox(el) {
+                const group = document.createElementNS(svgNS, 'g');
+                group.setAttribute('id', `group-${el.text}`);
+                group.style.cursor = 'pointer';
+
+                const rect = document.createElementNS(svgNS, 'rect');
+                rect.setAttribute('x', el.x);
+                rect.setAttribute('y', el.y);
+                rect.setAttribute('width', el.w);
+                rect.setAttribute('height', el.h);
+                rect.setAttribute('rx', 10);
+                rect.setAttribute('ry', 10);
+                rect.setAttribute('fill', '#E0E7FF'); // indigo-100
+                rect.setAttribute('stroke', '#4F46E5'); // indigo-600
+                rect.setAttribute('stroke-width', 2);
+                rect.style.transition = 'all 0.3s';
+
+                const text = document.createElementNS(svgNS, 'text');
+                text.setAttribute('x', el.x + el.w / 2);
+                text.setAttribute('y', el.y + el.h / 2 + 5);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', '#3730A3'); // indigo-800
+                text.style.fontFamily = 'Inter, sans-serif';
+                text.style.fontWeight = '600';
+                text.textContent = el.text;
+                
+                group.appendChild(rect);
+                group.appendChild(text);
+                return group;
+            }
+
+            function createArrow(con) {
+                const from = elements[con.from];
+                const to = elements[con.to];
+                const line = document.createElementNS(svgNS, 'line');
+                line.setAttribute('x1', from.x + from.w / 2);
+                line.setAttribute('y1', from.y + from.h);
+                line.setAttribute('x2', to.x + to.w / 2);
+                line.setAttribute('y2', to.y);
+                line.setAttribute('stroke', '#6B7280'); // gray-500
+                line.setAttribute('stroke-width', 2);
+                line.setAttribute('marker-end', 'url(#arrowhead)');
+                line.style.transition = 'all 0.3s';
+                line.setAttribute('id', `arrow-${con.from}-to-${con.to}`);
+                return line;
+            }
+
+            // Define arrowhead marker
+            const defs = document.createElementNS(svgNS, 'defs');
+            const marker = document.createElementNS(svgNS, 'marker');
+            marker.setAttribute('id', 'arrowhead');
+            marker.setAttribute('viewBox', '0 0 10 10');
+            marker.setAttribute('refX', '5');
+            marker.setAttribute('refY', '5');
+            marker.setAttribute('markerWidth', '6');
+            marker.setAttribute('markerHeight', '6');
+            marker.setAttribute('orient', 'auto-start-reverse');
+            const path = document.createElementNS(svgNS, 'path');
+            path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+            path.setAttribute('fill', '#6B7280');
+            marker.appendChild(path);
+            defs.appendChild(marker);
+            svg.appendChild(defs);
+
+            connections.forEach(con => svg.appendChild(createArrow(con)));
+            Object.values(elements).forEach(el => svg.appendChild(createBox(el)));
+
+            svg.addEventListener('click', (e) => {
+                const group = e.target.closest('g');
+                if (!group) return;
+
+                const id = group.id.replace('group-', '');
+                const rect = group.querySelector('rect');
+                
+                rect.setAttribute('fill', '#A5B4FC'); // indigo-300
+                setTimeout(() => rect.setAttribute('fill', '#E0E7FF'), 300);
+
+                if (id === 'list1' || id === 'list2') {
+                    document.getElementById('arrow-list1-to-list12').setAttribute('stroke', '#3B82F6');
+                    document.getElementById('arrow-list2-to-list12').setAttribute('stroke', '#3B82F6');
+                }
+                if (id === 'list3' || id === 'list4') {
+                    document.getElementById('arrow-list3-to-list34').setAttribute('stroke', '#3B82F6');
+                    document.getElementById('arrow-list4-to-list34').setAttribute('stroke', '#3B82F6');
+                }
+                 if (id === 'list12' || id === 'list34') {
+                    document.getElementById('arrow-list12-to-list1234').setAttribute('stroke', '#16A34A');
+                    document.getElementById('arrow-list34-to-list1234').setAttribute('stroke', '#16A34A');
+                }
+            });
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ5_2.docx (5 questions)
+                {
+                    question: "What will be the value of C at the end of execution of the following pseudocode? `A = [1, 2, 3, 4, 5]`, `B = [1, 2, 3, 4, 5]`, `C = A ++ B`",
+                    type: "single-choice",
+                    answers: ["[2, 4, 6, 8, 10]", "[1, 2, 3, 4, 5, 5, 4, 3, 2, 1]", "[1, 2, 3, 4, 5, 1, 2, 3, 4, 5]", "The ++ operation is invalid"],
+                    correct: ["[1, 2, 3, 4, 5, 1, 2, 3, 4, 5]"],
+                    explanation: "The `++` operator concatenates (joins) two lists. It appends the second list to the end of the first list."
+                },
+                {
+                    question: "Given `sent = [“I”, “am”, “a”, “sincere”]`, which statement correctly changes it to `[“I”, “am”, “a”, “sincere”, “student”]`?",
+                    type: "single-choice",
+                    answers: ["sent = sent ++ “student”", "sent = sent ++ [“student”]", "sent ++ [“student”]", "sent = [“student”] ++ sent"],
+                    correct: ["sent = sent ++ [“student”]"],
+                    explanation: "To add a single element using `++`, the element must be enclosed in square brackets to form a list of one item. The operation must also be assigned back to the variable."
+                },
+                {
+                    question: "What will the list L represent at the end of execution? `L = []`, `while (Table 1 has more rows) { X = Read first row; if (X.Mathematics == X.Physics) { L = L ++ [X.Chemistry] } Move X to Table 2 }`",
+                    type: "single-choice",
+                    answers: [
+                        "It stores the Chemistry marks of all students",
+                        "It stores the Chemistry marks of all students who have scored the same marks in both Physics and Chemistry",
+                        "It stores the Chemistry marks of all students who have scored the same marks in both Physics and Mathematics",
+                        "The above code has an error and will not execute properly"
+                    ],
+                    correct: ["It stores the Chemistry marks of all students who have scored the same marks in both Physics and Mathematics"],
+                    explanation: "The code iterates through all students and checks if their Mathematics mark is equal to their Physics mark. If it is, it adds their Chemistry mark to the list L."
+                },
+                {
+                    question: "What is the value of `l2` after this pseudocode? `l1 = [13, 35, 67, 89, 94]`, `l2 = []`, `foreach x in l1 { l2 = [x] ++ l2 }`",
+                    type: "single-choice",
+                    answers: ["[13, 35, 67, 89, 94]", "[94, 89, 67, 35, 13]", "[35, 67, 89, 94]", "[13, 35, 67, 89]"],
+                    correct: ["[94, 89, 67, 35, 13]"],
+                    explanation: "This code reverses the list. In each step of the loop, the current element `x` is prepended to `l2`, effectively building the new list in reverse order."
+                },
+                {
+                    question: "What is the value of C? `A = [1,2,3,4,5]`, `B = [1,2,3,4,5]`, `C = []`, `indexA = 0`, `foreach x in A { indexB = 0; foreach y in B { if (indexA == indexB) { C = C ++ [x+y] } indexB++ } indexA++ }`",
+                    type: "single-choice",
+                    answers: ["[2, 4, 6, 8, 10]", "[1, 2, 3, 4, 5, 1, 2, 3, 4, 5]", "[1, 2, 3, 4, 5]", "The code is invalid"],
+                    correct: ["[2, 4, 6, 8, 10]"],
+                    explanation: "This code adds elements from A and B at the same position. The `if (indexA == indexB)` condition ensures that only elements with the same index (0 and 0, 1 and 1, etc.) are added together."
+                },
+                // New questions (10)
+                {
+                    question: "In the 'Top Students' problem, why is it more efficient to find the intersection of (Maths, Physics) first, and then intersect that result with Chemistry?",
+                    type: "single-choice",
+                    answers: [
+                        "It uses fewer variables.",
+                        "The second intersection operates on a potentially smaller list, reducing total comparisons.",
+                        "Nested loops can only go two levels deep.",
+                        "It's the only way to guarantee a correct result."
+                    ],
+                    correct: ["The second intersection operates on a potentially smaller list, reducing total comparisons."],
+                    explanation: "By creating an intermediate list (mathsPhysList), we filter the data. The final loop that checks against the chemistry list has fewer items to iterate through, making the overall process faster."
+                },
+                {
+                    question: "Which of the following are good use cases for creating a list of pairs? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: [
+                        "Storing a student's ID along with their exam score.",
+                        "Storing a list of all student names.",
+                        "Storing pairs of students who are friends with each other.",
+                        "Storing the total number of students."
+                    ],
+                    correct: [
+                        "Storing a student's ID along with their exam score.",
+                        "Storing pairs of students who are friends with each other."
+                    ],
+                    explanation: "Lists of pairs are ideal for associating two pieces of related data, like an ID and a value, or for representing a relationship between two similar items, like two students."
+                },
+                {
+                    question: "A procedure is written to find students who are toppers in Maths OR Physics. This involves creating a `mathsList` and a `physList`. The final step would be to combine them. What is this operation called?",
+                    type: "single-choice",
+                    answers: ["Intersection", "Union", "Deconstruction", "Reversal"],
+                    correct: ["Union"],
+                    explanation: "Finding items that are in either list (or both) is called a union. In pseudocode, this would involve appending the lists and then removing any duplicates."
+                },
+                {
+                    question: "What is the result of calling the `first()` function on an empty list, `[]`?",
+                    type: "single-choice",
+                    answers: ["0", "An empty list: []", "False", "Undefined / Error"],
+                    correct: ["Undefined / Error"],
+                    explanation: "The `first` operation is not defined for an empty list as there is no element to return. It's an important edge case to consider."
+                },
+                {
+                    question: "A palindrome is a word that reads the same forwards and backwards. Which pair of functions is most fundamental to checking if a list of characters is a palindrome?",
+                    type: "single-choice",
+                    answers: ["first() and rest()", "length() and member()", "first() and last()", "init() and ++"],
+                    correct: ["first() and last()"],
+                    explanation: "The core logic of a palindrome check is comparing the first and last elements to see if they match, and then repeating the process on the inner list."
+                },
+                {
+                    question: "If `L = [10, [20, 30], 40]`, what is `length(L)`?",
+                    type: "single-choice",
+                    answers: ["3", "4", "5", "Error"],
+                    correct: ["3"],
+                    explanation: "The list `L` contains three elements: the number 10, the list `[20, 30]`, and the number 40. The nested list `[20, 30]` counts as a single element."
+                },
+                {
+                    question: "You have `listA` and `listB`. The pseudocode `foreach x in listA { if (member(listB, x) == False) { print x } }` is executed. What does this procedure do?",
+                    type: "single-choice",
+                    answers: ["Finds the intersection of A and B", "Finds the union of A and B", "Finds elements in A that are not in B", "Finds elements in B that are not in A"],
+                    correct: ["Finds elements in A that are not in B"],
+                    explanation: "This operation is known as the set difference. The code iterates through each element of `listA` and checks if it is *not* a member of `listB`, printing only those that are unique to `listA`."
+                },
+                {
+                    question: "What is a primary advantage of creating a list of pairs, like `[ID, Mark]`, instead of just a list of `Mark`s?",
+                    type: "single-choice",
+                    answers: ["The list becomes shorter", "It allows you to keep related data together, avoiding a second search", "It is easier to sort", "It uses less memory"],
+                    correct: ["It allows you to keep related data together, avoiding a second search"],
+                    explanation: "By pairing the ID with the mark, you can find the max mark and immediately know which student achieved it, without needing to scan the original data again."
+                },
+                {
+                    question: "The `init()` function on a list with a single element, like `init([10])`, will return what?",
+                    type: "single-choice",
+                    answers: ["10", "[10]", "[] (an empty list)", "Undefined / Error"],
+                    correct: ["[] (an empty list)"],
+                    explanation: "The `init` function returns all elements *except* the last one. For a single-element list, removing the last element leaves an empty list."
+                },
+                {
+                    question: "To find the intersection of three lists (A, B, C), which is a valid and efficient strategy?",
+                    type: "single-choice",
+                    answers: ["A three-level nested `foreach` loop", "Find intersection of A and B, then intersect the result with C", "Append all three lists together", "This is not possible with lists"],
+                    correct: ["Find intersection of A and B, then intersect the result with C"],
+                    explanation: "This is more efficient because the second intersection operates on a potentially smaller list, reducing the total number of comparisons needed compared to a three-level nested loop."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

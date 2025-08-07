@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L5.3: Three Prizes Problem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Style for the hamburger menu */
+        .hamburger-icon span {
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L5.3: Three Prizes Problem</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L5.3</a>
+                <a href="#problem-setup" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Problem Setup</a>
+                <a href="#finding-intersection" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Finding the Intersection</a>
+                <a href="#efficiency" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">A Note on Efficiency</a>
+                <a href="#interactive-venn" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Venn Diagram</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L5.3: The Three Prizes Problem</h1>
+                <p class="text-lg">Welcome to our deep dive into a classic computational thinking problem! In this guide, we'll apply everything we've learned about lists to solve the "Three Prizes Problem." The challenge is to identify students who have excelled not just in one subject, but across multiple disciplines.</p>
+                <p class="text-lg mt-4">This exercise is a perfect example of how lists can be used to filter and manage data from different categories (in this case, subjects) and then combine that information to find a very specific result. We'll focus on the logic of finding common elements between lists, a process known as finding the <strong>intersection</strong>.</p>
+            </section>
+
+            <section id="problem-setup" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Problem Setup</h2>
+                <p class="text-lg mb-4">The core of the problem is to find students who are among the top three scorers in Mathematics, Physics, AND Chemistry. As we saw in the previous lesson, the first step is to create three separate lists:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4 bg-gray-50 p-6 rounded-lg">
+                    <li>A list <code>M</code> containing the sequence numbers of top scorers in <strong>Mathematics</strong>.</li>
+                    <li>A list <code>P</code> containing the sequence numbers of top scorers in <strong>Physics</strong>.</li>
+                    <li>A list <code>C</code> containing the sequence numbers of top scorers in <strong>Chemistry</strong>.</li>
+                </ul>
+                <p class="text-lg mt-4">For example, based on the "Scores" dataset, these lists might look something like this:</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono mt-4">
+                    <p>Mathematics (M) = [14, 11, 23, 20]</p>
+                    <p>Physics (P)     = [11, 23, 7, 9, 18, 5]</p>
+                    <p>Chemistry (C)   = [14, 11, 18, 25]</p>
+                </div>
+                <p class="text-lg mt-4">Our goal is to find the number(s) that appear in <strong>all three</strong> of these lists. Looking at the example, we can see that student `11` is in all three lists. How do we find this programmatically?</p>
+            </section>
+            
+            <section id="finding-intersection" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Finding the Intersection</h2>
+                <p class="text-lg mb-4">To find the students common to all three lists, we perform the intersection operation sequentially. We don't try to compare all three lists at once. Instead, we do it in pairs.</p>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Step 1: Intersect Maths and Physics</h3>
+                <p class="text-lg mb-4">First, we create a new list, let's call it <code>K</code>, which will hold the students who are toppers in both Maths and Physics. We use a nested <code>foreach</code> loop for this.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>K = [] // List of toppers in Maths and Physics</p>
+                    <p>foreach x in M {</p>
+                    <p class="ml-4">foreach y in P {</p>
+                    <p class="ml-8">if (x == y) {</p>
+                    <p class="ml-12">K = K ++ [x]</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-4">}</p>
+                    <p>}</p>
+                    <p class="mt-4 text-green-400">// Using our example data, K would become [11, 23]</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Step 2: Intersect the Result with Chemistry</h3>
+                <p class="text-lg mb-4">Now, we take our intermediate list <code>K</code> and find its intersection with the Chemistry list <code>C</code>. This will give us our final answer.</p>
+                 <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>FinalList = [] // List of toppers in all three subjects</p>
+                    <p>foreach x in K {</p>
+                    <p class="ml-4">foreach y in C {</p>
+                    <p class="ml-8">if (x == y) {</p>
+                    <p class="ml-12">FinalList = FinalList ++ [x]</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-4">}</p>
+                    <p>}</p>
+                    <p class="mt-4 text-green-400">// Using our example data, FinalList would become [11]</p>
+                </div>
+            </section>
+
+            <section id="efficiency" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">A Note on Efficiency</h2>
+                <p class="text-lg mb-4">When we use a nested loop to find the intersection of two lists, the number of comparisons we have to make is the product of their lengths.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                    <p class="text-lg font-semibold">Number of Comparisons = <code>length(list1) * length(list2)</code></p>
+                </div>
+                <p class="text-lg mt-4">Let's use our example:</p>
+                <ul class="list-disc list-inside text-lg space-y-2 mt-2 pl-4">
+                    <li><code>length(M)</code> is 4.</li>
+                    <li><code>length(P)</code> is 6.</li>
+                    <li><code>length(C)</code> is 4.</li>
+                </ul>
+                <p class="text-lg mt-4">In Step 1 (intersecting M and P), we perform <code>4 * 6 = 24</code> comparisons. This results in list <code>K</code> with <code>length(K) = 2</code>.</p>
+                <p class="text-lg mt-4">In Step 2 (intersecting K and C), we perform <code>length(K) * length(C) = 2 * 4 = 8</code> comparisons.</p>
+                <p class="text-lg mt-4">The total number of comparisons is <code>24 + 8 = 32</code>. This is much more efficient than a single three-level nested loop, which would require <code>4 * 6 * 4 = 96</code> comparisons!</p>
+            </section>
+
+            <section id="interactive-venn" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Venn Diagram</h2>
+                <p class="text-lg mb-4">Click the buttons to see how the intersection of the three subject lists reveals the final winner(s) of the "Three Prizes Problem."</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex justify-center mb-4 space-x-4">
+                        <button id="venn-math" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Maths</button>
+                        <button id="venn-phys" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Physics</button>
+                        <button id="venn-chem" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Chemistry</button>
+                        <button id="venn-reset" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Reset</button>
+                    </div>
+                    <svg id="venn-svg" class="w-full max-w-lg mx-auto" viewBox="0 0 300 250">
+                        <!-- Definitions for labels -->
+                        <text id="math-label" x="85" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="#1E40AF">Maths</text>
+                        <text id="phys-label" x="215" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="#991B1B">Physics</text>
+                        <text id="chem-label" x="150" y="200" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803D">Chemistry</text>
+                        
+                        <!-- Venn Diagram Circles -->
+                        <g id="venn-diagram">
+                            <circle id="math-circle" cx="120" cy="100" r="70" fill="rgba(59, 130, 246, 0.5)" stroke="#3B82F6" stroke-width="2"/>
+                            <circle id="phys-circle" cx="180" cy="100" r="70" fill="rgba(239, 68, 68, 0.5)" stroke="#EF4444" stroke-width="2"/>
+                            <circle id="chem-circle" cx="150" cy="150" r="70" fill="rgba(34, 197, 94, 0.5)" stroke="#22C55E" stroke-width="2"/>
+                        </g>
+
+                        <!-- Data Points -->
+                        <g id="data-points" class="font-mono" font-size="10" text-anchor="middle" fill="#111827">
+                            <!-- Math Only -->
+                            <text class="venn-point math-point" x="80" y="100">20</text>
+                            <!-- Phys Only -->
+                            <text class="venn-point phys-point" x="220" y="100">7</text>
+                            <text class="venn-point phys-point" x="220" y="115">9</text>
+                            <text class="venn-point phys-point" x="220" y="130">5</text>
+                            <!-- Chem Only -->
+                            <text class="venn-point chem-point" x="150" y="210">25</text>
+                            <!-- Math & Phys -->
+                            <text class="venn-point math-point phys-point" x="150" y="80">23</text>
+                            <!-- Math & Chem -->
+                            <text class="venn-point math-point chem-point" x="115" y="150">14</text>
+                            <!-- Phys & Chem -->
+                            <text class="venn-point phys-point chem-point" x="185" y="150">18</text>
+                            <!-- All Three -->
+                            <text id="venn-center" class="venn-point math-point phys-point chem-point" x="150" y="125" font-weight="bold" font-size="14" fill="purple">11</text>
+                        </g>
+                    </svg>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">The "Three Prizes Problem" is a powerful illustration of how lists help us solve complex data-filtering tasks.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Strategy is Key:</strong> By breaking the problem into sequential pairwise intersections, we made the solution both logical and efficient.</li>
+                    <li><strong>Nested Loops for Intersection:</strong> The core operation for finding common elements between two lists is the nested <code>foreach</code> loop.</li>
+                    <li><strong>Counting Comparisons:</strong> The number of comparisons required for a nested-loop intersection is the product of the lengths of the two lists (<code>length(A) * length(B)</code>). Understanding this helps in designing more efficient algorithms.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of the concepts from the Three Prizes Problem.</p>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Quiz questions will be injected here by JavaScript -->
+                </div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Venn Diagram Logic
+            const vennPoints = document.querySelectorAll('.venn-point');
+            const vennCenter = document.getElementById('venn-center');
+            
+            function showPoints(className) {
+                vennPoints.forEach(p => p.style.opacity = '0.1');
+                document.querySelectorAll(className).forEach(p => p.style.opacity = '1');
+            }
+            
+            document.getElementById('venn-math').addEventListener('click', () => showPoints('.math-point'));
+            document.getElementById('venn-phys').addEventListener('click', () => showPoints('.phys-point'));
+            document.getElementById('venn-chem').addEventListener('click', () => showPoints('.chem-point'));
+            document.getElementById('venn-reset').addEventListener('click', () => vennPoints.forEach(p => p.style.opacity = '1'));
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ5_3.docx (3 questions)
+                {
+                    question: "Let M and P be lists of top scorers in Maths and Physics. If X = length(M) and Y = length(P), how many pairwise comparisons are needed to find the students in both lists using a nested iteration?",
+                    type: "single-choice",
+                    answers: ["X + Y", "X - Y", "X * Y", "X / Y"],
+                    correct: ["X * Y"],
+                    explanation: "A nested iteration compares every element of the first list with every element of the second list. Therefore, the total number of comparisons is the product of their lengths."
+                },
+                {
+                    question: "Assume K is the list of students who are top scorers in both Maths and Physics, and C is the list for Chemistry. Let L = length(K) and Z = length(C). How many comparisons are needed to find the toppers in all three subjects?",
+                    type: "single-choice",
+                    answers: ["L + Z", "L - Z", "L * Z", "L / Z"],
+                    correct: ["L * Z"],
+                    explanation: "To find the final list of toppers, we intersect the intermediate list K with the list C. The number of comparisons is the product of their lengths, L * Z."
+                },
+                {
+                    question: "Given M=[14,11,23,20], P=[11,23,7,9,18,5], C=[14,11,18,25]. Which is the correct list of students who are among the top three in *any two* subjects?",
+                    type: "single-choice",
+                    answers: ["[11, 23, 5]", "[11, 18, 5, 14]", "[11, 23, 14, 18]"],
+                    correct: ["[11, 23, 14, 18]"],
+                    explanation: "We find the intersections: M∩P is [11, 23]. M∩C is [14, 11]. P∩C is [11, 18]. Combining these unique values gives [11, 23, 14, 18]."
+                },
+                // New questions (6)
+                {
+                    question: "In the 'Three Prizes Problem', if the list of top Maths students (M) and top Physics students (P) have no students in common, what will be the list of students who are toppers in all three subjects?",
+                    type: "single-choice",
+                    answers: ["The list of Chemistry toppers (C)", "[] (an empty list)", "The list of Maths toppers (M)", "Cannot be determined"],
+                    correct: ["[] (an empty list)"],
+                    explanation: "If the intersection of M and P is empty, then no student is a topper in both Maths and Physics. Therefore, no student can be a topper in all three subjects, and the final list will be empty."
+                },
+                {
+                    question: "If `length(A) = 10`, `length(B) = 10`, and `length(C) = 10`, and we use the sequential intersection method, what is the MAXIMUM possible number of comparisons in the second intersection step?",
+                    type: "single-choice",
+                    answers: ["100", "20", "10", "1000"],
+                    correct: ["100"],
+                    explanation: "The first intersection (A and B) requires 10*10=100 comparisons. The resulting list K can have at most 10 elements (if A and B are identical). The second intersection (K and C) would then require at most 10*10=100 comparisons."
+                },
+                {
+                    question: "The process of finding elements that exist in one list OR another list is also called intersection.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "This is incorrect. Finding elements that exist in one list AND another is intersection. Finding elements that exist in one list OR another is called a union."
+                },
+                {
+                    question: "Which of these are valid strategies for finding the intersection of four lists (A, B, C, D)? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: [
+                        "Find intersection of A and B (result K1), then find intersection of C and D (result K2), then find intersection of K1 and K2.",
+                        "Use a four-level nested `foreach` loop.",
+                        "Append all four lists and then remove duplicates.",
+                        "Find intersection of A and B (result K1), then intersect K1 with C (result K2), then intersect K2 with D."
+                    ],
+                    correct: [
+                        "Find intersection of A and B (result K1), then find intersection of C and D (result K2), then find intersection of K1 and K2.",
+                        "Use a four-level nested `foreach` loop.",
+                        "Find intersection of A and B (result K1), then intersect K1 with C (result K2), then intersect K2 with D."
+                    ],
+                    explanation: "Appending lists finds the union, not the intersection. Both the sequential pairwise method and the parallel pairwise method are valid, as is a (less efficient) four-level nested loop."
+                },
+                {
+                    question: "If `listA = [1, 2, 3]` and `listB = [4, 5, 6]`, what is the result of finding their intersection?",
+                    type: "single-choice",
+                    answers: ["[1, 2, 3, 4, 5, 6]", "[] (an empty list)", "[1, 4]", "Error"],
+                    correct: ["[] (an empty list)"],
+                    explanation: "The intersection is the set of elements common to both lists. Since these two lists have no elements in common, their intersection is an empty list."
+                },
+                {
+                    question: "Using nested loops to find the intersection of two lists is an example of breaking a problem down into smaller parts.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "The larger problem is 'find common items'. The nested loop breaks this down into a repeatable, smaller problem: 'take one item from the first list and compare it to every item in the second list'."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

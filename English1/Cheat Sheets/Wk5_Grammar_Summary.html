@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English 1 (Week 5) Summary Sheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .card-header h2 {
+             margin-bottom: 0;
+        }
+        .card-content {
+            padding: 1.5rem;
+            max-height: 1000px; /* Set a large max-height for transition */
+            transition: max-height 0.7s ease-in-out, padding 0.5s ease;
+        }
+        .card-content.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            overflow: hidden;
+        }
+        .toggle-btn {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4f46e5;
+            transition: transform 0.3s ease;
+        }
+        .card-header.collapsed .toggle-btn {
+            transform: rotate(45deg);
+        }
+        p, li {
+            color: #4b5563;
+        }
+        code {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">English 1: Grammar Summary</h1>
+            <p class="text-lg text-gray-600 mt-2">Week 5: Tenses & Subject-Verb Agreement</p>
+            <div class="mt-4 space-x-4">
+                 <button id="expandAllBtn" class="px-5 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow-sm hover:bg-gray-300 focus:outline-none">Expand All</button>
+                 <button id="collapseAllBtn" class="px-5 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow-sm hover:bg-gray-300 focus:outline-none">Collapse All</button>
+            </div>
+        </header>
+
+        <main id="summary-container">
+            <!-- Tenses Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-2xl font-bold">Verb Tenses</h2>
+                    <span class="toggle-btn">+</span>
+                </div>
+                <div class="card-content">
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- Past Tenses -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-indigo-700">Past Tenses</h3>
+                            <div class="mt-2 space-y-4">
+                                <div><h4 class="font-semibold">Simple Past</h4><p>A completed action at a specific point in the past.</p><p class="mt-1"><em>Example: She <strong>returned</strong> from the conference yesterday.</em></p></div>
+                                <div><h4 class="font-semibold">Past Progressive</h4><p>An ongoing action in the past (often interrupted).</p><p class="mt-1"><em>Example: The girls <strong>were playing</strong> when it started to rain.</em></p></div>
+                                <div><h4 class="font-semibold">Past Perfect</h4><p>An action completed before another past action ("past before past").</p><p class="mt-1"><em>Example: She realized she <strong>had left</strong> her keys at the restaurant.</em></p></div>
+                                <div><h4 class="font-semibold">Past Perfect Progressive</h4><p>Emphasizes the duration of an ongoing action before another past action.</p><p class="mt-1"><em>Example: They <strong>had been conducting</strong> research for a year before the launch.</em></p></div>
+                            </div>
+                        </div>
+                        <!-- Present Tenses -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-green-700">Present Tenses</h3>
+                            <div class="mt-2 space-y-4">
+                                <div><h4 class="font-semibold">Simple Present</h4><p>A fact, habit, or permanent state.</p><p class="mt-1"><em>Example: Our lead programmer <strong>speaks</strong> Python fluently.</em></p></div>
+                                <div><h4 class="font-semibold">Present Progressive</h4><p>An action happening right now.</p><p class="mt-1"><em>Example: Look! The CEO <strong>is visiting</strong> our department.</em></p></div>
+                                <div><h4 class="font-semibold">Present Perfect</h4><p>A past action with relevance or result in the present.</p><p class="mt-1"><em>Example: Ravi <strong>has not been</strong> to Europe.</em></p></div>
+                                <div><h4 class="font-semibold">Present Perfect Progressive</h4><p>An action that started in the past and continues to the present.</p><p class="mt-1"><em>Example: She <strong>has been working</strong> since morning.</em></p></div>
+                            </div>
+                        </div>
+                        <!-- Future Tenses -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-blue-700">Future Tenses</h3>
+                            <div class="mt-2 space-y-4">
+                                <div><h4 class="font-semibold">Simple Future</h4><p>A prediction or future intention.</p><p class="mt-1"><em>Example: The package <strong>will arrive</strong> tomorrow.</em></p></div>
+                                <div><h4 class="font-semibold">Future Progressive</h4><p>An action in progress at a specific future time.</p><p class="mt-1"><em>Example: This time next week, we <strong>will be relaxing</strong> on a beach.</em></p></div>
+                                <div><h4 class="font-semibold">Future Perfect</h4><p>An action that will be completed before another future time.</p><p class="mt-1"><em>Example: By 7:00 am, will you <strong>have arrived</strong>?</em></p></div>
+                                <div><h4 class="font-semibold">Future Perfect Progressive</h4><p>Emphasizes the duration of an action up to a specific future time.</p><p class="mt-1"><em>Example: In September, she <strong>will have been working</strong> here for a decade.</em></p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject-Verb Agreement Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-2xl font-bold">Subject-Verb Agreement</h2>
+                    <span class="toggle-btn">+</span>
+                </div>
+                <div class="card-content">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Standard Rules -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-purple-700">Standard Rules</h3>
+                            <ul class="mt-2 space-y-3 list-disc list-inside">
+                                <li>Subjects joined by <code>and</code> are plural: <em>Annie and her brothers <strong>are</strong> at school.</em></li>
+                                <li>Singular subjects joined by <code>or</code>/<code>nor</code> are singular: <em>The dog or the cat <strong>is</strong> outside.</em></li>
+                                <li>For subjects joined by <code>or</code>/<code>nor</code>, the verb agrees with the closer subject (Proximity Rule): <em>Neither the manager nor the developers <strong>are</strong> able.</em></li>
+                                <li>Intervening phrases (like <code>along with</code>, <code>as well as</code>) do not affect the verb. The verb agrees with the main subject: <em>The politician, along with the reporters, <strong>is</strong> expected.</em></li>
+                                <li>Indefinite pronouns (<code>each</code>, <code>everybody</code>, <code>no one</code>) are singular: <em>Everybody <strong>is</strong> excited.</em></li>
+                            </ul>
+                        </div>
+                        <!-- Complex & Irregular Cases -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-rose-700">Complex & Irregular Cases</h3>
+                            <ul class="mt-2 space-y-3 list-disc list-inside">
+                                <li>Collective nouns (<code>team</code>, <code>family</code>, <code>flock</code>) are usually singular: <em>The team <strong>remains</strong> confident.</em></li>
+                                <li>Nouns that look plural but are singular (<code>news</code>, <code>mathematics</code>) take a singular verb: <em>The news <strong>is</strong> not good.</em></li>
+                                <li>Some nouns are always plural (<code>scissors</code>, <code>pants</code>, <code>trousers</code>): <em>Your pants <strong>were</strong> in the laundromat.</em></li>
+                                <li>When preceded by "pair of", these nouns become singular: <em>My pair of scissors <strong>needs</strong> a new blade.</em></li>
+                                <li>Amounts of money, time, or distance are treated as a single unit: <em>Ten dollars <strong>is</strong> not a lot.</em></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Interactivity for collapsible cards
+        const container = document.getElementById('summary-container');
+        
+        function toggleCard(header) {
+            const content = header.nextElementSibling;
+            const isCollapsed = content.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                content.classList.remove('collapsed');
+                header.classList.remove('collapsed');
+                header.querySelector('.toggle-btn').textContent = '−';
+                header.querySelector('.toggle-btn').style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('collapsed');
+                header.classList.add('collapsed');
+                header.querySelector('.toggle-btn').textContent = '+';
+                header.querySelector('.toggle-btn').style.transform = 'rotate(90deg)';
+            }
+        }
+
+        container.addEventListener('click', function(e) {
+            const header = e.target.closest('.card-header');
+            if (header) {
+                toggleCard(header);
+            }
+        });
+
+        // Set initial state to collapsed
+        document.querySelectorAll('.card-header').forEach(header => {
+             toggleCard(header);
+        });
+
+        // Expand/Collapse All buttons
+        document.getElementById('expandAllBtn').addEventListener('click', function() {
+            document.querySelectorAll('.card-header.collapsed').forEach(toggleCard);
+        });
+
+        document.getElementById('collapseAllBtn').addEventListener('click', function() {
+            document.querySelectorAll('.card-header:not(.collapsed)').forEach(toggleCard);
+        });
+    </script>
+
+</body>
+</html>

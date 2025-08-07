@@ -1,0 +1,83 @@
+"Front";"Back";"Extra"
+"A graph is generated using a ""Scores"" table with students as nodes. The nodes are labeled using the sequence number, SeqNo. Assume that all marks are integers. Study the following pseudocode:<br><pre>math = readMarks(Mathematics)
+n = length(keys(math))
+A = createMatrix(n, n)
+foreach x in keys(math) {
+  foreach y in keys(math) {
+    if (math[x] - math[y] > 5) {
+      A[x][y] = 1
+    }
+  }
+}
+
+Procedure readMarks(subj)
+  marks = {}
+  while (Table 1 has more rows) {
+    Read the first row X in Table 1
+    marks[X.SeqNo] = X.subj
+    Move X to Table 2
+  }
+  return (marks)
+End readMarks</pre>Given a pair of students (i, j), under what condition is a directed edge created from node i to node j in the graph represented by matrix A?<ul><li>a) Student i has scored less than student j in Mathematics.</li><li>b) Student i has scored more than student j in Mathematics.</li><li>c) Student i has scored at least five marks more than student j in Mathematics.</li><li>d) Student i has scored at least six marks more than student j in Mathematics.</li></ul>";"Correct: d)";"<b>Explanation:</b> The pseudocode sets A[x][y] to 1, creating an edge from x to y, only if the condition `math[x] - math[y] > 5` is met. Since the marks are integers, a difference greater than 5 is equivalent to a difference of at least 6.<br><b>Distractor Rationale:</b><ul><li>a) This would be represented by a condition like `math[i] < math[j]`.</li><li>b) This is too general; the condition requires a specific minimum difference.</li><li>c) This would be `math[x] - math[y] >= 5`. The code uses a strict greater than `>` operator.</li></ul>"
+"Use the matrix A computed in the previous question. Given a student i, what does the return value of the procedure `proc(A,i)` represent?<br><pre>Procedure proc(A, i)
+  count = 0
+  foreach c in columns(A) {
+    if (A[i][c] == 1) {
+      count = count + 1
+    }
+  }
+  return (count)
+End proc</pre><ul><li>a) The number of students who have scored exactly five marks more than student i in Mathematics.</li><li>b) The number of students who have scored at least six marks less than student i in Mathematics.</li><li>c) The number of students who have scored more than student i in Mathematics.</li><li>d) The number of students who have scored the same marks as student i in Mathematics.</li></ul>";"Correct: b)";"<b>Explanation:</b> The procedure iterates through row `i` of the adjacency matrix A and sums the values. This calculates the out-degree of node `i`. An entry `A[i][c]` is 1 if `math[i] - math[c] > 5`, which means student `c`'s score is more than 5 marks lower than student `i`'s score. For integers, this means `c` scored at least 6 marks less than `i`. The procedure counts how many such students `c` exist.<br><b>Distractor Rationale:</b><ul><li>a) The condition is `> 5`, not `== 5`.</li><li>c) This is too general; the condition requires a specific minimum difference.</li><li>d) The condition checks for a difference, not equality.</li></ul>"
+"Using the matrix A from the first question, execute the following pseudocode. Given a student i, which of the following statements about the return value is true?<br><pre>Procedure proc(A, i)
+  foreach j in rows(A) {
+    foreach k in columns(A) {
+      if (A[i][j] == 1 and A[j][k] == 1) {
+        return (True)
+      }
+    }
+  }
+  return (False)
+End proc</pre><ul><li>a) It is True if there is a student who has scored at least eleven marks less than i in Mathematics.</li><li>b) It is True if there is a student who has scored at least twelve marks less than i in Mathematics.</li><li>c) It is True if there is a student who has scored at least six marks less than i in Mathematics.</li><li>d) It is True if there is no student who has scored less than i in Mathematics.</li></ul>";"Correct: a)";"<b>Explanation:</b> The procedure returns True if there is a path of length 2 from node `i`. This means there is some intermediate student `j` such that `A[i][j] == 1` and `A[j][k] == 1` for some student `k`. The first condition means `math[i] - math[j] > 5`. The second means `math[j] - math[k] > 5`. Combining these gives `math[i] > math[j] + 5` and `math[j] > math[k] + 5`. Substituting `math[j]` gives `math[i] > (math[k] + 5) + 5`, which simplifies to `math[i] - math[k] > 10`. For integers, this means student k scored at least 11 marks less than student i.<br><b>Distractor Rationale:</b><ul><li>b) A difference of at least 12 would require the condition to be `> 11`.</li><li>c) This describes a path of length 1, not length 2.</li><li>d) The procedure specifically looks for the existence of students with lower scores.</li></ul>"
+"What is the primary purpose of the `CreateMentorGraph` procedure shown below?<br><pre>Procedure CreateMentorGraph(marks)
+  n = length(keys(marks))
+  mentorGraph = CreateMatrix(n, n)
+  foreach i in keys(marks) {
+    foreach j in keys(marks) {
+      ijMarksDiff = marks[i] - marks[j]
+      if (10 <= ijMarksDiff and ijMarksDiff <= 20) {
+        mentorGraph[i][j] = 1
+      }
+    }
+  }
+  return (mentorGraph)
+End CreateMentorGraph</pre><ul><li>a) To create a graph where an edge exists if one student's score is simply higher than another's.</li><li>b) To create a graph where an edge from i to j exists if student i's score is between 10 and 20 marks higher than student j's.</li><li>c) To create a graph that pairs students with identical scores.</li><li>d) To create a graph showing which students have scores within 10 marks of each other (higher or lower).</li></ul>";"Correct: b)";"<b>Explanation:</b> The procedure creates a directed edge from `i` to `j` (by setting `mentorGraph[i][j] = 1`) only when the difference in marks (`marks[i] - marks[j]`) is between 10 and 20, inclusive. This represents a specific condition for mentorship.<br><b>Distractor Rationale:</b><ul><li>a) The code checks for a specific range, not just any positive difference.</li><li>c) The code checks for a non-zero difference, not equality.</li><li>d) The code checks for a directional difference (`marks[i] - marks[j]`), not an absolute difference, and the range is 10-20, not 0-9.</li></ul>"
+"Consider the pseudocode for pairing students for study groups. What does the condition `mathMentorGraph[i][j] == 1 and phyMentorGraph[j][i] == 1` check for?<br><pre>paired = {}
+foreach i in rows(mathMentorGraph) {
+  foreach j in columns(mathMentorGraph) {
+    if (mathMentorGraph[i][j] == 1 and
+        phyMentorGraph[j][i] == 1 and
+        not (isKey(paired, i)) and
+        not (isKey(paired, j))) {
+      paired[i] = j
+      paired[j] = i
+    }
+  }
+}</pre><ul><li>a) It checks if student i can mentor student j in both Math and Physics.</li><li>b) It checks if there is a mutual mentorship relationship where i mentors j in Math, and j mentors i in Physics.</li><li>c) It checks if both students are popular in different subjects.</li><li>d) It checks if students i and j have similar scores in both Math and Physics.</li></ul>";"Correct: b)";"<b>Explanation:</b> `mathMentorGraph[i][j] == 1` means student `i` can mentor `j` in Math. `phyMentorGraph[j][i] == 1` means student `j` can mentor `i` in Physics. The `and` requires both to be true, signifying a reciprocal mentorship arrangement across two subjects.<br><b>Distractor Rationale:</b><ul><li>a) This would be `mathMentorGraph[i][j] == 1 and phyMentorGraph[i][j] == 1`.</li><li>c) This code checks for direct relationships between two students, not their overall popularity (total number of mentors).</li><li>d) Mentorship graphs are based on significant score differences, which is the opposite of similarity.</li></ul>"
+"The following pseudocode aims to find students who are ""similar"" across three subjects. What is the role of the `abs()` function in this context?<br><pre>Procedure CreateSimilarityGraph(marks1, marks2, marks3)
+  n = length(keys(marks1))
+  similarityGraph = CreateMatrix(n, n)
+  foreach i in keys(marks1) {
+    foreach j in keys(marks1) {
+      ijDiff1 = abs(marks1[i] - marks1[j])
+      ijDiff2 = abs(marks2[i] - marks2[j])
+      ijDiff3 = abs(marks3[i] - marks3[j])
+      if (ijDiff1 <= 10 and ijDiff2 <= 10 and ijDiff3 <= 10) {
+        similarityGraph[i][j] = 1
+      }
+    }
+  }
+  return(similarityGraph)
+End CreateSimilarityGraph</pre><ul><li>a) It ensures that only students with higher scores are compared to students with lower scores.</li><li>b) It calculates the total score difference across all subjects.</li><li>c) It finds the average score difference between two students.</li><li>d) It measures the score difference regardless of which student scored higher, making the relationship non-directional.</li></ul>";"Correct: d)";"<b>Explanation:</b> The `abs()` function returns the absolute value of a number, meaning it ignores the sign. `abs(marks1[i] - marks1[j])` will be the same as `abs(marks1[j] - marks1[i])`. This is used because similarity is a symmetric (undirected) relationship; it only matters how far apart the scores are, not who has the higher score.<br><b>Distractor Rationale:</b><ul><li>a) `abs()` specifically removes the directional information (higher/lower).</li><li>b) The code calculates three separate differences (`ijDiff1`, `ijDiff2`, `ijDiff3`), it does not sum them.</li><li>c) The code does not perform any division to calculate an average.</li></ul>"
+"In graph theory, what is a ""clique""?<br><ul><li>a) A set of nodes where no two nodes are connected.</li><li>b) A path that starts and ends at the same node, visiting other nodes in between.</li><li>c) A set of nodes where every single node is directly connected to every other node in the set.</li><li>d) A node with a very high number of incoming or outgoing edges.</li></ul>";"Correct: c)";"<b>Explanation:</b> A clique is a subset of vertices in an undirected graph where for every two distinct vertices in the clique, there is an edge connecting the two. It represents a group where everyone is directly related to everyone else.<br><b>Distractor Rationale:</b><ul><li>a) This describes an independent set, the opposite of a clique.</li><li>b) This describes a cycle.</li><li>d) This describes a popular node or a hub, but not necessarily a clique, as the nodes it connects to may not be connected to each other.</li></ul>"
+"When representing a graph with an adjacency matrix `M`, what does the entry `M[i][j] = 1` typically signify?<br><ul><li>a) Node i and node j are in the same position.</li><li>b) There is an edge from node i to node j.</li><li>c) The weight of the edge between i and j is 1.</li><li>d) Node i is the most popular node in the graph.</li></ul>";"Correct: b)";"<b>Explanation:</b> In a standard unweighted adjacency matrix, the entry at row `i` and column `j` is set to 1 to indicate the presence of a directed edge from node `i` to node `j`. If the graph were undirected, `M[i][j] = 1` would also imply `M[j][i] = 1`.<br><b>Distractor Rationale:</b><ul><li>a) Nodes are distinct entities; their position is represented by their index, not the matrix value.</li><li>c) While a matrix can represent weights, a value of 1 in a simple adjacency matrix just signifies existence. If it were a weighted graph, this would be the correct interpretation, but the most common use is for unweighted graphs.</li><li>d) This information would be found by summing the rows or columns of the matrix, not by looking at a single entry.</li></ul>"
+"A student wants to find a travel route between two cities that may require changing trains multiple times. Why is representing the train network as a graph a good approach for this problem?<br><ul><li>a) A graph can store the exact departure and arrival times for every train.</li><li>b) A graph makes it easy to find the single longest train journey in the entire network.</li><li>c) A graph represents the connections (direct train routes) between cities (nodes), allowing algorithms to find paths (sequences of train routes) between any two nodes.</li><li>d) A graph can only show direct connections and is not suitable for multi-hop journeys.</li></ul>";"Correct: c)";"<b>Explanation:</b> A graph is the ideal data structure for modeling networks. Cities are represented as nodes (or vertices) and direct train routes as edges. The problem of finding a travel route, even with multiple changes, becomes a classic graph traversal problem of finding a path from a source node to a destination node.<br><b>Distractor Rationale:</b><ul><li>a) While edge labels can store some data (like a train number), storing complex schedule information is better suited for other data structures associated with the graph, not the graph structure itself.</li><li>b) Finding the longest path in a graph is a computationally hard problem and not the primary advantage of using a graph here.</li><li>d) This is incorrect; the main strength of graphs is modeling connectivity and finding paths of any length, not just direct connections.</li></ul>"

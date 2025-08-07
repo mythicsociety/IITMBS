@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L4.4: Binning to Avoid Complexity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .score-bin {
+            min-height: 80px;
+        }
+        .student-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .student-card.comparing {
+            transform: scale(1.1);
+            border-color: #3b82f6; /* blue-500 */
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+        .student-card.match {
+            border-color: #22c55e; /* green-500 */
+            background-color: #dcfce7; /* green-100 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L4.4: Advanced Binning</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#challenge" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">A More Complex Problem</a></li>
+                        <li><a href="#wrong-binning" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Wrong Binning Strategy</a></li>
+                        <li><a href="#right-binning" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">The Right Binning Strategy</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Choosing the Right Bins</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We've seen that binning is a powerful technique for reducing the number of comparisons in a nested loop. However, the effectiveness of this strategy depends entirely on choosing the *correct* attribute to bin by.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        This section explores a more complex pairing problem where the choice of bin is not as obvious, demonstrating how a thoughtful binning strategy is key to solving the problem efficiently and correctly.
+                    </p>
+                </section>
+
+                <!-- A More Complex Problem Section -->
+                <section id="challenge" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">A More Complex Problem</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Let's consider a new challenge: Find the number of pairs of students who satisfy <strong>both</strong> of these conditions:
+                    </p>
+                    <ol class="list-decimal list-inside space-y-3 text-lg text-slate-700 bg-white p-6 rounded-lg shadow">
+                        <li>Both students in the pair have the exact same <strong>total marks</strong>.</li>
+                        <li>The two students in the pair are of <strong>different genders</strong> (one boy, one girl).</li>
+                    </ol>
+                </section>
+
+                <!-- The Wrong Binning Strategy Section -->
+                <section id="wrong-binning" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Wrong Binning Strategy</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        Our first instinct might be to bin by a property we're interested in, like gender. So, we create two bins: one for boys and one for girls. We then perform pairwise comparisons within each bin.
+                    </p>
+                    <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 rounded-r-lg my-6">
+                        <p class="font-semibold">Why This Fails:</p>
+                        <p>This strategy will find pairs of boys with the same score and pairs of girls with the same score. However, the problem requires us to find pairs of <strong>different genders</strong>. By separating boys and girls into different bins, we've made it impossible to compare a boy with a girl, and thus we can never find the pairs we're looking for.</p>
+                    </div>
+                </section>
+                
+                <!-- The Right Binning Strategy Section -->
+                <section id="right-binning" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">The Right Binning Strategy</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        The key is to bin by the property that pairs *must* share. In this case, both students must have the same <strong>total marks</strong>.
+                    </p>
+                     <div class="bg-sky-100 border-l-4 border-sky-500 text-sky-800 p-4 rounded-r-lg my-6">
+                        <h4 class="font-semibold">The Correct Two-Pass Algorithm:</h4>
+                        <ol class="list-decimal list-inside mt-2">
+                            <li><strong>Pass 1: Bin by Total Marks.</strong> We iterate through all students and place them into bins based on their total score. For example, all students who scored 252 go into the "252" bin, all who scored 281 go into the "281" bin, and so on.</li>
+                            <li><strong>Pass 2: Compare Within Bins.</strong> We then iterate through our newly created bins. For any bin containing more than one student, we perform a nested loop to compare every pair of students *within that bin*. Inside this loop, we check the second condition: `if student1.gender != student2.gender`. If they are different, we've found a valid pair and increment our counter.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Pair Finder Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator demonstrates the correct binning strategy.
+                        <br><strong>Step 1:</strong> Bins students by their total score.
+                        <br><strong>Step 2:</strong> Compares students within each bin to find boy-girl pairs with the same score.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="bin-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700">Step 1: Bin by Score</button>
+                            <button id="match-btn" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700" disabled>Step 2: Find Pairs</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Bin by Score' to start.</div>
+                        <div class="flex justify-center items-center mb-4">
+                            <h4 class="font-bold mr-4">Valid Pairs Found:</h4>
+                            <div id="pair-count" class="text-3xl font-bold text-green-600">0</div>
+                        </div>
+                        <div id="bins-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of advanced binning strategies.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const binBtn = document.getElementById('bin-btn');
+        const matchBtn = document.getElementById('match-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const binsContainer = document.getElementById('bins-container');
+        const pairCountEl = document.getElementById('pair-count');
+        
+        let students = [];
+        let bins = {};
+
+        function createStudent(id) {
+            const scores = [281, 276, 261, 252, 252, 227];
+            const genders = ['M', 'F'];
+            return { 
+                id: id, 
+                gender: genders[Math.floor(Math.random() * 2)],
+                total: scores[Math.floor(Math.random() * scores.length)]
+            };
+        }
+
+        function renderBins(highlightBin = null, comparingIds = [], matchIds = []) {
+            binsContainer.innerHTML = '';
+            const sortedBins = Object.keys(bins).sort((a,b) => b-a);
+            sortedBins.forEach(score => {
+                const binEl = document.createElement('div');
+                binEl.className = `score-bin p-2 rounded-lg bg-slate-100 border-2 ${highlightBin === score ? 'border-sky-500' : 'border-slate-200'}`;
+                let studentsHTML = (bins[score] || []).map(p => {
+                    let studentClass = `student-card p-1 text-xs rounded bg-white shadow border-2 border-transparent ${p.gender === 'M' ? 'text-blue-700' : 'text-pink-700'}`;
+                    if (comparingIds.includes(p.id)) studentClass += ' comparing';
+                    if (matchIds.includes(p.id)) studentClass += ' match';
+                    return `<div id="student-${p.id}" class="${studentClass}">ID: ${p.id+1} (${p.gender})</div>`;
+                }).join('');
+                binEl.innerHTML = `<h4 class="font-bold text-center text-sm mb-2">Score: ${score}</h4><div class="flex flex-wrap gap-1">${studentsHTML}</div>`;
+                binsContainer.appendChild(binEl);
+            });
+        }
+
+        function resetSimulator() {
+            students = Array.from({length: 12}, (_, i) => createStudent(i));
+            bins = {};
+            renderBins();
+            simStatus.textContent = "Press 'Bin by Score' to start.";
+            pairCountEl.textContent = '0';
+            simStatus.classList.remove('text-green-700');
+            binBtn.disabled = false;
+            matchBtn.disabled = true;
+        }
+
+        binBtn.addEventListener('click', () => {
+            binBtn.disabled = true;
+            simStatus.textContent = "Binning students by total score...";
+            students.forEach(s => {
+                if (!bins[s.total]) bins[s.total] = [];
+                bins[s.total].push(s);
+            });
+            setTimeout(() => {
+                renderBins();
+                simStatus.textContent = "Binning complete. Ready to find pairs.";
+                matchBtn.disabled = false;
+            }, 1000);
+        });
+        
+        async function runMatching() {
+            matchBtn.disabled = true;
+            let pairCount = 0;
+            pairCountEl.textContent = '0';
+            const sortedBins = Object.keys(bins).sort((a,b) => b-a);
+
+            for (const score of sortedBins) {
+                const studentsInBin = bins[score] || [];
+                if (studentsInBin.length > 1) {
+                    renderBins(score);
+                    for (let i = 0; i < studentsInBin.length; i++) {
+                        for (let j = i + 1; j < studentsInBin.length; j++) {
+                            const s1 = studentsInBin[i];
+                            const s2 = studentsInBin[j];
+                            simStatus.textContent = `Comparing in bin ${score}...`;
+                            renderBins(score, [s1.id, s2.id]);
+                            await new Promise(r => setTimeout(r, 300));
+                            if (s1.gender !== s2.gender) {
+                                pairCount++;
+                                pairCountEl.textContent = pairCount;
+                                renderBins(score, [], [s1.id, s2.id]);
+                                await new Promise(r => setTimeout(r, 500));
+                            }
+                        }
+                    }
+                }
+            }
+            simStatus.textContent = "All comparisons complete!";
+            renderBins();
+        }
+
+        matchBtn.addEventListener('click', runMatching);
+        resetSimBtn.addEventListener('click', resetSimulator);
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "For 20 objects, how many pairwise comparisons are needed without binning?", options: [], correct: ["190"], type: "custom", explanation: "Using the formula n(n-1)/2, we get 20 * 19 / 2 = 190 comparisons." },
+            { question: "If we distribute 20 objects into four equal-sized bins, how many comparisons are needed overall?", options: [], correct: ["40"], type: "custom", explanation: "Each of the 4 bins has 5 objects. Comparisons per bin = 5*4/2 = 10. Total comparisons = 4 bins * 10 = 40." },
+            { question: "To minimize comparisons for 20 objects, how many bins should we choose?", options: [], correct: ["20"], type: "custom", explanation: "To minimize comparisons, we want the smallest possible groups. The ideal is 20 bins, each with 1 object, resulting in 0 comparisons." },
+            { question: "Based on the previous questions, by what factor does ideal binning reduce the number of comparisons for 20 objects?", options: [], correct: ["Infinite (or undefined)"], type: "custom", explanation: "The reduction factor is naive/binned = 190/0. Since division by zero is undefined, the reduction is effectively infinite. Binning completely eliminates the need for comparisons in this ideal case." },
+            { question: "To find pairs with the same total marks but different genders, will binning by gender first give the correct answer?", options: ["Yes", "No"], correct: ["No"], type: "single", explanation: "No. Binning by gender separates boys from girls, making it impossible to compare them to find the required boy-girl pairs." },
+            { question: "To find pairs of people born in the same year, what is the most ideal binning strategy?", options: ["Use 12 bins, one for each month.", "Use 2 bins, for before/after year 2000.", "Use bins for each decade."], correct: ["Use 2 bins, one for people born before the year 2000 and another for people born on or after the year 2000."], type: "single", explanation: "While binning by decade is good, binning by a specific year (like before/after 2000) is even better as it creates more specific groups. The best strategy would be a bin for *each* birth year, but of the choices given, this is the most specific and effective." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                let optionsHtml = '';
+                 if(q.type === 'custom') {
+                    optionsHtml = `<input type="text" name="q${index}" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">`;
+                } else {
+                    optionsHtml = q.options.map(option => `
+                        <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                            <input type="radio" name="q${index}" value="${option}" class="mr-3">
+                            ${option}
+                        </label>
+                    `).join('');
+                }
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.type === 'text' && input.value !== '') {
+                    selectedAnswers.push(input.value);
+                } else if (input.checked) {
+                    selectedAnswers.push(input.value);
+                }
+                input.disabled = true;
+            });
+            let isCorrect = selectedAnswers.length === 1 && selectedAnswers[0].toLowerCase().trim() === questionData.correct[0].toLowerCase().trim();
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                 if (input.type !== 'text' && questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked || (input.type === 'text' && input.value !== '')) {
+                     if(!isCorrect) label.classList.add('incorrect');
+                     else label.classList.add('correct');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

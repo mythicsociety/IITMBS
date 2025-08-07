@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L3.8: Pseudocode for Three Prizes Problem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sidebar-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-900 */
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .feedback {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #f0fdf4; /* green-50 */
+            color: #15803d; /* green-800 */
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fef2f2; /* red-50 */
+            color: #b91c1c; /* red-800 */
+        }
+        .code-block {
+            background-color: #0f172a; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .code-keyword { color: #7dd3fc; } /* sky-300 */
+        .code-variable { color: #f8fafc; } /* slate-50 */
+        .code-value { color: #fcd34d; } /* amber-300 */
+        .code-comment { color: #94a3b8; } /* slate-400 */
+        .code-proc { color: #a5b4fc; } /* indigo-300 */
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Mobile Header with Hamburger Menu -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 lg:hidden flex items-center justify-between p-4">
+        <h1 class="text-lg font-bold text-sky-800">Learning Guide</h1>
+        <button id="hamburger-btn" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-64 fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 h-screen transition-transform duration-300 ease-in-out z-50 shadow-lg lg:shadow-none border-r border-slate-200">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-sky-800 mb-6">L3.8: Pseudocode for Three Prizes</h2>
+                <nav>
+                    <ul id="nav-links" class="space-y-2">
+                        <li><a href="#intro" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Introduction</a></li>
+                        <li><a href="#proc1" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Procedure: TopThreeMarks</a></li>
+                        <li><a href="#proc2" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Procedure: SubjectTopper</a></li>
+                        <li><a href="#main" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Main Algorithm</a></li>
+                        <li><a href="#interactive-sim" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Interactive Simulator</a></li>
+                        <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-md text-slate-600 hover:bg-sky-50 transition-colors">Knowledge Check</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 lg:p-12 bg-slate-50 min-h-screen lg:h-screen lg:overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Building a Complex Solution</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        We've outlined the logic for the "Three Prizes Problem." Now, let's translate that logic into a detailed pseudocode solution. This problem is an excellent example of **procedural decomposition**—breaking a large problem into smaller, manageable procedures that work together.
+                    </p>
+                    <p class="text-lg text-slate-700">
+                        We will define two key helper procedures and then a main block of code that uses them to find our prize winners.
+                    </p>
+                </section>
+
+                <!-- Procedure 1 Section -->
+                <section id="proc1" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Procedure: TopThreeMarks(Subj)</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        This procedure's job is to find the top three scores for a given subject. It needs to track three values: `max`, `secondmax`, and `thirdmax`. The logic involves a series of `if` statements to correctly place a new score.
+                    </p>
+                    <div class="code-block">
+<span class="code-keyword">Procedure</span> <span class="code-proc">TopThreeMarks</span>(<span class="code-variable">Subj</span>) {
+  <span class="code-variable">max</span> = <span class="code-value">0</span>; <span class="code-variable">secondmax</span> = <span class="code-value">0</span>; <span class="code-variable">thirdmax</span> = <span class="code-value">0</span>
+
+  <span class="code-keyword">while</span> (Pile 1 has more cards) {
+    Pick a card X from Pile 1
+    
+    <span class="code-keyword">if</span> (X.Subj > max) {
+      <span class="code-variable">thirdmax</span> = <span class="code-variable">secondmax</span>
+      <span class="code-variable">secondmax</span> = <span class="code-variable">max</span>
+      <span class="code-variable">max</span> = X.Subj
+    } <span class="code-keyword">else if</span> (X.Subj > secondmax) {
+      <span class="code-variable">thirdmax</span> = <span class="code-variable">secondmax</span>
+      <span class="code-variable">secondmax</span> = X.Subj
+    } <span class="code-keyword">else if</span> (X.Subj > thirdmax) {
+      <span class="code-variable">thirdmax</span> = X.Subj
+    }
+  }
+  <span class="code-keyword">return</span>(<span class="code-variable">thirdmax</span>)
+}
+                    </div>
+                     <p class="text-lg text-slate-700 mt-4">
+                        For our prize problem, we only need to know the cutoff for being a topper, so this procedure conveniently returns just the `thirdmax` value.
+                    </p>
+                </section>
+
+                <!-- Procedure 2 Section -->
+                <section id="proc2" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Procedure: SubjectTopper(...)</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        This procedure is a simple check. It takes a student's card and the three subject benchmarks we calculated earlier. It returns `True` if the student's score is greater than or equal to the benchmark in at least one subject, and `False` otherwise.
+                    </p>
+                    <div class="code-block">
+<span class="code-keyword">Procedure</span> <span class="code-proc">SubjectTopper</span>(<span class="code-variable">Card</span>, <span class="code-variable">MMark</span>, <span class="code-variable">PMark</span>, <span class="code-variable">CMark</span>) {
+  <span class="code-keyword">if</span> ( Card.Maths >= <span class="code-variable">MMark</span> <span class="code-keyword">or</span>
+       Card.Physics >= <span class="code-variable">PMark</span> <span class="code-keyword">or</span>
+       Card.Chemistry >= <span class="code-variable">CMark</span> ) {
+    <span class="code-keyword">return</span>(<span class="code-value">True</span>)
+  } <span class="code-keyword">else</span> {
+    <span class="code-keyword">return</span>(<span class="code-value">False</span>)
+  }
+}
+                    </div>
+                </section>
+                
+                <!-- Main Algorithm Section -->
+                <section id="main" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">Main Algorithm Pseudocode</h2>
+                    <p class="text-lg text-slate-700 mb-4">
+                        The main part of the algorithm uses these procedures. It first sets up the benchmarks, then iterates through the students to find the eligible winners.
+                    </p>
+                    <div class="code-block">
+<span class="code-comment">// Step 1: Initialize variables for top 3 overall winners</span>
+<span class="code-variable">max</span> = <span class="code-value">0</span>; <span class="code-variable">secondmax</span> = <span class="code-value">0</span>; <span class="code-variable">thirdmax</span> = <span class="code-value">0</span>
+<span class="code-variable">maxid</span> = -<span class="code-value">1</span>; <span class="code-variable">secondmaxid</span> = -<span class="code-value">1</span>; <span class="code-variable">thirdmaxid</span> = -<span class="code-value">1</span>
+
+<span class="code-comment">// Step 2: Get the subject benchmarks by calling TopThreeMarks</span>
+<span class="code-variable">maths3</span> = <span class="code-proc">TopThreeMarks</span>(Maths)
+<span class="code-variable">phys3</span> = <span class="code-proc">TopThreeMarks</span>(Physics)
+<span class="code-variable">chem3</span> = <span class="code-proc">TopThreeMarks</span>(Chemistry)
+
+<span class="code-comment">// Step 3: Iterate through students to find winners</span>
+<span class="code-keyword">while</span> (Pile 1 has more cards) {
+  Pick a card X from Pile 1
+  
+  <span class="code-comment">// Check if the student is a subject topper</span>
+  <span class="code-keyword">if</span> (<span class="code-proc">SubjectTopper</span>(X, maths3, phys3, chem3)) {
+    
+    <span class="code-comment">// If eligible, check their total score against the top 3</span>
+    <span class="code-keyword">if</span> (X.Total > max) { ... <span class="code-comment">update max, second, third</span> ... }
+    <span class="code-keyword">else if</span> (X.Total > secondmax) { ... <span class="code-comment">update second, third</span> ... }
+    <span class="code-keyword">else if</span> (X.Total > thirdmax) { ... <span class="code-comment">update third</span> ... }
+  }
+}
+<span class="code-comment">// Step 4: Post-processing for gender diversity and ties</span>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulator Section -->
+                <section id="interactive-sim" class="mb-12">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">⚙️ Prize Selector Simulator</h2>
+                    <p class="text-lg text-slate-700 mb-6">
+                        This simulator runs the full prize selection algorithm. It will first determine the subject benchmarks, then iterate through the students to find the top three who meet all criteria.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex justify-center space-x-4 mb-4">
+                            <button id="start-sim-btn" class="px-6 py-2 bg-sky-600 text-white font-semibold rounded-lg shadow-md hover:bg-sky-700">Select Winners</button>
+                            <button id="reset-sim-btn" class="px-6 py-2 bg-slate-500 text-white font-semibold rounded-lg shadow-md hover:bg-slate-600">Reset</button>
+                        </div>
+                        <div id="sim-status" class="text-center font-semibold text-lg h-8 mb-4 text-slate-700">Press 'Select Winners' to begin.</div>
+                        <div id="results-container" class="space-y-4"></div>
+                    </div>
+                </section>
+                
+                <!-- Quiz Section -->
+                <section id="quiz">
+                    <h2 class="text-3xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-2">🧠 Knowledge Check</h2>
+                    <p class="text-lg text-slate-700 mb-8">
+                        Test your understanding of the three prizes problem.
+                    </p>
+                    <div id="quiz-container" class="space-y-8"></div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Sidebar and Scroll Logic ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const links = document.querySelectorAll('.sidebar-link');
+        mainContent.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                if (mainContent.scrollTop >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+            });
+        });
+
+        // --- Interactive Simulator Logic ---
+        const startSimBtn = document.getElementById('start-sim-btn');
+        const resetSimBtn = document.getElementById('reset-sim-btn');
+        const simStatus = document.getElementById('sim-status');
+        const resultsContainer = document.getElementById('results-container');
+        
+        const simStudents = [
+            { id: 1, name: "Rahul", gender: "M", math: 97, phys: 92, chem: 92, total: 281 },
+            { id: 2, name: "Deepika", gender: "F", math: 97, phys: 91, chem: 88, total: 276 },
+            { id: 3, name: "Abirami", gender: "F", math: 72, phys: 92, chem: 97, total: 261 },
+            { id: 4, name: "Aditya", gender: "M", math: 84, phys: 92, chem: 76, total: 252 },
+            { id: 5, name: "Kalyan", gender: "M", math: 93, phys: 68, chem: 91, total: 252 },
+            { id: 6, name: "Priya", gender: "F", math: 62, phys: 80, chem: 85, total: 227 },
+            { id: 7, name: "Suresh", gender: "M", math: 88, phys: 70, chem: 75, total: 233 },
+            { id: 8, name: "Kavya", gender: "F", math: 64, phys: 72, chem: 68, total: 204 }
+        ];
+
+        function resetSimulator() {
+            simStatus.textContent = "Press 'Select Winners' to begin.";
+            resultsContainer.innerHTML = '';
+            startSimBtn.disabled = false;
+        }
+
+        function getTopThree(data, field) {
+            const sorted = [...data].sort((a, b) => b[field] - a[field]);
+            return sorted.slice(0, 3);
+        }
+
+        startSimBtn.addEventListener('click', () => {
+            startSimBtn.disabled = true;
+            simStatus.textContent = "Step 1: Calculating subject benchmarks...";
+            resultsContainer.innerHTML = '';
+
+            setTimeout(() => {
+                const mathTop3 = getTopThree(simStudents, 'math');
+                const physTop3 = getTopThree(simStudents, 'phys');
+                const chemTop3 = getTopThree(simStudents, 'chem');
+
+                const mathBench = mathTop3[2].math;
+                const physBench = physTop3[2].phys;
+                const chemBench = chemTop3[2].chem;
+                
+                let html = `<div class="text-center p-2 bg-slate-100 rounded">
+                    <b>Benchmarks:</b> Maths ≥ ${mathBench} | Physics ≥ ${physBench} | Chemistry ≥ ${chemBench}
+                </div>`;
+                resultsContainer.innerHTML = html;
+
+                setTimeout(() => {
+                    simStatus.textContent = "Step 2: Finding eligible toppers...";
+                    const eligible = simStudents.filter(s => 
+                        s.math >= mathBench || s.phys >= physBench || s.chem >= chemBench
+                    );
+                    eligible.sort((a, b) => b.total - a.total);
+                    let topThree = eligible.slice(0, 3);
+                    
+                    html += `<h4 class="font-bold text-center mt-4">Top 3 Eligible (by Total)</h4>
+                             <div class="text-center text-sm text-slate-600">${topThree.map(s => `${s.name} (${s.total})`).join(', ')}</div>`;
+                    resultsContainer.innerHTML = html;
+                    
+                    setTimeout(() => {
+                        const boys = topThree.filter(s => s.gender === 'M').length;
+                        const girls = topThree.filter(s => s.gender === 'F').length;
+
+                        if (boys === 0 || girls === 0) {
+                             simStatus.textContent = "Step 3: Adjusting for gender diversity...";
+                             const thirdPlaceGender = topThree[2].gender;
+                             for(let i = 3; i < eligible.length; i++) {
+                                 if (eligible[i].gender !== thirdPlaceGender) {
+                                     topThree[2] = eligible[i];
+                                     break;
+                                 }
+                             }
+                        } else {
+                            simStatus.textContent = "Step 3: Gender diversity rule met.";
+                        }
+
+                        setTimeout(() => {
+                            simStatus.textContent = "Final Prize Winners Selected!";
+                            html = resultsContainer.innerHTML; // keep previous steps
+                            html += `<h4 class="font-bold text-center mt-4">🏆 Final Winners 🏆</h4>
+                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">`;
+                            topThree.forEach(s => {
+                                html += `<div class="p-3 rounded-lg text-center bg-yellow-100 border-2 border-yellow-400">
+                                    <div class="font-bold text-lg">${s.name} (${s.gender})</div>
+                                    <div class="text-sm text-slate-600">Total: ${s.total}</div>
+                                </div>`;
+                            });
+                            html += `</div>`;
+                            resultsContainer.innerHTML = html;
+                            startSimBtn.disabled = false;
+                        }, 1500);
+                    }, 1500);
+                }, 1500);
+            }, 1000);
+        });
+
+        resetSimulator();
+        
+        // --- Quiz Logic ---
+        const quizContainer = document.getElementById('quiz-container');
+        const quizData = [
+            { question: "If A, B, and C are three prize winners, which statements are true? (MSQ)", options: ["All three are girls", "At least one of them is a boy", "All three feature in the list of the top three scorers in every subject", "Each one of them should have come within the top three scorers in at least one subject"], correct: ["At least one of them is a boy", "Each one of them should have come within the top three scorers in at least one subject"], type: "multiple", explanation: "The criteria state that the final group must have gender diversity (at least one boy/girl) and each winner must be a top-three performer in at least one subject." },
+            { question: "A student has topped both maths and physics. Will this student get a prize?", options: ["Yes, she will certainly get a prize", "No, she will certainly not get a prize", "She has a good chance of getting a prize"], correct: ["She has a good chance of getting a prize"], type: "single", explanation: "Topping two subjects makes her eligible. However, her prize depends on her total score being in the top three among all other *eligible* candidates." },
+            { question: "max1=89, max2=78, max3=67. A new card has maths marks of 95. If you compare with max1 first, how many comparisons are needed to update all variables?", options: ["1", "2", "3"], correct: ["1"], type: "single", explanation: "The first comparison is `95 > max1 (89)`. This is true, so the values are shifted down and the new max is inserted. No further comparisons are needed." },
+            { question: "After the update (max1=95, max2=89, max3=78), a new card with 50 comes up. How many comparisons are needed (starting from max1)?", options: ["1", "2", "3"], correct: ["3"], type: "single", explanation: "It will be compared against max1 (false), then max2 (false), then max3 (false). Three comparisons are needed to confirm it doesn't fit in the top three." },
+            { question: "max1=89, max2=78, max3=67. A new card has 95. If you compare with max3 first, how many comparisons are needed?", options: ["1", "2", "3"], correct: ["3"], type: "single", explanation: "Comparing from the bottom up: `95 > max3` (true), `95 > max2` (true), `95 > max1` (true). All three comparisons are needed to find the correct insertion point at the top." },
+            { question: "After that, a new card with 50 comes up. How many comparisons are needed (starting from max3)?", options: ["1", "2", "3"], correct: ["1"], type: "single", explanation: "The first comparison is `50 > max3 (78)`. This is false, so the process can stop immediately. Only one comparison is needed." },
+            { question: "Max marks are M:95, P:96, C:97. A student scores 94 in all subjects and has the highest total. Will she get a prize?", options: ["Yes, she will certainly get a prize", "No, she will certainly not get a prize", "She has a good chance of getting a prize"], correct: ["No, she will certainly not get a prize"], type: "single", explanation: "Despite having the highest total, her score in each subject (94) is below the top three cutoff for that subject (95, 96, 97). She does not meet the 'subject excellence' criterion and is therefore not eligible." }
+        ];
+
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const isMultiple = q.type === 'multiple';
+                const inputType = isMultiple ? 'checkbox' : 'radio';
+                const optionsHtml = q.options.map(option => `
+                    <label class="quiz-option block p-3 border-2 border-slate-200 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors">
+                        <input type="${inputType}" name="q${index}" value="${option}" class="mr-3">
+                        ${option}
+                    </label>
+                `).join('');
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                        <div class="space-y-3" id="q${index}-options">${optionsHtml}</div>
+                        <div id="feedback-${index}" class="feedback"></div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+            quizData.forEach((q, index) => {
+                document.getElementById(`q${index}-options`).addEventListener('change', () => handleAnswer(q, index));
+            });
+        }
+
+        function handleAnswer(questionData, questionIndex) {
+            const feedbackEl = document.getElementById(`feedback-${questionIndex}`);
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            let selectedAnswers = [];
+            inputs.forEach(input => {
+                if (input.checked) selectedAnswers.push(input.value);
+                input.disabled = true;
+            });
+            let isCorrect;
+            if (questionData.type === 'multiple') {
+                 isCorrect = selectedAnswers.length === questionData.correct.length && selectedAnswers.every(val => questionData.correct.includes(val));
+            } else {
+                isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === questionData.correct[0];
+            }
+            
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                if (questionData.correct.includes(input.value)) {
+                    label.classList.add('correct');
+                } else if (input.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
+
+            feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Not quite.'}</strong> ${questionData.explanation}`;
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        }
+
+        buildQuiz();
+    </script>
+</body>
+</html>

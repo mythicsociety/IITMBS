@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L5.5: Basic List Operations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Style for the hamburger menu */
+        .hamburger-icon span {
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L5.5: Basic Operations</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L5.5</a>
+                <a href="#core-functions" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Core Deconstruction Functions</a>
+                <a href="#is-in-order" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The `isInOrder` Procedure</a>
+                <a href="#interactive-sorter" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Order Checker</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L5.5: Basic List Operations & Deconstruction</h1>
+                <p class="text-lg">So far, we've mostly used the `foreach` loop to process every item in a list. But what if the relationship between adjacent items matters? For example, how do we check if a list of numbers is sorted, or if a specific word follows another in a sentence?</p>
+                <p class="text-lg mt-4">This guide explores a different way of iterating through lists: by progressively **deconstructing** them. We'll focus on a powerful pattern that uses the `first()`, `rest()`, and `length()` functions to examine pairs of neighboring elements. This technique is fundamental for solving a whole new class of problems related to order and sequence.</p>
+            </section>
+
+            <section id="core-functions" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Core Deconstruction Functions</h2>
+                <p class="text-lg mb-4">The strategy of deconstructing a list relies on three essential functions that allow us to "peek" at the start of the list and shrink it step-by-step.</p>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg flex flex-col text-center shadow-sm">
+                        <h4 class="text-xl font-semibold text-blue-800 mb-3"><code>first(L)</code></h4>
+                        <p class="text-gray-700 flex-grow">Returns the very first element of list `L`.</p>
+                        <div class="font-mono mt-4 bg-white p-3 rounded border border-blue-100 text-sm">first([1, 4, 6]) → 1</div>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 p-6 rounded-lg flex flex-col text-center shadow-sm">
+                        <h4 class="text-xl font-semibold text-green-800 mb-3"><code>rest(L)</code></h4>
+                        <p class="text-gray-700 flex-grow">Returns a new list containing everything <em>except</em> the first element.</p>
+                        <div class="font-mono mt-4 bg-white p-3 rounded border border-green-100 text-sm">rest([1, 4, 6]) → [4, 6]</div>
+                    </div>
+                    <div class="bg-indigo-50 border-2 border-indigo-200 p-6 rounded-lg flex flex-col text-center shadow-sm">
+                        <h4 class="text-xl font-semibold text-indigo-800 mb-3"><code>length(L)</code></h4>
+                        <p class="text-gray-700 flex-grow">Returns the number of elements in list `L`.</p>
+                        <div class="font-mono mt-4 bg-white p-3 rounded border border-indigo-100 text-sm">length([1, 4, 6]) → 3</div>
+                    </div>
+                </div>
+                <p class="text-lg mt-6">By combining these, we can inspect any two adjacent elements. For example, the first element is <code>first(L)</code> and the second element is <code>first(rest(L))</code>. This powerful combination is the key to solving problems about order.</p>
+            </section>
+            
+            <section id="is-in-order" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The `isInOrder` Procedure</h2>
+                <p class="text-lg mb-4">Let's analyze a procedure that checks if a list of numbers is sorted in a specific order. This procedure, `isInOrder`, uses a `while` loop and our deconstruction functions to compare adjacent elements one pair at a time.</p>
+                
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Pseudocode Breakdown</h3>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p><span class="text-purple-400">Procedure</span> isInOrder(L)</p>
+                    <p class="ml-4">// Loop as long as there are at least two elements to compare</p>
+                    <p class="ml-4"><span class="text-purple-400">while</span> (length(L) >= 2) {</p>
+                    <p class="ml-8">ele1 = first(L)</p>
+                    <p class="ml-8">restList = rest(L)</p>
+                    <p class="ml-8">ele2 = first(restList)</p>
+                    <br>
+                    <p class="ml-8">// The crucial comparison</p>
+                    <p class="ml-8"><span class="text-purple-400">if</span> (ele1 < ele2) {</p>
+                    <p class="ml-12"><span class="text-purple-400">return</span> (False) <span class="text-gray-400">// If condition met, order is broken, exit immediately</span></p>
+                    <p class="ml-8">}</p>
+                    <br>
+                    <p class="ml-8">// Shrink the list for the next iteration</p>
+                    <p class="ml-8">L = restList</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">// If the loop finishes without returning False, the list is in order</p>
+                    <p class="ml-4"><span class="text-purple-400">return</span> (True)</p>
+                    <p><span class="text-purple-400">End Procedure</span></p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Analyzing the Logic</h3>
+                <p class="text-lg mb-4">What does this specific procedure check for? Let's trace it.</p>
+                <ul class="list-disc list-inside text-lg space-y-2 mt-2 pl-4">
+                    <li>The loop continues as long as there's a pair of elements to compare (`length(L) >= 2`).</li>
+                    <li>It compares the first element (`ele1`) with the second element (`ele2`).</li>
+                    <li>The condition is `if (ele1 < ele2)`. If at any point an element is **less than** the one that follows it, the procedure immediately stops and returns `False`.</li>
+                    <li>If the loop completes, it means no element was ever less than its neighbor. This can only happen if every element is greater than or equal to the next one.</li>
+                </ul>
+                <p class="text-lg mt-4 font-bold text-green-700">Therefore, this procedure returns `True` if the elements of the list are in **descending order** (e.g., [10, 8, 8, 5, 2]).</p>
+            </section>
+
+            <section id="interactive-sorter" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Order Checker</h2>
+                <p class="text-lg mb-4">Test the `isInOrder` logic yourself! Enter a comma-separated list of numbers, choose the comparison operator, and see what the procedure returns. This will help you understand how changing the core condition alters the sorting check.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="mb-4">
+                        <label for="list-input" class="block font-semibold mb-2">Enter a list of numbers (e.g., 5, 4, 3, 2, 1):</label>
+                        <input type="text" id="sorter-input" class="w-full p-2 border border-gray-300 rounded-md" value="10, 8, 8, 5, 2">
+                    </div>
+                    <div class="mb-4">
+                        <label for="operator-select" class="block font-semibold mb-2">Select the comparison operator for `if(ele1 __ ele2)`:</label>
+                        <select id="operator-select" class="w-full p-2 border border-gray-300 rounded-md bg-white">
+                            <option value="<" selected>ele1 < ele2 (returns False if out of descending order)</option>
+                            <option value=">">ele1 > ele2 (returns False if out of ascending order)</option>
+                            <option value="==">ele1 == ele2 (returns False if adjacent elements are not equal)</option>
+                            <option value="!=">ele1 != ele2 (returns False if adjacent elements are equal)</option>
+                        </select>
+                    </div>
+                    <button id="check-order-btn" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Check Order</button>
+                    <div class="mt-4">
+                        <h4 class="text-xl font-semibold mb-2">Result:</h4>
+                        <div id="sorter-output" class="bg-white p-4 rounded-md border min-h-[50px] font-mono text-lg text-blue-700 font-bold"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">This lesson introduced a new pattern for list processing that is essential for tasks involving sequence and order.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>List Deconstruction:</strong> We can iterate through a list by repeatedly taking its `first()` element and then processing the `rest()` of the list.</li>
+                    <li><strong>Comparing Adjacent Elements:</strong> The combination of `first(L)` and `first(rest(L))` is the key to comparing an element with its immediate neighbor.</li>
+                    <li><strong>The `while` Loop Pattern:</strong> A `while (length(L) >= 2)` loop is the perfect structure for this pattern, as it ensures there's always a pair of elements to compare and naturally stops when the list is too short.</li>
+                    <li><strong>Flexible Logic:</strong> By simply changing the comparison operator inside the loop (e.g., from `<` to `>`), we can make the same procedure check for ascending order, descending order, or other sequential properties.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these deconstruction operations.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Sorter Logic
+            const sorterInput = document.getElementById('sorter-input');
+            const operatorSelect = document.getElementById('operator-select');
+            const checkOrderBtn = document.getElementById('check-order-btn');
+            const sorterOutput = document.getElementById('sorter-output');
+
+            checkOrderBtn.addEventListener('click', () => {
+                const listStr = sorterInput.value;
+                let list = listStr.split(',').map(s => s.trim()).filter(s => s !== '').map(Number);
+                
+                if (list.some(isNaN)) {
+                    sorterOutput.textContent = 'Error: Please enter a valid comma-separated list of numbers.';
+                    return;
+                }
+
+                const operator = operatorSelect.value;
+                let finalResult = true; // Assume true until a condition fails
+
+                let tempList = [...list];
+
+                while (tempList.length >= 2) {
+                    const ele1 = tempList[0];
+                    const restList = tempList.slice(1);
+                    const ele2 = restList[0];
+                    
+                    let conditionToReturnFalse = false;
+                    switch (operator) {
+                        case '<': if (ele1 < ele2) conditionToReturnFalse = true; break;
+                        case '>': if (ele1 > ele2) conditionToReturnFalse = true; break;
+                        case '==': if (ele1 == ele2) conditionToReturnFalse = true; break;
+                        case '!=': if (ele1 != ele2) conditionToReturnFalse = true; break;
+                    }
+
+                    if (conditionToReturnFalse) {
+                        finalResult = false;
+                        break;
+                    }
+                    tempList = restList;
+                }
+                sorterOutput.textContent = `Procedure returns: ${finalResult}`;
+            });
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ5_5.docx (3 questions)
+                {
+                    question: "Given the procedure `isInOrder(L)` as defined in the lesson (with `if(ele1 < ele2)`), it will return True if a list of positive integers `Loi` is in what order?",
+                    type: "single-choice",
+                    answers: ["Ascending order", "Descending order", "Either ascending or descending order", "Neither ascending nor descending order"],
+                    correct: ["Descending order"],
+                    explanation: "The procedure returns False if it ever finds an element that is SMALLER than the next element. This means it only returns True if every element is greater than or equal to the next, which is descending order."
+                },
+                {
+                    question: "If the conditional statement in line 6 of `isInOrder(L)` is replaced with `if(ele1 > ele2)`, the procedure will return True if `Loi` is in what order?",
+                    type: "single-choice",
+                    answers: ["Ascending order", "Descending order", "Either ascending or descending order", "Neither ascending nor descending order"],
+                    correct: ["Ascending order"],
+                    explanation: "With this change, the procedure returns False if it ever finds an element that is GREATER than the next element. This means it only returns True if every element is less than or equal to the next, which is ascending order."
+                },
+                {
+                    question: "If the conditional statement in line 6 of `isInOrder(L)` is replaced with `if(ele1 == ele2)`, the procedure will return True if what is true about `Loi`?",
+                    type: "single-choice",
+                    answers: ["Elements are in ascending order", "Elements are in descending order", "Elements are unique", "Elements are not all equal"],
+                    correct: ["Elements are unique"],
+                    explanation: "The procedure would return False if it finds any two adjacent elements that are equal. Therefore, it will only return True if NO adjacent elements are equal. For a sorted list, this implies all elements are unique. For an unsorted list, it just means no two identical elements are next to each other."
+                },
+                // New questions (6)
+                {
+                    question: "What is the primary reason for using `while(length(L) >= 2)` as the loop condition in the `isInOrder` procedure?",
+                    type: "single-choice",
+                    answers: [
+                        "To prevent errors on empty lists.",
+                        "To ensure there is always a pair of elements (ele1 and ele2) to compare.",
+                        "To make the loop run faster.",
+                        "To handle lists with an odd number of elements."
+                    ],
+                    correct: ["To ensure there is always a pair of elements (ele1 and ele2) to compare."],
+                    explanation: "The logic inside the loop requires both `first(L)` and `first(rest(L))`. If the length is less than 2, `rest(L)` could be empty, and calling `first()` on an empty list is an error."
+                },
+                {
+                    question: "If `L = [10, 20, 15]`, what is the value of `first(rest(rest(L)))`?",
+                    type: "single-choice",
+                    answers: ["10", "20", "15", "Undefined / Error"],
+                    correct: ["15"],
+                    explanation: "`rest(L)` is `[20, 15]`. `rest(rest(L))` is `[15]`. `first()` of `[15]` is `15`."
+                },
+                {
+                    question: "The `isInOrder` procedure modifies the original list `L` that was passed to it.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "The line `L = restList` reassigns the variable `L` within the procedure's scope. In each iteration, `L` becomes a shorter version of itself."
+                },
+                {
+                    question: "Which of the following problems could be solved using the deconstruction pattern seen in `isInOrder`? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: [
+                        "Finding the maximum value in a list.",
+                        "Counting how many times an adjective is immediately followed by a noun in a list of words.",
+                        "Finding if any number in a list is immediately followed by its double (e.g., 5 followed by 10).",
+                        "Summing all the elements in a list."
+                    ],
+                    correct: [
+                        "Counting how many times an adjective is immediately followed by a noun in a list of words.",
+                        "Finding if any number in a list is immediately followed by its double (e.g., 5 followed by 10)."
+                    ],
+                    explanation: "This pattern excels at problems that require comparing adjacent elements. Finding a max or a sum can be done more simply with a standard `foreach` loop."
+                },
+                 {
+                    question: "What will `isInOrder([5])` return, using the original descending-check logic?",
+                    type: "single-choice",
+                    answers: ["True", "False", "Undefined / Error", "5"],
+                    correct: ["True"],
+                    explanation: "The `while(length(L) >= 2)` condition will be false immediately because the length is 1. The loop is skipped, and the procedure proceeds to the final `return(True)` statement."
+                },
+                {
+                    question: "The `first()` and `rest()` pattern is the only way to check if a list is sorted.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "While it's a very common and intuitive pattern, other methods exist. For example, one could use a `foreach` loop while keeping track of the 'previous' element in a separate variable to compare against the current one."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

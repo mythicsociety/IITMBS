@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Guide: Combined Filtering Conditions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --incorrect-color: #ef4444;
+            --correct-color: #22c55e;
+            --sidebar-bg: #1f2937;
+            --main-bg: #f9fafb;
+            --text-color: #111827;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--main-bg);
+        }
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #374151;
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+        @media (max-width: 1024px) {
+            #sidebar.hidden-mobile {
+                transform: translateX(-100%);
+            }
+        }
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-question {
+            border: 1px solid #e5e7eb;
+        }
+        .quiz-question.correct {
+            border-left: 5px solid var(--correct-color);
+        }
+        .quiz-question.incorrect {
+            border-left: 5px solid var(--incorrect-color);
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+        }
+        .quiz-feedback.correct {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .quiz-feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Interactive Simulator Styles */
+        .sim-card {
+            position: absolute;
+            width: 120px;
+            height: 180px;
+            border: 2px solid #6b7280;
+            background-color: #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.5s ease-in-out;
+            transform-origin: bottom center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #4a5568;
+        }
+        #current-card-display.passed {
+            border: 3px solid var(--primary-color);
+        }
+        #current-card-display.failed {
+             border: 3px solid var(--secondary-color);
+        }
+        .stat-box {
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .stat-label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+        .stat-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <button id="menu-btn" class="lg:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+
+    <aside id="sidebar" class="bg-gray-800 text-gray-300 w-64 min-h-screen fixed top-0 left-0 z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-4">
+            <h1 class="text-white text-2xl font-bold">CT Guide</h1>
+            <p class="text-sm text-gray-400">Combined Filtering</p>
+        </div>
+        <nav id="nav-links" class="mt-4 flex flex-col">
+            <a href="#intro" class="sidebar-link py-2 px-4">Introduction</a>
+            <a href="#combining-filters" class="sidebar-link py-2 px-4">1. Combining Filters with 'AND'</a>
+            <a href="#comparing-groups" class="sidebar-link py-2 px-4">2. Comparing Groups of Data</a>
+            <a href="#interactive-comparison" class="sidebar-link py-2 px-4">3. Interactive Group Comparison</a>
+            <a href="#flowchart-multiple" class="sidebar-link py-2 px-4">4. Flowchart for Multiple Filters</a>
+            <a href="#quiz" class="sidebar-link py-2 px-4">5. Knowledge Check</a>
+        </nav>
+    </aside>
+
+    <main id="main-content" class="lg:ml-64 p-4 md:p-8">
+        
+        <section id="intro" class="card">
+            <h2>Introduction: More Powerful Filtering</h2>
+            <p class="mb-4 text-lg">In the last guide, we learned how to iterate through data and filter it based on a single condition. But what if our questions are more complex? What if we need to check several things at once, or compare different subgroups within our data?</p>
+            <p>This guide dives into more advanced filtering techniques. You'll learn how to combine multiple conditions to ask very specific questions, like "How many girls are from Chennai?". We'll also explore a powerful pattern for comparing groups, such as figuring out whether boys or girls performed better in a subject, all within a single, efficient pass through the data.</p>
+        </section>
+
+        <section id="combining-filters" class="card">
+            <h2>1. Combining Filters with 'AND'</h2>
+            <p class="mb-4">Let's say we want to find the number of female students from Chennai. This requires a card to meet two conditions simultaneously:</p>
+            <ol class="list-decimal list-inside space-y-2 mb-4 bg-indigo-50 p-4 rounded-md">
+                <li>The 'gender' must be 'F'.</li>
+                <li><strong>AND</strong></li>
+                <li>The 'city' must be 'Chennai'.</li>
+            </ol>
+            <p class="mb-4">This is called a combination of filters. When we use 'AND', an item must satisfy <strong>all</strong> the conditions to be selected. If it fails even one, it's ignored.</p>
+            
+            <h3 class="mt-6">Efficiency is Key</h3>
+            <p>We could do this in two steps: first, pull out all the female students into a new pile. Second, go through that new pile and pull out the ones from Chennai. But that's two separate iterations!</p>
+            <p>A much more efficient way is to check both conditions at the same time within a <strong>single iteration</strong>. As we look at each card, we ask, "Is it a girl AND is she from Chennai?". If the answer to both is yes, we increment our count. This saves time and is a core concept in writing good programs.</p>
+             <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-4" role="alert">
+                <p class="font-bold">Important Concept</p>
+                <p>Combining filters in a single iteration is more efficient than performing multiple, separate filtering iterations. The order of the combined filters (e.g., checking gender then city, or city then gender) does not change the final result.</p>
+            </div>
+        </section>
+
+        <section id="comparing-groups" class="card">
+            <h2>2. Comparing Groups of Data</h2>
+            <p class="mb-4">Another common task is to compare different segments of your data. For example, "Are girls doing better than boys in Maths?". To answer this, just finding the highest score isn't enough, as one exceptional student could skew the result. A better metric is to compare the <strong>average marks</strong> for each group.</p>
+            <p>To calculate the average for each group, we need four pieces of information by the end of our iteration:</p>
+            <ul class="list-disc list-inside grid grid-cols-1 md:grid-cols-2 gap-4">
+                <li>The total number of boys (let's call this variable <code>boyCount</code>).</li>
+                <li>The sum of all boys' maths marks (<code>boySum</code>).</li>
+                <li>The total number of girls (<code>girlCount</code>).</li>
+                <li>The sum of all girls' maths marks (<code>girlSum</code>).</li>
+            </ul>
+            <p class="mt-4">Just like with combined filters, we can gather all four of these values in a single pass through the data. For each card, we first check the gender. If it's a boy, we increment <code>boyCount</code> and add his marks to <code>boySum</code>. If it's a girl, we update <code>girlCount</code> and <code>girlSum</code>. This is a powerful combination of filtering and using multiple variables to accumulate data for different categories simultaneously.</p>
+        </section>
+
+        <section id="interactive-comparison" class="card">
+            <h2>3. Interactive Group Comparison</h2>
+            <p class="mb-4">Let's simulate the process of comparing boys' and girls' math scores. Click "Next Card" to process a student's card. The simulator will check the gender and update the correct set of variables. Watch how the counts and sums for each group build up independently.</p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-inner border">
+                <div class="flex flex-col md:flex-row justify-around items-center gap-8 mb-6">
+                    <!-- Pile 1 -->
+                    <div class="flex flex-col items-center text-center">
+                        <h3 class="text-lg font-semibold mb-4">Student Cards</h3>
+                        <div id="filter-card-pile-1" class="bg-gray-200 rounded-lg w-[120px] h-[180px] relative"></div>
+                    </div>
+                    
+                    <!-- Current Card -->
+                    <div class="flex flex-col items-center gap-4">
+                         <div id="current-card-display" class="w-48 h-60 bg-white border-2 border-gray-300 rounded-lg flex flex-col items-center justify-center p-2 text-center transition-all duration-300">
+                            <span class="text-gray-400">Click "Next Card"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Display -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="stat-box">
+                        <div class="stat-label">Boy Count</div>
+                        <div id="boy-count" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Boy Sum</div>
+                        <div id="boy-sum" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Girl Count</div>
+                        <div id="girl-count" class="stat-value">0</div>
+                    </div>
+                     <div class="stat-box">
+                        <div class="stat-label">Girl Sum</div>
+                        <div id="girl-sum" class="stat-value">0</div>
+                    </div>
+                </div>
+                 <div class="flex justify-center gap-4">
+                    <button id="filter-next-btn" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700">Next Card</button>
+                    <button id="filter-reset-btn" class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700">Reset</button>
+                </div>
+                <div id="filter-message" class="text-center mt-4 h-6 font-semibold"></div>
+            </div>
+        </section>
+
+        <section id="flowchart-multiple" class="card">
+            <h2>4. Flowchart for Multiple Filters</h2>
+            <p class="mb-4">This flowchart shows the logic for calculating the sums for both boys and girls in one iteration. After picking a card, a decision diamond checks the gender. Based on the outcome, the program follows a different path to update the correct pair of variables (`boySum` or `girlSum`) before looping back to check for more cards.</p>
+            <div class="bg-white p-4 rounded-lg shadow-inner overflow-x-auto">
+                <svg width="100%" viewBox="0 0 550 600" preserveAspectRatio="xMidYMid meet" aria-labelledby="multi-filter-flowchart-title" role="img">
+                    <title id="multi-filter-flowchart-title">Flowchart for calculating sums for two different groups (boys and girls) in a single iteration.</title>
+                     <defs>
+                        <marker id="arrowhead3" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#374151" />
+                        </marker>
+                        <style>
+                             .flow-box { fill: #60a5fa; stroke: #1d4ed8; stroke-width: 1.5; }
+                            .flow-decision { fill: #93c5fd; stroke: #1d4ed8; stroke-width: 1.5; }
+                            .flow-terminal { fill: #3b82f6; stroke: #1e40af; stroke-width: 1.5; }
+                            .flow-text { font-family: 'Inter', sans-serif; font-size: 12px; fill: #1f2937; text-anchor: middle; }
+                            .flow-line { stroke: #374151; stroke-width: 2; marker-end: url(#arrowhead3); fill: none;}
+                            .flow-label { font-family: 'Inter', sans-serif; font-size: 11px; fill: #4b5563; }
+                        </style>
+                    </defs>
+                    <!-- Start -->
+                    <rect x="225" y="10" width="100" height="40" rx="20" class="flow-terminal" /><text x="275" y="35" class="flow-text" fill="white">Start</text>
+                    <path class="flow-line" d="M 275 50 L 275 80" />
+                    <!-- Initialization -->
+                    <rect x="205" y="80" width="140" height="50" rx="5" class="flow-box" />
+                    <text x="275" y="100" class="flow-text">GirlSum = 0</text>
+                    <text x="275" y="120" class="flow-text">BoySum = 0</text>
+                    <path class="flow-line" d="M 275 130 L 275 160" />
+                    <!-- More cards? -->
+                    <polygon points="275,160 355,200 275,240 195,200" class="flow-decision" />
+                    <text x="275" y="195" class="flow-text">More cards</text><text x="275" y="215" class="flow-text">in Pile 1?</text>
+                    <!-- No Path -->
+                    <path class="flow-line" d="M 355 200 L 395 200" />
+                    <text x="370" y="195" class="flow-label">No</text>
+                    <rect x="395" y="180" width="70" height="40" rx="20" class="flow-terminal" /><text x="430" y="205" class="flow-text" fill="white">End</text>
+                    <!-- Yes Path -->
+                    <path class="flow-line" d="M 275 240 L 275 270" />
+                    <text x="285" y="255" class="flow-label">Yes</text>
+                    <!-- Pick/Move Card -->
+                    <rect x="200" y="270" width="150" height="40" rx="5" class="flow-box" /><text x="275" y="295" class="flow-text">Pick & Move Card X</text>
+                    <path class="flow-line" d="M 275 310 L 275 340" />
+                    <!-- Is a boy? -->
+                    <polygon points="275,340 365,390 275,440 185,390" class="flow-decision" />
+                    <text x="275" y="395" class="flow-text">Is X a boy?</text>
+                    <!-- Yes Path (Boy) -->
+                    <path class="flow-line" d="M 275 440 L 275 470" />
+                    <text x="285" y="455" class="flow-label">Yes</text>
+                    <rect x="200" y="470" width="150" height="40" rx="5" class="flow-box" /><text x="275" y="495" class="flow-text">Add score to BoySum</text>
+                    <!-- No Path (Girl) -->
+                    <path class="flow-line" d="M 365 390 L 425 390" />
+                    <text x="390" y="385" class="flow-label">No</text>
+                    <rect x="425" y="370" width="150" height="40" rx="5" class="flow-box" /><text x="500" y="395" class="flow-text">Add score to GirlSum</text>
+                    <!-- Loop back -->
+                    <path class="flow-line" d="M 275 510 L 275 540 L 135 540 L 135 200 L 195 200" />
+                    <path class="flow-line" d="M 500 410 L 500 525 L 135 525" />
+                </svg>
+            </div>
+        </section>
+
+        <section id="quiz" class="card">
+            <h2>5. Knowledge Check</h2>
+            <p class="mb-6">Time to test your understanding of combined filtering and group comparisons. Answer the questions below for immediate feedback.</p>
+            <div id="quiz-container" class="space-y-6">
+                <!-- Quiz questions will be dynamically inserted here -->
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Generic Sidebar and Navigation Logic ---
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menu-btn');
+            navLinks = document.querySelectorAll('.sidebar-link');
+            sections = document.querySelectorAll('main section');
+
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) sidebar.classList.add('-translate-x-full');
+                });
+            });
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    if (pageYOffset >= section.offsetTop - 100) current = section.getAttribute('id');
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+                });
+            });
+
+            // --- Interactive Group Comparison Simulator ---
+            const studentData = [
+                { name: 'Clarence', gender: 'M', city: 'Bengaluru', math: 63 },
+                { name: 'Rida', gender: 'F', city: 'Chennai', math: 42 },
+                { name: 'Siddharth', gender: 'M', city: 'Madurai', math: 44 },
+                { name: 'Sophia', gender: 'F', city: 'Trichy', math: 89 },
+                { name: 'Kavya', gender: 'F', city: 'Chennai', math: 64 },
+                { name: 'Jagan', gender: 'M', city: 'Madurai', math: 81 },
+                { name: 'Aditya', gender: 'M', city: 'Vellore', math: 84 },
+                { name: 'Geetha', gender: 'F', city: 'Chennai', math: 87 },
+                { name: 'Rahul', gender: 'M', city: 'Bengaluru', math: 97 },
+                { name: 'Priya', gender: 'F', city: 'Erode', math: 72 },
+            ];
+
+            const nextBtn = document.getElementById('filter-next-btn');
+            const resetBtn = document.getElementById('filter-reset-btn');
+            const currentCardDisplay = document.getElementById('current-card-display');
+            const filterMessage = document.getElementById('filter-message');
+            const pile1 = document.getElementById('filter-card-pile-1');
+            
+            const boyCountEl = document.getElementById('boy-count');
+            const boySumEl = document.getElementById('boy-sum');
+            const girlCountEl = document.getElementById('girl-count');
+            const girlSumEl = document.getElementById('girl-sum');
+
+            let currentIndex = 0;
+            let boyCount = 0, boySum = 0, girlCount = 0, girlSum = 0;
+
+            function createSimCard(index) {
+                const card = document.createElement('div');
+                card.className = 'sim-card';
+                card.style.bottom = `${index * 4}px`;
+                card.style.zIndex = index;
+                card.textContent = `Card ${studentData.length - index}`;
+                return card;
+            }
+
+            function resetSim() {
+                currentIndex = 0;
+                boyCount = 0; boySum = 0; girlCount = 0; girlSum = 0;
+                boyCountEl.textContent = '0';
+                boySumEl.textContent = '0';
+                girlCountEl.textContent = '0';
+                girlSumEl.textContent = '0';
+                filterMessage.textContent = '';
+                nextBtn.disabled = false;
+                pile1.innerHTML = '';
+                currentCardDisplay.innerHTML = '<span class="text-gray-400">Click "Next Card"</span>';
+                currentCardDisplay.classList.remove('passed', 'failed');
+                 for (let i = 0; i < studentData.length; i++) {
+                    pile1.appendChild(createSimCard(i));
+                }
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex >= studentData.length) return;
+
+                const cardData = studentData[currentIndex];
+                
+                currentCardDisplay.innerHTML = `
+                    <div class="font-bold text-lg">${cardData.name}</div>
+                    <div class="text-sm text-gray-600">${cardData.city}</div>
+                    <div class="mt-4">Gender: <span class="font-semibold">${cardData.gender}</span></div>
+                    <div>Maths: <span class="font-semibold">${cardData.math}</span></div>
+                `;
+                
+                currentCardDisplay.classList.remove('passed', 'failed');
+
+                if (cardData.gender === 'M') {
+                    boyCount++;
+                    boySum += cardData.math;
+                    boyCountEl.textContent = boyCount;
+                    boySumEl.textContent = boySum;
+                    filterMessage.textContent = `Updated Boy's Stats.`;
+                    filterMessage.style.color = 'var(--primary-color)';
+                    currentCardDisplay.classList.add('passed');
+                } else {
+                    girlCount++;
+                    girlSum += cardData.math;
+                    girlCountEl.textContent = girlCount;
+                    girlSumEl.textContent = girlSum;
+                    filterMessage.textContent = `Updated Girl's Stats.`;
+                    filterMessage.style.color = 'var(--secondary-color)';
+                    currentCardDisplay.classList.add('failed');
+                }
+
+                const cardsInPile1 = pile1.children;
+                if (cardsInPile1.length > 0) {
+                    pile1.removeChild(cardsInPile1[cardsInPile1.length - 1]);
+                }
+
+                currentIndex++;
+                if (currentIndex >= studentData.length) {
+                    filterMessage.textContent = 'All cards processed!';
+                    nextBtn.disabled = true;
+                }
+            });
+
+            resetBtn.addEventListener('click', resetSim);
+            resetSim();
+
+            // --- Quiz Logic ---
+            const quizData = [
+                {
+                    question: "In the “Scores” dataset, we are interested in finding the number of females from Chennai. Which of the following statements are true? [It is a Multiple Select Question (MSQ)]",
+                    type: 'multiple',
+                    options: [
+                        "We can find the count in a single iteration using a combination of filters",
+                        "We can find the count in two iterations. But the order in which the filters are used affects the result",
+                        "We can find the count in two iterations. The order in which the filters are used does not affect the result"
+                    ],
+                    correctAnswer: ["We can find the count in a single iteration using a combination of filters", "We can find the count in two iterations. The order in which the filters are used does not affect the result"],
+                    explanation: "It's most efficient to use a combined filter in one iteration. However, doing it in two iterations also works, and the order (filtering by city then gender, or vice-versa) will yield the same final count."
+                },
+                {
+                    question: "We wish to compare the performances of boys and girls in mathematics. What is a good metric to decide which of the two groups is doing better?",
+                    type: 'single',
+                    options: ["Average mathematics marks of the group", "Maximum mathematics marks of the group"],
+                    correctAnswer: "Average mathematics marks of the group",
+                    explanation: "Average marks provide a better overall picture of group performance and are less sensitive to single outliers (one very high or low score) than the maximum mark."
+                },
+                {
+                    question: "Consider the following variables: boyCount, girlCount, boySum and girlSum. They have the same meaning as used in the lecture. Which of the following statements expresses the average mathematics marks obtained by all students in the dataset?",
+                    type: 'single',
+                    options: [
+                        "( boySum / boyCount ) + ( girlSum / girlCount )",
+                        "( boySum + girlSum ) / ( boyCount + girlCount )"
+                    ],
+                    correctAnswer: "( boySum + girlSum ) / ( boyCount + girlCount )",
+                    explanation: "To find the overall average, you must sum all the marks (boySum + girlSum) and divide by the total number of students (boyCount + girlCount)."
+                },
+                {
+                    question: "You want to find students with a math score greater than 80 AND a physics score greater than 80. A student has a math score of 85 and a physics score of 75. Does this student pass the filter?",
+                    type: 'true-false',
+                    options: ["Yes", "No"],
+                    correctAnswer: "No",
+                    explanation: "No. With an 'AND' condition, the student must satisfy ALL parts of the filter. While their math score is greater than 80, their physics score is not."
+                },
+                {
+                    question: "Which of the following tasks can be efficiently completed in a single iteration through a student dataset? (Select all that apply)",
+                    type: 'multiple',
+                    options: [
+                        "Count the number of boys and the number of girls.",
+                        "Find the highest math score for students from 'Bengaluru' and the highest for students from 'Chennai'.",
+                        "Calculate the total number of students and the average age.",
+                        "Find all students from 'Madurai' and then, in a second pass, find which of them are boys."
+                    ],
+                    correctAnswer: ["Count the number of boys and the number of girls.", "Find the highest math score for students from 'Bengaluru' and the highest for students from 'Chennai'.", "Calculate the total number of students and the average age."],
+                    explanation: "All of the first three options can be done in one pass by using multiple variables to track the different pieces of information. The last option explicitly describes a less efficient two-pass (two iteration) approach."
+                },
+                {
+                    question: "In the flowchart for comparing boys' and girls' sums, what is the purpose of the 'Is X a boy?' diamond?",
+                    type: 'single',
+                    options: [
+                        "To stop the iteration.",
+                        "To decide which variable (BoySum or GirlSum) to update.",
+                        "To initialize the variables.",
+                        "To count the total number of students."
+                    ],
+                    correctAnswer: "To decide which variable (BoySum or GirlSum) to update.",
+                    explanation: "This decision point acts as a filter that directs the program flow. Based on the gender, it chooses the correct path to update the appropriate sum variable."
+                },
+                 {
+                    question: "True or False: Using a combined filter in one iteration is always more efficient than using two separate iterations for two filters.",
+                    type: 'true-false',
+                    options: ["True", "False"],
+                    correctAnswer: "True",
+                    explanation: "True. A single iteration means you only have to look at each piece of data once. Two iterations means you have to look at the data twice (or once, and then a subset of it again), which is inherently slower."
+                },
+                {
+                    question: "You need to count students who are from 'Chennai' OR from 'Bengaluru'. Which of the following students would be counted? (Select all that apply)",
+                    type: 'multiple',
+                    options: [
+                        "A student from Chennai.",
+                        "A student from Madurai.",
+                        "A student from Bengaluru."
+                    ],
+                    correctAnswer: ["A student from Chennai.", "A student from Bengaluru."],
+                    explanation: "An 'OR' condition is true if at least one of the conditions is met. Therefore, students from either city would be included in the count."
+                },
+                {
+                    question: "To find the average math score for boys, what two variables must you track during your iteration?",
+                    type: 'multiple',
+                    options: [
+                        "Total number of students",
+                        "Sum of boys' math scores",
+                        "Total number of boys",
+                        "Sum of all students' math scores"
+                    ],
+                    correctAnswer: ["Sum of boys' math scores", "Total number of boys"],
+                    explanation: "The average for a specific group is the sum of that group's values divided by the count of items in that group. Therefore, you need the sum of boys' scores and the total count of boys."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'quiz-question card p-6';
+                let optionsHtml = '';
+                if (q.type === 'single' || q.type === 'true-false') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="radio" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                } else if (q.type === 'multiple') {
+                    optionsHtml = q.options.map(opt => `<label class="block mb-2"><input type="checkbox" name="q${index}" value="${opt}" class="mr-2">${opt}</label>`).join('');
+                }
+                questionElem.innerHTML = `<p class="font-semibold mb-4">${index + 1}. ${q.question}</p><div class="options-container">${optionsHtml}</div><button class="submit-btn mt-4 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">Submit</button><div class="quiz-feedback"><p class="font-bold feedback-title"></p><p class="feedback-text">${q.explanation}</p></div>`;
+                quizContainer.appendChild(questionElem);
+                questionElem.querySelector('.submit-btn').addEventListener('click', e => {
+                    e.target.disabled = true;
+                    const feedbackElem = questionElem.querySelector('.quiz-feedback');
+                    const feedbackTitle = questionElem.querySelector('.feedback-title');
+                    let isCorrect = false;
+                    if (q.type === 'single' || q.type === 'true-false') {
+                        const selected = questionElem.querySelector(`input[name="q${index}"]:checked`);
+                        if (selected && selected.value === q.correctAnswer) isCorrect = true;
+                    } else if (q.type === 'multiple') {
+                        const selected = Array.from(questionElem.querySelectorAll(`input[name="q${index}"]:checked`)).map(el => el.value);
+                        if (selected.length === q.correctAnswer.length && selected.every(val => q.correctAnswer.includes(val))) isCorrect = true;
+                    }
+                    if (isCorrect) {
+                        questionElem.classList.add('correct');
+                        feedbackElem.classList.add('correct');
+                        feedbackTitle.textContent = 'Correct!';
+                    } else {
+                        questionElem.classList.add('incorrect');
+                        feedbackElem.classList.add('incorrect');
+                        feedbackTitle.textContent = 'Incorrect';
+                    }
+                    feedbackElem.style.display = 'block';
+                    questionElem.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
