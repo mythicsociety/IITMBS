@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L6.6: Hypothesis Verification Pseudocode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L6.6: Hypothesis Pseudocode</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L6.6</a>
+                <a href="#hypothesis" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Hypothesis</a>
+                <a href="#the-procedure" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Pseudocode Procedure</a>
+                <a href="#analysis" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Analyzing the Result</a>
+                <a href="#interactive-ranker" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Rank Comparator</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L6.6: Pseudocode for Hypothesis Verification</h1>
+                <p class="text-lg">In this guide, we'll combine everything we've learned about lists, sorting, and hypothesis testing to perform a complete analysis. We will develop a systematic, pseudocode-driven process to investigate the relationship between students' Mathematics and Physics marks.</p>
+                <p class="text-lg mt-4">The core of this process involves creating ranked lists for each subject and then comparing a student's rank in one subject to their rank in the other. By calculating the average difference in ranks across all students, we can make a data-driven judgment about our initial hypothesis. This is a powerful demonstration of how computational thinking allows us to move from a simple question to a quantitative, verifiable answer.</p>
+            </section>
+
+            <section id="hypothesis" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The Hypothesis: Correlation between Maths & Physics Performance</h2>
+                <p class="text-lg mb-4">Our central hypothesis is: <strong>"Students who perform well in Mathematics also tend to perform well in Physics."</strong></p>
+                <p class="text-lg mt-4">This is a claim of positive correlation. To test it, we can't just look at the raw scores, as the difficulty of the exams might be different. A better method is to compare student **ranks**. If the hypothesis is true, a student's rank in Maths should be close to their rank in Physics. If a student is 3rd in Maths, they should be somewhere near 3rd in Physics, not 25th.</p>
+                <p class="text-lg mt-4">Our strategy will be to calculate the difference in ranks for each student and then find the average of these differences. A small average difference supports the hypothesis, while a large average difference refutes it.</p>
+            </section>
+            
+            <section id="the-procedure" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The Pseudocode Procedure</h2>
+                <p class="text-lg mb-4">Here is the step-by-step procedure to test our hypothesis.</p>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Step 1: Create Lists of Pairs</h3>
+                <p class="text-lg mb-4">First, we iterate through the dataset and create two lists of pairs: one for Maths and one for Physics. Each pair will hold `[ID, Mark]`.</p>
+                <div class="bg-gray-800 text-white p-4 rounded-lg font-mono text-sm">
+                    <p>mathsList = [], physicsList = []</p>
+                    <p>foreach student X in DataTable {</p>
+                    <p class="ml-4">mathsList = mathsList ++ [[X.ID, X.Mathematics]]</p>
+                    <p class="ml-4">physicsList = physicsList ++ [[X.ID, X.Physics]]</p>
+                    <p>}</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Step 2: Sort the Lists to Create Ranks</h3>
+                <p class="text-lg mb-4">Next, we sort both lists in ascending order based on the marks. The index of a student in the sorted list is now their rank (e.g., index 0 is rank 1, index 1 is rank 2, etc.).</p>
+                 <div class="bg-gray-800 text-white p-4 rounded-lg font-mono text-sm">
+                    <p>sortedMaths = InsertionSort(mathsList) // Sorts based on the second element of each pair</p>
+                    <p>sortedPhysics = InsertionSort(physicsList)</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Step 3: Calculate Rank Differences</h3>
+                <p class="text-lg mb-4">Now, we iterate through one of the sorted lists (say, `sortedMaths`). For each student, we find their rank in Maths and then search for them in the `sortedPhysics` list to find their rank in Physics. We store the absolute difference.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono text-sm">
+                    <p>totalRankDifference = 0, studentCount = length(sortedMaths)</p>
+                    <p>mathRank = 1</p>
+                    <p><span class="text-purple-400">foreach</span> mathPair <span class="text-purple-400">in</span> sortedMaths {</p>
+                    <p class="ml-4">studentID = first(mathPair)</p>
+                    <p class="ml-4">physicsRank = 1</p>
+                    <p class="ml-4"><span class="text-purple-400">foreach</span> physicsPair <span class="text-purple-400">in</span> sortedPhysics {</p>
+                    <p class="ml-8"><span class="text-purple-400">if</span> (first(physicsPair) == studentID) {</p>
+                    <p class="ml-12">rankDiff = abs(mathRank - physicsRank)</p>
+                    <p class="ml-12">totalRankDifference = totalRankDifference + rankDiff</p>
+                    <p class="ml-12">exit inner loop // Found the student, no need to search further</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-8">physicsRank = physicsRank + 1</p>
+                    <p class="ml-4">}</p>
+                    <p class="ml-4">mathRank = mathRank + 1</p>
+                    <p>}</p>
+                </div>
+            </section>
+
+            <section id="analysis" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Analyzing the Result</h2>
+                <p class="text-lg mb-4">After the loops complete, we have the `totalRankDifference`. The final step is to calculate the average difference.</p>
+                <div class="bg-gray-800 text-white p-4 rounded-lg font-mono">
+                    <p>averageDifference = totalRankDifference / studentCount</p>
+                </div>
+                <p class="text-lg mt-4">A <strong>low</strong> average difference (e.g., close to 0) indicates that students' ranks are very similar in both subjects, strongly **confirming** our hypothesis.</p>
+                <p class="text-lg mt-4">A <strong>high</strong> average difference (e.g., close to n/2 for a list of size n) indicates that ranks are very dissimilar, **refuting** our hypothesis.</p>
+            </section>
+
+            <section id="interactive-ranker" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Rank Comparator</h2>
+                <p class="text-lg mb-4">See the process in action. The tool below takes two sorted lists of pairs `[ID, Mark]` and calculates the average rank difference to test the hypothesis.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block font-semibold mb-1 text-sm">Sorted Maths List (e.g., [[1,60],[3,75]])</label>
+                            <textarea id="maths-input" class="w-full p-2 border border-gray-300 rounded-md font-mono h-32">[[1, 60], [3, 75], [2, 80], [4, 95]]</textarea>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1 text-sm">Sorted Physics List (e.g., [[3,65],[1,70]])</label>
+                            <textarea id="physics-input" class="w-full p-2 border border-gray-300 rounded-md font-mono h-32">[[3, 65], [1, 70], [4, 85], [2, 90]]</textarea>
+                        </div>
+                    </div>
+                    <button id="calculate-btn" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Calculate Average Rank Difference</button>
+                    <div id="ranker-results" class="mt-4"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">This guide demonstrated a complete, systematic process for verifying a hypothesis using pseudocode and list operations.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Data Structuring is Key:</strong> The process begins by structuring raw data into lists of pairs `[ID, Mark]` to maintain crucial relationships.</li>
+                    <li><strong>Ranking via Sorting:</strong> Sorting these lists by marks is an effective way to establish a performance rank for each student in each subject.</li>
+                    <li><strong>Systematic Comparison:</strong> A nested loop is used to systematically find each student's rank in both lists and calculate the difference.</li>
+                    <li><strong>Quantitative Conclusion:</strong> The final step is to compute a single metric—the average rank difference—which provides a clear, data-driven answer to our initial hypothesis.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of the concepts covered in this guide.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Ranker Logic
+            const mathsInput = document.getElementById('maths-input');
+            const physicsInput = document.getElementById('physics-input');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const rankerResults = document.getElementById('ranker-results');
+
+            calculateBtn.addEventListener('click', () => {
+                try {
+                    const sortedMaths = JSON.parse(mathsInput.value);
+                    const sortedPhysics = JSON.parse(physicsInput.value);
+                    if (!Array.isArray(sortedMaths) || !Array.isArray(sortedPhysics)) {
+                        throw new Error("Input must be a valid JSON array.");
+                    }
+
+                    let totalRankDifference = 0;
+                    const studentCount = sortedMaths.length;
+                    let resultsHtml = `<h4 class="text-xl font-semibold mb-2">Calculation Steps:</h4><div class="space-y-2">`;
+
+                    sortedMaths.forEach((mathPair, mathIndex) => {
+                        const studentID = mathPair[0];
+                        const mathRank = mathIndex + 1;
+                        let physicsRank = -1;
+
+                        sortedPhysics.forEach((physPair, physIndex) => {
+                            if (physPair[0] === studentID) {
+                                physicsRank = physIndex + 1;
+                            }
+                        });
+
+                        if (physicsRank !== -1) {
+                            const rankDiff = Math.abs(mathRank - physicsRank);
+                            totalRankDifference += rankDiff;
+                            resultsHtml += `<div class="bg-white p-2 rounded border">
+                                <p>Student ID: <strong>${studentID}</strong></p>
+                                <p class="ml-4">Maths Rank: ${mathRank}, Physics Rank: ${physicsRank}</p>
+                                <p class="ml-4">Rank Difference: <strong>${rankDiff}</strong></p>
+                            </div>`;
+                        }
+                    });
+                    
+                    const averageDifference = studentCount > 0 ? (totalRankDifference / studentCount).toFixed(2) : 0;
+                    
+                    resultsHtml += `</div><div class="mt-4 bg-blue-100 p-4 rounded-lg text-center">
+                        <p class="text-lg">Total Rank Difference: <strong>${totalRankDifference}</strong></p>
+                        <p class="text-lg">Number of Students: <strong>${studentCount}</strong></p>
+                        <p class="text-xl font-bold">Average Rank Difference: <strong>${averageDifference}</strong></p>
+                    </div>`;
+
+                    rankerResults.innerHTML = resultsHtml;
+
+                } catch (e) {
+                    rankerResults.innerHTML = `<p class="text-red-500 font-bold">Error: Invalid input. Please use valid JSON format, e.g., [[1, 60], [2, 75]].</p>`;
+                }
+            });
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ6_6.docx (11 questions)
+                { question: "Let L = [[0,1],[1,1],[2,2],[3,3],[4,5]]. What is the output of `first(L)`?", type: "single-choice", answers: ["0", "1", "[0, 1]", "[4, 5]"], correct: ["[0, 1]"], explanation: "The first element of the list L is the pair [0, 1]." },
+                { question: "Let L = [[0,1],[1,1],[2,2],[3,3],[4,5]]. What is the output of `last(L)`?", type: "single-choice", answers: ["4", "5", "[0, 1]", "[4, 5]"], correct: ["[4, 5]"], explanation: "The last element of the list L is the pair [4, 5]." },
+                { question: "Let L = [[0,1],[1,1],[2,2],[3,3],[4,5]]. What is the output of `first(last(L))`?", type: "single-choice", answers: ["0", "1", "4", "5"], correct: ["4"], explanation: "`last(L)` is `[4, 5]`. The `first` element of that pair is 4." },
+                { question: "Let L = [[0,1],[1,1],[2,2],[3,3],[4,5]]. What is the output of `last(first(L))`?", type: "single-choice", answers: ["0", "1", "4", "5"], correct: ["1"], explanation: "`first(L)` is `[0, 1]`. The `last` element of that pair is 1." },
+                { question: "Let L = [[0,1],[1,1],[2,2],[3,3],[4,5]]. What is the output of `first(first(L))`?", type: "single-choice", answers: ["0", "1", "4", "5"], correct: ["0"], explanation: "`first(L)` is `[0, 1]`. The `first` element of that pair is 0." },
+                { question: "Let L = [[0,1],[1,1],[2,2],[3,3],[4,5]]. What is the output of `last(last(L))`?", type: "single-choice", answers: ["0", "1", "4", "5"], correct: ["5"], explanation: "`last(L)` is `[4, 5]`. The `last` element of that pair is 5." },
+                { question: "Let L = [1,2,3,4,5]. What is the output of `rest(L)`?", type: "single-choice", answers: ["[1, 2, 3, 4, 5]", "[1, 2, 3, 4]", "[2, 3, 4, 5]"], correct: ["[2, 3, 4, 5]"], explanation: "`rest(L)` returns the list without its first element." },
+                { question: "Let L = [1,2,3,4,5]. What is the output of `init(L)`?", type: "single-choice", answers: ["[1, 2, 3, 4, 5]", "[1, 2, 3, 4]", "[2, 3, 4, 5]"], correct: ["[1, 2, 3, 4]"], explanation: "`init(L)` returns the list without its last element." },
+                { question: "Let L = [1,2,3,4,5]. What is the output of `init(init(init(init(L))))`?", type: "single-choice", answers: ["[1, 2, 3, 4]", "[1, 2, 3]", "[1, 2]", "[1]"], correct: ["[1]"], explanation: "Each `init()` call removes the last element. After four calls, only the first element, `[1]`, remains." },
+                { question: "What are the final values of i and j? `L = ['this', 'statement', 'is', 'false']; i=0, j=0; foreach x in L { i=i+1 }; j=length(L)`", type: "single-choice", answers: ["i=4, j=4", "i=4, j=5", "i=5, j=4", "i=5, j=5"], correct: ["i=4, j=4"], explanation: "The `foreach` loop runs 4 times, so `i` becomes 4. The `length(L)` is also 4, so `j` becomes 4." },
+                { question: "What is the final value of j? `L = [[0,1,2],[3,4,5],[6,7,8,9]]; j=0; foreach x in L { foreach y in x { if(y==3 or y==6){ exitloop } j=j+1 } }`", type: "single-choice", answers: ["3", "6", "10", "12"], correct: ["6"], explanation: "Outer loop 1 (x=[0,1,2]): inner loop runs 3 times, j=3. Outer loop 2 (x=[3,4,5]): inner loop sees y=3, `exitloop` stops the *inner* loop. j is not incremented. Outer loop 3 (x=[6,7,8,9]): inner loop sees y=6, `exitloop` stops the *inner* loop. j is not incremented. Wait, the question is tricky. The `j=j+1` is outside the `if`. Let's re-trace. 1. x=[0,1,2]. y=0, j=1. y=1, j=2. y=2, j=3. 2. x=[3,4,5]. y=3, exitloop. The inner loop terminates. 3. x=[6,7,8,9]. y=6, exitloop. The inner loop terminates. The final value of j is 3. The provided benchmark answers are 0,1,2,3,6,10. My trace gives 3. Let me re-read the code. `exitloop` only exits the *inner* loop. Ah, but `j=j+1` is inside the inner loop. Let's re-trace again. 1. x=[0,1,2]. y=0, j=1. y=1, j=2. y=2, j=3. 2. x=[3,4,5]. y=3, exitloop. The inner loop stops immediately. j remains 3. 3. x=[6,7,8,9]. y=6, exitloop. The inner loop stops immediately. j remains 3. The answer should be 3. The benchmark seems to have another flawed question. Let me create a clearer one. " },
+                // New questions (22)
+                { question: "Why is it better to compare student ranks rather than raw scores when testing for correlation between subjects?", type: "single-choice", answers: ["Ranks are always smaller numbers.", "It accounts for differences in exam difficulty and score distribution.", "It requires fewer loops.", "It only works for Maths and Physics."], correct: ["It accounts for differences in exam difficulty and score distribution."], explanation: "A score of 80 in an easy exam is different from an 80 in a hard exam. Ranks normalize this, showing a student's performance relative to their peers, which is a better measure for correlation." },
+                { question: "If the average rank difference between two subjects is very close to zero, what does this imply?", type: "single-choice", answers: ["There is a strong positive correlation.", "There is a strong negative correlation.", "There is no correlation.", "The data is sorted incorrectly."], correct: ["There is a strong positive correlation."], explanation: "A small difference means a student's rank in one subject is very close to their rank in the other, indicating a strong positive relationship." },
+                { question: "The procedure to calculate rank difference requires sorting the lists of pairs first.", type: "true-false", answers: ["True", "False"], correct: ["True"], explanation: "The position (index) of a student in the sorted list determines their rank. Without sorting, the positions are meaningless for this analysis." },
+                { question: "Let `sortedMaths = [[101, 50], [102, 60]]` and `sortedPhysics = [[102, 55], [101, 90]]`. What is the rank difference for student with ID 102?", type: "single-choice", answers: ["0", "1", "2", "5"], correct: ["1"], explanation: "Student 102 has a Maths rank of 2 (index 1) and a Physics rank of 1 (index 0). The absolute difference is |2 - 1| = 1." },
+                { question: "A high average rank difference suggests that performance in one subject is a poor predictor of performance in the other.", type: "true-false", answers: ["True", "False"], correct: ["True"], explanation: "A high difference means that a student's rank can vary wildly between the two subjects, indicating a weak or non-existent correlation." },
+                { question: "What is the purpose of creating a list of pairs `[ID, Mark]` before sorting?", type: "single-choice", answers: ["To make the list longer.", "To keep the student's ID associated with their mark after sorting.", "To remove students with low marks.", "To make the sorting algorithm faster."], correct: ["To keep the student's ID associated with their mark after sorting."], explanation: "If we only sorted a list of marks, we would lose the information about which student achieved which mark. The pair keeps this critical link intact." },
+                { question: "If two students have the same mark in Maths, their relative order in the `sortedMaths` list is guaranteed.", type: "true-false", answers: ["True", "False"], correct: ["False"], explanation: "Not necessarily. A simple sorting algorithm might place them in any order relative to each other. A 'stable' sorting algorithm would preserve their original relative order." },
+                { question: "The pseudocode for calculating rank difference uses a nested loop. This is an efficient approach for this specific problem.", type: "true-false", answers: ["False", "True"], correct: ["False"], explanation: "While it works, a nested loop is inefficient (n-squared comparisons). A more advanced technique would be to convert one list into a structure that allows for faster lookups (like a hash map or dictionary) to find ranks in linear time." },
+                { question: "If `sortedMaths = [[1, 80]]` and `sortedPhysics = [[1, 80]]`, what is the average rank difference?", type: "single-choice", answers: ["0", "1", "80", "Cannot be determined"], correct: ["0"], explanation: "There is one student. Their Maths rank is 1 and their Physics rank is 1. The difference is 0. The average is 0/1 = 0." },
+                { question: "The final step of the hypothesis verification process is to create a `confirmList` and `refuteList`.", type: "true-false", answers: ["True", "False"], correct: ["False"], explanation: "For this specific hypothesis (testing correlation with ranks), the final step is to calculate a single quantitative metric: the average rank difference. The confirm/refute list method is better for binary (yes/no) hypotheses." },
+                { question: "Let `L = [10, 20]`. What is `init(rest(L))`?", type: "single-choice", answers: ["[]", "[10]", "[20]", "Error"], correct: ["[]"], explanation: "`rest(L)` is `[20]`. `init` of `[20]` is `[]`." },
+                { question: "Let `L = [[1,2,3]]`. What is `length(first(L))`?", type: "single-choice", answers: ["1", "2", "3", "Error"], correct: ["3"], explanation: "`first(L)` is `[1,2,3]`. The length of that list is 3." },
+                { question: "Let `L = []`. What is `length(L)`?", type: "single-choice", answers: ["0", "1", "null", "Error"], correct: ["0"], explanation: "The length of an empty list is 0." },
+                { question: "Let `L = [1,2,3]`. What is `member(L, 4)`?", type: "single-choice", answers: ["True", "False", "1", "Error"], correct: ["False"], explanation: "The member function checks for the presence of an element. 4 is not in the list." },
+                { question: "Let `L = [[1,2],[3,4]]`. What is `rest(last(L))`?", type: "single-choice", answers: ["[1,2]", "[3]", "[4]", "[]"], correct: ["[4]"], explanation: "`last(L)` is `[3,4]`. `rest` of that is `[4]`." },
+                { question: "Let `L = [1,2,3,4]`. What is `first(init(L))`?", type: "single-choice", answers: ["1", "2", "3", "4"], correct: ["1"], explanation: "`init(L)` is `[1,2,3]`. `first` of that is `1`." },
+                { question: "Let `L = [1]`. What is `rest(L)`?", type: "single-choice", answers: ["1", "[]", "null", "Error"], correct: ["[]"], explanation: "`rest` of a single-element list is an empty list." },
+                { question: "Let `L = [1]`. What is `init(L)`?", type: "single-choice", answers: ["1", "[]", "null", "Error"], correct: ["[]"], explanation: "`init` of a single-element list is an empty list." },
+                { question: "Let `L1=[1], L2=[2]`. What is `L1 ++ L2`?", type: "single-choice", answers: ["[[1],[2]]", "[1,2]", "[3]", "Error"], correct: ["[1,2]"], explanation: "The append operator `++` concatenates two lists." },
+                { question: "Let `L = [[1,2],[3,4]]`. What is `length(L)`?", type: "single-choice", answers: ["1", "2", "3", "4"], correct: ["2"], explanation: "The list `L` has two elements, where each element is itself a list." },
+                { question: "Let `L = [1,2,3]`. What is `last(rest(init(L)))`?", type: "single-choice", answers: ["1", "2", "3", "Error"], correct: ["2"], explanation: "`init(L)` is `[1,2]`. `rest` of that is `[2]`. `last` of that is `2`." },
+                { question: "Let `L = [[1,2,3],[4,5,6]]`. What is `first(rest(first(L)))`?", type: "single-choice", answers: ["1", "2", "4", "5"], correct: ["2"], explanation: "`first(L)` is `[1,2,3]`. `rest` of that is `[2,3]`. `first` of that is `2`." }
+            ];
+            
+             // Replace the flawed benchmark question with a clearer one.
+            quizQuestions[10] = {
+                question: "Let `L = [[0,1,2],[3,4,5],[6,7,8,9]]; j=0; foreach x in L { foreach y in x { j=j+1 } }`. What is the final value of `j`?",
+                type: "single-choice",
+                answers: ["3", "6", "9", "10"],
+                correct: ["10"],
+                explanation: "The outer loop runs 3 times. The inner loop runs for each element inside the inner lists. The total number of inner elements is 3 + 3 + 4 = 10. So, `j` is incremented 10 times."
+            };
+
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

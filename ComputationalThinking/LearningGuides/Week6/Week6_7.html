@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L6.7: Introduction to Train Dataset</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L6.7: Train Dataset</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L6.7</a>
+                <a href="#datasets" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Understanding the Datasets</a>
+                <a href="#relationships" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Dataset Relationships</a>
+                <a href="#key-concepts" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Key Concepts & Sorting</a>
+                <a href="#interactive-explorer" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Data Explorer</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L6.7: Introduction to the Train Dataset</h1>
+                <p class="text-lg">Welcome to our final topic for this week! So far, we've focused on working with a single, self-contained dataset. However, real-world problems often involve multiple, interconnected datasets that work together to provide a complete picture.</p>
+                <p class="text-lg mt-4">In this guide, we'll explore a classic example: a railway system. We'll look at two different but related datasets—the **Train Dataset** and the **Station Dataset**. Understanding how to navigate and extract information from these related sources is a crucial skill in computational thinking and data analysis.</p>
+            </section>
+
+            <section id="datasets" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Understanding the Datasets</h2>
+                <p class="text-lg mb-4">To solve problems about train travel, we need two kinds of information, which are stored in separate datasets:</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-blue-800">The Train Dataset</h3>
+                        <p class="text-lg mt-2">This dataset contains information about each specific train route. A card in this dataset might include:</p>
+                        <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-1">
+                            <li>Train Number</li>
+                            <li>Train Name</li>
+                            <li>Source Station (where it starts)</li>
+                            <li>Destination Station (where it ends)</li>
+                            <li>Days of the week it runs</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-green-800">The Station Dataset</h3>
+                        <p class="text-lg mt-2">This dataset contains detailed schedule information for each stop along a train's route. A card here represents a single train stopping at a single station and includes:</p>
+                         <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-1">
+                            <li>Train Number (to link to the Train Dataset)</li>
+                            <li>Station Name</li>
+                            <li>Arrival Time</li>
+                            <li>Departure Time</li>
+                            <li>Distance from the source</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="relationships" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">How the Datasets Relate</h2>
+                <p class="text-lg mb-4">Neither dataset on its own is complete. To answer a question like "What time does the 'Coromandel Express' arrive at Chennai?", you need both.</p>
+                <ol class="list-decimal list-inside text-lg space-y-4 mt-2 pl-4">
+                    <li>
+                        <strong>Find the Train Number:</strong> You would first look in the **Train Dataset** to find the train number for the "Coromandel Express".
+                    </li>
+                    <li>
+                        <strong>Find the Schedule:</strong> Then, you would use that train number to look up all its stops in the **Station Dataset**.
+                    </li>
+                    <li>
+                        <strong>Find the Specific Stop:</strong> Finally, you would scan those entries to find the one for "Chennai" and read its arrival time.
+                    </li>
+                </ol>
+                <div class="mt-6 border-l-4 border-blue-500 p-4">
+                    <p class="text-lg font-semibold">Key Idea:</p>
+                    <p class="text-lg">The **Train Number** is the common field that acts as a key to link the two datasets together. We can extract information from both datasets because of this shared piece of data.</p>
+                </div>
+            </section>
+
+            <section id="key-concepts" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Key Concepts and Sorting</h2>
+                <p class="text-lg mb-4">Understanding the structure of these datasets reveals some important concepts:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 mt-2 pl-4">
+                    <li><strong>Stations vs. Terminals:</strong> A **station** is any stop on a route. A **terminal** is a special type of station—it's either the first (source) or the last (destination) stop. So, every terminal is a station, but not every station is a terminal.</li>
+                    <li><strong>Train Direction:</strong> The same physical train running between two cities (e.g., Chennai and Howrah) will have a different train number for each direction (e.g., one for Chennai to Howrah, and another for Howrah to Chennai).</li>
+                    <li><strong>Data Uniqueness:</strong> A particular station (e.g., "Chennai") will appear only once in the list of all unique stations. However, it can appear many times in the **Station Dataset**—once for every train that stops there.</li>
+                    <li><strong>Sorting:</strong> The cards in the Station Dataset are typically sorted by a field that represents progress along a route, such as **Arrival Time** or distance from the source. This keeps all the stops for a single train journey grouped together in chronological order.</li>
+                </ul>
+            </section>
+
+            <section id="interactive-explorer" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Data Explorer</h2>
+                <p class="text-lg mb-4">Use this simple explorer to see how the datasets are linked. Select a train, and the tool will look up its details in the "Train Dataset" and then find its corresponding schedule in the "Station Dataset."</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="mb-4">
+                        <label for="train-select" class="block font-semibold mb-2">Select a Train:</label>
+                        <select id="train-select" class="w-full p-2 border border-gray-300 rounded-md bg-white">
+                            <option value="12841">Coromandel Express (12841)</option>
+                            <option value="12621">Tamil Nadu Express (12621)</option>
+                            <option value="22691">Rajdhani Express (22691)</option>
+                        </select>
+                    </div>
+                    <div id="explorer-results" class="mt-4"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Working with multiple datasets is a common and powerful technique.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Related Datasets:</strong> Real-world information is often split across multiple datasets (e.g., one for general info, one for detailed schedules).</li>
+                    <li><strong>Linking Key:</strong> A common field, like a "Train Number," is essential for linking records from one dataset to another.</li>
+                    <li><strong>Combined Information:</strong> By combining information from multiple sources, we can answer complex questions that would be impossible to answer with a single dataset alone.</li>
+                    <li><strong>Data Structure Matters:</strong> Understanding how each dataset is structured and sorted is crucial for efficiently extracting the information you need.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these dataset concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Data Explorer Logic
+            const trainSelect = document.getElementById('train-select');
+            const explorerResults = document.getElementById('explorer-results');
+
+            const trainData = {
+                "12841": { name: "Coromandel Express", from: "Howrah", to: "Chennai" },
+                "12621": { name: "Tamil Nadu Express", from: "Chennai", to: "New Delhi" },
+                "22691": { name: "Rajdhani Express", from: "Bengaluru", to: "New Delhi" },
+            };
+
+            const stationData = {
+                "12841": [
+                    { station: "Howrah", arrival: "--", departure: "14:50" },
+                    { station: "Kharagpur", arrival: "16:25", departure: "16:30" },
+                    { station: "Vijayawada", arrival: "04:15", departure: "04:30" },
+                    { station: "Chennai", arrival: "11:00", departure: "--" },
+                ],
+                "12621": [
+                    { station: "Chennai", arrival: "--", departure: "22:00" },
+                    { station: "Vijayawada", arrival: "04:00", departure: "04:10" },
+                    { station: "Bhopal", arrival: "15:25", departure: "15:30" },
+                    { station: "New Delhi", arrival: "22:30", departure: "--" },
+                ],
+                "22691": [
+                    { station: "Bengaluru", arrival: "--", departure: "20:00" },
+                    { station: "Nagpur", arrival: "13:05", departure: "13:10" },
+                    { station: "New Delhi", arrival: "05:30", departure: "--" },
+                ]
+            };
+            
+            function displayTrainInfo() {
+                const trainId = trainSelect.value;
+                const train = trainData[trainId];
+                const schedule = stationData[trainId];
+
+                let scheduleHtml = schedule.map(stop => `
+                    <tr>
+                        <td class="border px-4 py-2">${stop.station}</td>
+                        <td class="border px-4 py-2">${stop.arrival}</td>
+                        <td class="border px-4 py-2">${stop.departure}</td>
+                    </tr>
+                `).join('');
+
+                explorerResults.innerHTML = `
+                    <div class="bg-white p-4 rounded-lg border">
+                        <h4 class="text-xl font-semibold text-blue-800">Train Dataset Info:</h4>
+                        <p><strong>Train Name:</strong> ${train.name}</p>
+                        <p><strong>Route:</strong> ${train.from} to ${train.to}</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border mt-4">
+                        <h4 class="text-xl font-semibold text-green-800">Station Dataset Info:</h4>
+                        <table class="table-auto w-full mt-2 text-left">
+                            <thead>
+                                <tr>
+                                    <th class="border px-4 py-2">Station</th>
+                                    <th class="border px-4 py-2">Arrival</th>
+                                    <th class="border px-4 py-2">Departure</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${scheduleHtml}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            trainSelect.addEventListener('change', displayTrainInfo);
+            displayTrainInfo(); // Initial display
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ6_7.docx (6 questions)
+                {
+                    question: "Which are the different types of datasets demonstrated in the lecture? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["Train dataset", "Ticket dataset", "Station dataset", "Passenger dataset"],
+                    correct: ["Train dataset", "Station dataset"],
+                    explanation: "The lecture focused on the Train dataset (for route information) and the Station dataset (for schedule information)."
+                },
+                {
+                    question: "A terminal can be a station and vice versa.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "This is tricky. A terminal IS a station (the first or last one). But a station is NOT necessarily a terminal (it could be an intermediate stop). Therefore, the 'vice versa' part makes the statement false."
+                },
+                {
+                    question: "Multiple trains run between two stations, the train number depends of the direction of the train.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. A train from A to B will have a different train number than the train from B to A, even if it's the same physical train."
+                },
+                {
+                    question: "We can not extract/get the information of train dataset from station dataset because both datasets details are totally different from each other.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "We can get information by linking the two datasets using the common 'Train Number' field."
+                },
+                {
+                    question: "A particular station can not be found more than once in cards of station dataset but it can be found more than once in cards of train number dataset.",
+                    type: "true-false",
+                    answers: ["False", "True"],
+                    correct: ["False"],
+                    explanation: "This is backwards. A station appears many times in the Station Dataset (once for each train that stops there). It would appear once in a hypothetical list of unique station names."
+                },
+                {
+                    question: "The data on cards from the station dataset is sorted using which field?",
+                    type: "single-choice",
+                    answers: ["Train number", "Arrival time", "Departure time", "Days of running"],
+                    correct: ["Arrival time"],
+                    explanation: "To keep the stops for a single journey in chronological order, the Station Dataset is sorted by a time-based or distance-based field, such as Arrival Time."
+                },
+                // New questions (12)
+                {
+                    question: "What is the primary purpose of a 'linking key' like 'Train Number' between two datasets?",
+                    type: "single-choice",
+                    answers: ["To sort the datasets", "To provide a unique identifier for each row within one dataset", "To establish a relationship and allow data from one dataset to be associated with data from another", "To count the number of rows"],
+                    correct: ["To establish a relationship and allow data from one dataset to be associated with data from another"],
+                    explanation: "The linking key is the bridge that connects related information across different tables or datasets."
+                },
+                {
+                    question: "To find out which days of the week a train runs, which dataset would you primarily look at?",
+                    type: "single-choice",
+                    answers: ["Train dataset", "Station dataset", "Both are needed", "Neither is sufficient"],
+                    correct: ["Train dataset"],
+                    explanation: "General information about the train's route, like its name and days of operation, is stored in the Train Dataset."
+                },
+                {
+                    question: "If you have a Train Number, you can find out the train's name without looking at the Station Dataset.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "The train's name is part of the Train Dataset, which is organized by Train Number. You would not need the Station Dataset for this information."
+                },
+                {
+                    question: "Which piece of information would you NOT expect to find in the Station Dataset?",
+                    type: "single-choice",
+                    answers: ["Arrival time at Vijayawada", "Departure time from Nagpur", "The name of the train's source station", "The distance of a station from the source"],
+                    correct: ["The name of the train's source station"],
+                    explanation: "The source station for the entire route is general information found in the Train Dataset. The Station Dataset contains details for each specific stop."
+                },
+                {
+                    question: "If you sort the Station Dataset by Station Name alphabetically, what would be the likely result?",
+                    type: "single-choice",
+                    answers: ["All train routes would remain in chronological order.", "It would be easier to find a train's full schedule.", "The stops for a single train journey would be scattered and no longer in order.", "It would group all trains from the same source station together."],
+                    correct: ["The stops for a single train journey would be scattered and no longer in order."],
+                    explanation: "Sorting by station name would break the chronological order of each train's route, making it very difficult to follow a single journey from start to finish."
+                },
+                {
+                    question: "A 'Passenger Dataset' containing passenger names and ticket numbers would likely be linked to the Train Dataset using the Train Number.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "To know which train a passenger is on, their ticket information would need to include the Train Number, creating a link to the other datasets."
+                },
+                {
+                    question: "What is the relationship between the number of cards in the Train Dataset and the Station Dataset?",
+                    type: "single-choice",
+                    answers: ["They are always equal.", "There are always more cards in the Train Dataset.", "There are always more cards in the Station Dataset.", "There is no predictable relationship."],
+                    correct: ["There are always more cards in the Station Dataset."],
+                    explanation: "Each train in the Train Dataset has multiple stops, and each stop is a separate card in the Station Dataset. Therefore, the Station Dataset will have many more cards."
+                },
+                {
+                    question: "The concept of a 'source' and 'destination' is primarily associated with which dataset?",
+                    type: "single-choice",
+                    answers: ["Train dataset", "Station dataset", "Both equally", "Neither"],
+                    correct: ["Train dataset"],
+                    explanation: "The overall start (source) and end (destination) points of a route are defining characteristics of a train, found in the Train Dataset."
+                },
+                {
+                    question: "All stations listed in the Station Dataset must also be a source or destination for some train in the Train Dataset.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "Most stations are intermediate stops and are not terminals (source or destination) for any train."
+                },
+                {
+                    question: "To calculate the total travel time for a train, you would need:",
+                    type: "single-choice",
+                    answers: ["Only the Train Dataset", "Only the Station Dataset", "Both datasets", "A separate 'Time' dataset"],
+                    correct: ["Only the Station Dataset"],
+                    explanation: "You would find the departure time from the source station and the arrival time at the destination station, both of which are within the Station Dataset for that train number."
+                },
+                {
+                    question: "The separation of data into Train and Station datasets helps to reduce redundant information.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "This is a key principle of database design. Instead of repeating the train's name, source, and destination for every single stop in the schedule, that information is stored only once in the Train Dataset."
+                },
+                {
+                    question: "If a train runs from A -> B -> C, how many cards would this train have in the Station Dataset?",
+                    type: "single-choice",
+                    answers: ["1", "2", "3", "Cannot be determined"],
+                    correct: ["3"],
+                    explanation: "Each stop, including the source and destination, gets its own entry in the Station Dataset. So, there would be one card for A, one for B, and one for C for that specific train number."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

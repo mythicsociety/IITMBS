@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L6.5: Hypothesis Verification with Lists</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L6.5: Hypothesis Verification</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L6.5</a>
+                <a href="#what-is-hypothesis" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">What is a Hypothesis?</a>
+                <a href="#systematic-process" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Systematic Process</a>
+                <a href="#analyzing-results" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Analyzing the Results</a>
+                <a href="#interactive-tester" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Hypothesis Tester</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L6.5: Systematic Hypothesis Verification</h1>
+                <p class="text-lg">Welcome to this guide on one of the most powerful applications of computational thinking: systematically verifying a hypothesis. We often have ideas or theories about our data—for example, "students who are good at Maths are also good at Physics" or "adjectives are usually followed by nouns." But how can we prove or disprove these ideas rigorously?</p>
+                <p class="text-lg mt-4">This is where lists become incredibly useful. We can use them to systematically collect evidence that either **confirms** or **refutes** our hypothesis. By analyzing the size of these evidence lists, we can make a data-driven conclusion about whether our initial idea holds true. Let's dive into the process.</p>
+            </section>
+
+            <section id="what-is-hypothesis" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">What is a Hypothesis?</h2>
+                <p class="text-lg mb-4">A hypothesis is simply a proposed explanation or a claim made on the basis of limited evidence, which can then be tested. In our context, it's a statement about a pattern we think might exist in our data.</p>
+                <p class="text-lg mt-4">Examples of hypotheses we can test with our datasets:</p>
+                <ul class="list-disc list-inside text-lg space-y-2 mt-2 pl-4">
+                    <li><strong>From the "Scores" dataset:</strong> "Students with high marks in Mathematics also have high marks in Physics."</li>
+                    <li><strong>From the "Paragraph Words" dataset:</strong> "Adjectives are followed by nouns."</li>
+                    <li><strong>From the "Paragraph Words" dataset:</strong> "Words starting with a vowel are usually followed by words starting with a consonant."</li>
+                </ul>
+                <p class="text-lg mt-4">The key is that a hypothesis must be testable. We need a clear, systematic way to go through the data and check each relevant instance against our claim.</p>
+            </section>
+            
+            <section id="systematic-process" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The Systematic Process Using Lists</h2>
+                <p class="text-lg mb-4">To verify a hypothesis, we don't rely on gut feelings. We use a systematic process involving two lists to collect evidence:</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-green-50 border-2 border-green-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-green-800">The `confirm` List</h3>
+                        <p class="text-lg mt-2">This list stores all the instances from the dataset that **support** our hypothesis.</p>
+                    </div>
+                    <div class="bg-red-50 border-2 border-red-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-red-800">The `refute` List</h3>
+                        <p class="text-lg mt-2">This list stores all the instances that **contradict** our hypothesis.</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Example: "Adjectives are followed by nouns"</h3>
+                <p class="text-lg mb-4">Let's outline the pseudocode to test this hypothesis on our "Paragraph Words" dataset.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>confirmList = []</p>
+                    <p>refuteList = []</p>
+                    <br>
+                    <p><span class="text-purple-400">while</span> (WordList has at least 2 more words) {</p>
+                    <p class="ml-4">currentWord = first(WordList)</p>
+                    <p class="ml-4">nextWord = first(rest(WordList))</p>
+                    <br>
+                    <p class="ml-4"><span class="text-purple-400">if</span> (partOfSpeech(currentWord) == "Adjective") {</p>
+                    <p class="ml-8"><span class="text-purple-400">if</span> (partOfSpeech(nextWord) == "Noun") {</p>
+                    <p class="ml-12">// Evidence confirms the hypothesis</p>
+                    <p class="ml-12">confirmList = confirmList ++ [sequenceNumberOf(currentWord)]</p>
+                    <p class="ml-8">} <span class="text-purple-400">else</span> {</p>
+                    <p class="ml-12">// Evidence refutes the hypothesis</p>
+                    <p class="ml-12">refuteList = refuteList ++ [sequenceNumberOf(currentWord)]</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-4">}</p>
+                    <br>
+                    <p class="ml-4">WordList = rest(WordList)</p>
+                    <p>}</p>
+                </div>
+                <p class="text-lg mt-4">This procedure iterates through all adjacent pairs of words. If it finds an adjective, it checks the next word. Based on whether the next word is a noun or not, it adds the adjective's ID to the appropriate list.</p>
+            </section>
+
+            <section id="analyzing-results" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Analyzing the Results</h2>
+                <p class="text-lg mb-4">Once we have populated our `confirmList` and `refuteList`, we can analyze them to reach a conclusion. The most straightforward way to do this is by comparing their lengths.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>X = length(confirmList)</p>
+                    <p>Y = length(refuteList)</p>
+                </div>
+                <p class="text-lg mt-4">The sum `X + Y` gives us the total number of times we tested the hypothesis (i.e., the total number of adjectives in the dataset).</p>
+                <p class="text-lg mt-4">We can then calculate percentages to quantify the result:</p>
+                <ul class="list-disc list-inside text-lg space-y-2 mt-2 pl-4">
+                    <li><strong>Confirmation Percentage:</strong> `(X / (X + Y)) * 100`</li>
+                    <li><strong>Refutation Percentage:</strong> `(Y / (X + Y)) * 100`</li>
+                </ul>
+                <p class="text-lg mt-4">If the confirmation percentage is very high (e.g., 90%), we can say our hypothesis is strongly supported. If it's low (e.g., 20%), our hypothesis is strongly refuted. If it's around 50%, the pattern is likely random.</p>
+            </section>
+
+            <section id="interactive-tester" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Hypothesis Tester</h2>
+                <p class="text-lg mb-4">Test a hypothesis on a sample sentence. The tool will categorize each word based on whether it starts with a vowel or a consonant and then test the hypothesis: <strong>"A word starting with a vowel is followed by a word starting with a consonant."</strong></p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="mb-4">
+                        <label class="block font-semibold mb-2">Enter a sentence:</label>
+                        <input type="text" id="sentence-input" class="w-full p-2 border border-gray-300 rounded-md" value="An apple a day keeps the doctor away">
+                    </div>
+                    <button id="test-hypothesis-btn" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Test Hypothesis</button>
+                    <div id="tester-results" class="mt-4"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Using lists to verify a hypothesis is a cornerstone of data-driven analysis.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Formulate a Testable Claim:</strong> Start with a clear, specific hypothesis about a pattern in your data.</li>
+                    <li><strong>Collect Evidence Systematically:</strong> Iterate through the data and use conditional logic to populate a `confirm` list (for supporting evidence) and a `refute` list (for contradicting evidence).</li>
+                    <li><strong>Analyze with `length()`:</strong> The lengths of the `confirm` and `refute` lists provide a quantitative measure of the evidence.</li>
+                    <li><strong>Draw a Conclusion:</strong> Calculate percentages to determine the strength of support for your hypothesis. This is a much more rigorous approach than simple observation.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of hypothesis verification.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Hypothesis Tester Logic
+            const sentenceInput = document.getElementById('sentence-input');
+            const testBtn = document.getElementById('test-hypothesis-btn');
+            const resultsDiv = document.getElementById('tester-results');
+
+            function isVowel(char) {
+                return 'aeiou'.includes(char.toLowerCase());
+            }
+
+            testBtn.addEventListener('click', () => {
+                const sentence = sentenceInput.value.trim();
+                if (!sentence) return;
+
+                const words = sentence.split(/\s+/).filter(w => w.length > 0);
+                let confirmList = [];
+                let refuteList = [];
+
+                for (let i = 0; i < words.length - 1; i++) {
+                    const currentWord = words[i];
+                    const nextWord = words[i+1];
+
+                    if (isVowel(currentWord[0])) {
+                        if (!isVowel(nextWord[0])) {
+                            confirmList.push(currentWord);
+                        } else {
+                            refuteList.push(currentWord);
+                        }
+                    }
+                }
+
+                const totalTests = confirmList.length + refuteList.length;
+                const confirmPercent = totalTests > 0 ? ((confirmList.length / totalTests) * 100).toFixed(1) : 0;
+                const refutePercent = totalTests > 0 ? ((refuteList.length / totalTests) * 100).toFixed(1) : 0;
+
+                resultsDiv.innerHTML = `
+                    <h4 class="text-xl font-semibold mb-2">Results:</h4>
+                    <p><strong>Hypothesis:</strong> "A word starting with a vowel is followed by a word starting with a consonant."</p>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-green-100 p-4 rounded-lg">
+                            <p class="font-bold text-green-800">Confirm List (${confirmList.length} items):</p>
+                            <p class="font-mono text-sm">${JSON.stringify(confirmList)}</p>
+                        </div>
+                        <div class="bg-red-100 p-4 rounded-lg">
+                            <p class="font-bold text-red-800">Refute List (${refuteList.length} items):</p>
+                            <p class="font-mono text-sm">${JSON.stringify(refuteList)}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-white p-4 rounded-lg border">
+                        <p class="text-lg"><strong>Total Vowel-Starting Words Tested:</strong> ${totalTests}</p>
+                        <p class="text-lg"><strong>Confirmation Percentage:</strong> ${confirmPercent}%</p>
+                        <p class="text-lg"><strong>Refutation Percentage:</strong> ${refutePercent}%</p>
+                    </div>
+                `;
+            });
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ6_5.docx (4 questions)
+                {
+                    question: "Hypothesis: Adjectives are followed by nouns. `con` is the list of confirming adjectives, `ref` is the list of refuting adjectives. `X = length(con)`, `Y = length(ref)`. Statement I: `X + Y` is the total number of adjectives. Statement II: `X + Y` is the total number of nouns. Choose the correct option.",
+                    type: "single-choice",
+                    answers: ["Both statements are true.", "Statement I is true but statement II is false.", "Statement I is false but statement II is true.", "Both statements are false."],
+                    correct: ["Statement I is true but statement II is false."],
+                    explanation: "The hypothesis is tested every time an adjective is found. So, the sum of confirming and refuting cases equals the total number of adjectives tested. It has no relation to the total number of nouns in the dataset."
+                },
+                {
+                    question: "Given p=length(VV)=5, q=length(VC)=15, r=length(CV)=20, s=length(CC)=60. What percentage confirms the hypothesis that words starting with consonants are followed by words starting with a consonant?",
+                    type: "single-choice",
+                    answers: ["45", "65", "75", "85"],
+                    correct: ["75"],
+                    explanation: "The hypothesis is tested every time we find a word starting with a consonant. The total number of such words is r + s = 20 + 60 = 80. The number of confirming cases is s = 60. The percentage is (60 / 80) * 100 = 75%."
+                },
+                {
+                    question: "Using the same data, what percentage refutes the hypothesis that words starting with vowels are followed by words starting with a vowel?",
+                    type: "single-choice",
+                    answers: ["25", "75", "30", "70"],
+                    correct: ["75"],
+                    explanation: "The hypothesis is tested every time we find a word starting with a vowel. The total number of such words is p + q = 5 + 15 = 20. A case refutes the hypothesis if a vowel-word is followed by a consonant-word (VC). The number of refuting cases is q = 15. The percentage is (15 / 20) * 100 = 75%."
+                },
+                {
+                    question: "Using the same data, what is the total number of words present in the paragraph?",
+                    type: "single-choice",
+                    answers: ["100", "101", "99", "Cannot be determined"],
+                    correct: ["101"],
+                    explanation: "The lists p, q, r, and s represent pairs of words, so they count the number of transitions, which is one less than the number of words. The total number of transitions is p+q+r+s = 5+15+20+60 = 100. Therefore, the total number of words is 100 + 1 = 101."
+                },
+                // New questions (8)
+                {
+                    question: "When testing a hypothesis, if the `confirmList` has 80 elements and the `refuteList` has 20 elements, what can you conclude?",
+                    type: "single-choice",
+                    answers: ["The hypothesis is weakly supported.", "The hypothesis is strongly supported.", "The hypothesis is strongly refuted.", "The result is inconclusive."],
+                    correct: ["The hypothesis is strongly supported."],
+                    explanation: "With 80 confirming cases out of 100 total tests (80%), the evidence strongly supports the hypothesis."
+                },
+                {
+                    question: "The main purpose of creating `confirm` and `refute` lists is to:",
+                    type: "single-choice",
+                    answers: ["Sort the data", "Remove duplicate data", "Systematically collect and quantify evidence for and against a claim", "Find the average of the data"],
+                    correct: ["Systematically collect and quantify evidence for and against a claim"],
+                    explanation: "These lists provide a structured way to separate evidence, allowing for quantitative analysis rather than just anecdotal observation."
+                },
+                {
+                    question: "To test the hypothesis 'Students from Chennai have above-average marks', what would be in your `refuteList`?",
+                    type: "single-choice",
+                    answers: ["All students not from Chennai.", "All students with below-average marks.", "Students from Chennai who have below-average or average marks.", "Students not from Chennai who have above-average marks."],
+                    correct: ["Students from Chennai who have below-average or average marks."],
+                    explanation: "The hypothesis is only tested on students from Chennai. A refuting case is a student from Chennai whose marks do NOT confirm the hypothesis (i.e., their marks are not above average)."
+                },
+                {
+                    question: "If `length(confirmList)` is 50 and `length(refuteList)` is 50, what does this suggest about the hypothesis?",
+                    type: "single-choice",
+                    answers: ["The hypothesis is proven true.", "The hypothesis is proven false.", "The pattern is likely random or has no strong correlation.", "There was an error in the procedure."],
+                    correct: ["The pattern is likely random or has no strong correlation."],
+                    explanation: "A 50/50 split indicates that there is no clear trend. The hypothesis is neither supported nor refuted, suggesting the relationship it describes is not significant."
+                },
+                {
+                    question: "The process of hypothesis verification requires at least two passes through the dataset: one for the confirm list and one for the refute list.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "This process can be done efficiently in a single pass. In each step, you check the condition and add the item to either the `confirm` or `refute` list."
+                },
+                {
+                    question: "Hypothesis: In a list of numbers, every even number is followed by an odd number. Given the list `[2, 3, 4, 6, 7, 8, 9]`, what is the length of the `refuteList`?",
+                    type: "single-choice",
+                    answers: ["1", "2", "3", "4"],
+                    correct: ["1"],
+                    explanation: "We only test the hypothesis when we see an even number. 1. `2` is followed by `3` (odd) -> confirms. 2. `4` is followed by `6` (even) -> refutes. 3. `6` is followed by `7` (odd) -> confirms. 4. `8` is followed by `9` (odd) -> confirms. There is only one refuting case."
+                },
+                {
+                    question: "A hypothesis can only be tested on pairs of adjacent elements in a list.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "While adjacent elements are common, a hypothesis can be about any relationship, such as 'the first and last elements of a list are equal' or 'an element's value is greater than the average of the whole list'."
+                },
+                {
+                    question: "If you test a hypothesis and find `length(confirmList) = 0` and `length(refuteList) = 0`, what is the most likely reason?",
+                    type: "single-choice",
+                    answers: ["The hypothesis is perfectly true.", "The hypothesis is perfectly false.", "The condition to test the hypothesis was never met in the dataset.", "The lists were not initialized properly."],
+                    correct: ["The condition to test the hypothesis was never met in the dataset."],
+                    explanation: "If both lists are empty, it means the `if` condition that triggers the test (e.g., `if (partOfSpeech(currentWord) == 'Adjective')`) was never true, so no evidence could be collected."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

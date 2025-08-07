@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L6.3: Pseudocode for Insertion Sort</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L6.3: Pseudocode</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L6.3</a>
+                <a href="#sorted-list-insert" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The `SortedListInsert` Procedure</a>
+                <a href="#building-a-sort" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Building a Full Sort</a>
+                <a href="#interactive-inserter" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Inserter</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L6.3: Pseudocode for Insertion Sort</h1>
+                <p class="text-lg">Now that we understand the high-level logic of Insertion Sort, let's translate that logic into formal pseudocode. This guide will focus on the core procedure for insertion: a reusable function that takes a sorted list and a new element, and returns a new sorted list with the element correctly placed.</p>
+                <p class="text-lg mt-4">By encapsulating this key step into a procedure, we can then build a complete sorting algorithm simply by calling this procedure for every element in our original, unsorted list. We'll break down the pseudocode line-by-line to understand exactly how it maintains the sorted order.</p>
+            </section>
+
+            <section id="sorted-list-insert" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The `SortedListInsert` Procedure</h2>
+                <p class="text-lg mb-4">The heart of insertion sort is a procedure that can insert a single element `x` into an already sorted list `l` while maintaining the sorted order. Let's analyze the pseudocode for `SortedListInsert(l, x)`.</p>
+                
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p><span class="text-purple-400">Procedure</span> SortedListInsert(l, x)</p>
+                    <p class="ml-4">newList = []</p>
+                    <p class="ml-4">inserted = False</p>
+                    <br>
+                    <p class="ml-4"><span class="text-purple-400">foreach</span> z <span class="text-purple-400">in</span> l {</p>
+                    <p class="ml-8"><span class="text-gray-400">// Find the correct spot for x</span></p>
+                    <p class="ml-8"><span class="text-purple-400">if</span> (not(inserted) <span class="text-purple-400">and</span> x < z) {</p>
+                    <p class="ml-12">newList = newList ++ [x]</p>
+                    <p class="ml-12">inserted = True</p>
+                    <p class="ml-8">}</p>
+                    <p class="ml-8">newList = newList ++ [z]</p>
+                    <p class="ml-4">}</p>
+                    <br>
+                    <p class="ml-4"><span class="text-gray-400">// If x is the largest element, add it at the end</span></p>
+                    <p class="ml-4"><span class="text-purple-400">if</span> (not(inserted)) {</p>
+                    <p class="ml-8">newList = newList ++ [x]</p>
+                    <p class="ml-4">}</p>
+                    <br>
+                    <p class="ml-4"><span class="text-purple-400">return</span> (newList)</p>
+                    <p><span class="text-purple-400">End Procedure</span></p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">How It Works</h3>
+                <ol class="list-decimal list-inside text-lg space-y-3 mt-2 pl-4">
+                    <li><strong>Initialization:</strong> It starts with an empty `newList` to build the result and a flag `inserted = False` to track if `x` has been placed.</li>
+                    <li><strong>Iteration:</strong> It loops through each element `z` in the original sorted list `l`.</li>
+                    <li><strong>Finding the Spot:</strong> Inside the loop, it checks if `x` has been inserted yet AND if `x` is smaller than the current element `z`. If both are true, it's found the correct spot. It inserts `x` into `newList` and sets `inserted` to `True` so this block won't run again.</li>
+                    <li><strong>Copying Elements:</strong> In every iteration, it copies the current element `z` from the old list to the `newList`. This happens before or after `x` is inserted, ensuring all original elements are preserved in order.</li>
+                    <li><strong>Handling the Largest Element:</strong> If the loop finishes and `inserted` is still `False`, it means `x` is larger than all elements in `l`. The code then appends `x` to the very end of `newList`.</li>
+                </ol>
+            </section>
+            
+            <section id="building-a-sort" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Building a Full Sort</h2>
+                <p class="text-lg mb-4">With our powerful `SortedListInsert` procedure, writing a full insertion sort is straightforward. We start with an empty list and repeatedly use the procedure to insert each element from our unsorted list.</p>
+                <div class="bg-gray-800 text-white p-6 rounded-lg font-mono">
+                    <p>unsortedList = [5, 1, 4, 2, 3]</p>
+                    <p>sortedList = []</p>
+                    <br>
+                    <p><span class="text-purple-400">foreach</span> item <span class="text-purple-400">in</span> unsortedList {</p>
+                    <p class="ml-4">sortedList = SortedListInsert(sortedList, item)</p>
+                    <p>}</p>
+                    <br>
+                    <p class="text-green-400">// Trace:</p>
+                    <p class="text-gray-400">// 1. sortedList = SortedListInsert([], 5)       → [5]</p>
+                    <p class="text-gray-400">// 2. sortedList = SortedListInsert([5], 1)      → [1, 5]</p>
+                    <p class="text-gray-400">// 3. sortedList = SortedListInsert([1, 5], 4)   → [1, 4, 5]</p>
+                    <p class="text-gray-400">// 4. sortedList = SortedListInsert([1, 4, 5], 2) → [1, 2, 4, 5]</p>
+                    <p class="text-gray-400">// 5. sortedList = SortedListInsert([1, 2, 4, 5], 3) → [1, 2, 3, 4, 5]</p>
+                </div>
+            </section>
+
+            <section id="interactive-inserter" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive `SortedListInsert`</h2>
+                <p class="text-lg mb-4">See the procedure in action. Provide a sorted list of numbers and a new number to insert. The visualizer will walk you through the `SortedListInsert` procedure step-by-step.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex flex-wrap gap-4 mb-4">
+                        <div class="flex-grow">
+                             <label class="block font-semibold mb-1 text-sm">Sorted List (e.g., 10, 20, 40, 50)</label>
+                             <input type="text" id="inserter-list" class="w-full p-2 border border-gray-300 rounded-md" value="10, 20, 40, 50">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1 text-sm">Number to Insert</label>
+                            <input type="text" id="inserter-value" class="w-full p-2 border border-gray-300 rounded-md" value="30">
+                        </div>
+                    </div>
+                    <button id="start-insert-btn" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Visualize Insertion</button>
+                    <div id="inserter-steps" class="mt-4 space-y-2"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Translating sorting logic into pseudocode clarifies the step-by-step process.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Procedural Abstraction:</strong> Encapsulating the logic for inserting one element into a sorted list (`SortedListInsert`) is a powerful example of abstraction.</li>
+                    <li><strong>State Management:</strong> The use of a boolean flag like `inserted` is a common technique to track whether a key action has occurred within a loop.</li>
+                    <li><strong>Edge Cases:</strong> The procedure must correctly handle edge cases, such as inserting into an empty list or inserting a value larger than any existing element. The post-loop `if` statement handles this.</li>
+                    <li><strong>Building Complexity:</strong> A complete, powerful algorithm like Insertion Sort can be built by repeatedly calling a simpler, well-defined procedure.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of the insertion sort pseudocode.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Inserter Logic
+            const inserterListInput = document.getElementById('inserter-list');
+            const inserterValueInput = document.getElementById('inserter-value');
+            const startInsertBtn = document.getElementById('start-insert-btn');
+            const inserterStepsDiv = document.getElementById('inserter-steps');
+
+            startInsertBtn.addEventListener('click', () => {
+                const listStr = inserterListInput.value;
+                const list = listStr.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+                const valueToInsert = parseInt(inserterValueInput.value.trim());
+
+                if (isNaN(valueToInsert)) {
+                    inserterStepsDiv.innerHTML = '<p class="text-red-500">Please enter a valid number to insert.</p>';
+                    return;
+                }
+                
+                inserterStepsDiv.innerHTML = '';
+                let newList = [];
+                let inserted = false;
+                let step = 1;
+
+                let html = `<div class="bg-white p-3 rounded-lg border">
+                    <p class="font-semibold">Start: newList = [], inserted = False, x = ${valueToInsert}</p>
+                    </div>`;
+                inserterStepsDiv.innerHTML += html;
+
+                list.forEach(z => {
+                    let stepHtml = `<div class="bg-white p-3 rounded-lg border">
+                        <p class="font-semibold">Step ${step++}: Checking element z = ${z}</p>`;
+                    
+                    if (!inserted && valueToInsert < z) {
+                        newList.push(valueToInsert);
+                        inserted = true;
+                        stepHtml += `<p class="ml-4 text-green-600 font-bold">Condition (x < z) is true. Inserting ${valueToInsert}.</p>`;
+                        stepHtml += `<p class="ml-4 font-mono">newList is now [${newList.join(', ')}]</p>`;
+                    }
+                    newList.push(z);
+                    stepHtml += `<p class="ml-4">Appending z = ${z}.</p>`;
+                    stepHtml += `<p class="ml-4 font-mono">newList is now [${newList.join(', ')}]</p></div>`;
+                    inserterStepsDiv.innerHTML += stepHtml;
+                });
+
+                let finalHtml = `<div class="bg-white p-3 rounded-lg border">`;
+                if (!inserted) {
+                    newList.push(valueToInsert);
+                    finalHtml += `<p class="font-semibold">Loop finished, but 'inserted' is still False.</p>`;
+                    finalHtml += `<p class="ml-4 text-green-600 font-bold">Appending x = ${valueToInsert} at the end.</p>`;
+                } else {
+                    finalHtml += `<p class="font-semibold">Loop finished.</p>`;
+                }
+                finalHtml += `<p class="text-xl text-center font-bold mt-2">Final newList: <span class="font-mono">${JSON.stringify(newList)}</span></p></div>`;
+                inserterStepsDiv.innerHTML += finalHtml;
+            });
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ6_3.docx (4 questions)
+                {
+                    question: "The following is a special pseudocode used to sort the contents of the list A in ascending order and store the result in another list B. Choose the correct code fragment to complete it.",
+                    type: "single-choice",
+                    answers: [
+                        "if (x < 5) { B = [x] ++ B } else { C = [x] ++ C }",
+                        "if (x < 5) { C = C ++ [x] } else { B = [x] ++ B }",
+                        "if (x <= 5) { B = B ++ [x] } else { C = [x] ++ C }",
+                        "if (x < 5) { B = B ++ [x] } else { C = [x] ++ C }"
+                    ],
+                    correct: ["if (x < 5) { B = [x] ++ B } else { C = [x] ++ C }"],
+                    explanation: "The goal is to sort A. The final step appends C to B. This means B should contain the smaller numbers and C the larger numbers. To get an ascending sort, both B and C must be built in reverse order (by prepending elements). The code `B = [x] ++ B` prepends `x` to `B`. Therefore, the condition `x < 5` should put elements into B, and the rest into C."
+                },
+                {
+                    question: "What will be the value of `l`? `l = [1, 2, 3, 4, 5]`, then `l = SortedListInsert(l, 5)`, `l = SortedListInsert(l, 4)`, etc., down to 1.",
+                    type: "single-choice",
+                    answers: ["[1,2,3,4,5,5,4,3,2,1]", "[1,2,3,4,5,4,3,2,1]", "[1,1,2,2,3,3,4,4,5,5]", "[1,2,3,4,5]"],
+                    correct: ["[1,1,2,2,3,3,4,4,5,5]"],
+                    explanation: "The code repeatedly inserts elements into an already sorted list. Each number from 5 down to 1 is inserted into its correct sorted position, resulting in a list with two of each number, sorted."
+                },
+                {
+                    question: "What will be the value of `l`? `l = [5, 4, 3, 2, 1]`, then `l = SortedListInsert(l, 5)`, `l = SortedListInsert(l, 4)`, etc., down to 1.",
+                    type: "single-choice",
+                    answers: ["[5,5,4,4,3,3,2,2,1,1]", "[1,2,3,4,5,4,3,2,1,5]", "[5,4,3,2,1,1,2,3,4,5]", "[1,2,3,4,5,5,4,3,2,1]"],
+                    correct: ["[5,4,3,2,1,1,2,3,4,5]"],
+                    explanation: "The `SortedListInsert` procedure assumes the input list `l` is sorted in ascending order. Since `l` is in descending order, the condition `x < z` is almost never met. Each new element `x` is simply appended to the end, as it's never smaller than any `z` it's compared to."
+                },
+                {
+                    question: "What will be the value of `l`? `l = []`, then `l = SortedListInsert(l, 5)`, `l = SortedListInsert(l, 1)`, etc.",
+                    type: "single-choice",
+                    answers: ["[5,1,2,4,3]", "[5,4,3,2,1]", "[1,2,3,4,5]", "There is an error."],
+                    correct: ["[1,2,3,4,5]"],
+                    explanation: "This is a classic demonstration of insertion sort. Each element is inserted into the growing sorted list, starting from an empty list. The final result is a fully sorted list of the inserted elements."
+                },
+                // New questions (8)
+                {
+                    question: "In `SortedListInsert`, why is the `if (not(inserted))` check necessary after the loop?",
+                    type: "single-choice",
+                    answers: [
+                        "To handle empty lists.",
+                        "To check if the element was a duplicate.",
+                        "To handle the case where the new element is the largest and needs to be added at the end.",
+                        "It is a redundant check and not needed."
+                    ],
+                    correct: ["To handle the case where the new element is the largest and needs to be added at the end."],
+                    explanation: "If the `foreach` loop completes and the `inserted` flag is still false, it means the new element `x` was never smaller than any element `z` in the list. Therefore, `x` must be the largest element and needs to be appended to the end."
+                },
+                {
+                    question: "If the condition in `SortedListInsert` was changed to `if (not(inserted) and x > z)`, what would the procedure do?",
+                    type: "single-choice",
+                    answers: ["Sort the list in descending order", "Sort the list in ascending order", "It would not sort correctly", "It would remove duplicates"],
+                    correct: ["Sort the list in descending order"],
+                    explanation: "This change would cause the procedure to insert the new element `x` as soon as it finds an element `z` that is smaller. This builds a list sorted from largest to smallest."
+                },
+                {
+                    question: "The `SortedListInsert` procedure modifies the original list `l` passed to it.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "The procedure does not alter the original list `l`. It builds and returns a completely new list called `newList`."
+                },
+                {
+                    question: "What is the result of `SortedListInsert([10, 20, 30], 5)`?",
+                    type: "single-choice",
+                    answers: ["[10, 20, 30, 5]", "[5, 10, 20, 30]", "[10, 5, 20, 30]", "[]"],
+                    correct: ["[5, 10, 20, 30]"],
+                    explanation: "The procedure will compare 5 with 10. Since 5 < 10, it will insert 5 first, then copy the rest of the original list."
+                },
+                {
+                    question: "What is the result of `SortedListInsert([10, 20, 30], 35)`?",
+                    type: "single-choice",
+                    answers: ["[10, 20, 30, 35]", "[35, 10, 20, 30]", "[10, 20, 35, 30]", "[]"],
+                    correct: ["[10, 20, 30, 35]"],
+                    explanation: "The loop will finish without the `inserted` flag becoming true because 35 is never less than any element. The post-loop `if` statement will then append 35 to the end."
+                },
+                {
+                    question: "If we use `SortedListInsert` to sort a list of `n` items, the procedure will be called `n` times.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "The standard insertion sort algorithm iterates through the unsorted list and calls the insertion procedure once for each item to build the new sorted list."
+                },
+                {
+                    question: "What is the primary role of the `inserted` flag in the `SortedListInsert` procedure?",
+                    type: "single-choice",
+                    answers: ["To count the number of insertions", "To ensure the new element is inserted only once", "To check if the input list is empty", "To stop the loop early"],
+                    correct: ["To ensure the new element is inserted only once"],
+                    explanation: "The condition `not(inserted)` prevents the `if` block from running more than once, which is crucial if the new element is smaller than multiple elements in the list."
+                },
+                {
+                    question: "Calling `SortedListInsert([], 10)` will result in an error.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "The procedure handles this case correctly. The `foreach` loop will not run. The `if(not(inserted))` check after the loop will execute, and the procedure will correctly return `[10]`."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="text-sm">${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

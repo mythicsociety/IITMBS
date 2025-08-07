@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L6.2: Insertion Sort and Ordered Lists</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        .card {
+            transition: all 0.5s ease-in-out;
+        }
+        .highlight-pile1 {
+            transform: translateY(-20px) scale(1.1);
+            background-color: #FBBF24; /* amber-400 */
+        }
+        .highlight-pile2 {
+            background-color: #A7F3D0; /* emerald-200 */
+        }
+        .correct-position {
+             outline: 3px solid #10B981; /* emerald-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L6.2: Insertion Sort</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction to L6.2</a>
+                <a href="#the-sorting-problem" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Sorting Problem</a>
+                <a href="#insertion-sort-logic" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Insertion Sort Logic</a>
+                <a href="#efficiency-analysis" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Efficiency Analysis</a>
+                <a href="#interactive-sorter" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Sorter</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L6.2: Insertion Sort and Ordered Lists</h1>
+                <p class="text-lg">Welcome! So far, we've learned how to create, modify, and analyze lists. But what if we need the data in a specific order? Sorting is one of the most fundamental problems in computer science, and understanding how it works is a key part of computational thinking.</p>
+                <p class="text-lg mt-4">In this guide, we will explore a simple and intuitive sorting algorithm called **Insertion Sort**. We'll use the analogy of sorting a hand of playing cards to understand the logic step-by-step. We will also analyze its efficiency and see how it builds a sorted list one element at a time.</p>
+            </section>
+
+            <section id="the-sorting-problem" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The Sorting Problem</h2>
+                <p class="text-lg mb-4">The goal of sorting is to arrange the elements of a collection in a specific order, such as numerically (ascending or descending) or alphabetically. For our example, we have a set of `n` cards, each with a number representing runs scored by a player. Our task is to arrange these cards in **increasing order**, with the lowest score on top.</p>
+                <p class="text-lg mt-4">We will use a method that involves two piles:</p>
+                <ul class="list-disc list-inside text-lg space-y-2 mt-2 pl-4">
+                    <li><strong>Pile 1:</strong> The initial, unsorted pile of cards.</li>
+                    <li><strong>Pile 2:</strong> An initially empty pile where we will build our sorted list.</li>
+                </ul>
+                <p class="text-lg mt-4">The core idea is to pick cards one by one from Pile 1 and insert them into their correct position in Pile 2, ensuring that Pile 2 remains sorted at all times.</p>
+            </section>
+            
+            <section id="insertion-sort-logic" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Insertion Sort: The Logic</h2>
+                <p class="text-lg mb-4">Insertion sort works just like how most people sort a hand of cards. You pick up one card at a time and insert it into the correct place in the cards you're already holding.</p>
+                
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">The Algorithm Step-by-Step</h3>
+                <ol class="list-decimal list-inside text-lg space-y-4 mt-2 pl-4">
+                    <li>
+                        <strong>Start:</strong> Take the first card from Pile 1 and place it in Pile 2. Pile 2 now has one card and is, by definition, sorted.
+                    </li>
+                    <li>
+                        <strong>Iterate:</strong> Take the next card from Pile 1. Let's call this the `current_card`.
+                    </li>
+                    <li>
+                        <strong>Find Position:</strong> Compare the `current_card` with the cards in Pile 2, starting from the top (the smallest element). Keep moving down Pile 2 until you find a card that is larger than the `current_card`.
+                    </li>
+                    <li>
+                        <strong>Insert:</strong> Place the `current_card` just above the larger card you found. This is its correct sorted position.
+                    </li>
+                    <li>
+                        <strong>Repeat:</strong> Continue this process, taking one card at a time from Pile 1 and inserting it into Pile 2, until Pile 1 is empty.
+                    </li>
+                </ol>
+                <p class="text-lg mt-4 font-bold text-green-700">When the process is complete, Pile 2 will contain all the cards, perfectly sorted in increasing order.</p>
+            </section>
+
+            <section id="efficiency-analysis" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Efficiency Analysis of Insertion Sort</h2>
+                <p class="text-lg mb-4">How much work does this algorithm do? Let's analyze the number of comparisons.</p>
+                
+                <h3 class="text-2xl font-semibold mb-3 mt-6 text-blue-700">Number of Insertions</h3>
+                <p class="text-lg mb-4">The first card is simply moved from Pile 1 to Pile 2 without any comparisons. After that, every subsequent card from Pile 1 must be inserted into its correct position in Pile 2. If we start with `n` cards, we perform `n-1` insertions.</p>
+
+                <h3 class="text-2xl font-semibold mb-3 mt-8 text-blue-700">Number of Comparisons (Worst Case)</h3>
+                <p class="text-lg mb-4">The worst-case scenario happens when the original list is in reverse sorted order. In this case, every new card we pick is smaller than all the cards already in Pile 2, so we have to compare it against every single one of them.</p>
+                <ul class="list-disc list-inside text-lg space-y-2 mt-2 pl-4">
+                    <li>To insert the 2nd card: 1 comparison.</li>
+                    <li>To insert the 3rd card: 2 comparisons.</li>
+                    <li>To insert the 4th card: 3 comparisons.</li>
+                    <li>...</li>
+                    <li>To insert the n-th card: `n-1` comparisons.</li>
+                </ul>
+                <p class="text-lg mt-4">The total number of comparisons is the sum of the series `1 + 2 + 3 + ... + (n-1)`. This is a well-known mathematical series that sums to:</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mt-4 text-center">
+                    <p class="text-2xl font-mono">n * (n - 1) / 2</p>
+                </div>
+                <p class="text-lg mt-4">This is the maximum number of comparisons insertion sort will perform.</p>
+            </section>
+
+            <section id="interactive-sorter" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Insertion Sorter</h2>
+                <p class="text-lg mb-4">Visualize the insertion sort algorithm in action. Enter a list of numbers, then use the "Next Step" button to see how each card is picked from Pile 1 and inserted into its correct place in Pile 2.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex flex-wrap gap-4 mb-4">
+                        <input type="text" id="sorter-input" class="flex-grow p-2 border border-gray-300 rounded-md" value="50, 20, 40, 10, 30">
+                        <button id="start-sort-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Start/Reset</button>
+                        <button id="next-step-btn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition" disabled>Next Step</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2 text-center">Pile 1 (Unsorted)</h4>
+                            <div id="pile1" class="bg-white p-4 rounded-md border min-h-[80px] flex flex-wrap gap-3 justify-center items-center"></div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2 text-center">Pile 2 (Sorted)</h4>
+                            <div id="pile2" class="bg-white p-4 rounded-md border min-h-[80px] flex flex-wrap gap-3 justify-center items-center"></div>
+                        </div>
+                    </div>
+                    <div id="sorter-status" class="mt-4 text-center font-semibold text-lg h-6"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Insertion sort is a fundamental sorting algorithm with several key characteristics.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Intuitive Logic:</strong> It mimics how humans naturally sort items, by taking one item at a time and placing it in its correct sorted position within a growing sorted list.</li>
+                    <li><strong>In-Place Nature:</strong> While our analogy uses two piles, insertion sort is typically implemented "in-place," meaning it sorts the list by shifting elements within the same array, requiring minimal extra memory.</li>
+                    <li><strong>Efficiency:</strong> The worst-case number of comparisons is `n * (n - 1) / 2`. This makes it efficient for small lists or lists that are already mostly sorted, but less efficient for large, random lists compared to more advanced algorithms.</li>
+                    <li><strong>Stable:</strong> Insertion sort is a "stable" sort, meaning that if two elements have equal values, their relative order in the original list will be preserved in the sorted list.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of insertion sort.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar and navigation logic
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                hamburgerMenu.classList.toggle('open');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                        hamburgerMenu.classList.remove('open');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Sorter Logic
+            const sorterInput = document.getElementById('sorter-input');
+            const startSortBtn = document.getElementById('start-sort-btn');
+            const nextStepBtn = document.getElementById('next-step-btn');
+            const pile1Div = document.getElementById('pile1');
+            const pile2Div = document.getElementById('pile2');
+            const sorterStatus = document.getElementById('sorter-status');
+
+            let pile1 = [];
+            let pile2 = [];
+
+            function createCard(value) {
+                const card = document.createElement('div');
+                card.className = 'card w-12 h-16 bg-blue-200 rounded-md flex items-center justify-center text-xl font-bold border-2 border-blue-400';
+                card.textContent = value;
+                return card;
+            }
+
+            function renderPiles() {
+                pile1Div.innerHTML = '';
+                pile1.forEach(val => pile1Div.appendChild(createCard(val)));
+                pile2Div.innerHTML = '';
+                pile2.forEach(val => pile2Div.appendChild(createCard(val)));
+            }
+            
+            startSortBtn.addEventListener('click', () => {
+                const listStr = sorterInput.value;
+                pile1 = listStr.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+                pile2 = [];
+                renderPiles();
+                nextStepBtn.disabled = pile1.length === 0;
+                sorterStatus.textContent = 'Ready to sort. Click "Next Step".';
+            });
+
+            nextStepBtn.addEventListener('click', () => {
+                if (pile1.length === 0) {
+                    sorterStatus.textContent = 'Sorting complete!';
+                    nextStepBtn.disabled = true;
+                    return;
+                }
+
+                const cardToInsertValue = pile1.shift();
+                sorterStatus.textContent = `Picking ${cardToInsertValue} from Pile 1...`;
+                renderPiles();
+                
+                const cardToInsertElement = createCard(cardToInsertValue);
+                pile1Div.appendChild(cardToInsertElement);
+                cardToInsertElement.classList.add('highlight-pile1');
+
+                setTimeout(() => {
+                    let inserted = false;
+                    for (let i = 0; i < pile2.length; i++) {
+                        if (cardToInsertValue < pile2[i]) {
+                            pile2.splice(i, 0, cardToInsertValue);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                    if (!inserted) {
+                        pile2.push(cardToInsertValue);
+                    }
+                    
+                    sorterStatus.textContent = `Inserting ${cardToInsertValue} into Pile 2.`;
+                    renderPiles();
+
+                    if (pile1.length === 0) {
+                        sorterStatus.textContent = 'Sorting complete!';
+                        nextStepBtn.disabled = true;
+                    } else {
+                         sorterStatus.textContent = 'Ready for next step.';
+                    }
+
+                }, 1000);
+            });
+            
+            startSortBtn.click();
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // From AQ6_2.docx (3 questions)
+                {
+                    question: "While sorting `n` cards, how many cards from Pile 1 need to go through the process of finding the correct position in Pile 2?",
+                    type: "single-choice",
+                    answers: ["n-1", "n", "n+1", "data is insufficient"],
+                    correct: ["n-1"],
+                    explanation: "The very first card is simply moved to Pile 2 to start the sorted pile. Every subsequent card (the remaining n-1 cards) must be inserted into its correct position."
+                },
+                {
+                    question: "In insertion sort, what is the maximum number of comparisons that will be performed for a list of `n` items?",
+                    type: "single-choice",
+                    answers: ["n(n-1)/2", "n(n+1)/2", "n(n-1)!", "n(n+1)!"],
+                    correct: ["n(n-1)/2"],
+                    explanation: "The maximum number of comparisons occurs in the worst-case scenario (a reverse-sorted list), which is the sum of the series 1 + 2 + ... + (n-1), which equals n(n-1)/2."
+                },
+                {
+                    question: "In the lecture, insertion of a new card from Pile 1 to Pile 2 is done by comparing from the top (smallest element). If we instead compare from the bottom (largest element), will this method give an incorrect result?",
+                    type: "single-choice",
+                    answers: ["Yes", "No"],
+                    correct: ["No"],
+                    explanation: "The result will still be correct. Comparing from the bottom up is a valid way to find the insertion point. The card would be inserted as soon as you find an element smaller than it."
+                },
+                // New questions (6)
+                {
+                    question: "What is the best-case scenario for insertion sort in terms of comparisons?",
+                    type: "single-choice",
+                    answers: ["The list is in reverse sorted order", "The list is completely random", "The list is already sorted", "The list contains all the same elements"],
+                    correct: ["The list is already sorted"],
+                    explanation: "If the list is already sorted, each new element is only compared once with the last element of the sorted pile before being placed at the end. This results in only n-1 total comparisons."
+                },
+                {
+                    question: "After 3 insertions into Pile 2, how many cards are in Pile 2?",
+                    type: "single-choice",
+                    answers: ["2", "3", "4", "5"],
+                    correct: ["4"],
+                    explanation: "The process starts by moving one card. Then, 3 more cards are inserted. This means a total of 1 + 3 = 4 cards are in Pile 2."
+                },
+                {
+                    question: "Insertion sort is considered an 'in-place' sorting algorithm. What does this mean?",
+                    type: "single-choice",
+                    answers: [
+                        "It can only sort numbers.",
+                        "It requires a large amount of extra memory to work.",
+                        "It sorts the list by rearranging elements within the original list structure, using minimal extra memory.",
+                        "It is the fastest sorting algorithm."
+                    ],
+                    correct: ["It sorts the list by rearranging elements within the original list structure, using minimal extra memory."],
+                    explanation: "'In-place' means the algorithm does not need to create a whole new copy of the list to sort it. It works by shifting elements around within the existing memory space."
+                },
+                {
+                    question: "You are sorting the list [30, 10, 20] using insertion sort. What does Pile 2 look like after the second card (10) has been inserted?",
+                    type: "single-choice",
+                    answers: ["[30, 10]", "[30]", "[10, 30]", "[10]"],
+                    correct: ["[10, 30]"],
+                    explanation: "First, 30 is moved to Pile 2. Then, 10 is picked. 10 is compared with 30 and found to be smaller, so it is placed before 30. Pile 2 becomes [10, 30]."
+                },
+                {
+                    question: "Insertion sort is generally faster than more complex algorithms like Merge Sort or Quick Sort for very large, randomly ordered lists.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "For large, random lists, insertion sort's quadratic time complexity (related to n-squared comparisons) makes it much slower than more advanced algorithms that have better average-case performance."
+                },
+                {
+                    question: "If a list contains `n` identical elements (e.g., [5, 5, 5, 5]), how many comparisons will insertion sort perform?",
+                    type: "single-choice",
+                    answers: ["n-1", "n * (n-1)/2", "0", "n"],
+                    correct: ["n-1"],
+                    explanation: "This scenario is similar to an already sorted list. Each new '5' is compared once with the last '5' in the sorted pile and then placed at the end. This requires n-1 comparisons."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<p class="text-green-600 font-bold">✅ Correct!</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<p class="text-red-600 font-bold">❌ Incorrect.</p><p class="mt-2 text-gray-700"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-2 text-gray-700">${question.explanation}</p>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>
