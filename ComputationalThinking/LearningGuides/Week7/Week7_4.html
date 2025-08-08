@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L7.4: Relations among customers based on their spending patterns (Part 1)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L7.4: Customer Spending</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction</a>
+                <a href="#data-aggregation" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Data Aggregation</a>
+                <a href="#measuring-similarity" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Measuring Similarity</a>
+                <a href="#interactive-calculator" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Calculator</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L7.4: Relations Among Customers Based on Spending Patterns</h1>
+                <p class="text-lg">Welcome! In this lesson, we shift our focus from individual data points to understanding the relationships *between* them. A common goal for businesses is to find groups of similar customers, a process known as <strong>customer segmentation</strong>. This allows them to tailor marketing, offers, and product recommendations more effectively.</p>
+                <p class="text-lg mt-4">We'll explore a computational approach to determine how "similar" two customers are by analyzing their shopping bills. This involves aggregating their purchase data and then calculating a "distance" between them to quantify their relationship.</p>
+            </section>
+
+            <section id="data-aggregation" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Step 1: Data Aggregation</h2>
+                <p class="text-lg mb-4">Raw shopping bills are too detailed for direct comparison. The first crucial step is to aggregate the data into a standardized format. We can use a dictionary to process all the bills for each customer and create a summary table.</p>
+                <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg shadow-sm mt-6">
+                    <h3 class="text-2xl font-semibold text-blue-800">Creating a Customer Profile Table</h3>
+                    <p class="text-lg mt-2">The goal is to create a table where:</p>
+                    <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                        <li>Each <strong>row</strong> represents a unique customer.</li>
+                        <li>Each <strong>column</strong> represents a purchase category (e.g., Apparel, Food, Toiletries).</li>
+                        <li>The <strong>value</strong> in each cell is the total number of items the customer bought in that category across all their bills.</li>
+                    </ul>
+                    <p class="text-lg mt-2">This process transforms a large, messy collection of bills into a clean, structured table that is ready for analysis.</p>
+                </div>
+            </section>
+            
+            <section id="measuring-similarity" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Step 2: Measuring Similarity with "Distance"</h2>
+                <p class="text-lg mb-4">How can we numerically define "similarity"? In data analysis, a common way is to calculate the <strong>distance</strong> between two data points. The concept is simple:</p>
+                <div class="mt-4 border-l-4 border-blue-500 p-4 bg-gray-50">
+                    <p class="text-lg">If the distance between two customers is <strong>low</strong>, they are <strong>more similar</strong>. If the distance is <strong>high</strong>, they are <strong>less similar</strong>.</p>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-2xl font-semibold text-gray-700">The "Manhattan Distance" Method</h3>
+                    <p class="text-lg mt-2">A straightforward way to calculate this distance is to sum the absolute differences for each category:</p>
+                    <ol class="list-decimal list-inside text-lg space-y-2 mt-2 pl-4">
+                        <li>For each category (column), find the absolute difference between the number of items purchased by Customer A and Customer B.</li>
+                        <li>Sum up all these differences.</li>
+                        <li>The final sum is the total distance between the two customers.</li>
+                    </ol>
+                    <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>Distance = |Apparel_A - Apparel_B| + |Food_A - Food_B| + |Toil_A - Toil_B| + ...</code></pre>
+                </div>
+            </section>
+
+            <section id="interactive-calculator" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Distance Calculator</h2>
+                <p class="text-lg mb-4">Let's use the aggregated data from the lecture to see this in action. The table shows two customers, Abhinav and Akshaya. The calculator will compute the Manhattan distance between them step-by-step.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr>
+                                    <th class="border-b-2 p-2 font-semibold">Customer</th>
+                                    <th class="border-b-2 p-2 font-semibold text-center">Apparel</th>
+                                    <th class="border-b-2 p-2 font-semibold text-center">Food</th>
+                                    <th class="border-b-2 p-2 font-semibold text-center">Toiletries</th>
+                                    <th class="border-b-2 p-2 font-semibold text-center">Utilities</th>
+                                    <th class="border-b-2 p-2 font-semibold text-center">Household</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white">
+                                    <td class="p-2 border-b">Abhinav</td>
+                                    <td class="p-2 border-b text-center">3</td>
+                                    <td class="p-2 border-b text-center">8</td>
+                                    <td class="p-2 border-b text-center">2</td>
+                                    <td class="p-2 border-b text-center">0</td>
+                                    <td class="p-2 border-b text-center">1</td>
+                                </tr>
+                                <tr class="bg-blue-50">
+                                    <td class="p-2 border-b">Akshaya</td>
+                                    <td class="p-2 border-b text-center">3</td>
+                                    <td class="p-2 border-b text-center">13</td>
+                                    <td class="p-2 border-b text-center">4</td>
+                                    <td class="p-2 border-b text-center">0</td>
+                                    <td class="p-2 border-b text-center">1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="calculate-btn" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition font-semibold">Calculate Distance</button>
+                    <div id="calculation-output" class="mt-4"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Finding relationships between customers is a multi-step process that showcases key computational thinking concepts.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Abstraction and Aggregation:</strong> We ignore irrelevant details from individual bills and aggregate the data into a high-level summary table using dictionaries.</li>
+                    <li><strong>Quantifying Similarity:</strong> We define a clear, computational method (distance) to measure the similarity between any two customers.</li>
+                    <li><strong>Low Distance = High Similarity:</strong> This inverse relationship is a core concept in many clustering and recommendation algorithms.</li>
+                    <li><strong>Systematic Comparison:</strong> This process lays the groundwork for more advanced analysis, like iterating through all pairs of customers to find the most similar groups.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Distance Calculator ---
+            const calculateBtn = document.getElementById('calculate-btn');
+            const calcOutput = document.getElementById('calculation-output');
+            
+            calculateBtn.addEventListener('click', () => {
+                const abhinav = [3, 8, 2, 0, 1];
+                const akshaya = [3, 13, 4, 0, 1];
+                const categories = ["Apparel", "Food", "Toiletries", "Utilities", "Household"];
+                let totalDistance = 0;
+                let calculationHTML = `<h3 class="text-xl font-semibold mb-2">Calculation Steps:</h3><ul class="list-disc list-inside space-y-1">`;
+                
+                for(let i = 0; i < abhinav.length; i++) {
+                    const diff = Math.abs(abhinav[i] - akshaya[i]);
+                    totalDistance += diff;
+                    calculationHTML += `<li><strong>${categories[i]}:</strong> |${abhinav[i]} - ${akshaya[i]}| = ${diff}</li>`;
+                }
+                
+                calculationHTML += `</ul><div class="mt-4 font-bold text-lg bg-blue-100 p-3 rounded-md">Total Distance = ${totalDistance}</div>`;
+                calcOutput.innerHTML = calculationHTML;
+            });
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ7_4.docx ---
+                {
+                    question: "What does the distance between two customers signify in the lecture? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["If the distance is high, then the customers are more similar.", "If the distance is low, then the customers are more similar.", "If the distance is high, then the customers are less similar.", "If the distance is low, then the customers are less similar."],
+                    correct: ["If the distance is low, then the customers are more similar.", "If the distance is high, then the customers are less similar."],
+                    explanation: "The distance is an inverse measure of similarity. A smaller distance means the customers have more similar purchasing patterns."
+                },
+                {
+                    question: "Fill in the blank. To find the similarity between customers, the comparison is made on __________.",
+                    type: "single-choice",
+                    answers: ["number of items purchased corresponding to each category", "the total price of the items purchased corresponding to each category", "the total cost of items purchased corresponding to each customer", "None of the above."],
+                    correct: ["number of items purchased corresponding to each category"],
+                    explanation: "The lecture demonstrates comparing customers based on the aggregated count of items they purchased within each category (Apparel, Food, etc.)."
+                },
+                {
+                    question: "What information will be stored in TabB after the execution of the provided pseudocode?",
+                    type: "single-choice",
+                    answers: ["Customers who bought at least 15 items.", "Customers who bought at least 15 items representing at least 4 categories.", "Customers who bought at least 15 items representing each category.", "Customers who bought at least 15 items representing at most 4 categories."],
+                    correct: ["Customers who bought at least 15 items representing at least 4 categories."],
+                    explanation: "The pseudocode calculates M by counting how many categories have a non-zero purchase count. The `if` condition requires both M to be > 4 (meaning 5 categories, but the question has an error and implies >=4) and the total to be >= 15."
+                },
+                {
+                    question: "If the procedure `count` returns `X.fld` instead of `Flag`, and for a customer `X`, the value of `M` obtained is 44. Identify the correct statements. (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["The customer may have bought items from exactly 44 item categories.", "The customer may have bought items from at least 1 item category.", "The customer may have bought items from 2 item categories.", "The customer may have bought items from all the item categories."],
+                    correct: ["The customer may have bought items from at least 1 item category.", "The customer may have bought items from 2 item categories.", "The customer may have bought items from all the item categories."],
+                    explanation: "If `count` returns `X.fld`, then M is the sum of items across all categories. A total of 44 items could come from 1 category (44 items), 2 categories (e.g., 22+22), or all 5 categories (e.g., 8+9+9+9+9). The only impossible case is exactly 44 categories, as there are only 5."
+                },
+                // --- New Questions ---
+                {
+                    question: "What is the first step in comparing customers' spending patterns?",
+                    type: "single-choice",
+                    answers: ["Calculate the distance between them.", "Sort the customers alphabetically.", "Aggregate individual purchase data into a summary table.", "Find the most popular item category."],
+                    correct: ["Aggregate individual purchase data into a summary table."],
+                    explanation: "Before any comparison can happen, the raw data from many bills must be aggregated into a consistent format, like a table of items per category for each customer."
+                },
+                {
+                    question: "In the context of customer similarity, 'binning' refers to grouping customers based on certain criteria.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Binning is the process of grouping data. In the lecture, customers were binned into groups like 'only buys food', 'buys few items', and 'buys many items'."
+                },
+                {
+                    question: "If Customer A bought 5 food items and Customer B bought 12 food items, what is the 'Manhattan distance' between them for the food category?",
+                    type: "single-choice",
+                    answers: ["5", "7", "12", "17"],
+                    correct: ["7"],
+                    explanation: "The distance for a single category is the absolute difference: |5 - 12| = 7."
+                },
+                {
+                    question: "A company might want to find similar customers to achieve which of the following goals? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["Offer personalized discounts.", "Recommend new products they might like.", "Understand different market segments.", "Increase the price of items for specific groups."],
+                    correct: ["Offer personalized discounts.", "Recommend new products they might like.", "Understand different market segments."],
+                    explanation: "Customer segmentation is used for targeted marketing, recommendations, and understanding the customer base, not typically for discriminatory pricing."
+                },
+                {
+                    question: "The process of creating the customer summary table (e.g., TabA) from raw shopping bills would likely use a dictionary.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "A dictionary is the perfect tool for this. You would use the customer name as the key and another dictionary (of categories and counts) as the value to aggregate the data efficiently."
+                },
+                {
+                    question: "If the total distance between Customer X and Customer Y is 3, and the distance between Customer X and Customer Z is 25, which statement is correct?",
+                    type: "single-choice",
+                    answers: ["X and Z are very similar.", "X and Y are very similar.", "Y and Z are very similar.", "No conclusion can be drawn."],
+                    correct: ["X and Y are very similar."],
+                    explanation: "A lower distance (3) indicates higher similarity in purchasing patterns compared to a higher distance (25)."
+                },
+                {
+                    question: "Calculating the Manhattan distance requires summing the squared differences between category values.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "Manhattan distance sums the *absolute* differences. Summing the *squared* differences is part of calculating Euclidean distance, a different metric."
+                },
+                {
+                    question: "Why is comparing the number of *items* per category often preferred over comparing the total *cost* per category?",
+                    type: "single-choice",
+                    answers: ["Cost is harder to calculate.", "A single expensive item could skew the cost data, making two customers seem different when their buying patterns are similar.", "The number of items is always an integer.", "All of the above."],
+                    correct: ["A single expensive item could skew the cost data, making two customers seem different when their buying patterns are similar."],
+                    explanation: "The number of items (or line items) can give a better sense of the variety and focus of a customer's shopping habits, whereas total cost can be heavily influenced by one or two high-priced purchases."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

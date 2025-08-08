@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L7.5: Relations among customers based on their spending patterns (Part 2)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L7.5: Customer Relations</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction</a>
+                <a href="#systematic-comparison" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Systematic Comparison</a>
+                <a href="#distance-matrix" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Distance Matrix</a>
+                <a href="#interactive-matrix" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Matrix</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L7.5: Relations Among Customers (Part 2)</h1>
+                <p class="text-lg">In the previous section, we learned how to aggregate customer data and calculate the "distance" between any two customers. Now, we'll build on that foundation to perform a complete analysis. How do we find the *most* similar pair of customers in an entire group?</p>
+                <p class="text-lg mt-4">This requires a systematic way to compare every customer with every other customer. We'll explore how this process is a form of <strong>nested iteration</strong> and how we can organize the results in a logical structure called a <strong>distance matrix</strong> to easily find the closest and farthest pairs.</p>
+            </section>
+
+            <section id="systematic-comparison" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Systematic Comparison via Nested Iteration</h2>
+                <p class="text-lg mb-4">To find the most similar pair of customers, we can't just compare a few of them. We must calculate the distance between every possible pair. For a group of N customers, this means performing C(N, 2) = N * (N-1) / 2 comparisons.</p>
+                <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg shadow-sm mt-6">
+                    <h3 class="text-2xl font-semibold text-blue-800">The Nested Loop Logic</h3>
+                    <p class="text-lg mt-2">This process is a classic example of a nested loop or nested iteration:</p>
+                    <ol class="list-decimal list-inside text-lg mt-2 pl-4 space-y-2">
+                        <li>The <strong>outer loop</strong> selects the first customer (let's call them Customer i).</li>
+                        <li>The <strong>inner loop</strong> selects the second customer (Customer j).</li>
+                        <li>To avoid comparing a customer to themselves and to avoid duplicate comparisons (like A-B and B-A), the inner loop only needs to consider customers that come *after* the one selected by the outer loop.</li>
+                        <li>Inside the inner loop, we calculate the distance between Customer i and Customer j.</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section id="distance-matrix" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Organizing Results: The Distance Matrix</h2>
+                <p class="text-lg mb-4">Keeping track of all these pairwise distances can be confusing. A <strong>distance matrix</strong> is a powerful tool for organizing this information. It's a table where both the rows and columns represent the same set of customers.</p>
+                <div class="mt-6">
+                    <h3 class="text-2xl font-semibold text-gray-700">How it Works</h3>
+                    <p class="text-lg mt-2">The value in the cell at the intersection of a row (Customer X) and a column (Customer Y) is the calculated distance between them. This gives us a clear, visual way to store and analyze the results.</p>
+                    <div class="mt-4 border-l-4 border-blue-500 p-4 bg-gray-50">
+                        <p class="text-lg font-semibold">Key Properties:</p>
+                        <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-1">
+                            <li>The matrix is <strong>symmetrical</strong> (the distance from X to Y is the same as Y to X).</li>
+                            <li>The diagonal is always zero (the distance from a customer to themselves is 0).</li>
+                            <li>Because of this, we only need to calculate and fill in the upper (or lower) triangle of the matrix.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-matrix" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Distance Matrix</h2>
+                <p class="text-lg mb-4">Let's apply this to the customer data from the benchmark quiz. Click the button to perform the nested iteration, calculate all pairwise distances, and populate the distance matrix. The smallest distance (most similar pair) and largest distance (least similar pair) will be highlighted.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Customer Data</h3>
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th class="border-b-2 p-2 font-semibold">Customer</th>
+                                        <th class="border-b-2 p-2 font-semibold text-center">a</th>
+                                        <th class="border-b-2 p-2 font-semibold text-center">b</th>
+                                        <th class="border-b-2 p-2 font-semibold text-center">c</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white"><td class="p-2 border-b">X</td><td class="p-2 border-b text-center">20</td><td class="p-2 border-b text-center">10</td><td class="p-2 border-b text-center">5</td></tr>
+                                    <tr class="bg-white"><td class="p-2 border-b">Y</td><td class="p-2 border-b text-center">10</td><td class="p-2 border-b text-center">5</td><td class="p-2 border-b text-center">15</td></tr>
+                                    <tr class="bg-white"><td class="p-2 border-b">Z</td><td class="p-2 border-b text-center">18</td><td class="p-2 border-b text-center">7</td><td class="p-2 border-b text-center">10</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Distance Matrix</h3>
+                            <table id="distance-matrix-table" class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th class="border-b-2 p-2 font-semibold"></th>
+                                        <th class="border-b-2 p-2 font-semibold text-center">X</th>
+                                        <th class="border-b-2 p-2 font-semibold text-center">Y</th>
+                                        <th class="border-b-2 p-2 font-semibold text-center">Z</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td class="p-2 border-b font-semibold">X</td><td class="p-2 border-b text-center bg-gray-200">0</td><td class="p-2 border-b text-center" data-pair="XY">?</td><td class="p-2 border-b text-center" data-pair="XZ">?</td></tr>
+                                    <tr><td class="p-2 border-b font-semibold">Y</td><td class="p-2 border-b text-center bg-gray-200"></td><td class="p-2 border-b text-center bg-gray-200">0</td><td class="p-2 border-b text-center" data-pair="YZ">?</td></tr>
+                                    <tr><td class="p-2 border-b font-semibold">Z</td><td class="p-2 border-b text-center bg-gray-200"></td><td class="p-2 border-b text-center bg-gray-200"></td><td class="p-2 border-b text-center bg-gray-200">0</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button id="calculate-matrix-btn" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition font-semibold">Calculate Distances</button>
+                    <div id="matrix-results" class="mt-4 font-semibold"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">By combining data aggregation with systematic comparison, we can uncover deep insights into the relationships within a dataset.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Pairwise Comparison:</strong> To find the "best" pair according to some metric (like similarity), you must systematically compare all possible pairs.</li>
+                    <li><strong>Nested Iteration:</strong> This systematic comparison is algorithmically performed using a nested loop structure.</li>
+                    <li><strong>Distance Matrix:</strong> A matrix is an excellent way to store and visualize the results of pairwise comparisons, making it easy to find minimums (most similar) and maximums (least similar).</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Matrix Calculator ---
+            const calculateMatrixBtn = document.getElementById('calculate-matrix-btn');
+            const matrixResultsDiv = document.getElementById('matrix-results');
+            const customerData = {
+                X: [20, 10, 5],
+                Y: [10, 5, 15],
+                Z: [18, 7, 10]
+            };
+
+            function manhattanDistance(custA, custB) {
+                let distance = 0;
+                for (let i = 0; i < custA.length; i++) {
+                    distance += Math.abs(custA[i] - custB[i]);
+                }
+                return distance;
+            }
+
+            calculateMatrixBtn.addEventListener('click', () => {
+                const distances = {
+                    XY: manhattanDistance(customerData.X, customerData.Y),
+                    XZ: manhattanDistance(customerData.X, customerData.Z),
+                    YZ: manhattanDistance(customerData.Y, customerData.Z)
+                };
+
+                let minDistance = Infinity;
+                let maxDistance = -Infinity;
+                let closestPair = '';
+                let farthestPair = '';
+
+                for (const pair in distances) {
+                    const dist = distances[pair];
+                    document.querySelector(`[data-pair="${pair}"]`).textContent = dist;
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        closestPair = pair;
+                    }
+                    if (dist > maxDistance) {
+                        maxDistance = dist;
+                        farthestPair = pair;
+                    }
+                }
+                
+                document.querySelectorAll('#distance-matrix-table td[data-pair]').forEach(td => {
+                    td.classList.remove('bg-green-200', 'bg-red-200');
+                });
+                document.querySelector(`[data-pair="${closestPair}"]`).classList.add('bg-green-200');
+                document.querySelector(`[data-pair="${farthestPair}"]`).classList.add('bg-red-200');
+
+                matrixResultsDiv.innerHTML = `
+                    <p>Closest Pair (Most Similar): ${closestPair.split('').join(' & ')} with a distance of ${minDistance}.</p>
+                    <p>Farthest Pair (Least Similar): ${farthestPair.split('').join(' & ')} with a distance of ${maxDistance}.</p>
+                `;
+            });
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ7_5.docx ---
+                {
+                    question: "How will you calculate the Manhattan distance between two customers X and Y with purchases Xa, Xb, Xc and Ya, Yb, Yc?",
+                    type: "multiple-choice",
+                    answers: ["(Xa - Ya) + (Xb - Yb) + (Xc - Yc)", "|Xa - Ya| + |Xb - Yb| + |Xc - Yc|", "|Ya - Xa| + |Yb - Xb| + |Yc - Xc|", "(Xa - Xb - Xc) + (Ya - Yb - Yc)"],
+                    correct: ["|Xa - Ya| + |Xb - Yb| + |Xc - Yc|", "|Ya - Xa| + |Yb - Xb| + |Yc - Xc|"],
+                    explanation: "Manhattan distance is the sum of the absolute differences between the corresponding values. |A - B| is the same as |B - A|, so both options are correct."
+                },
+                {
+                    question: "To find the nearest customers among X, Y, Z from the table shown, what are the minimum pairwise comparisons required?",
+                    type: "single-choice",
+                    answers: ["1", "3", "6", "9"],
+                    correct: ["3"],
+                    explanation: "You need to compare X-Y, X-Z, and Y-Z. This is 3 unique comparisons."
+                },
+                {
+                    question: "Who are the nearest customers among X, Y, Z?",
+                    type: "single-choice",
+                    answers: ["X, Y", "Y, Z", "X, Z"],
+                    correct: ["X, Z"],
+                    explanation: "Distance(X,Y) = |20-10|+|10-5|+|5-15| = 10+5+10=25. Distance(Y,Z) = |10-18|+|5-7|+|15-10| = 8+2+5=15. Distance(X,Z) = |20-18|+|10-7|+|5-10| = 2+3+5=10. The smallest distance is 10, between X and Z."
+                },
+                {
+                    question: "What is the Manhattan distance between the nearest customers?",
+                    type: "single-choice",
+                    answers: ["10", "15", "25", "5"],
+                    correct: ["10"],
+                    explanation: "As calculated previously, the smallest distance is 10, between customers X and Z."
+                },
+                {
+                    question: "Who are the farthest customers among X, Y, Z?",
+                    type: "single-choice",
+                    answers: ["X, Y", "Y, Z", "X, Z"],
+                    correct: ["X, Y"],
+                    explanation: "The distances are 25 (X,Y), 15 (Y,Z), and 10 (X,Z). The largest distance is 25, between X and Y."
+                },
+                {
+                    question: "What is the Manhattan distance between the farthest customers?",
+                    type: "single-choice",
+                    answers: ["10", "15", "25", "30"],
+                    correct: ["25"],
+                    explanation: "As calculated previously, the largest distance is 25, between customers X and Y."
+                },
+                 // --- New Questions ---
+                {
+                    question: "Why do we only need to compute the upper or lower triangle of a distance matrix?",
+                    type: "single-choice",
+                    answers: ["It's a mathematical convention.", "The distance from A to B is the same as from B to A.", "The diagonal is always 1.", "It saves memory but loses information."],
+                    correct: ["The distance from A to B is the same as from B to A."],
+                    explanation: "The distance metric is symmetrical, meaning the matrix is symmetrical across its diagonal. Calculating one half is enough."
+                },
+                {
+                    question: "The process of comparing every customer to every other customer is an example of a single iteration.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "This process requires nested iteration, where an outer loop selects one customer and an inner loop iterates through the others to form pairs."
+                },
+                {
+                    question: "If you have 5 customers, how many unique pairwise comparisons are needed?",
+                    type: "single-choice",
+                    answers: ["5", "10", "20", "25"],
+                    correct: ["10"],
+                    explanation: "The formula is N*(N-1)/2. For N=5, this is 5*(4)/2 = 10."
+                },
+                {
+                    question: "After calculating all distances in a distance matrix, how do you find the most similar pair of customers?",
+                    type: "single-choice",
+                    answers: ["Find the largest value in the matrix.", "Find the smallest non-zero value in the matrix.", "Calculate the average of all values.", "Find the value on the main diagonal."],
+                    correct: ["Find the smallest non-zero value in the matrix."],
+                    explanation: "Similarity is inversely related to distance. The most similar pair will have the smallest distance. We ignore the zero values on the diagonal."
+                },
+                {
+                    question: "A distance matrix is a good tool for visualizing the results of pairwise comparisons.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "It provides a structured, easy-to-read table that neatly organizes all the calculated distances between pairs."
+                },
+                {
+                    question: "What does a value of 0 on the main diagonal of a distance matrix signify?",
+                    type: "single-choice",
+                    answers: ["The two customers are identical.", "The distance has not been calculated yet.", "The distance between a customer and themselves is zero.", "It signifies an error in calculation."],
+                    correct: ["The distance between a customer and themselves is zero."],
+                    explanation: "The diagonal represents comparing each customer to themselves, and the distance is always 0."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

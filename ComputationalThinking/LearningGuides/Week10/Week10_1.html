@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L10.1: Representation of a graph as an adjacency matrix to find shortest distance and time</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L10.1: Graphs & Matrices</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                 <h1 class="text-2xl font-bold">L10.1: Graphs & Matrices</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction to Graphs</a>
+                <a href="#adjacency-matrix" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">The Adjacency Matrix</a>
+                <a href="#finding-paths" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Finding Paths</a>
+                <a href="#edge-labels" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Edge-Labeled Graphs</a>
+                <a href="#interactive-graph" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Interactive Graph</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L10.1: Representing Graphs with an Adjacency Matrix</h1>
+                <p class="text-lg">Welcome to Week 10! We've seen how dictionaries can organize complex data. Now, we'll introduce a new way to visualize and analyze relationships: <strong>graphs</strong>. A graph is a powerful abstraction for representing networks, like a system of train stations and the routes that connect them.</p>
+                <p class="text-lg mt-4">Instead of just listing connections, a graph allows us to reason about paths, connectivity, and the shortest routes. In this guide, we'll explore how to represent the train network as a graph and use a special table called an <strong>adjacency matrix</strong> to perform powerful computations, like finding the shortest distance and time for a journey.</p>
+            </section>
+
+            <section id="adjacency-matrix" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">The Adjacency Matrix: A Graph in a Table</h2>
+                <p class="text-lg mb-4">While drawing a graph is useful for visualization, it's not practical for computation. Instead, we represent a graph using an <strong>adjacency matrix</strong>. This is a square matrix (a table with the same number of rows and columns) where:</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                     <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                        <li>Both the rows and columns represent the nodes of the graph (e.g., the train stations).</li>
+                        <li>A cell at the intersection of a row (From Station A) and a column (To Station B) contains information about the edge between them.</li>
+                        <li>For a simple graph, a `1` means a direct connection exists, and a `0` means it does not.</li>
+                    </ul>
+                </div>
+                <div class="mt-8">
+                     <h3 class="text-2xl font-semibold text-gray-700">Directed vs. Undirected Graphs</h3>
+                     <p class="text-lg mt-2">The train network is a <strong>directed graph</strong> because a train from A to B doesn't guarantee a train from B to A. This means the adjacency matrix is not always symmetric. The value in row A, column B can be different from the value in row B, column A.</p>
+                </div>
+            </section>
+            
+            <section id="finding-paths" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Finding Paths with the Matrix</h2>
+                <p class="text-lg mb-4">The real power of the adjacency matrix is its use in finding paths of different lengths through iterative computation.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">1. Direct Routes (1 Hop)</h3>
+                        <p class="text-lg mt-2">The initial adjacency matrix (`direct`) tells us all the direct connections. If `direct[i][j] == 1`, there's a direct train from station `i` to station `j`.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">2. One-Change Routes (At Most 2 Hops)</h3>
+                        <p class="text-lg mt-2">To find routes with one change, we can iterate through all possible intermediate stations (`k`). A path from `i` to `j` with one change exists if we can find a `k` such that there's a direct route from `i` to `k` AND a direct route from `k` to `j`.</p>
+                        <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>// Pseudocode logic
+if (direct[i][k] == 1 AND direct[k][j] == 1) {
+    // A one-change path from i to j exists via k
+    one_hop[i][j] = 1
+}</code></pre>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">3. N-Hop Routes & Transitive Closure</h3>
+                        <p class="text-lg mt-2">This logic can be repeated. To find paths with at most `n` hops, we check if there's a path of at most `n-1` hops to an intermediate station `k`, and a direct path from `k` to our destination. By repeating this process N-1 times (where N is the number of stations), we can find all possible connections in the graph. This is known as finding the <strong>transitive closure</strong>.</p>
+                    </div>
+                </div>
+            </section>
+
+             <section id="edge-labels" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Edge-Labeled Graphs: Adding More Data</h2>
+                <p class="text-lg mb-4">A simple `0` or `1` only tells us if a connection exists. We can make our graph much more useful by storing richer information in the matrix cells. This creates an <strong>edge-labeled graph</strong>.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <h3 class="text-2xl font-semibold text-violet-800">Example: Storing Distances</h3>
+                    <p class="text-lg mt-2">Instead of `1`, the cell `direct[i][j]` could store the <strong>distance</strong> of the shortest direct train from `i` to `j`. A `0` would still mean no direct connection.</p>
+                    <p class="text-lg mt-2">With this, our path-finding algorithm becomes even more powerful. When checking for a one-change route via station `k`, we can calculate the total distance: `distance[i][k] + distance[k][j]`. By comparing all possible intermediate stations, we can find the <strong>shortest path</strong> between any two stations, not just whether a path exists.</p>
+                </div>
+            </section>
+
+            <section id="interactive-graph" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Interactive Adjacency Matrix</h2>
+                <p class="text-lg mb-4">This tool visualizes the relationship between a directed graph and its adjacency matrix. Click on the edges in the graph to toggle them on and off, and watch the adjacency matrix update in real-time.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div id="svg-container">
+                            <!-- SVG will be generated here -->
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Adjacency Matrix</h3>
+                            <table id="matrix-table" class="w-full text-center border-collapse">
+                                <!-- Matrix will be generated here -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">Graphs and adjacency matrices provide a powerful framework for analyzing network data.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Graphs Model Networks:</strong> Stations become nodes and direct routes become edges, allowing us to visualize connectivity.</li>
+                    <li><strong>Adjacency Matrices for Computation:</strong> A matrix is a computable representation of a graph, where a value at `[row][col]` indicates an edge.</li>
+                    <li><strong>Path Finding:</strong> By iteratively operating on the matrix, we can find not just direct connections, but also paths with multiple hops (train changes).</li>
+                    <li><strong>Edge Labels Add Richness:</strong> Storing data like distance or time instead of just `1`s and `0`s allows us to solve more complex problems, like finding the shortest path.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Graph and Matrix ---
+            const svgContainer = document.getElementById('svg-container');
+            const matrixTable = document.getElementById('matrix-table');
+            const nodes = {
+                A: { x: 50, y: 50 },
+                B: { x: 200, y: 50 },
+                C: { x: 50, y: 200 },
+                D: { x: 200, y: 200 }
+            };
+            const nodeKeys = Object.keys(nodes);
+            let adjMatrix = [
+                [0, 1, 0, 1],
+                [0, 0, 0, 1],
+                [1, 1, 0, 0],
+                [0, 1, 0, 0]
+            ];
+
+            function drawGraph() {
+                let svgHTML = `<svg viewBox="0 0 250 250">`;
+                // Draw edges first so nodes are on top
+                nodeKeys.forEach((from, i) => {
+                    nodeKeys.forEach((to, j) => {
+                        if (adjMatrix[i][j] === 1) {
+                            const curve = (i === j-1 || i === j+1 || i === j-2 || i === j+2) ? 0 : 0.3;
+                            svgHTML += `<path id="edge-${from}${to}" d="M ${nodes[from].x} ${nodes[from].y} A 150 ${150 * (1-curve*2)} 0 0 1 ${nodes[to].x} ${nodes[to].y}" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="cursor-pointer edge" data-from="${i}" data-to="${j}"></path>`;
+                        }
+                    });
+                });
+
+                // Draw nodes
+                nodeKeys.forEach(key => {
+                    svgHTML += `<circle cx="${nodes[key].x}" cy="${nodes[key].y}" r="20" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"></circle>`;
+                    svgHTML += `<text x="${nodes[key].x}" y="${nodes[key].y}" dy=".3em" text-anchor="middle" fill="white" font-weight="bold">${key}</text>`;
+                });
+                
+                svgHTML += `<defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" /></marker></defs></svg>`;
+                svgContainer.innerHTML = svgHTML;
+            }
+
+            function drawMatrix() {
+                let matrixHTML = `
+                    <thead><tr><th class="p-2 border">From/To</th>
+                    ${nodeKeys.map(k => `<th class="p-2 border">${k}</th>`).join('')}
+                    </tr></thead><tbody>`;
+                nodeKeys.forEach((rowKey, i) => {
+                    matrixHTML += `<tr><td class="p-2 border font-bold">${rowKey}</td>`;
+                    nodeKeys.forEach((colKey, j) => {
+                        matrixHTML += `<td class="p-2 border">${adjMatrix[i][j]}</td>`;
+                    });
+                    matrixHTML += `</tr>`;
+                });
+                matrixHTML += `</tbody>`;
+                matrixTable.innerHTML = matrixHTML;
+            }
+
+            svgContainer.addEventListener('click', (e) => {
+                const edge = e.target.closest('.edge');
+                if (edge) {
+                    const from = parseInt(edge.dataset.from);
+                    const to = parseInt(edge.dataset.to);
+                    adjMatrix[from][to] = adjMatrix[from][to] === 1 ? 0 : 1;
+                    drawGraph();
+                    drawMatrix();
+                }
+            });
+            
+            drawGraph();
+            drawMatrix();
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ10_1.docx ---
+                {
+                    question: "Adjacency matrix is a square matrix used to represent a graph.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. An adjacency matrix has the same number of rows and columns, corresponding to the nodes in the graph."
+                },
+                {
+                    question: "Adjacency matrix is always symmetric.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "This is only true for undirected graphs. For directed graphs, like a train network where a route from A to B doesn't guarantee a route from B to A, the matrix is not symmetric."
+                },
+                {
+                    question: "If we convert the table from the benchmark to a graph, we will obtain a directed graph.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Yes. For example, there is a route from A to B (value 100), but no route from B to A (value 0). This asymmetry means the graph is directed."
+                },
+                {
+                    question: "How many edges will be there in the graph based on the benchmark table?",
+                    type: "single-choice",
+                    answers: ["At least 6", "At most 6", "Exactly 6", "Exactly 4"],
+                    correct: ["Exactly 6"],
+                    explanation: "There are 6 non-zero entries in the table, each representing a directed edge: A->B, A->D, B->D, C->A, C->B, D->B."
+                },
+                {
+                    question: "What is the minimum distance a passenger has to travel from station A to station D?",
+                    type: "single-choice",
+                    answers: ["200", "100", "300", "Not possible"],
+                    correct: ["200"],
+                    explanation: "You can go directly (A->D) for 300, or with one change (A->B->D) for 100 + 100 = 200. The minimum is 200."
+                },
+                {
+                    question: "What is the minimum distance a passenger has to travel from station C to station A?",
+                    type: "single-choice",
+                    answers: ["600", "100", "800", "Not possible"],
+                    correct: ["600"],
+                    explanation: "There is a direct route from C to A with a distance of 600. There are no one-change routes that are shorter."
+                },
+                {
+                    question: "What is the minimum distance a passenger has to travel from station D to station A?",
+                    type: "single-choice",
+                    answers: ["500", "100", "300", "Not possible"],
+                    correct: ["Not possible"],
+                    explanation: "From D, you can only go to B. From B, you can only go to D. There is no path from D to A."
+                },
+                 // --- New Questions ---
+                {
+                    question: "In a graph representing a train network, what do the nodes typically represent?",
+                    type: "single-choice",
+                    answers: ["Trains", "Distances", "Stations", "Time"],
+                    correct: ["Stations"],
+                    explanation: "In this model, the stations are the locations (nodes), and the train routes are the connections between them (edges)."
+                },
+                {
+                    question: "The process of finding all possible connections between any two nodes in a graph, no matter how many hops, is called finding the:",
+                    type: "single-choice",
+                    answers: ["Adjacency Matrix", "Shortest Path", "Transitive Closure", "Edge Label"],
+                    correct: ["Transitive Closure"],
+                    explanation: "The transitive closure is the complete set of all reachable pairs in a graph."
+                },
+                {
+                    question: "If an adjacency matrix stores distances, and `matrix[i][k] = 50` and `matrix[k][j] = 75`, what is the length of the path from i to j via k?",
+                    type: "single-choice",
+                    answers: ["50", "75", "25", "125"],
+                    correct: ["125"],
+                    explanation: "The total path length is the sum of the lengths of its segments: 50 + 75 = 125."
+                },
+                {
+                    question: "An edge-labeled graph can store which of the following on its edges? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["The distance between stations.", "The time taken to travel.", "A list of train numbers serving that route.", "The name of the station."],
+                    correct: ["The distance between stations.", "The time taken to travel.", "A list of train numbers serving that route."],
+                    explanation: "Edge labels store information *about the connection*. Distance, time, and train numbers are all valid labels. The station name is information about the node."
+                },
+                {
+                    question: "For a graph with N nodes, the shortest path between any two nodes will have at most N-1 edges.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "A path with N or more edges would have to visit at least one node twice, creating an unnecessary loop."
+                },
+                {
+                    question: "In a simple (unlabeled) adjacency matrix, what does the value in the cell at row C, column D represent?",
+                    type: "single-choice",
+                    answers: ["The distance from C to D.", "The number of trains from C to D.", "Whether a direct edge from C to D exists.", "The time to travel from C to D."],
+                    correct: ["Whether a direct edge from C to D exists."],
+                    explanation: "In its simplest form, the matrix stores a 1 or 0 to indicate the existence (or absence) of a direct connection."
+                },
+                {
+                    question: "To find all paths with at most 2 hops, you need the information from the 1-hop (direct) matrix.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "The algorithm is iterative. To find 2-hop paths, you build upon the 1-hop paths by adding another direct edge."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

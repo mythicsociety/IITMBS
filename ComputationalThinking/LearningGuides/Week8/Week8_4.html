@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L8.4: Procedure to find relations among customers based on their spending patterns</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L8.4: Procedures</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction</a>
+                <a href="#procedures" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Procedures as Subcontractors</a>
+                <a href="#side-effects" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Side Effects</a>
+                <a href="#interactive-procedure" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Procedure</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L8.4: Procedures for Customer Spending Patterns</h1>
+                <p class="text-lg">In our analysis of customer spending, we identified a repetitive task: for each shopping bill, we need to count the number of items in various categories. Performing this task manually within a larger algorithm can make our code complex and hard to manage.</p>
+                <p class="text-lg mt-4">This lesson introduces the concept of <strong>procedures</strong>—self-contained blocks of code that perform a specific task. By encapsulating the item-counting logic into a procedure, we can simplify our main algorithm, making it more modular, readable, and easier to debug. We will also explore the critical concept of "side effects."</p>
+            </section>
+
+            <section id="procedures" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Procedures as "Subcontractors"</h2>
+                <p class="text-lg mb-4">Think of a procedure as a "subcontractor" you hire to do a specific job. The main algorithm is the "contractor."</p>
+                <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg shadow-sm mt-6">
+                    <h3 class="text-2xl font-semibold text-blue-800">The Contractor/Subcontractor Model</h3>
+                    <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                        <li><strong>The Contractor (Main Algorithm):</strong> Manages the overall process. It iterates through all shopping bills, keeps track of the total counts for each customer in a main dictionary, and decides whether to create a new customer entry or update an existing one.</li>
+                        <li><strong>The Subcontractor (Procedure):</strong> Has one job. The contractor gives it a single shopping bill (a card). It reads the card, counts the items in each category, and returns a summary (e.g., a dictionary of counts) to the contractor. It doesn't need to know about any other cards or customers.</li>
+                    </ul>
+                </div>
+                 <div class="mt-8 border-l-4 border-blue-500 p-4">
+                    <p class="text-lg font-semibold">Key Idea: Modularity</p>
+                    <p class="text-lg">This separation of concerns is called <strong>modularity</strong>. The contractor doesn't need to know *how* the subcontractor counts the items, only that it will receive the correct summary. This makes the main algorithm simpler and more focused.</p>
+                </div>
+            </section>
+            
+            <section id="side-effects" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The Danger of Side Effects</h2>
+                <p class="text-lg mb-4">A <strong>side effect</strong> occurs when a procedure modifies something outside of its intended output. For example, if a procedure designed to find the maximum value in a list of cards also reorders that list, the reordering is a side effect.</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-red-50 border-2 border-red-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-red-800">Why Side Effects Can Be Bad</h3>
+                        <p class="text-lg mt-2">Unintended side effects can cause serious bugs. If the main algorithm relies on the list of cards being in a specific order, a procedure that secretly changes that order will break the logic in unpredictable ways.</p>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-green-800">Procedures Without Side Effects</h3>
+                        <p class="text-lg mt-2">The procedure for counting items on a single shopping card is a good example of a "pure" function with no side effects. It only reads the data on the card it's given and returns a new piece of information (the dictionary of counts). It doesn't—and can't—change the original deck of cards.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-procedure" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Procedure Simulator</h2>
+                <p class="text-lg mb-4">This tool simulates the `Items(X)` procedure. A sample shopping bill `X` is provided as input. The procedure iterates through its item list, builds a dictionary of category counts, and returns it. This demonstrates how a self-contained procedure works without any side effects.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                             <h3 class="font-semibold mb-2">Input: Shopping Bill (Card X)</h3>
+                             <div class="bg-white p-3 rounded-md border text-sm">
+                                <p><strong>Customer:</strong> Akshaya</p>
+                                <p><strong>ItemList:</strong></p>
+                                <ul class="list-disc list-inside ml-4">
+                                    <li>Shampoo (Toiletry)</li>
+                                    <li>Soap (Toiletry)</li>
+                                    <li>Rice (Food)</li>
+                                    <li>Lentils (Food)</li>
+                                    <li>Spices (Food)</li>
+                                    <li>Shirt (Apparel)</li>
+                                </ul>
+                             </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold mb-2">Output: Returned Dictionary</h3>
+                            <div id="procedure-output" class="bg-white p-3 rounded-md border h-full"></div>
+                        </div>
+                    </div>
+                    <button id="run-procedure-btn" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition font-semibold">Run Procedure Items(X)</button>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Procedures are a cornerstone of structured computational thinking.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Modularity:</strong> They allow us to break down large, complex problems into smaller, manageable, and reusable pieces of logic.</li>
+                    <li><strong>Clear Interfaces:</strong> A procedure has a well-defined job: it takes specific inputs and produces a specific output. This makes the overall algorithm easier to reason about.</li>
+                    <li><strong>Side Effects:</strong> It's crucial to be aware of whether a procedure modifies its inputs. Procedures without side effects are generally safer and easier to predict.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Procedure Simulator ---
+            const runProcedureBtn = document.getElementById('run-procedure-btn');
+            const procedureOutput = document.getElementById('procedure-output');
+            
+            runProcedureBtn.addEventListener('click', () => {
+                const itemList = [
+                    { item: "Shampoo", category: "Toiletries" },
+                    { item: "Soap", category: "Toiletries" },
+                    { item: "Rice", category: "Food" },
+                    { item: "Lentils", category: "Food" },
+                    { item: "Spices", category: "Food" },
+                    { item: "Shirt", category: "Apparel" }
+                ];
+
+                const A = {
+                    "Apparel": 0, "Food": 0, "Toiletries": 0, "Utilities": 0, "Household": 0
+                };
+
+                for (const row of itemList) {
+                    if (A.hasOwnProperty(row.category)) { // isKey check
+                        A[row.category] = A[row.category] + 1;
+                    }
+                }
+
+                let outputHTML = '<div class="text-sm"><pre><code>{\n';
+                for (const key in A) {
+                    outputHTML += `  "${key}": ${A[key]},\n`;
+                }
+                outputHTML += '}</code></pre></div>';
+                procedureOutput.innerHTML = outputHTML;
+            });
+            runProcedureBtn.click(); // Run on load
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ8_4.docx ---
+                {
+                    question: "Which of the following is the correct definition for the procedure `Items(X)` that counts item categories from a card `X` and returns a dictionary with all specified categories (even if the count is zero)?",
+                    type: "single-choice",
+                    answers: [
+                        "Initialize A = {}. Loop through itemlist. If isKey(A, Y.Category), increment A[Y.Category]. Return A.",
+                        "Initialize A with all categories set to 0. Loop through itemlist. If isKey(A, Y.Category), increment A[Y.Category]. Return A.",
+                        "Initialize A = {}. Loop through itemlist. If isKey(A, Y.Category), increment A[Y.Category], else set A[Y.Category] = 1. Return A."
+                    ],
+                    correct: ["Initialize A with all categories set to 0. Loop through itemlist. If isKey(A, Y.Category), increment A[Y.Category]. Return A."],
+                    explanation: "To ensure all specified categories are in the final dictionary, it must be initialized with those keys and a value of 0. The other options would only include categories present on the card."
+                },
+                {
+                    question: "There will not be any side effect in the `Items(X)` procedure as we are passing only one card at a time.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "The procedure only reads information from the input card `X` and returns a new dictionary `A`. It does not modify the original card `X` in any way, so it has no side effects."
+                },
+                // --- New Questions ---
+                {
+                    question: "What is the primary benefit of using a procedure to count items on a shopping bill?",
+                    type: "single-choice",
+                    answers: ["It makes the program run faster.", "It reduces the amount of data that needs to be stored.", "It encapsulates a repetitive task, making the main algorithm simpler and more modular.", "It prevents all possible errors."],
+                    correct: ["It encapsulates a repetitive task, making the main algorithm simpler and more modular."],
+                    explanation: "The main benefit is modularity. It separates the 'how' (counting items on one card) from the 'what' (processing all cards for all customers)."
+                },
+                {
+                    question: "In the contractor/subcontractor analogy, the 'contractor' is the main algorithm and the 'subcontractor' is the procedure.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "This is the exact analogy used in the lecture. The main algorithm delegates the specific, repetitive task to the procedure."
+                },
+                {
+                    question: "An unintentional and undesirable change that a procedure makes to its input is called a:",
+                    type: "single-choice",
+                    answers: ["Return value", "Parameter", "Side effect", "Bug"],
+                    correct: ["Side effect"],
+                    explanation: "A side effect is any modification of state outside the procedure's local environment that is not part of its return value."
+                },
+                {
+                    question: "If a procedure takes a list of cards as input and sorts it, this is considered a side effect.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "If the caller of the procedure expected the list to remain in its original order, then sorting it is an (often undesirable) side effect."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

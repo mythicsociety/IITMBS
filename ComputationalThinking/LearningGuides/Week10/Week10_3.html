@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L10.3: Pseudocodes for finding a route between two stations using no hops, one hop, two hops and n hops</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L10.3: Finding Routes</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                 <h1 class="text-2xl font-bold">L10.3: Finding Routes</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#direct-routes" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Direct Routes (0 Hops)</a>
+                <a href="#one-hop-routes" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">One-Hop Routes</a>
+                <a href="#n-hop-routes" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">N-Hop & Transitive Closure</a>
+                <a href="#interactive-pathfinder" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Interactive Pathfinder</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L10.3: Pseudocode for Finding Routes</h1>
+                <p class="text-lg">This lesson formalizes the process of discovering paths in our train network. We'll examine the specific pseudocode for building an adjacency matrix from raw data and then using that matrix to iteratively find routes with an increasing number of "hops" or train changes.</p>
+                <p class="text-lg mt-4">We will see how a simple, repeated procedure can be used to build up from direct connections to finding all possible connections within the network, a concept known as the <strong>transitive closure</strong>.</p>
+            </section>
+
+            <section id="direct-routes" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Building the Direct Route Matrix (0 Hops)</h2>
+                <p class="text-lg mb-4">The foundation of our analysis is the `direct` matrix, which represents direct trains. Building it from the raw train data is a multi-step process encapsulated in the `DirectRoutes` procedure.</p>
+                 <div class="space-y-4">
+                    <p class="text-lg"><strong>Step 1: Compile Stations:</strong> Iterate through all trains to collect a unique list of all station names into a dictionary.</p>
+                    <p class="text-lg"><strong>Step 2: Map Stations to Indices:</strong> Create a dictionary (`stnindex`) that maps each station name to a unique number (e.g., 0, 1, 2...), which will be its row/column index in the matrix.</p>
+                    <p class="text-lg"><strong>Step 3: Populate Matrix:</strong> Iterate through the trains again. For each train, get the start and end stations, look up their indices using `stnindex`, and set the corresponding cell in the `direct` matrix to 1.</p>
+                </div>
+            </section>
+            
+            <section id="one-hop-routes" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Finding One-Hop Routes</h2>
+                <p class="text-lg mb-4">A one-hop route is a journey with one change of trains. We can find these by looking for an intermediate station `k` that connects our start `i` and end `j` stations.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <h3 class="text-2xl font-semibold text-violet-800">The `WithinOneHop` Procedure</h3>
+                    <p class="text-lg mt-2">This procedure calculates all routes with *at most* one hop. It's more useful than calculating *exactly* one hop.</p>
+                    <ol class="list-decimal list-inside text-lg mt-2 pl-4 space-y-2">
+                        <li><strong>Initialize:</strong> Create a new `onehop` matrix and copy all the values from the `direct` matrix into it. This handles the "0 hops" case.</li>
+                        <li><strong>Iterate:</strong> Use a triple-nested loop to check every combination of start (`i`), end (`j`), and intermediate (`k`) stations.</li>
+                        <li><strong>Check for Path:</strong> If there is a direct route from `i` to `k` AND a direct route from `k` to `j`, then a one-hop path exists. Set `onehop[i][j] = 1`.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="n-hop-routes" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Generalizing to N-Hops & Transitive Closure</h2>
+                <p class="text-lg mb-4">We can generalize the one-hop logic to find paths of any length. A path with `n` hops can be seen as a path with `n-1` hops followed by one direct route.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">The `OneMoreHop` Procedure</h3>
+                        <p class="text-lg mt-2">This procedure takes the matrix for `n-1` hops and the `direct` matrix to compute the matrix for `n` hops. The logic is nearly identical to the one-hop procedure:</p>
+                        <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>// Find a path from i to j with n hops
+if ( (n-1)_hops[i][k] == 1 AND direct[k][j] == 1 ) {
+    n_hops[i][j] = 1
+}</code></pre>
+                    </div>
+                    <div class="mt-4 border-l-4 border-violet-500 p-4">
+                        <p class="text-lg font-semibold">Transitive Closure</p>
+                        <p class="text-lg">A path with more than N-1 hops (where N is the number of stations) must contain a loop, which is unnecessary. Therefore, to find ALL possible connections between any two stations, we can just start with the `direct` matrix and apply the `OneMoreHop` procedure N-2 times. The final matrix represents the <strong>transitive closure</strong>—the complete set of reachable pairs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-pathfinder" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Interactive Path Finder</h2>
+                <p class="text-lg mb-4">This tool demonstrates how new paths are discovered. Below is a `direct` matrix for a 4-station network. Click the button to run the "one-hop" logic and see which new connections are found in the `onehop` matrix.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Direct (1-Hop) Matrix</h3>
+                            <table id="direct-matrix" class="w-full text-center border-collapse bg-white"></table>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">At Most 2-Hop Matrix</h3>
+                            <table id="onehop-matrix" class="w-full text-center border-collapse bg-white"></table>
+                        </div>
+                    </div>
+                    <button id="find-paths-btn" class="mt-4 bg-violet-600 text-white px-5 py-2 rounded-md hover:bg-violet-700 transition font-semibold">Calculate 2-Hop Paths</button>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">We have formalized the algorithms for analyzing graph connectivity using an adjacency matrix.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>From Data to Matrix:</strong> We can systematically process raw data to build a `direct` adjacency matrix representing the initial state of a network.</li>
+                    <li><strong>Iterative Path Finding:</strong> New paths are discovered by iteratively applying a procedure that extends existing paths by one more hop (edge).</li>
+                    <li><strong>Triple-Nested Loop:</strong> The core of this path-finding logic is a triple-nested loop that checks all combinations of start, end, and intermediate nodes.</li>
+                    <li><strong>Transitive Closure:</strong> By repeating this iterative process a sufficient number of times (N-1), we can find all pairs of nodes that are connected by a path of any length.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these pseudocode concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Path Finder ---
+            const directMatrixTable = document.getElementById('direct-matrix');
+            const onehopMatrixTable = document.getElementById('onehop-matrix');
+            const findPathsBtn = document.getElementById('find-paths-btn');
+            const directMatrix = [
+                [0, 1, 1, 0],
+                [0, 0, 0, 1],
+                [0, 1, 0, 0],
+                [0, 0, 0, 0]
+            ];
+            const nodes = ['A', 'B', 'C', 'D'];
+
+            function drawMatrix(tableEl, matrix, highlight = []) {
+                let html = `<thead><tr><th class="p-2 border"></th>${nodes.map(n => `<th class="p-2 border">${n}</th>`).join('')}</tr></thead><tbody>`;
+                for (let i = 0; i < matrix.length; i++) {
+                    html += `<tr><td class="p-2 border font-bold">${nodes[i]}</td>`;
+                    for (let j = 0; j < matrix[i].length; j++) {
+                        const isHighlighted = highlight.some(p => p[0] === i && p[1] === j);
+                        html += `<td class="p-2 border ${isHighlighted ? 'bg-green-200 font-bold' : ''}">${matrix[i][j]}</td>`;
+                    }
+                    html += `</tr>`;
+                }
+                html += `</tbody>`;
+                tableEl.innerHTML = html;
+            }
+
+            findPathsBtn.addEventListener('click', () => {
+                const n = directMatrix.length;
+                const onehopMatrix = JSON.parse(JSON.stringify(directMatrix)); // Copy direct matrix
+                const newPaths = [];
+
+                for (let i = 0; i < n; i++) {
+                    for (let j = 0; j < n; j++) {
+                        for (let k = 0; k < n; k++) {
+                            if (directMatrix[i][k] === 1 && directMatrix[k][j] === 1) {
+                                if (onehopMatrix[i][j] === 0) {
+                                    newPaths.push([i, j]);
+                                }
+                                onehopMatrix[i][j] = 1;
+                            }
+                        }
+                    }
+                }
+                drawMatrix(onehopMatrixTable, onehopMatrix, newPaths);
+            });
+
+            drawMatrix(directMatrixTable, directMatrix);
+            drawMatrix(onehopMatrixTable, directMatrix); // Initially they are the same
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions ---
+                {
+                    question: "What is the first step in the `DirectRoutes` procedure?",
+                    type: "single-choice",
+                    answers: ["Create the adjacency matrix.", "Map station names to indices.", "Compile a list of all unique stations from the train data.", "Iterate through all pairs of stations."],
+                    correct: ["Compile a list of all unique stations from the train data."],
+                    explanation: "Before creating the matrix or mapping indices, you must first determine the complete set of nodes (stations) by scanning the input data."
+                },
+                {
+                    question: "The `onehop` matrix, as defined in the `WithinOneHop` procedure, contains routes with exactly one train change.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "The procedure calculates routes with *at most* one hop because it is initialized with all the direct (0-hop) routes before the one-hop routes are calculated."
+                },
+                {
+                    question: "What is the core logic used to determine if a one-hop path exists from station `i` to station `j`?",
+                    type: "single-choice",
+                    answers: ["`if (direct[i][j] == 1)`", "`if (direct[i][k] == 1 AND direct[k][j] == 1)`", "`if (direct[i][k] == 1 OR direct[k][j] == 1)`", "`if (direct[i][j] > 1)`"],
+                    correct: ["`if (direct[i][k] == 1 AND direct[k][j] == 1)`"],
+                    explanation: "This logic checks for an intermediate station `k` that has a direct connection from the start `i` and a direct connection to the end `j`."
+                },
+                {
+                    question: "For a graph with N stations, why is it sufficient to repeat the `OneMoreHop` procedure N-1 times to find all possible connections?",
+                    type: "single-choice",
+                    answers: ["Because most trains have fewer than N-1 stops.", "Any path longer than N-1 edges must contain a cycle (a repeated station), which is unnecessary for finding connectivity.", "It is a limitation of the pseudocode.", "This is the number of direct routes possible."],
+                    correct: ["Any path longer than N-1 edges must contain a cycle (a repeated station), which is unnecessary for finding connectivity."],
+                    explanation: "A simple path (without repeated nodes) can have at most N-1 edges. Finding all such paths is enough to determine the complete connectivity, or transitive closure."
+                },
+                // --- New Questions ---
+                {
+                    question: "What is the purpose of the `stnindex` dictionary in the `DirectRoutes` procedure?",
+                    type: "single-choice",
+                    answers: ["To store the distances between stations.", "To map station names (strings) to matrix indices (integers).", "To count how many trains stop at each station.", "To store the direct connections."],
+                    correct: ["To map station names (strings) to matrix indices (integers)."],
+                    explanation: "Matrices are accessed by numerical indices (0, 1, 2...), but our data uses names. The dictionary acts as a bridge between the two."
+                },
+                {
+                    question: "The `WithinTwoHops` procedure requires both the `direct` matrix and the `onehop` matrix as inputs.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. It extends paths of length 'at most one hop' by adding one 'direct' hop, so it needs both pieces of information."
+                },
+                {
+                    question: "Finding the transitive closure of a graph means finding...",
+                    type: "single-choice",
+                    answers: ["...the shortest path between every pair of nodes.", "...all pairs of nodes that are connected by a path of any length.", "...the longest possible path in the graph.", "...only the direct connections."],
+                    correct: ["...all pairs of nodes that are connected by a path of any length."],
+                    explanation: "Transitive closure determines the complete reachability in a graph—if you can get from A to B at all, it will be marked as connected."
+                },
+                {
+                    question: "The procedure to find N-hop routes is an iterative process.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "It is iterative because the result of one step (e.g., finding 1-hop paths) is used as the input for the next step (finding 2-hop paths), and so on."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

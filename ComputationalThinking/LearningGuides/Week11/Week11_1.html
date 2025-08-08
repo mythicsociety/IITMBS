@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L11.1: Depth First Search (DFS) and Recursive Procedure Call</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+        /* Simple animation for the DFS visualizer */
+        .node.visited circle {
+            animation: pop 0.5s ease-out;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.5); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L11.1: DFS & Recursion</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold">L11.1: DFS & Recursion</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#what-is-dfs" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">What is DFS?</a>
+                <a href="#recursion" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Recursion Explained</a>
+                <a href="#dfs-recursion" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">DFS & Recursion</a>
+                <a href="#interactive-dfs" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Interactive DFS</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L11.1: Depth First Search (DFS) and Recursive Procedure Calls</h1>
+                <p class="text-lg">Hello! In our previous lessons, we explored how graphs can represent connections, like train routes. We focused on whether a path exists. Now, we'll add a new layer: <strong>time</strong>. What if we want to know which stations we can reach on the same day?</p>
+                <p class="text-lg mt-4">This question leads us to a powerful graph traversal technique called <strong>Depth First Search (DFS)</strong>. We'll see how DFS helps us explore a graph by going as deep as possible along one path before backtracking. This process is naturally handled by something called a <strong>recursive procedure</strong>, where a procedure calls itself to solve smaller parts of the same problem. Let's dive in!</p>
+            </section>
+
+            <section id="what-is-dfs" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">What is Depth First Search (DFS)?</h2>
+                <p class="text-lg mb-4">Imagine you're in a maze. One strategy is to take a path and follow it to its end. If you hit a dead end, you backtrack to the last junction and try a different path. This is the core idea of Depth First Search.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <p class="text-lg">In the context of our train network, DFS works like this:</p>
+                    <ul class="list-disc list-inside text-lg mt-4 pl-4 space-y-2">
+                        <li><strong>Start at a station</strong> (our starting node).</li>
+                        <li><strong>Pick one outgoing train</strong> and travel to the next station.</li>
+                        <li>From that new station, immediately <strong>repeat the process</strong>: pick an outgoing train and go deeper into the network.</li>
+                        <li>If you reach a station with no valid connecting trains (or a station you've already visited in your current path), you <strong>backtrack</strong> to the previous station and try a different train route.</li>
+                        <li>To avoid getting stuck in loops (e.g., going from A to B and then B back to A), we keep a list of <strong>"seen" or "visited"</strong> nodes. Once we explore from a node, we don't explore it again.</li>
+                    </ul>
+                </div>
+                <p class="text-lg mt-6">This "go deep first" strategy is why it's called <strong>Depth First Search</strong>. We are exploring one line of connections to its maximum depth before exploring other options (breadth).</p>
+            </section>
+
+            <section id="recursion" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">The Magic of Recursion</h2>
+                <p class="text-lg mb-4">Recursion is a powerful programming concept where a function calls itself to solve a problem. It's like a set of Russian nesting dolls, where each doll contains a smaller version of itself.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">How does it work?</h3>
+                        <p class="text-lg mt-2">A recursive procedure must have two parts:</p>
+                        <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                            <li><strong>Base Case:</strong> A simple condition where the function can return a direct answer without calling itself again. This is the "smallest doll" that stops the process. For DFS, a base case could be reaching a station with no unvisited neighbors.</li>
+                            <li><strong>Recursive Step:</strong> The part where the function calls itself with a modified, "smaller" version of the problem. In our train example, calling "explore" on a new station is the recursive step.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">Example: Factorial</h3>
+                        <p class="text-lg mt-2">A classic example is calculating the factorial of a number (n!).</p>
+                        <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                            <li><strong>Base Case:</strong> factorial(0) is 1.</li>
+                            <li><strong>Recursive Step:</strong> factorial(n) is n * factorial(n-1).</li>
+                        </ul>
+                        <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>// Pseudocode for a recursive factorial function
+Procedure Factorial(n)
+  if (n == 0) {
+    return 1  // Base Case
+  } else {
+    return (n * Factorial(n-1)) // Recursive Step
+  }
+End Factorial</code></pre>
+                        <p class="text-lg mt-2">When you call `Factorial(3)`, it suspends its work to call `Factorial(2)`, which suspends to call `Factorial(1)`, which suspends to call `Factorial(0)`. `Factorial(0)` hits the base case and returns 1. This value is passed back up the chain, allowing each suspended call to complete its calculation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="dfs-recursion" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Connecting DFS and Recursion</h2>
+                <p class="text-lg mb-4">Depth First Search is a perfect match for recursion. The act of "exploring" a station is a self-contained task that we want to repeat for every new station we visit.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <p class="text-lg">We can define a procedure like `Explore(station, time)`:</p>
+                    <ol class="list-decimal list-inside text-lg mt-4 pl-4 space-y-3">
+                        <li>Mark the current `station` as "visited" to avoid loops.</li>
+                        <li>Look at all trains leaving this `station` after the given `time`.</li>
+                        <li>For each valid train, find the next station it goes to (`next_station`) and its arrival time (`new_time`).</li>
+                        <li>If `next_station` has not been visited, make a <strong>recursive call</strong>: `Explore(next_station, new_time)`.</li>
+                        <li>When a call to `Explore` finishes (it has tried all its outgoing trains), it returns, and the previous `Explore` call resumes from where it left off (backtracking).</li>
+                    </ol>
+                </div>
+                 <p class="text-lg mt-6">This process naturally builds a <strong>DFS tree</strong>, which shows the path of exploration. Each time we move to a new, unvisited node, we add a branch to the tree. Because we mark nodes as visited, we ensure the structure we build is a tree (no cycles).</p>
+            </section>
+
+            <section id="interactive-dfs" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Interactive DFS Visualization</h2>
+                <p class="text-lg mb-4">Let's see DFS in action! This interactive diagram shows a simple graph. Click the "Start DFS" button to trace the Depth First Search algorithm starting from Node A. The visualization will highlight the path of exploration and show which nodes have been visited.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div id="svg-container" class="w-full h-full min-h-[300px]">
+                            <!-- SVG will be generated here -->
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div id="dfs-status" class="text-lg font-semibold mb-4 h-12">Click Start to begin.</div>
+                             <div class="flex space-x-4">
+                                <button id="start-dfs-btn" class="bg-violet-600 text-white px-6 py-2 rounded-md hover:bg-violet-700 transition">Start DFS</button>
+                                <button id="reset-dfs-btn" class="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">Let's recap the key ideas from this lesson:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Depth First Search (DFS):</strong> A graph traversal algorithm that explores as far as possible along each branch before backtracking. It's like navigating a maze by always choosing one path and following it to the end.</li>
+                    <li><strong>Recursion:</strong> A powerful programming technique where a procedure calls itself to solve smaller, similar sub-problems. It requires a base case to stop the process and a recursive step to continue it.</li>
+                    <li><strong>DFS via Recursion:</strong> DFS is naturally implemented using a recursive `Explore(node)` procedure. This procedure explores a node's neighbors, making recursive calls for each unvisited neighbor.</li>
+                    <li><strong>Visited List:</strong> Keeping track of visited nodes is crucial to prevent infinite loops and to ensure that the exploration eventually terminates.</li>
+                    <li><strong>DFS Tree:</strong> The path taken by a DFS traversal forms a tree structure, often called a spanning tree if it covers all reachable nodes from the start.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Test your understanding of DFS and recursion!</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive DFS Visualization ---
+            const svgContainer = document.getElementById('svg-container');
+            const startBtn = document.getElementById('start-dfs-btn');
+            const resetBtn = document.getElementById('reset-dfs-btn');
+            const statusDiv = document.getElementById('dfs-status');
+
+            const graph = {
+                nodes: [
+                    { id: 'A', x: 150, y: 50 }, { id: 'B', x: 50, y: 120 },
+                    { id: 'C', x: 150, y: 190 }, { id: 'D', x: 250, y: 120 },
+                    { id: 'E', x: 50, y: 260 }, { id: 'F', x: 250, y: 260 }
+                ],
+                edges: [
+                    { from: 'A', to: 'B' }, { from: 'A', to: 'D' },
+                    { from: 'B', to: 'C' }, { from: 'B', to: 'E' },
+                    { from: 'D', to: 'F' }, { from: 'C', to: 'F' }
+                ]
+            };
+            
+            const adj = {};
+            graph.nodes.forEach(node => adj[node.id] = []);
+            graph.edges.forEach(edge => {
+                adj[edge.from].push(edge.to);
+                // For undirected graph, add the reverse edge
+                // adj[edge.to].push(edge.from); 
+            });
+
+
+            function drawGraph() {
+                let svgHTML = `<svg viewBox="0 0 300 320" class="w-full h-full">`;
+                svgHTML += `<defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8.5" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9ca3af" /></marker></defs>`;
+
+                // Draw edges
+                graph.edges.forEach(edge => {
+                    const fromNode = graph.nodes.find(n => n.id === edge.from);
+                    const toNode = graph.nodes.find(n => n.id === edge.to);
+                    svgHTML += `<path id="edge-${edge.from}-${edge.to}" d="M ${fromNode.x} ${fromNode.y} L ${toNode.x} ${toNode.y}" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="edge transition-all duration-300"></path>`;
+                });
+
+                // Draw nodes
+                graph.nodes.forEach(node => {
+                    svgHTML += `
+                        <g id="node-${node.id}" class="node">
+                            <circle cx="${node.x}" cy="${node.y}" r="20" fill="#a78bfa" stroke="#6d28d9" stroke-width="2" class="transition-all duration-300"></circle>
+                            <text x="${node.x}" y="${node.y}" dy=".3em" text-anchor="middle" fill="white" font-weight="bold" font-size="16">${node.id}</text>
+                        </g>`;
+                });
+
+                svgHTML += `</svg>`;
+                svgContainer.innerHTML = svgHTML;
+            }
+            
+            function resetVisualization() {
+                drawGraph();
+                statusDiv.textContent = 'Click Start to begin.';
+                startBtn.disabled = false;
+            }
+
+            async function startDFS() {
+                startBtn.disabled = true;
+                resetVisualization();
+                
+                const visited = new Set();
+                const stack = ['A'];
+                
+                statusDiv.textContent = `Starting DFS at Node A.`;
+                await sleep(1000);
+
+                while (stack.length > 0) {
+                    const currentNodeId = stack.pop();
+
+                    if (!visited.has(currentNodeId)) {
+                        visited.add(currentNodeId);
+
+                        // Visual update for visiting a node
+                        document.querySelector(`#node-${currentNodeId} circle`).setAttribute('fill', '#6d28d9');
+                        statusDiv.textContent = `Visiting Node ${currentNodeId}.`;
+                        await sleep(1200);
+
+                        const neighbors = adj[currentNodeId] || [];
+                        statusDiv.textContent = `Exploring neighbors of ${currentNodeId}: [${neighbors.join(', ')}]`;
+                        await sleep(1200);
+                        
+                        // Push neighbors to the stack in reverse order to visit them alphabetically
+                        for (let i = neighbors.length - 1; i >= 0; i--) {
+                            const neighborId = neighbors[i];
+                            if (!visited.has(neighborId)) {
+                                stack.push(neighborId);
+                                // Highlight edge
+                                const edge = document.getElementById(`edge-${currentNodeId}-${neighborId}`);
+                                if (edge) {
+                                    edge.setAttribute('stroke', '#6d28d9');
+                                    edge.setAttribute('stroke-width', '4');
+                                }
+                            }
+                        }
+                    }
+                }
+                statusDiv.textContent = 'DFS Complete! All reachable nodes visited.';
+            }
+            
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            drawGraph();
+            startBtn.addEventListener('click', startDFS);
+            resetBtn.addEventListener('click', resetVisualization);
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ11_1.docx ---
+                {
+                    question: "Which of the following statement(s) is/are correct about Depth First Search (DFS)?",
+                    type: "multiple-choice",
+                    answers: ["It is a recursive algorithm.", "It uses the idea of backtracking.", "It explores all possible searches at each node before backtracking.", "None of the above"],
+                    correct: ["It is a recursive algorithm.", "It uses the idea of backtracking."],
+                    explanation: "DFS is naturally recursive and uses backtracking. It explores one path to its depth before trying others, unlike Breadth First Search which explores all neighbors at the current level first."
+                },
+                {
+                    question: "A standard Depth First Search (DFS) implementation puts each vertex of the graph into one of the two categories: visited and not visited.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. Keeping track of visited nodes is essential to avoid infinite loops and redundant exploration."
+                },
+                {
+                    question: "A Depth First Search (DFS) tree may contain cycles.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "A tree, by definition, cannot contain cycles. The 'visited' set in DFS prevents revisiting nodes in the current path, thus avoiding the creation of cycles in the traversal path."
+                },
+                {
+                    question: "In the lecture's train exploration, some trains can be seen more than once in the DFS tree.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "The 'seen' or 'visited' list for trains prevents a train from being explored more than once, ensuring each train appears at most once in the DFS tree."
+                },
+                {
+                    question: "In Depth First Search (DFS) technique if all searches exhaust at one of the node, it goes back to which of the following node?",
+                    type: "single-choice",
+                    answers: ["Root of the DFS tree", "Just previous node", "First node of branching of DFS tree", "None of the above"],
+                    correct: ["Just previous node"],
+                    explanation: "This process is called backtracking. The search returns to the node from which the current node was called to explore other unvisited branches."
+                },
+                {
+                    question: "Which of the following information is NOT available in the DFS tree of explored stations in the lecture?",
+                    type: "multiple-choice",
+                    answers: ["Train number", "Departure time", "Arrival time", "Distance travelled", "Order of visited stations"],
+                    correct: ["Distance travelled"],
+                    explanation: "The lecture's DFS example focused on reachability based on train schedules (departure/arrival times) but did not incorporate distance data."
+                },
+                {
+                    question: "Which of the following situations cause a branch of the DFS tree to terminate in the lecture's train exploration? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["Reaching a previously visited station", "Exceeding the given time limit to explore", "Unavailability of valid connecting trains from a station", "The graph being disconnected"],
+                    correct: ["Reaching a previously visited station", "Exceeding the given time limit to explore", "Unavailability of valid connecting trains from a station"],
+                    explanation: "Exploration down a path stops if you hit a dead end (no valid trains), exceed the time limit (e.g., end of the day), or reach a station you're already exploring from (to prevent cycles)."
+                },
+                 {
+                    question: "Considering the provided graph, what is a valid DFS traversal path starting from node A?",
+                    type: "single-choice",
+                    answers: ["A-B-C-D-E-F", "A-D-F-C-B-E", "A-B-E-C-F-D", "A-C-B-E-D-F"],
+                    correct: ["A-B-E-C-F-D"],
+                    explanation: "One valid DFS path is A -> B -> E, then backtrack to B, go to C -> F, backtrack to C, B, A, then go to D. The order of visiting neighbors can vary, but the depth-first nature is key."
+                },
+                // --- New Questions ---
+                {
+                    question: "What is the primary data structure used to manage the nodes to visit next in a recursive DFS implementation?",
+                    type: "single-choice",
+                    answers: ["Queue", "The call stack", "Heap", "Adjacency List"],
+                    correct: ["The call stack"],
+                    explanation: "The function call stack implicitly manages the order of nodes to visit. Each recursive call adds a frame to the stack, and returning from a call (backtracking) pops it off."
+                },
+                 {
+                    question: "A function that calls itself is known as a:",
+                    type: "single-choice",
+                    answers: ["Iterative function", "Cyclical function", "Recursive function", "Mutual function"],
+                    correct: ["Recursive function"],
+                    explanation: "Recursion is the process of a function calling itself, either directly or indirectly."
+                },
+                {
+                    question: "What is the essential component of a recursive function that prevents it from running forever?",
+                    type: "single-choice",
+                    answers: ["A loop", "A return statement", "The recursive step", "The base case"],
+                    correct: ["The base case"],
+                    explanation: "The base case is a condition that stops the recursion and allows the function to return a value without making another recursive call, preventing an infinite loop."
+                },
+                {
+                    question: "If a graph is disconnected, a single DFS run starting from one node will visit all nodes in the graph.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "DFS only finds nodes reachable from the starting node. In a disconnected graph, it will only visit the nodes in the same component as the starting node."
+                },
+                {
+                    question: "In the train example, what does it mean to 'backtrack'?",
+                    type: "single-choice",
+                    answers: ["Taking a train back to the previous station.", "Finishing exploration from one station and returning to the station you came from to try other routes.", "Finding a circular train route.", "Resetting the entire search."],
+                    correct: ["Finishing exploration from one station and returning to the station you came from to try other routes."],
+                    explanation: "Backtracking in this context means the recursive 'Explore' call for a station finishes, and control returns to the previous 'Explore' call that initiated it."
+                },
+                 {
+                    question: "What are the key advantages of using recursion for DFS? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["It's always faster than an iterative approach.", "The code can be cleaner and more closely match the problem's definition.", "It uses less memory than an iterative approach.", "It naturally handles the backtracking process."],
+                    correct: ["The code can be cleaner and more closely match the problem's definition.", "It naturally handles the backtracking process."],
+                    explanation: "Recursive DFS often leads to more elegant code and automatically manages the 'stack' of nodes to visit via the function call stack, simplifying backtracking logic. It is not necessarily faster and can sometimes use more memory due to the call stack overhead."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    // Sort arrays for comparison in multiple choice
+                    const sortedSelected = [...selectedAnswers].sort();
+                    const sortedCorrect = [...question.correct].sort();
+
+                    const isCorrect = JSON.stringify(sortedSelected) === JSON.stringify(sortedCorrect);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

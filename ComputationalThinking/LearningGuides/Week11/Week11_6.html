@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L11.6: Comparing Graph Traversal Algorithms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+        .node-visited circle {
+            fill: #6d28d9;
+            transition: fill 0.5s;
+        }
+        .edge-traversed {
+            stroke: #6d28d9;
+            stroke-width: 4;
+            transition: all 0.5s;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L11.6: Traversal Algorithms</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold">L11.6: Graph Traversal</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#dfs-review" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">DFS Review</a>
+                <a href="#bfs-intro" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introducing BFS</a>
+                <a href="#dfs-vs-bfs" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">DFS vs. BFS</a>
+                <a href="#interactive-comp" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Interactive Comparison</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L11.6: Pseudocode for Graph Traversal</h1>
+                <p class="text-lg">To conclude our week on graph exploration, we'll solidify our understanding of Depth First Search (DFS) and introduce its equally important counterpart: <strong>Breadth First Search (BFS)</strong>. Both are algorithms for systematically visiting every node in a graph, but they do so in fundamentally different ways.</p>
+                <p class="text-lg mt-4">Understanding the pseudocode and the strategic differences between DFS and BFS is crucial. Depending on the structure of the graph and the problem you're trying to solve (like finding the shortest path vs. exploring all possibilities), one algorithm may be far more suitable than the other.</p>
+            </section>
+
+            <section id="dfs-review" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Reviewing Depth First Search (DFS)</h2>
+                <p class="text-lg mb-4">As we've learned, DFS explores a graph by going as deep as possible down one path before backtracking. It's a "plunge-ahead" strategy.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <h3 class="text-2xl font-semibold text-violet-800">Core Logic of DFS</h3>
+                    <ul class="list-disc list-inside text-lg mt-4 pl-4 space-y-2">
+                        <li><strong>Strategy:</strong> Explore one branch completely before moving to the next.</li>
+                        <li><strong>Data Structure:</strong> Naturally uses a <strong>stack</strong> (or recursion, which uses the call stack). When you visit a node, you push its neighbors onto the stack.</li>
+                        <li><strong>Behavior:</strong> It dives deep into the graph. The path it takes can be long and winding before it visits nodes that are "close" to the start.</li>
+                    </ul>
+                    <pre class="bg-gray-800 text-white p-4 rounded-md mt-4"><code>Procedure DFS(start_node)
+  Create a stack S and push start_node
+  Create a set for visited nodes
+  while S is not empty
+    node = S.pop()
+    if node is not visited
+      mark node as visited
+      // Process node here
+      for each neighbor of node
+        S.push(neighbor)</code></pre>
+                </div>
+            </section>
+
+            <section id="bfs-intro" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Introducing Breadth First Search (BFS)</h2>
+                <p class="text-lg mb-4">Breadth First Search offers a different approach. Instead of diving deep, it explores the graph layer by layer. It's a "patient, systematic" strategy.</p>
+                <div class="bg-emerald-50 border-2 border-emerald-200 p-6 rounded-lg shadow-sm mt-6">
+                    <h3 class="text-2xl font-semibold text-emerald-800">Core Logic of BFS</h3>
+                    <ul class="list-disc list-inside text-lg mt-4 pl-4 space-y-2">
+                        <li><strong>Strategy:</strong> Visit all of a node's immediate neighbors first, before moving on to their neighbors.</li>
+                        <li><strong>Data Structure:</strong> Uses a <strong>queue</strong>. When you visit a node, you add its neighbors to the back of the queue.</li>
+                        <li><strong>Behavior:</strong> It explores in expanding circles from the start node. This makes it ideal for finding the <strong>shortest path</strong> between two nodes in an unweighted graph.</li>
+                    </ul>
+                    <pre class="bg-gray-800 text-white p-4 rounded-md mt-4"><code>Procedure BFS(start_node)
+  Create a queue Q and add start_node
+  Create a set for visited nodes
+  while Q is not empty
+    node = Q.dequeue() // Remove from front
+    if node is not visited
+      mark node as visited
+      // Process node here
+      for each neighbor of node
+        Q.enqueue(neighbor) // Add to back</code></pre>
+                </div>
+            </section>
+
+            <section id="dfs-vs-bfs" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">DFS vs. BFS: A Head-to-Head Comparison</h2>
+                <p class="text-lg mb-4">Choosing between DFS and BFS depends entirely on your goal.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="border-b-2 p-4 text-lg font-bold text-gray-700">Feature</th>
+                                <th class="border-b-2 p-4 text-lg font-bold text-violet-700">Depth First Search (DFS)</th>
+                                <th class="border-b-2 p-4 text-lg font-bold text-emerald-700">Breadth First Search (BFS)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-4 font-semibold">Path Finding</td>
+                                <td class="p-4">Finds a path, but not necessarily the shortest one.</td>
+                                <td class="p-4">Guaranteed to find the shortest path in an unweighted graph.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-4 font-semibold">Memory Usage</td>
+                                <td class="p-4">Can be more memory-efficient if the graph is wide, as it only stores one path at a time.</td>
+                                <td class="p-4">Can use a lot of memory if the graph is wide, as it needs to store all nodes at a given level.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-4 font-semibold">Use Cases</td>
+                                <td class="p-4">Cycle detection, solving puzzles with one solution (like a maze), topological sorting.</td>
+                                <td class="p-4">Shortest path finding, web crawlers, finding connected components.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="interactive-comp" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Interactive Traversal Comparison</h2>
+                <p class="text-lg mb-4">See the difference for yourself! The graph below is from the benchmark questions. Run both DFS and BFS starting from Node A to see the different order in which they visit the nodes. Note how DFS follows one branch all the way down, while BFS explores level by level.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div id="graph-viz-container">
+                            <!-- SVG will be generated here -->
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div id="traversal-output" class="text-lg font-semibold mb-4 h-12 bg-white p-2 rounded w-full text-center"></div>
+                             <div class="flex space-x-4">
+                                <button id="start-dfs-btn" class="bg-violet-600 text-white px-6 py-2 rounded-md hover:bg-violet-700 transition">Run DFS</button>
+                                <button id="start-bfs-btn" class="bg-emerald-600 text-white px-6 py-2 rounded-md hover:bg-emerald-700 transition">Run BFS</button>
+                                <button id="reset-viz-btn" class="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">This week, we've formalized our understanding of graph traversal algorithms:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>DFS (Depth First Search):</strong> Goes deep. Uses a stack (or recursion). Good for exploring maze-like problems and detecting cycles.</li>
+                    <li><strong>BFS (Breadth First Search):</strong> Goes wide. Uses a queue. Excellent for finding the shortest path in unweighted graphs.</li>
+                    <li><strong>Systematic Exploration:</strong> Both algorithms are systematic ways to ensure every reachable node is visited exactly once.</li>
+                    <li><strong>Choosing the Right Tool:</strong> The choice between DFS and BFS depends on the specific problem you are trying to solve and the structure of your graph.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your knowledge on DFS and BFS.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Traversal Comparison ---
+            const graphVizContainer = document.getElementById('graph-viz-container');
+            const traversalOutput = document.getElementById('traversal-output');
+            const startDfsBtn = document.getElementById('start-dfs-btn');
+            const startBfsBtn = document.getElementById('start-bfs-btn');
+            const resetVizBtn = document.getElementById('reset-viz-btn');
+
+            const vizGraph = {
+                nodes: [
+                    { id: 'A', x: 200, y: 50 }, { id: 'B', x: 100, y: 120 },
+                    { id: 'C', x: 300, y: 120 }, { id: 'E', x: 50, y: 190 },
+                    { id: 'F', x: 150, y: 190 }, { id: 'D', x: 250, y: 190 },
+                    { id: 'L', x: 20, y: 260 }, { id: 'J', x: 80, y: 260 },
+                    { id: 'G', x: 150, y: 260 }, { id: 'I', x: 220, y: 260 },
+                    { id: 'H', x: 280, y: 260 }, { id: 'K', x: 50, y: 330 },
+                    { id: 'M', x: 110, y: 330 }
+                ],
+                edges: [
+                    'A-B', 'A-C', 'B-E', 'B-F', 'C-D', 'E-L', 'E-J', 'F-G', 'D-I', 'D-H', 'J-K', 'J-M'
+                ],
+                adj: {
+                    'A': ['B', 'C'], 'B': ['E', 'F'], 'C': ['D'], 'D': ['H', 'I'], 'E': ['J', 'L'], 
+                    'F': ['G'], 'G': [], 'H': [], 'I': [], 'J': ['K', 'M'], 'K': [], 'L': [], 'M': []
+                }
+            };
+
+            function drawVizGraph(visited = []) {
+                let svgHTML = `<svg viewBox="0 0 400 380">`;
+                vizGraph.edges.forEach(edgeStr => {
+                    const [from, to] = edgeStr.split('-');
+                    const fromNode = vizGraph.nodes.find(n => n.id === from);
+                    const toNode = vizGraph.nodes.find(n => n.id === to);
+                    const isTraversed = visited.includes(from) && visited.includes(to);
+                    svgHTML += `<line id="edge-${from}-${to}" class="${isTraversed ? 'edge-traversed' : ''}" x1="${fromNode.x}" y1="${fromNode.y}" x2="${toNode.x}" y2="${toNode.y}" stroke="#9ca3af" stroke-width="2" />`;
+                });
+                vizGraph.nodes.forEach(node => {
+                    const isVisited = visited.includes(node.id);
+                    svgHTML += `<g id="node-${node.id}" class="${isVisited ? 'node-visited' : ''}">
+                        <circle cx="${node.x}" cy="${node.y}" r="15" fill="#a78bfa" stroke="#4c1d95" stroke-width="2"></circle>
+                        <text x="${node.x}" y="${node.y}" dy=".3em" text-anchor="middle" fill="white" font-weight="bold">${node.id}</text>
+                    </g>`;
+                });
+                svgHTML += `</svg>`;
+                graphVizContainer.innerHTML = svgHTML;
+            }
+
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function runTraversal(algo) {
+                startDfsBtn.disabled = true;
+                startBfsBtn.disabled = true;
+                
+                let order = [];
+                let visited = new Set();
+                let dataStructure = algo === 'dfs' ? ['A'] : ['A']; // Stack for DFS, Queue for BFS
+
+                while (dataStructure.length > 0) {
+                    const currentNode = algo === 'dfs' ? dataStructure.pop() : dataStructure.shift();
+
+                    if (!visited.has(currentNode)) {
+                        visited.add(currentNode);
+                        order.push(currentNode);
+                        
+                        drawVizGraph(order);
+                        traversalOutput.textContent = order.join(' → ');
+                        await sleep(500);
+
+                        const neighbors = vizGraph.adj[currentNode].slice().sort(); // Alphabetical
+                        if (algo === 'dfs') neighbors.reverse(); // For stack LIFO behavior
+                        
+                        for (const neighbor of neighbors) {
+                            if (!visited.has(neighbor)) {
+                                if (algo === 'dfs') dataStructure.push(neighbor);
+                                else dataStructure.push(neighbor); // Enqueue for BFS
+                            }
+                        }
+                    }
+                }
+                startDfsBtn.disabled = false;
+                startBfsBtn.disabled = false;
+            }
+            
+            function resetViz() {
+                drawVizGraph();
+                traversalOutput.textContent = '';
+            }
+
+            startDfsBtn.addEventListener('click', () => runTraversal('dfs'));
+            startBfsBtn.addEventListener('click', () => runTraversal('bfs'));
+            resetVizBtn.addEventListener('click', resetViz);
+            
+            resetViz();
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ11_6.docx ---
+                {
+                    question: "Choose the correct statement(s) about Depth First Search algorithm from given options.",
+                    type: "multiple-choice",
+                    answers: ["Start from node i, visit a neighbour node j", "Explore all neighbours of node i before exploring neighbour j", "Suspend the exploration of node i and explore node j instead", "Keep track of visited vertices in a dictionary", "Recursively update visited each time we explore an unvisited neighbour."],
+                    correct: ["Start from node i, visit a neighbour node j", "Suspend the exploration of node i and explore node j instead", "Keep track of visited vertices in a dictionary", "Recursively update visited each time we explore an unvisited neighbour."],
+                    explanation: "DFS explores one neighbor deeply before backtracking. It does NOT explore all neighbors first (that's BFS). It uses recursion (suspending exploration) and a visited dictionary."
+                },
+                {
+                    question: "Starting from node A in the given tree, which algorithm will visit the least number of nodes before visiting node D?",
+                    type: "single-choice",
+                    answers: ["Depth First Search (DFS) algorithm", "Breadth First Search (BFS) algorithm", "Both DFS and BFS algorithms will visit same number of nodes", "It can not be determined."],
+                    correct: ["Breadth First Search (BFS) algorithm"],
+                    explanation: "BFS explores layer by layer. It will visit A, then B and C. Since C is a neighbor of A, it will then visit D. Path: A, B, C, D (4 nodes). DFS would go A, B, E, L, J, K, M, F, G before ever getting to C and D."
+                },
+                {
+                    question: "Starting from node A, which algorithm will visit the least number of nodes before visiting node E?",
+                    type: "single-choice",
+                    answers: ["Depth First Search (DFS) algorithm", "Breadth First Search (BFS) algorithm", "Both DFS and BFS algorithms will visit same number of nodes", "None of the above"],
+                    correct: ["Depth First Search (DFS) algorithm"],
+                    explanation: "DFS (visiting alphabetically) will go A -> B -> E, visiting only 3 nodes. BFS would visit A, B, C before visiting E, for a total of 4 nodes."
+                },
+                {
+                    question: "Starting from node A, in what order will the nodes be visited using a DFS algorithm to reach the node F?",
+                    type: "single-choice",
+                    answers: ["A B", "A B C", "A B E J K M L", "A B E L J K M"],
+                    correct: ["A B E L J K M"],
+                    explanation: "DFS goes deep down the first branch (alphabetically): A->B->E->J->K, backtracks, ->M, backtracks, ->L, backtracks. Only then does it backtrack to B and finally visit F. The path *to* F includes the full exploration of the E branch first."
+                },
+                 {
+                    question: "Starting from node A, in what order will the nodes be visited using a BFS algorithm to reach the node F?",
+                    type: "single-choice",
+                    answers: ["A B", "A B C", "A B C D I M E", "A B C D E"],
+                    correct: ["A B C D E"],
+                    explanation: "BFS explores level by level. Level 0: A. Level 1: B, C. Level 2: D, E, F. Visiting alphabetically, it would see A, then B, C, then D, E, and finally F. The nodes visited before F are A, B, C, D, E."
+                },
+                // --- New Questions ---
+                {
+                    question: "Which data structure is typically associated with a standard iterative implementation of BFS?",
+                    type: "single-choice",
+                    answers: ["Stack", "Queue", "Heap", "Linked List"],
+                    correct: ["Queue"],
+                    explanation: "BFS uses a Queue (First-In, First-Out) to process nodes level by level. Nodes are added to the back (enqueued) and processed from the front (dequeued)."
+                },
+                {
+                    question: "If you need to find the shortest path in a social network from you to a celebrity, which algorithm is generally better?",
+                    type: "single-choice",
+                    answers: ["DFS", "BFS", "Either would work equally well", "Neither can find the shortest path"],
+                    correct: ["BFS"],
+                    explanation: "BFS explores layer by layer, guaranteeing that it will find the shortest path in terms of number of connections (degrees of separation) in an unweighted graph like a social network."
+                },
+                {
+                    question: "A graph traversal algorithm is considered 'complete' if it guarantees to find a path if one exists.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Both DFS and BFS are complete algorithms. If a path exists from the start node to any other node, they are guaranteed to find it eventually."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const sortedSelected = [...selectedAnswers].sort();
+                    const sortedCorrect = [...question.correct].sort();
+
+                    const isCorrect = JSON.stringify(sortedSelected) === JSON.stringify(sortedCorrect);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

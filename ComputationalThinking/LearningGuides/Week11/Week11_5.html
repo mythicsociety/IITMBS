@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L11.5: Pseudocode for Recursion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+        .code-highlight {
+            background-color: #fef9c3; /* yellow-100 */
+            transition: background-color 0.5s;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L11.5: Pseudocode</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold">L11.5: Pseudocode</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#inductive-definitions" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Inductive Definitions</a>
+                <a href="#recursion-pseudocode" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Recursive Pseudocode</a>
+                <a href="#dfs-pseudocode" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">DFS Pseudocode Viz</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L11.5: Pseudocode for Recursion</h1>
+                <p class="text-lg">We've talked a lot about the concepts of recursion and Depth First Search. Now it's time to formalize these ideas. <strong>Pseudocode</strong> is a way of describing the steps of an algorithm in a simple, human-readable format that isn't tied to a specific programming language.</p>
+                <p class="text-lg mt-4">In this lesson, we'll look at the pseudocode for the recursive algorithms we've discussed, from simple examples like factorial to the full Depth First Search procedure. This will help solidify our understanding of exactly how these powerful techniques work, step by step.</p>
+            </section>
+
+            <section id="inductive-definitions" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">From Inductive Definitions to Recursion</h2>
+                <p class="text-lg mb-4">As we've seen, recursive procedures are built on <strong>inductive definitions</strong>. This means we define a function or computation in terms of a simpler version of itself.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <p class="text-lg">Every inductive definition has two key parts, which translate directly into our pseudocode:</p>
+                    <ul class="list-disc list-inside text-lg mt-4 pl-4 space-y-2">
+                        <li><strong>Base Case:</strong> The simplest possible scenario where the answer is known directly. For numbers, this is often 0 or 1. For lists, it's the empty list. This becomes the `if` condition that stops the recursion.</li>
+                        <li><strong>Inductive (or Recursive) Step:</strong> The rule for breaking down a complex problem into a simpler one. For example, `factorial(n)` is defined in terms of `factorial(n-1)`. This becomes the `else` block where the function calls itself.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="recursion-pseudocode" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Recursive Pseudocode Examples</h2>
+                <p class="text-lg mb-4">Let's look at how this structure appears in pseudocode.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800">Factorial</h3>
+                        <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>Procedure Factorial(n)
+  if (n == 0) {
+    return(1)
+  } else {
+    return(n * Factorial(n-1))
+  }
+End Factorial</code></pre>
+                        <p class="mt-2 text-lg">Here, `n == 0` is the base case. The recursive step calculates `Factorial(n-1)` and uses it to find the result for `n`.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-gray-800">Sum of a List</h3>
+                         <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>Procedure ListSum(L)
+  if (L is empty) {
+    return(0)
+  } else {
+    return(first(L) + ListSum(rest(L)))
+  }
+End ListSum</code></pre>
+                        <p class="mt-2 text-lg">The base case is an empty list, which sums to 0. The recursive step adds the first element to the sum of the rest of the list.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="dfs-pseudocode" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Interactive DFS Pseudocode</h2>
+                <p class="text-lg mb-4">Now let's apply this to Depth First Search. The interactive tool below shows the DFS pseudocode alongside a graph. Use the "Next Step" button to execute the algorithm one line at a time. Watch how the `visited` dictionary grows and how the recursive calls dive deep into the graph before backtracking.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">DFS Pseudocode</h3>
+                            <div id="pseudocode-container" class="bg-white p-4 rounded-md shadow-inner">
+                                <pre class="text-sm leading-relaxed"><code id="code-line-1">Procedure DFS(graph, visited, i)
+</code><code id="code-line-2">  visited[i] = True
+</code><code id="code-line-3">  foreach j in neighbours(i) {
+</code><code id="code-line-4">    if (j is not in visited) {
+</code><code id="code-line-5">      visited = DFS(graph, visited, j)
+</code><code id="code-line-6">    }
+</code><code id="code-line-7">  }
+</code><code id="code-line-8">  return(visited)
+</code><code id="code-line-9">End DFS</code></pre>
+                            </div>
+                        </div>
+                        <div>
+                             <h3 class="text-xl font-semibold mb-2">Execution State</h3>
+                             <div id="graph-container" class="mb-4">
+                                <!-- SVG for graph will be here -->
+                             </div>
+                             <div class="mb-4">
+                                 <h4 class="font-semibold">Visited Dictionary:</h4>
+                                 <p id="visited-dict" class="bg-white p-2 rounded font-mono text-sm h-16 overflow-y-auto"></p>
+                             </div>
+                             <div>
+                                 <h4 class="font-semibold">Call Stack:</h4>
+                                 <p id="call-stack" class="bg-white p-2 rounded font-mono text-sm h-16 overflow-y-auto"></p>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <button id="next-step-btn" class="bg-violet-600 text-white px-6 py-2 rounded-md hover:bg-violet-700 transition">Start DFS from A</button>
+                        <button id="reset-btn" class="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition">Reset</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">Formalizing our algorithms with pseudocode helps clarify the exact logic:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Pseudocode:</strong> A language-agnostic way to describe algorithms, focusing on logic rather than syntax.</li>
+                    <li><strong>Recursive Structure:</strong> Recursive pseudocode always contains a base case (an `if` block) to terminate the process and a recursive step (`else` block) where the procedure calls itself with a smaller or simpler argument.</li>
+                    <li><strong>Suspended Computation:</strong> When a recursive call is made, the current procedure's state is "suspended" and pushed onto the call stack. It resumes only after the called procedure returns a value.</li>
+                    <li><strong>DFS Logic:</strong> The DFS pseudocode clearly shows the core logic: 1. Mark current node as visited. 2. For each unvisited neighbor, make a recursive call. 3. Return the updated visited set.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Test your understanding of recursive pseudocode.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive DFS Pseudocode ---
+            const graphContainer = document.getElementById('graph-container');
+            const visitedDictEl = document.getElementById('visited-dict');
+            const callStackEl = document.getElementById('call-stack');
+            const nextStepBtn = document.getElementById('next-step-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const codeLines = document.querySelectorAll('#pseudocode-container code');
+
+            const graph = {
+                nodes: [ { id: 'A', x: 50, y: 50 }, { id: 'B', x: 150, y: 50 }, { id: 'C', x: 50, y: 120 }, { id: 'D', x: 150, y: 120 } ],
+                edges: [ { from: 'A', to: 'B' }, { from: 'A', to: 'C' }, { from: 'B', to: 'D' } ],
+                adj: { A: ['B', 'C'], B: ['A', 'D'], C: ['A'], D: ['B'] }
+            };
+
+            let execution_state;
+
+            function drawGraph(visited = {}) {
+                let svgHTML = `<svg viewBox="0 0 200 170">`;
+                graph.edges.forEach(edge => {
+                    const fromNode = graph.nodes.find(n => n.id === edge.from);
+                    const toNode = graph.nodes.find(n => n.id === edge.to);
+                    svgHTML += `<line x1="${fromNode.x}" y1="${fromNode.y}" x2="${toNode.x}" y2="${toNode.y}" stroke="#9ca3af" stroke-width="2" />`;
+                });
+                graph.nodes.forEach(node => {
+                    const isVisited = visited[node.id];
+                    svgHTML += `<g>
+                        <circle cx="${node.x}" cy="${node.y}" r="15" fill="${isVisited ? '#6d28d9' : '#a78bfa'}" stroke="#4c1d95" stroke-width="2"></circle>
+                        <text x="${node.x}" y="${node.y}" dy=".3em" text-anchor="middle" fill="white" font-weight="bold">${node.id}</text>
+                    </g>`;
+                });
+                svgHTML += `</svg>`;
+                graphContainer.innerHTML = svgHTML;
+            }
+
+            function highlightLine(lineNumber) {
+                codeLines.forEach(line => line.classList.remove('code-highlight'));
+                if (lineNumber > 0) {
+                    document.getElementById(`code-line-${lineNumber}`).classList.add('code-highlight');
+                }
+            }
+            
+            function updateUI() {
+                drawGraph(execution_state.visited);
+                visitedDictEl.textContent = JSON.stringify(execution_state.visited);
+                callStackEl.textContent = execution_state.callStack.map(f => `DFS(..., ${f.node})`).join(' -> ');
+                highlightLine(execution_state.line);
+            }
+
+            function initializeState() {
+                 execution_state = {
+                    visited: {},
+                    callStack: [],
+                    executionQueue: [],
+                    line: 0,
+                };
+                updateUI();
+                nextStepBtn.textContent = 'Start DFS from A';
+                nextStepBtn.disabled = false;
+            }
+
+            function dfs_step_generator(startNode) {
+                const queue = [];
+                const visited = {};
+                const callStack = [];
+
+                function explore(node) {
+                    callStack.push({node: node, neighborIndex: 0});
+                    queue.push({ type: 'call', node: node, line: 1 });
+                    
+                    visited[node] = true;
+                    queue.push({ type: 'update_visited', node: node, line: 2 });
+
+                    const neighbors = graph.adj[node];
+                    queue.push({ type: 'loop', node: node, line: 3 });
+
+                    for (let i = 0; i < neighbors.length; i++) {
+                        const neighbor = neighbors[i];
+                        callStack[callStack.length-1].neighborIndex = i;
+                        queue.push({ type: 'check_neighbor', node: node, neighbor: neighbor, line: 4 });
+                        if (!visited[neighbor]) {
+                            queue.push({ type: 'recursive_call', node: node, neighbor: neighbor, line: 5 });
+                            explore(neighbor);
+                            queue.push({ type: 'return_from_recursion', node: node, from: neighbor, line: 5 });
+                        }
+                    }
+                    queue.push({ type: 'end_loop', node: node, line: 7 });
+                    queue.push({ type: 'return', node: node, line: 8 });
+                    callStack.pop();
+                }
+
+                explore(startNode);
+                return queue;
+            }
+
+            nextStepBtn.addEventListener('click', () => {
+                if (execution_state.executionQueue.length === 0) {
+                    nextStepBtn.textContent = 'Next Step';
+                    execution_state.executionQueue = dfs_step_generator('A');
+                }
+                
+                const step = execution_state.executionQueue.shift();
+
+                if (step) {
+                    execution_state.line = step.line;
+                    switch(step.type) {
+                        case 'call':
+                            execution_state.callStack.push({node: step.node, neighborIndex: 0});
+                            break;
+                        case 'update_visited':
+                            execution_state.visited[step.node] = true;
+                            break;
+                        case 'return':
+                            execution_state.callStack.pop();
+                            break;
+                        // Other cases just for line highlighting and state tracking
+                    }
+                    updateUI();
+                }
+
+                if (execution_state.executionQueue.length === 0) {
+                    highlightLine(0);
+                    nextStepBtn.disabled = true;
+                    nextStepBtn.textContent = 'Finished';
+                }
+            });
+            
+            resetBtn.addEventListener('click', initializeState);
+            initializeState();
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ11_5.docx ---
+                {
+                    question: "Choose the correct statement(s) about recursion from the given options.",
+                    type: "multiple-choice",
+                    answers: ["It is a process in which a function calls itself until a termination condition becomes true.", "Iterative processes are more efficient than recursion.", "It requires a base case and an inductive step to complete the process.", "It makes tree traversal easier."],
+                    correct: ["It is a process in which a function calls itself until a termination condition becomes true.", "It requires a base case and an inductive step to complete the process.", "It makes tree traversal easier."],
+                    explanation: "Recursion involves a function calling itself, requires a base case and inductive step, and is a natural fit for tree/graph traversal. While iteration can sometimes be more efficient (avoiding call stack overhead), it's not a universal rule."
+                },
+                {
+                    question: "Consider the pseudocode for finding the summation of n natural numbers. Choose the correct code for 'Statement 1'.",
+                    type: "single-choice",
+                    answers: ["return(x + summation(x))", "return(x + summation(x-1))", "return(summation(x))", "return(n + summation(n-1))"],
+                    correct: ["return(x + summation(x-1))"],
+                    explanation: "The recursive step must call the function with a smaller argument to approach the base case. The sum of numbers up to x is x plus the sum of numbers up to x-1."
+                },
+                {
+                    question: "The pseudocode `return(last(L) + listSum(init(init(L))))` is executed on a list L = [1, 2, 3, ..., n]. What will the value of S represent?",
+                    type: "single-choice",
+                    answers: ["Summation of all numbers up to n.", "Summation of all even numbers when n is an even number.", "Summation of all odd numbers when n is an odd number.", "None of the above."],
+                    correct: ["None of the above."],
+                    explanation: "This code is flawed. `init(init(L))` removes the last two elements. The function will sum every other number starting from the end (n, n-2, n-4, ...). This matches the sum of odd or even numbers depending on n, but the provided options are too specific. For example, if L=[1,2,3,4], it computes 4 + listSum([1,2]), which is 4 + 2 + listSum([]), resulting in 6 (sum of evens). If L=[1,2,3,4,5], it computes 5 + listSum([1,2,3]), which is 5 + 3 + listSum([1]), resulting in 9 (sum of odds). The general answer is 'None of the above'."
+                },
+                // --- New Questions ---
+                {
+                    question: "What is the primary purpose of a 'base case' in a recursive function?",
+                    type: "single-choice",
+                    answers: ["To start the function.", "To perform the main calculation.", "To prevent infinite recursion by providing a stopping condition.", "To call the function with a smaller argument."],
+                    correct: ["To prevent infinite recursion by providing a stopping condition."],
+                    explanation: "Without a base case, a recursive function would call itself endlessly, leading to a stack overflow error. The base case provides a direct answer for the simplest input, terminating the chain of calls."
+                },
+                {
+                    question: "If you write a recursive function to find the length of a list, what would the base case likely be?",
+                    type: "single-choice",
+                    answers: ["A list with one element has length 1.", "An empty list has length 0.", "A list with two elements has length 2.", "A list with n elements has length n."],
+                    correct: ["An empty list has length 0."],
+                    explanation: "The simplest possible list is an empty list, for which the length is known to be 0. The recursive step would be `1 + length(rest(L))`."
+                },
+                {
+                    question: "The mechanism that keeps track of suspended function calls during recursion is called the:",
+                    type: "single-choice",
+                    answers: ["Visited Dictionary", "Call Stack", "Adjacency Matrix", "Queue"],
+                    correct: ["Call Stack"],
+                    explanation: "The call stack is a fundamental data structure in programming that manages active function calls. Each recursive call adds a new 'frame' to the stack, and when a function returns, its frame is popped off."
+                },
+                {
+                    question: "A recursive function must always return a numerical value.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "A recursive function can return any data type, including lists (like in recursive insertion sort), boolean values, or even nothing at all (if it's just modifying a data structure)."
+                },
+                {
+                    question: "In the DFS pseudocode, what prevents the algorithm from getting stuck in a cycle (e.g., A -> B -> A -> B...)?",
+                    type: "single-choice",
+                    answers: ["The `foreach` loop", "The `return(visited)` statement", "The `if (j is not in visited)` check", "The base case of the graph being empty"],
+                    correct: ["The `if (j is not in visited)` check"],
+                    explanation: "This check is crucial. Once a node is added to the `visited` dictionary, the algorithm will not make a recursive call to explore it again, which breaks any potential cycles."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const sortedSelected = [...selectedAnswers].sort();
+                    const sortedCorrect = [...question.correct].sort();
+
+                    const isCorrect = JSON.stringify(sortedSelected) === JSON.stringify(sortedCorrect);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L8.1: Dictionaries with lists as values</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L8.1: Dictionaries & Lists</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction</a>
+                <a href="#lists-as-values" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Lists as Values</a>
+                <a href="#binning" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Binning & Partitioning</a>
+                <a href="#interactive-binner" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Binner</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L8.1: Dictionaries with Lists as Values</h1>
+                <p class="text-lg">Welcome to Week 8! We've established that dictionaries are powerful tools for storing and retrieving data using key-value pairs. So far, the "value" has often been a simple number or a boolean (True/False).</p>
+                <p class="text-lg mt-4">In this lesson, we'll unlock a much more powerful capability: using a <strong>list as a value</strong>. This allows us to group multiple related items under a single key, a technique fundamental to organizing complex data, partitioning datasets, and solving sophisticated problems like noun-pronoun resolution.</p>
+            </section>
+
+            <section id="lists-as-values" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Storing Collections within a Collection</h2>
+                <p class="text-lg mb-4">The value in a key-value pair is not limited to a single item. It can be another collection, most commonly a list. This creates a powerful hierarchical structure.</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-blue-800">Example: Students by City</h3>
+                        <p class="text-lg mt-2">Instead of just counting students from a city, we can collect *who* they are. The dictionary key would be the city name, and the value would be a list of student IDs.</p>
+                        <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>city_students = {
+  "Chennai": [2, 10, 17, 26, ...],
+  "Bangalore": [9, 23, 11, 8, ...],
+  "Madurai": [24, 4, 28, 13, ...]
+}</code></pre>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-green-800">The Pseudocode Logic</h3>
+                        <p class="text-lg mt-2">When processing a student card:</p>
+                        <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-1">
+                           <li>If the city key <strong>does not exist</strong>, create it and assign a new list containing the student's ID as the value.</li>
+                           <li>If the city key <strong>already exists</strong>, retrieve the existing list, append the new student's ID to it, and update the value.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="binning" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Binning and Partitioning Data</h2>
+                <p class="text-lg mb-4">Using a dictionary with list values is a powerful technique for <strong>binning</strong>—sorting data into different "bins" or groups based on a shared property. This effectively partitions your dataset.</p>
+                <div class="mt-6">
+                    <h3 class="text-2xl font-semibold text-gray-700">Example: Noun-Pronoun Resolution</h3>
+                    <p class="text-lg mt-2">To solve the problem of matching a pronoun to the nearest preceding noun, we first need to bin all words by their part of speech. A dictionary is perfect for this:</p>
+                    <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                        <li><strong>Keys:</strong> "Noun", "Pronoun", "Verb", etc.</li>
+                        <li><strong>Values:</strong> A list of the positions (sequence numbers) where words of that type appear.</li>
+                    </ul>
+                    <div class="mt-4 border-l-4 border-blue-500 p-4 bg-gray-50">
+                        <p class="text-lg font-semibold">The Result:</p>
+                        <p class="text-lg">After one pass through the text, we have two ordered lists: one of all noun positions and one of all pronoun positions. We can then iterate through the pronoun list and efficiently search the noun list for the nearest preceding position, without having to re-scan the entire original text for each pronoun.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-binner" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Data Binner</h2>
+                <p class="text-lg mb-4">This tool demonstrates the concept of binning. Enter data as "Item,Category" pairs (one per line). The tool will process the input and create a dictionary where each category is a key and the value is a list of all items belonging to that category.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                             <label for="binner-input" class="block font-semibold mb-2">Input Data (Item,Category):</label>
+                             <textarea id="binner-input" class="w-full p-2 border border-gray-300 rounded-md bg-white h-48" placeholder="Apple,Fruit&#10;Carrot,Vegetable&#10;Banana,Fruit&#10;Broccoli,Vegetable"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-2">Binned Dictionary Output:</label>
+                            <div id="binner-output" class="bg-white p-3 rounded-md border h-48 overflow-y-auto"></div>
+                        </div>
+                    </div>
+                    <button id="bin-btn" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition font-semibold">Bin Data</button>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Storing lists as dictionary values is a critical technique for organizing and analyzing data.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Grouping Power:</strong> It allows you to group related items under a single, meaningful key, which is more powerful than just counting them.</li>
+                    <li><strong>Binning/Partitioning:</strong> This method is a highly efficient way to partition a dataset into categories in a single pass.</li>
+                    <li><strong>Enabling Complex Analysis:</strong> Once data is binned (e.g., words by part of speech), you can perform complex analysis on these smaller, organized lists instead of repeatedly searching the entire original dataset.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Binner ---
+            const binnerInput = document.getElementById('binner-input');
+            const binBtn = document.getElementById('bin-btn');
+            const binnerOutput = document.getElementById('binner-output');
+
+            function performBinning() {
+                const lines = binnerInput.value.trim().split('\n');
+                const binnedData = {};
+
+                lines.forEach(line => {
+                    const parts = line.split(',');
+                    if (parts.length === 2) {
+                        const item = parts[0].trim();
+                        const category = parts[1].trim();
+                        if (item && category) {
+                            if (binnedData[category]) { // isKey true
+                                binnedData[category].push(item);
+                            } else { // isKey false
+                                binnedData[category] = [item];
+                            }
+                        }
+                    }
+                });
+
+                let outputHTML = '<div class="text-sm"><pre><code>{\n';
+                for (const category in binnedData) {
+                    outputHTML += `  "${category}": [${binnedData[category].map(i => `"${i}"`).join(', ')}],\n`;
+                }
+                outputHTML += '}</code></pre></div>';
+                binnerOutput.innerHTML = outputHTML;
+            }
+            binBtn.addEventListener('click', performBinning);
+            performBinning(); // Initial run
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ8_2.docx ---
+                {
+                    question: "Dictionary data structure can be used for binning.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Binning, or partitioning data into groups based on a property, is a key use case for dictionaries, especially when using lists as values."
+                },
+                {
+                    question: "Does the method used in the lecture, of finding a pronoun corresponding to the noun, give an accurate result always?",
+                    type: "single-choice",
+                    answers: ["Yes", "No"],
+                    correct: ["No"],
+                    explanation: "The method of finding the *nearest* preceding noun is a simplified heuristic. Natural language is more complex, and this method can sometimes be inaccurate."
+                },
+                {
+                    question: "Once a dictionary of pronouns and nouns is created, there is no need for an iteration to find the matching pronouns and nouns.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "Creating the dictionary is the first step (binning). You still need to iterate through the list of pronouns and for each one, search the list of nouns to find the match."
+                },
+                {
+                    question: "How many iterations are required to create a dictionary with keys, adjective, pronoun, and noun from the paragraph dataset?",
+                    type: "single-choice",
+                    answers: ["1", "2", "3", "4"],
+                    correct: ["1"],
+                    explanation: "The dictionary can be created in a single pass (one iteration) through the paragraph dataset. For each word, you check its category and add its position to the appropriate list in the dictionary."
+                },
+                // --- New Questions ---
+                {
+                    question: "When using a dictionary for binning, what typically serves as the 'key'?",
+                    type: "single-choice",
+                    answers: ["The item being sorted", "The category or property used for grouping", "A unique number for each item", "The position of the item in the original data"],
+                    correct: ["The category or property used for grouping"],
+                    explanation: "The shared property (like 'Fruit', 'Noun', or 'Chennai') becomes the key under which all matching items are grouped."
+                },
+                {
+                    question: "If you are binning customer data by city, and you encounter a customer from a city you haven't seen before, what is the correct first step in the pseudocode?",
+                    type: "single-choice",
+                    answers: ["Append the customer to an existing list.", "Create a new key for the new city and assign a new list containing that customer as the value.", "Return an error.", "Ignore the customer since the city is new."],
+                    correct: ["Create a new key for the new city and assign a new list containing that customer as the value."],
+                    explanation: "When a key is new, you must first create the key-value pair. In this case, the value is a new list with the first item in it."
+                },
+                {
+                    question: "In the train dataset example, if you create a dictionary where the key is the station name, the value would be a list of train numbers that stop at that station.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "This is a perfect example of binning. All trains are 'binned' into lists based on the station they service."
+                },
+                {
+                    question: "What is the primary benefit of binning words by part-of-speech before trying to match nouns and pronouns?",
+                    type: "single-choice",
+                    answers: ["It makes the original paragraph shorter.", "It reduces the search space, so you only have to compare nouns to pronouns.", "It automatically finds the correct matches.", "It corrects spelling errors."],
+                    correct: ["It reduces the search space, so you only have to compare nouns to pronouns."],
+                    explanation: "Instead of re-scanning the entire text for every pronoun, you create targeted lists. This makes the matching process much more efficient."
+                },
+                {
+                    question: "If you have a dictionary `shop_customers` where the value is a list of names, which pseudocode correctly adds a new customer 'Zoya' to the list for the key 'SV Stores'?",
+                    type: "single-choice",
+                    answers: ["shop_customers[\"SV Stores\"] = \"Zoya\"", "shop_customers[\"SV Stores\"] = [\"Zoya\"]", "shop_customers[\"SV Stores\"] = shop_customers[\"SV Stores\"] ++ [\"Zoya\"]", "add(\"Zoya\", to: shop_customers[\"SV Stores\"])"],
+                    correct: ["shop_customers[\"SV Stores\"] = shop_customers[\"SV Stores\"] ++ [\"Zoya\"]"],
+                    explanation: "To add to an existing list, you must retrieve the current list (`shop_customers[\"SV Stores\"]`) and then append the new item (`++ [\"Zoya\"]`). Simply assigning the name would replace the list with a string."
+                },
+                {
+                    question: "The lists of student IDs for different cities (e.g., 'Chennai', 'Bangalore') in the `city_students` dictionary are overlapping.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "This is an example of partitioning. A student is from only one city, so the lists of student IDs for each city are disjoint (non-overlapping)."
+                },
+                {
+                    question: "Which of the following problems could be efficiently solved by binning data into a dictionary with list values? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["Grouping all emails by sender's address.", "Finding all movies starring a particular actor.", "Creating an alphabetical list of all unique words in a book.", "Storing the order of websites a user visited."],
+                    correct: ["Grouping all emails by sender's address.", "Finding all movies starring a particular actor."],
+                    explanation: "Grouping emails by sender and movies by actor are classic binning problems. An alphabetical list and a chronological history are better suited for sorted lists."
+                },
+                {
+                    question: "After binning words into `noun_positions` and `pronoun_positions` lists, the lists themselves are ordered by the position of the words in the text.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Because we process the text from beginning to end, the positions are added to the lists in ascending order, which is crucial for the subsequent step of finding the 'nearest preceding' noun."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

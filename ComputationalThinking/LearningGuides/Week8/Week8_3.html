@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L8.3: Dictionary comparison to find common elements in them</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L8.3: Dictionary Comparison</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction</a>
+                <a href="#linked-dictionaries" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Linked Dictionaries</a>
+                <a href="#finding-overlap" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Finding Overlap</a>
+                <a href="#interactive-finder" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Finder</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L8.3: Dictionary Comparison to Find Common Elements</h1>
+                <p class="text-lg">In this lesson, we explore a more complex data structure: two interconnected dictionaries. Using the train dataset as our example, we'll see how organizing information into a "Trainwise" dictionary and a "Stationwise" dictionary allows us to solve sophisticated problems, like finding a travel route with a single change of trains.</p>
+                <p class="text-lg mt-4">The core task we'll examine is how to compare the values (which are lists) of two different dictionary entries to find common elements—a process that requires careful, systematic iteration.</p>
+            </section>
+
+            <section id="linked-dictionaries" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Two Interconnected Dictionaries</h2>
+                <p class="text-lg mb-4">To model the railway system efficiently, we use two dictionaries that reference each other:</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-blue-50 border-2 border-blue-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-blue-800">1. The `Trainwise` Dictionary</h3>
+                        <p class="text-lg mt-2">This dictionary provides information about each train.</p>
+                        <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-1">
+                            <li><strong>Key:</strong> The Train Number (e.g., `12224`).</li>
+                            <li><strong>Value:</strong> A list of station names that the train stops at.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-green-800">2. The `Stationwise` Dictionary</h3>
+                        <p class="text-lg mt-2">This dictionary provides information about each station.</p>
+                         <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-1">
+                            <li><strong>Key:</strong> The Station Name (e.g., "Pune").</li>
+                            <li><strong>Value:</strong> A list of train numbers that pass through that station.</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mt-8 border-l-4 border-blue-500 p-4">
+                    <p class="text-lg font-semibold">Key Idea:</p>
+                    <p class="text-lg">These dictionaries are mutually linked. You can look up a train in `Trainwise` to get a list of stations, and then look up one of those stations in `Stationwise` to find other trains, allowing you to "navigate" the network.</p>
+                </div>
+            </section>
+            
+            <section id="finding-overlap" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Finding an Overlap (A Junction Station)</h2>
+                <p class="text-lg mb-4">How do we find a route from Mangalore to Pune with one change? This is equivalent to finding a "junction" station—a station that is served by both a train from Mangalore and a train to Pune.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">The Algorithm</h3>
+                        <p class="text-lg mt-2">A simple way to find this is to compare the list of reachable stations from both ends:</p>
+                        <ol class="list-decimal list-inside text-lg space-y-2 mt-2 pl-4">
+                            <li>Get the list of all stations reachable from Mangalore (`mangalore_stations`).</li>
+                            <li>Get the list of all stations from which you can reach Pune (`pune_stations`).</li>
+                            <li>Compare these two lists to find any common stations. This requires a <strong>nested loop</strong>.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">The Pseudocode for Comparison</h3>
+                        <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>// Assume mangalore_stations and pune_stations are lists of station names
+overlap = []
+foreach x in mangalore_stations {
+    foreach y in pune_stations {
+        if (x == y) {
+            overlap = overlap ++ [x]
+        }
+    }
+}
+// The 'overlap' list now contains all common junction stations</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-finder" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Junction Finder</h2>
+                <p class="text-lg mb-4">This tool simulates the process of finding a junction. It uses two predefined lists of stations—one for trains leaving Mangalore and one for trains arriving at Pune. Click the button to run the nested loop comparison and find the common station(s).</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="font-semibold mb-2">Stations from Mangalore:</h3>
+                            <div class="bg-white p-3 rounded-md border text-sm">
+                                ["Kozhikode", "Ernakulam", "Madgaon", "Ratnagiri", "Mumbai", "Vadodara", "Kota", "New Delhi"]
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold mb-2">Stations serving Pune:</h3>
+                             <div class="bg-white p-3 rounded-md border text-sm">
+                                ["Secunderabad", "Sholapur", "Mumbai", "Lonavala", "Ahmedabad", "Daund", "Manmad", "Nagpur"]
+                            </div>
+                        </div>
+                    </div>
+                    <button id="find-junction-btn" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition font-semibold">Find Junction</button>
+                    <div id="finder-output" class="mt-4"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Using interconnected dictionaries allows us to model and solve complex, real-world network problems.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Modeling Networks:</strong> Two or more dictionaries can be used to represent different aspects of a system (like trains and stations) and the relationships between them.</li>
+                    <li><strong>Comparing Lists:</strong> A common operation with such structures is to retrieve lists from different dictionary entries and compare them to find common elements (an overlap).</li>
+                    <li><strong>Nested Iteration:</strong> Finding this overlap algorithmically requires a nested loop, where each element of the first list is compared against each element of the second list.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Junction Finder ---
+            const findJunctionBtn = document.getElementById('find-junction-btn');
+            const finderOutput = document.getElementById('finder-output');
+            
+            findJunctionBtn.addEventListener('click', () => {
+                const mangaloreStations = ["Kozhikode", "Ernakulam", "Madgaon", "Ratnagiri", "Mumbai", "Vadodara", "Kota", "New Delhi"];
+                const puneStations = ["Secunderabad", "Sholapur", "Mumbai", "Lonavala", "Ahmedabad", "Daund", "Manmad", "Nagpur"];
+                const overlap = [];
+                let steps = 0;
+
+                for (const stationA of mangaloreStations) {
+                    for (const stationB of puneStations) {
+                        steps++;
+                        if (stationA === stationB) {
+                            overlap.push(stationA);
+                        }
+                    }
+                }
+
+                finderOutput.innerHTML = `
+                    <h3 class="text-xl font-semibold">Comparison Complete:</h3>
+                    <p>Total comparisons made: ${steps}</p>
+                    <p class="mt-2 font-bold text-lg">Junction(s) Found: <span class="text-green-700">${overlap.join(', ') || 'None'}</span></p>
+                `;
+            });
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ8_3.docx ---
+                {
+                    question: "Select the correct statements based on the lecture's train dataset model. (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["Train number cannot be a key for the dictionary as it is a number", "Train number can be a key", "Stations are the list of values in one of the dictionaries", "Stations are keys in one of the dictionaries"],
+                    correct: ["Train number can be a key", "Stations are the list of values in one of the dictionaries", "Stations are keys in one of the dictionaries"],
+                    explanation: "Train numbers and station names can both be keys. The `Trainwise` dictionary uses train numbers as keys and lists of stations as values. The `Stationwise` dictionary uses station names as keys and lists of trains as values."
+                },
+                {
+                    question: "Consider the dictionaries discussed in the class (`Trainwise` and `Stationwise`). What will be the value of variable D after the execution of the pseudocode: `B = Trainwise[12260]; C = Stationwise[first(B)]; D = last(C)`?",
+                    type: "single-choice",
+                    answers: ["The last station on train 12260's route.", "The first train that stops at the first station of train 12260.", "The last train that stops at the first station of train 12260.", "The train number 12260."],
+                    correct: ["The last train that stops at the first station of train 12260."],
+                    explanation: "1. `B` becomes the list of stations for train 12260. 2. `first(B)` gets the first station in that list. 3. `C` becomes the list of trains at that station. 4. `D` becomes the last train in list C."
+                },
+                {
+                    question: "Consider the procedure `check(M, N)`. What is the condition for which the procedure returns True?",
+                    type: "single-choice",
+                    answers: ["If M and N are train numbers then they have at least 2 stations in common", "If M and N are train numbers then they have at least 3 common stations", "If M and N are station names then they have at least 3 trains passing through both stations", "If M and N are station names then they have at least 2 trains passing through both stations"],
+                    correct: ["If M and N are train numbers then they have at least 3 common stations"],
+                    explanation: "The procedure iterates through the station lists of two trains, M and N. It counts the number of common stations in variable A. It returns True only if A > 2, meaning they have at least 3 common stations."
+                },
+                // --- New Questions ---
+                {
+                    question: "In the train network model, the two dictionaries are mutually linked.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. You can use a key from one dictionary to find a value (a list), and an item from that list can be used as a key in the other dictionary."
+                },
+                {
+                    question: "To find if you can travel from Station A to Station B with one change, you are looking for a common ________ between the two journeys.",
+                    type: "single-choice",
+                    answers: ["train number", "ticket price", "junction station", "day of the week"],
+                    correct: ["junction station"],
+                    explanation: "A junction is a station that connects the two separate parts of the journey, allowing you to change trains."
+                },
+                {
+                    question: "Finding the common stations between two train routes requires a nested loop.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "To find all common elements between two lists, you must compare every element from the first list against every element from the second list, which is a nested loop operation."
+                },
+                {
+                    question: "In the `Trainwise` dictionary, the values are:",
+                    type: "single-choice",
+                    answers: ["Lists of train numbers", "Single station names", "Lists of station names", "Single train numbers"],
+                    correct: ["Lists of station names"],
+                    explanation: "The `Trainwise` dictionary maps a single train number (key) to a list of all the stations on its route (value)."
+                },
+                {
+                    question: "If you look up `Stationwise[\"Mumbai\"]`, what kind of data would you expect to get back?",
+                    type: "single-choice",
+                    answers: ["A single train number", "The name of the next station", "A list of train numbers", "A list of other stations"],
+                    correct: ["A list of train numbers"],
+                    explanation: "The `Stationwise` dictionary maps a station name (key) to a list of all train numbers that service that station (value)."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

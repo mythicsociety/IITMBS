@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L11.4: Mutual Recursion and Bipartite Graphs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+        .proc-box { transition: all 0.5s ease-in-out; }
+        .active-proc { transform: scale(1.1); box-shadow: 0 0 20px rgba(139, 92, 246, 0.7); }
+        .arrow { transition: opacity 0.5s ease-in-out; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L11.4: Mutual Recursion</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold">L11.4: Mutual Recursion</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#mutual-recursion" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Mutual Recursion</a>
+                <a href="#bipartite-graph" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">The Bipartite Graph View</a>
+                <a href="#dfs-revisited" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">DFS with Mutual Recursion</a>
+                <a href="#interactive-viz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Interactive Visualization</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L11.4: DFS with Mutual Recursion</h1>
+                <p class="text-lg">In our final lesson on this topic, we'll look at a more elegant and natural way to structure our DFS exploration of the train network. So far, we've had one `Explore` function that handles everything. But the network has two distinct types of entities: <strong>stations</strong> and <strong>trains</strong>.</p>
+                <p class="text-lg mt-4">What if we create two separate procedures, one for exploring from a station and one for exploring from a train? This leads to a fascinating concept called <strong>mutual recursion</strong>, where two (or more) functions call each other to solve a problem. This approach perfectly mirrors the structure of our train network, which can be seen as a special kind of graph called a bipartite graph.</p>
+            </section>
+
+            <section id="mutual-recursion" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">What is Mutual Recursion?</h2>
+                <p class="text-lg mb-4">While standard recursion is a function calling itself, <strong>mutual recursion</strong> is when two or more functions call each other in a cycle. It's a cooperative form of recursion.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <p class="text-lg">Imagine two experts, an `Architect` and an `Engineer`:</p>
+                    <ul class="list-disc list-inside text-lg mt-4 pl-4 space-y-2">
+                        <li>To design a building, the `Architect` creates a blueprint and then asks the `Engineer` to check its structural soundness.</li>
+                        <li>To check the structure, the `Engineer` might find a problem and ask the `Architect` to redesign a specific part.</li>
+                        <li>This back-and-forth continues until the design is complete. `Architect` calls `Engineer`, who in turn might call `Architect`.</li>
+                    </ul>
+                </div>
+                <p class="text-lg mt-6">In our case, we'll have an `Explore_Station` procedure and an `Explore_Train` procedure. `Explore_Station` will find trains and call `Explore_Train` on them. `Explore_Train` will find stations and call `Explore_Station` on them. This creates a clean, logical flow that perfectly matches our problem.</p>
+            </section>
+
+            <section id="bipartite-graph" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">The Bipartite Graph View of the Train Network</h2>
+                <p class="text-lg mb-4">This mutual recursion works so well because our train network is naturally a <strong>bipartite graph</strong>. This is a type of graph where the nodes can be divided into two distinct sets, and edges only connect nodes from one set to the other.</p>
+                <div class="flex flex-col md:flex-row gap-8 items-center mt-6">
+                    <div class="flex-1">
+                        <p class="text-lg">In our network:</p>
+                        <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                            <li><strong>Set 1: Stations.</strong></li>
+                            <li><strong>Set 2: Trains.</strong></li>
+                            <li><strong>Edges:</strong> An edge only exists between a station and a train (a train stops at a station). There are no edges directly between two stations or between two trains.</li>
+                        </ul>
+                    </div>
+                    <div class="flex-1">
+                        <svg viewBox="0 0 200 150" class="w-full">
+                            <!-- Stations -->
+                            <circle cx="40" cy="30" r="10" fill="#8b5cf6"></circle>
+                            <text x="40" y="30" dy="4" text-anchor="middle" fill="white" font-size="8">S1</text>
+                            <circle cx="40" cy="75" r="10" fill="#8b5cf6"></circle>
+                            <text x="40" y="75" dy="4" text-anchor="middle" fill="white" font-size="8">S2</text>
+                            <circle cx="40" cy="120" r="10" fill="#8b5cf6"></circle>
+                            <text x="40" y="120" dy="4" text-anchor="middle" fill="white" font-size="8">S3</text>
+                            <!-- Trains -->
+                            <rect x="150" y="45" width="20" height="20" fill="#10b981"></rect>
+                            <text x="160" y="55" dy="4" text-anchor="middle" fill="white" font-size="8">T1</text>
+                             <rect x="150" y="95" width="20" height="20" fill="#10b981"></rect>
+                            <text x="160" y="105" dy="4" text-anchor="middle" fill="white" font-size="8">T2</text>
+                            <!-- Edges -->
+                            <line x1="40" y1="30" x2="160" y2="55" stroke="#a7a7a7"></line>
+                            <line x1="40" y1="75" x2="160" y2="55" stroke="#a7a7a7"></line>
+                            <line x1="40" y1="75" x2="160" y2="105" stroke="#a7a7a7"></line>
+                            <line x1="40" y1="120" x2="160" y2="105" stroke="#a7a7a7"></line>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-lg mt-4">Thinking of the network this way makes the mutual recursion approach feel very intuitive: to get from a station to another station, you *must* go via a train. To get from a train to another train, you *must* go via a station.</p>
+            </section>
+
+            <section id="dfs-revisited" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">DFS with Mutual Recursion</h2>
+                <p class="text-lg mb-4">Let's outline our two new procedures for a cleaner DFS implementation.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-violet-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-violet-800">Procedure Explore_Station(station, time)</h3>
+                        <ol class="list-decimal list-inside text-lg mt-4 space-y-2">
+                            <li>Mark `station` as visited.</li>
+                            <li>For each `train` leaving `station` after `time`:
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>If `train` is not visited, call <strong>Explore_Train(train, ...)</strong>.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="bg-emerald-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-semibold text-emerald-800">Procedure Explore_Train(train, time)</h3>
+                        <ol class="list-decimal list-inside text-lg mt-4 space-y-2">
+                             <li>Mark `train` (and its pair) as visited.</li>
+                            <li>For each `station` on the `train`'s route:
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>If `station` is not visited, call <strong>Explore_Station(station, ...)</strong>.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <p class="text-lg mt-6">This structure is much cleaner. Each procedure has a single, clear responsibility. The overall logic of DFS (checking visited lists, backtracking) remains the same, but it's now distributed between two cooperating functions.</p>
+            </section>
+
+            <section id="interactive-viz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Mutual Recursion Visualization</h2>
+                <p class="text-lg mb-4">This visualization shows the back-and-forth calls between `Explore_Station` and `Explore_Train`. Click "Start" to see how the "active" state passes from one procedure to the other as the DFS explores the bipartite graph.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 flex flex-col items-center">
+                    <div class="flex justify-around w-full items-center mb-4">
+                        <div id="proc-station" class="proc-box p-6 rounded-lg bg-violet-200 border-2 border-violet-400 text-center">
+                            <h4 class="text-xl font-bold text-violet-800">Explore_Station</h4>
+                            <p>Finds unvisited trains</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <svg width="100" height="50">
+                                <defs><marker id="arrow-viz" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981" /></marker></defs>
+                                <path id="arrow-s-t" d="M 10 25 H 90" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-viz)" class="arrow" style="opacity: 0;"></path>
+                            </svg>
+                             <svg width="100" height="50">
+                                 <defs><marker id="arrow-viz2" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 10 0 L 0 5 L 10 10 z" fill="#8b5cf6" /></marker></defs>
+                                <path id="arrow-t-s" d="M 90 25 H 10" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arrow-viz2)" class="arrow" style="opacity: 0;"></path>
+                            </svg>
+                        </div>
+                        <div id="proc-train" class="proc-box p-6 rounded-lg bg-emerald-200 border-2 border-emerald-400 text-center">
+                            <h4 class="text-xl font-bold text-emerald-800">Explore_Train</h4>
+                            <p>Finds unvisited stations</p>
+                        </div>
+                    </div>
+                    <button id="start-mutual-viz" class="bg-violet-600 text-white px-6 py-2 rounded-md hover:bg-violet-700 transition">Start Visualization</button>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">This final lesson introduced a more advanced and structured way to think about our DFS problem:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Mutual Recursion:</strong> A powerful technique where two or more procedures call each other. It's a great fit for problems with interacting, distinct components.</li>
+                    <li><strong>Bipartite Graphs:</strong> The train network can be modeled as a bipartite graph with two sets of nodes (stations and trains), where connections only exist between the sets.</li>
+                    <li><strong>Cleaner Code:</strong> Using mutual recursion with `Explore_Station` and `Explore_Train` leads to a cleaner, more intuitive implementation that mirrors the real-world structure of the problem.</li>
+                    <li><strong>Path Structure:</strong> In a DFS traversal of this bipartite graph, the path will always alternate between a station and a train.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's wrap up with a final quiz on these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Mutual Recursion Visualization ---
+            const startMutualBtn = document.getElementById('start-mutual-viz');
+            const procStation = document.getElementById('proc-station');
+            const procTrain = document.getElementById('proc-train');
+            const arrowST = document.getElementById('arrow-s-t');
+            const arrowTS = document.getElementById('arrow-t-s');
+
+            async function runMutualViz() {
+                startMutualBtn.disabled = true;
+                procStation.classList.remove('active-proc');
+                procTrain.classList.remove('active-proc');
+                arrowST.style.opacity = 0;
+                arrowTS.style.opacity = 0;
+
+                await new Promise(r => setTimeout(r, 500));
+
+                for (let i = 0; i < 3; i++) {
+                    // Station to Train
+                    procStation.classList.add('active-proc');
+                    await new Promise(r => setTimeout(r, 500));
+                    arrowST.style.opacity = 1;
+                    await new Promise(r => setTimeout(r, 700));
+                    procStation.classList.remove('active-proc');
+                    arrowST.style.opacity = 0;
+                    
+                    // Train to Station
+                    procTrain.classList.add('active-proc');
+                    await new Promise(r => setTimeout(r, 500));
+                    arrowTS.style.opacity = 1;
+                    await new Promise(r => setTimeout(r, 700));
+                    procTrain.classList.remove('active-proc');
+                    arrowTS.style.opacity = 0;
+                }
+                startMutualBtn.disabled = false;
+            }
+            startMutualBtn.addEventListener('click', runMutualViz);
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ11_4.docx ---
+                {
+                    question: "The neighbours of the stations are trains and vice versa in DFS tree drawn in the lecture.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. This is the definition of the bipartite graph model used, where stations only connect to trains, and trains only connect to stations."
+                },
+                {
+                    question: "A mutual recursion is a form of recursion in which two objects are defined in terms of each other.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Yes, this is the definition of mutual recursion. Two or more functions call each other to solve a problem."
+                },
+                {
+                    question: "Assume that there are 11 nodes in the longest path of a DFS tree drawn according to the concept used in the lecture. The end node of the longest path will be a:",
+                    type: "single-choice",
+                    answers: ["Station", "Train", "Both station and train", "Depending upon starting node"],
+                    correct: ["Depending upon starting node"],
+                    explanation: "The path alternates between stations and trains. If you start with a station (an odd position), the 11th node will also be a station. If you start with a train, the 11th node will be a train."
+                },
+                {
+                    question: "How many train nodes can be visited while traversing the longest path of 11 nodes if the starting node is a station?",
+                    type: "single-choice",
+                    answers: ["11", "10", "6", "5"],
+                    correct: ["5"],
+                    explanation: "If the path is S-T-S-T-S-T-S-T-S-T-S, the train nodes are at positions 2, 4, 6, 8, and 10. That makes 5 train nodes."
+                },
+                // --- New Questions ---
+                {
+                    question: "What is the primary characteristic of a bipartite graph?",
+                    type: "single-choice",
+                    answers: ["It contains no cycles.", "All nodes have exactly two edges.", "The nodes can be divided into two sets, and edges only connect a node from one set to the other.", "It must be a directed graph."],
+                    correct: ["The nodes can be divided into two sets, and edges only connect a node from one set to the other."],
+                    explanation: "This is the formal definition of a bipartite graph. There are no edges between nodes within the same set."
+                },
+                {
+                    question: "Using mutual recursion with Explore_Station and Explore_Train is better than a single Explore function because:",
+                    type: "multiple-choice",
+                    answers: ["It runs significantly faster.", "The code is cleaner and more closely models the real-world problem.", "Each function has a single, clear responsibility.", "It uses less memory."],
+                    correct: ["The code is cleaner and more closely models the real-world problem.", "Each function has a single, clear responsibility."],
+                    explanation: "The main benefit is improved code structure and clarity. Each function handles one type of node, which makes the logic easier to understand and maintain. Performance and memory usage are generally comparable to a single recursive function."
+                },
+                {
+                    question: "In the bipartite train network, a path of length 2 (e.g., A -> B -> C) must start and end with the same type of node.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. A path of length 2 would be Station -> Train -> Station, or Train -> Station -> Train. In either case, the start and end nodes are of the same type."
+                },
+                {
+                    question: "What would be the 'base case' for the Explore_Station procedure?",
+                    type: "single-choice",
+                    answers: ["When it finds a train that has already been visited.", "When it has checked all possible trains departing from that station.", "When the time limit is exceeded.", "All of the above."],
+                    correct: ["All of the above."],
+                    explanation: "The recursion for a given station stops exploring down new paths when all connecting trains have been checked, are already visited, or are outside the time constraints."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const sortedSelected = [...selectedAnswers].sort();
+                    const sortedCorrect = [...question.correct].sort();
+
+                    const isCorrect = JSON.stringify(sortedSelected) === JSON.stringify(sortedCorrect);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

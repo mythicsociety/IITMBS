@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L10.2: Construction of a graph where trains are nodes and stations are edges</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L10.2: Trains as Nodes</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                 <h1 class="text-2xl font-bold">L10.2: Trains as Nodes</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#new-perspective" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">A New Perspective</a>
+                <a href="#finding-connections" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Finding Connections</a>
+                <a href="#interactive-connector" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Interactive Connector</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L10.2: A Graph of Trains and Stations</h1>
+                <p class="text-lg">In the previous lesson, we modeled the train network by making stations the nodes and direct routes the edges. This is useful for finding paths between locations. But what if we want to answer a different kind of question: "If I'm on Train A, which other trains can I transfer to?"</p>
+                <p class="text-lg mt-4">To solve this, we need to change our perspective. This lesson explores an alternative graph representation where the <strong>trains are the nodes</strong> and the <strong>stations are the edges</strong> that connect them. This powerful shift in thinking allows us to analyze the connectivity between the train routes themselves.</p>
+            </section>
+
+            <section id="new-perspective" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">A New Perspective: Trains as Nodes</h2>
+                <p class="text-lg mb-4">Let's flip our previous model on its head. In this new graph:</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-violet-800">Nodes are Trains</h3>
+                        <p class="text-lg mt-2">Each unique train number becomes a <strong>node</strong> in our graph. We are no longer focused on the locations, but on the journeys themselves.</p>
+                    </div>
+                    <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-violet-800">Edges are Stations</h3>
+                        <p class="text-lg mt-2">An <strong>edge</strong> exists between two train nodes if they share a common station. The edge can be labeled with the name of the station where a transfer is possible.</p>
+                    </div>
+                </div>
+                <div class="mt-8 border-l-4 border-violet-500 p-4">
+                    <p class="text-lg font-semibold">Key Idea:</p>
+                    <p class="text-lg">This model helps us answer questions about transfers and connections between train services. A path in this graph, like from Train A to Train B to Train C, represents a journey with two transfers at the stations labeling the edges.</p>
+                </div>
+            </section>
+            
+            <section id="finding-connections" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Finding Connections Between Trains</h2>
+                <p class="text-lg mb-4">To build this new graph, we need to find which trains have stations in common. This is a classic "find the overlap" problem that requires comparing the lists of stations for each pair of trains.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">The Algorithm</h3>
+                        <p class="text-lg mt-2">We can use our `Trainwise` dictionary from the previous lesson, where the key is a train number and the value is its list of stations.</p>
+                        <ol class="list-decimal list-inside text-lg space-y-2 mt-2 pl-4">
+                            <li>Take two trains, Train A and Train B.</li>
+                            <li>Retrieve the list of stations for Train A: `Trainwise[A]`.</li>
+                            <li>Retrieve the list of stations for Train B: `Trainwise[B]`.</li>
+                            <li>Use a <strong>nested loop</strong> to compare every station in Train A's list with every station in Train B's list.</li>
+                            <li>If a common station is found, an edge exists between the Train A and Train B nodes.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">Considering Time</h3>
+                        <p class="text-lg mt-2">A simple overlap isn't enough for a realistic transfer. For a valid connection from Train A to Train B at a common station, the <strong>arrival time of Train A must be before the departure time of Train B</strong>. A full implementation would need to check this timing information as well.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-connector" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Interactive Train Connector</h2>
+                <p class="text-lg mb-4">This tool simulates finding a connection between two trains. Select two trains from the dropdowns. The tool will retrieve their station lists and perform a nested loop comparison to find any common transfer stations.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="train-a-select" class="block font-semibold mb-2">Select Train A:</label>
+                            <select id="train-a-select" class="w-full p-2 border border-gray-300 rounded-md bg-white"></select>
+                        </div>
+                        <div>
+                            <label for="train-b-select" class="block font-semibold mb-2">Select Train B:</label>
+                            <select id="train-b-select" class="w-full p-2 border border-gray-300 rounded-md bg-white"></select>
+                        </div>
+                    </div>
+                    <button id="find-connection-btn" class="mt-4 bg-violet-600 text-white px-5 py-2 rounded-md hover:bg-violet-700 transition font-semibold">Find Connection</button>
+                    <div id="connector-output" class="mt-4"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">Changing how we define the nodes and edges in a graph allows us to answer entirely new kinds of questions.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Flexible Representation:</strong> Graphs are a flexible tool. We can choose what the nodes and edges represent to best suit the problem we are trying to solve.</li>
+                    <li><strong>Trains as Nodes:</strong> By making trains the nodes, we can analyze the relationships and transfer possibilities between different train services.</li>
+                    <li><strong>Stations as Edges:</strong> Common stations act as the connecting edges between train nodes, and can be labeled with the station name.</li>
+                    <li><strong>Underlying Logic:</strong> Building this type of graph relies on the same fundamental operations: retrieving lists from a dictionary and using nested loops to find common elements.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Train Connector ---
+            const trainASelect = document.getElementById('train-a-select');
+            const trainBSelect = document.getElementById('train-b-select');
+            const findConnectionBtn = document.getElementById('find-connection-btn');
+            const connectorOutput = document.getElementById('connector-output');
+
+            const trainwiseData = {
+                "02285": ["Secunderabad", "Balharshah", "Nagpur"],
+                "12221": ["Pune", "Bhusaval", "Nagpur", "Bhopal", "Kolkata"],
+                "12261": ["Mumbai", "Igatpuri", "Bhusaval", "Nagpur", "Bilaspur", "Kolkata"],
+                "12289": ["Mumbai", "Nagpur", "Secunderabad"],
+                "22203": ["Visakhapatnam", "Vijayawada", "Secunderabad"]
+            };
+
+            for (const train in trainwiseData) {
+                const optionA = document.createElement('option');
+                optionA.value = train;
+                optionA.textContent = `Train ${train}`;
+                trainASelect.appendChild(optionA);
+
+                const optionB = document.createElement('option');
+                optionB.value = train;
+                optionB.textContent = `Train ${train}`;
+                trainBSelect.appendChild(optionB);
+            }
+            trainASelect.value = "02285";
+            trainBSelect.value = "12221";
+
+            findConnectionBtn.addEventListener('click', () => {
+                const trainA = trainASelect.value;
+                const trainB = trainBSelect.value;
+
+                if (trainA === trainB) {
+                    connectorOutput.innerHTML = `<p class="text-yellow-700 font-semibold">Please select two different trains.</p>`;
+                    return;
+                }
+
+                const stationsA = trainwiseData[trainA];
+                const stationsB = trainwiseData[trainB];
+                const commonStations = [];
+
+                for (const stationA of stationsA) {
+                    for (const stationB of stationsB) {
+                        if (stationA === stationB) {
+                            commonStations.push(stationA);
+                        }
+                    }
+                }
+
+                let outputHTML = `
+                    <h3 class="text-xl font-semibold">Comparison Result:</h3>
+                    <p><strong>Train A Stations:</strong> [${stationsA.join(', ')}]</p>
+                    <p><strong>Train B Stations:</strong> [${stationsB.join(', ')}]</p>
+                `;
+
+                if (commonStations.length > 0) {
+                    outputHTML += `<p class="mt-2 font-bold text-lg">Connection Found! ✅</p>
+                                   <p>You can transfer between these trains at: <span class="text-green-700">${commonStations.join(', ')}</span></p>`;
+                } else {
+                    outputHTML += `<p class="mt-2 font-bold text-lg">No Connection Found ❌</p>
+                                   <p>These two trains do not share any common stations.</p>`;
+                }
+                connectorOutput.innerHTML = outputHTML;
+            });
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ10_2.docx (assuming this is the file) ---
+                // This benchmark seems to be from a different lecture, I will create relevant questions.
+                // Placeholder for actual benchmark questions if they were about this topic.
+                // Since they are not, I will create 4 questions in the style of a benchmark.
+                {
+                    question: "In a graph where trains are nodes, what does an edge between two trains represent?",
+                    type: "single-choice",
+                    answers: ["The trains are traveling in the same direction.", "The trains have the same number of stops.", "The trains share at least one common station.", "One train is an express train, and the other is local."],
+                    correct: ["The trains share at least one common station."],
+                    explanation: "The edge signifies a potential transfer point, which is a station serviced by both trains."
+                },
+                {
+                    question: "To build a graph of trains, you need to compare the list of stations for every pair of trains.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. The core of the algorithm is to find the overlap in station lists between any two trains to determine if an edge exists."
+                },
+                {
+                    question: "In the graph model with trains as nodes, the edges are labeled with:",
+                    type: "single-choice",
+                    answers: ["The distance between trains.", "The name of the common station(s).", "The difference in arrival times.", "The train numbers."],
+                    correct: ["The name of the common station(s)."],
+                    explanation: "The station is the 'connection' between the two train nodes, so its name is the logical label for the edge."
+                },
+                {
+                    question: "This 'trains as nodes' graph model is most useful for answering which of the following questions?",
+                    type: "single-choice",
+                    answers: ["What is the shortest distance from Kolkata to Delhi?", "Which stations are major junctions?", "If I'm on train X, what are my possible transfer options?", "How many stations are in the network?"],
+                    correct: ["If I'm on train X, what are my possible transfer options?"],
+                    explanation: "This model excels at showing the direct connectivity between train services, making it ideal for planning journeys that involve transfers."
+                },
+                // --- New Questions ---
+                {
+                    question: "If Train A's route is [X, Y, Z] and Train B's route is [P, Q, Y], an edge exists between them.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "They share the common station 'Y', which creates an edge between the two train nodes."
+                },
+                {
+                    question: "What data structure is used to hold the list of stations for a given train number?",
+                    type: "single-choice",
+                    answers: ["A simple variable", "A graph", "A dictionary", "A list"],
+                    correct: ["A list"],
+                    explanation: "In the `Trainwise` dictionary, the value associated with each train key is a list of station names."
+                },
+                {
+                    question: "Finding common stations between two trains is an example of what algorithmic pattern?",
+                    type: "single-choice",
+                    answers: ["Sorting", "Finding the maximum", "Nested iteration", "Recursion"],
+                    correct: ["Nested iteration"],
+                    explanation: "You must loop through the stations of the first train, and for each of those, loop through the stations of the second train to find a match."
+                },
+                {
+                    question: "For a valid transfer from Train A to Train B at a common station, what must be true about their schedules?",
+                    type: "single-choice",
+                    answers: ["They must arrive at the same time.", "Train A's arrival time must be after Train B's departure time.", "Train A's arrival time must be before Train B's departure time.", "They must run on the same days of the week."],
+                    correct: ["Train A's arrival time must be before Train B's departure time."],
+                    explanation: "To make a connection, you must arrive on the first train before the second train leaves."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

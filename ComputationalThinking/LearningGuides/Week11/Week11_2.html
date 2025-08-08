@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L11.2: DFS for Finding Cycles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+        .cycle-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear forwards;
+        }
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L11.2: DFS & Cycles</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold">L11.2: DFS & Cycles</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#new-problem" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">A New Problem: Mentoring</a>
+                <a href="#implicit-graph" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Building an Implicit Graph</a>
+                <a href="#finding-cycles" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Finding Cycles with DFS</a>
+                <a href="#cycle-visualization" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Cycle Visualization</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L11.2: Using DFS to Find Cycles</h1>
+                <p class="text-lg">Welcome back! We've seen how Depth First Search (DFS) and recursion can systematically explore a graph, like finding all reachable train stations. Now, let's apply this powerful technique to a different kind of problem: finding hidden structures within data.</p>
+                <p class="text-lg mt-4">Instead of just finding reachable nodes, we'll use DFS to detect <strong>cycles</strong>. A cycle is a path that starts and ends at the same node. We'll explore a "mentoring graph" where students can mentor each other in different subjects. Our goal is to find circular mentoring relationships that form effective study groups, for example, Student A helps B in Math, B helps C in Physics, and C helps A back in Chemistry.</p>
+            </section>
+
+            <section id="new-problem" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">A New Problem: The Mentoring Graph</h2>
+                <p class="text-lg mb-4">Let's define our new problem. We have a group of students, each with scores in Math, Physics, and Chemistry. A student can mentor another in a subject if their score is 10 to 20 marks higher.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <p class="text-lg">We want to find <strong>3-person study groups</strong> where mentoring happens in a cycle across all three subjects:</p>
+                    <ul class="list-disc list-inside text-lg mt-4 pl-4 space-y-2">
+                        <li>Student A mentors Student B in one subject (e.g., Math).</li>
+                        <li>Student B mentors Student C in a different subject (e.g., Physics).</li>
+                        <li>Student C completes the loop by mentoring Student A in the third subject (e.g., Chemistry).</li>
+                    </ul>
+                </div>
+                <p class="text-lg mt-6">This is a cycle-finding problem. Unlike the train network, we don't have an explicit graph. The connections (mentoring possibilities) are hidden in the data and defined by our rules.</p>
+            </section>
+
+            <section id="implicit-graph" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Building the Graph On-the-Fly</h2>
+                <p class="text-lg mb-4">Since we don't have a pre-made graph, we need to discover the connections as we go. Searching through every student for every other student would be very slow. A much smarter way is to pre-process the data.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">Efficiently Finding Neighbors</h3>
+                        <p class="text-lg mt-2">To quickly find who a student can mentor, we can create sorted lists of students for each subject, ordered by marks from highest to lowest.</p>
+                        <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                            <li>If Student A has 74 in Math, we look down the sorted Math list.</li>
+                            <li>We only need to check students with scores between 64 (74-10) and 54 (74-20).</li>
+                            <li>Because the list is sorted, we can quickly identify this range of potential mentees without checking everyone.</li>
+                        </ul>
+                        <p class="text-lg mt-4">These potential mentees are the "neighbors" of Student A in our implicit graph for that specific subject.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="finding-cycles" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Finding Cycles with DFS</h2>
+                <p class="text-lg mb-4">Here's how we adapt our recursive DFS to find these mentoring cycles. The key is to not only track which nodes have been visited overall, but also which nodes are in our <strong>current path</strong> of exploration.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <p class="text-lg">Our recursive `Explore(student, path, subjects_seen)` procedure works like this:</p>
+                    <ol class="list-decimal list-inside text-lg mt-4 pl-4 space-y-3">
+                        <li>Add the current `student` to the `path`.</li>
+                        <li>Find a subject that has not been used yet in `subjects_seen`.</li>
+                        <li>Using the sorted list for that subject, find a valid mentee (`next_student`).</li>
+                        <li><strong>Check for a cycle:</strong> If `next_student` is already in our current `path` (specifically, if it's the starting node), we've found a cycle! Record it.</li>
+                        <li><strong>Continue searching:</strong> If `next_student` is not in the path, make a recursive call: `Explore(next_student, new_path, new_subjects_seen)`.</li>
+                        <li><strong>Backtrack:</strong> When the recursive call returns, remove the current `student` from the `path` and try the next mentee or the next subject.</li>
+                    </ol>
+                </div>
+                 <p class="text-lg mt-6">The "path" is the crucial piece of information we carry with us in the recursion. When we visit a neighbor, if that neighbor is already in our current path, we have detected a cycle.</p>
+            </section>
+
+            <section id="cycle-visualization" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Mentoring Cycle Visualization</h2>
+                <p class="text-lg mb-4">This diagram shows one of the mentoring cycles discovered during the lecture. It illustrates how three students (Node 8, 1, and 12) form a closed loop where each mentors the next in a different subject, creating a perfect study group.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 flex justify-center items-center">
+                    <svg viewBox="0 0 400 300" class="w-full max-w-md">
+                        <!-- Nodes -->
+                        <g id="node-8">
+                            <circle cx="100" cy="200" r="30" fill="#8b5cf6" stroke="#6d28d9" stroke-width="3"></circle>
+                            <text x="100" y="200" dy=".3em" text-anchor="middle" fill="white" font-weight="bold" font-size="20">8</text>
+                        </g>
+                        <g id="node-1">
+                            <circle cx="200" cy="80" r="30" fill="#8b5cf6" stroke="#6d28d9" stroke-width="3"></circle>
+                            <text x="200" y="80" dy=".3em" text-anchor="middle" fill="white" font-weight="bold" font-size="20">1</text>
+                        </g>
+                        <g id="node-12">
+                            <circle cx="300" cy="200" r="30" fill="#8b5cf6" stroke="#6d28d9" stroke-width="3"></circle>
+                            <text x="300" y="200" dy=".3em" text-anchor="middle" fill="white" font-weight="bold" font-size="20">12</text>
+                        </g>
+                        <!-- Edges and Labels -->
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#4c1d95" />
+                            </marker>
+                        </defs>
+                        <!-- 8 -> 1 (Math) -->
+                        <path class="cycle-path" d="M 125 185 A 120 120 0 0 1 190 105" stroke="#4c1d95" stroke-width="3" fill="none" marker-end="url(#arrow)"></path>
+                        <text x="130" y="130" fill="#4c1d95" font-weight="bold">Math</text>
+                        <!-- 1 -> 12 (Chemistry) -->
+                        <path class="cycle-path" d="M 225 95 A 120 120 0 0 1 280 175" stroke="#4c1d95" stroke-width="3" fill="none" marker-end="url(#arrow)" style="animation-delay: 1.5s;"></path>
+                        <text x="265" y="130" fill="#4c1d95" font-weight="bold">Chemistry</text>
+                        <!-- 12 -> 8 (Physics) -->
+                        <path class="cycle-path" d="M 270 200 L 130 200" stroke="#4c1d95" stroke-width="3" fill="none" marker-end="url(#arrow)" style="animation-delay: 3s;"></path>
+                        <text x="200" y="220" text-anchor="middle" fill="#4c1d95" font-weight="bold">Physics</text>
+                    </svg>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">Let's review the main points of applying DFS to our mentoring problem:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>DFS for Cycle Detection:</strong> DFS is an excellent algorithm for finding cycles in a graph. A cycle is detected when the search encounters a node that is already in the current path of exploration.</li>
+                    <li><strong>Implicit Graphs:</strong> Not all graphs are explicitly defined. Sometimes, connections are based on rules within the data. We can build and traverse these "implicit" graphs on-the-fly.</li>
+                    <li><strong>Data Pre-processing:</strong> Sorting the data (e.g., by marks) is a crucial optimization that allows us to find a node's neighbors much more efficiently than by searching the entire dataset each time.</li>
+                    <li><strong>Stateful Recursion:</strong> Our recursive DFS procedure needed to carry more state than before, including the current path and the subjects used, to correctly identify valid 3-subject cycles.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Test your understanding of these advanced DFS concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ11_2.docx ---
+                {
+                    question: "As we move from root to one of the end of DFS tree of mentoring problem in the lecture, the marks obtained by the student, irrespective of subject, are in decreasing order.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. The mentoring rule requires a mentor to have a higher score than the mentee, so any path in the DFS tree will always go from a higher-scoring student to a lower-scoring one in that subject."
+                },
+                {
+                    question: "Two adjacent nodes of DFS tree in the lecture represent the mentoring of student in two different subjects.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "Adjacent nodes represent a mentoring relationship in a single subject. A path of three nodes would involve two different subjects."
+                },
+                {
+                    question: "Assume the length of each edge of DFS tree of mentoring problem in the lecture is 10 units. What would be the possible maximum length of any branch of DFS tree?",
+                    type: "single-choice",
+                    answers: ["Less than 30 units", "30 units", "More than 30 units", "Can not predict"],
+                    correct: ["30 units"],
+                    explanation: "The goal is to find 3-hop cycles (A->B, B->C, C->A). Since we stop exploring a branch once a 3-subject cycle is found or a dead end is reached, the longest meaningful path we construct is 3 edges long. If each is 10 units, the max length is 30."
+                },
+                {
+                    question: "When finding mentoring cycles, a cycle is detected when the DFS algorithm encounters a node that is...",
+                    type: "single-choice",
+                    answers: ["...the node with the highest mark.", "...marked as 'visited' from a previous, separate exploration.", "...already present in the current exploration path.", "...a leaf node in the DFS tree."],
+                    correct: ["...already present in the current exploration path."],
+                    explanation: "This is the key to cycle detection. A general 'visited' list prevents re-exploring entire subtrees, but checking against the *current* path (the active recursion stack) identifies a back edge, which closes a cycle."
+                },
+                // --- New Questions ---
+                {
+                    question: "Why is it more efficient to use sorted lists for marks rather than searching all students each time?",
+                    type: "single-choice",
+                    answers: ["It uses less memory.", "It guarantees a cycle will be found.", "It quickly narrows down the list of potential mentees to a small range.", "It makes the graph undirected."],
+                    correct: ["It quickly narrows down the list of potential mentees to a small range."],
+                    explanation: "Sorting allows us to immediately focus on the relevant score range (10-20 marks below) instead of comparing the mentor's score to every other student in the dataset, which is a significant performance improvement."
+                },
+                {
+                    question: "In the mentoring problem, the graph is described as 'implicit'. What does this mean?",
+                    type: "single-choice",
+                    answers: ["The graph is too large to draw.", "The nodes and edges are not given explicitly; they are defined by rules applied to the data.", "The graph changes over time.", "The graph has no cycles."],
+                    correct: ["The nodes and edges are not given explicitly; they are defined by rules applied to the data."],
+                    explanation: "Unlike a train map where stations and routes are clearly listed, the mentoring 'graph' connections must be calculated based on the score difference rule."
+                },
+                {
+                    question: "To find a 3-subject cycle, the recursive DFS procedure needs to keep track of which subjects have already been used in the current path.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. To ensure the cycle involves three *different* subjects (Math, Physics, and Chemistry), the algorithm must track which subjects have been assigned to edges in the current path and not reuse them."
+                },
+                {
+                    question: "What is the 'base case' for the recursion when searching for mentoring cycles?",
+                    type: "multiple-choice",
+                    answers: ["Finding a valid 3-hop cycle back to the start.", "Reaching a student who can't mentor anyone in the required subjects.", "Having used all three subjects in the current path.", "The sorted list of students is empty."],
+                    correct: ["Finding a valid 3-hop cycle back to the start.", "Reaching a student who can't mentor anyone in the required subjects.", "Having used all three subjects in the current path."],
+                    explanation: "The recursion stops and backtracks under several conditions: a cycle is successfully found, a dead end is reached (no valid mentees), or the path is already 3 subjects long and cannot be extended further."
+                },
+                {
+                    question: "If Student A mentors B in Math, and B mentors A in Physics, this is a valid study group according to the problem.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "The problem specifically looks for 3-person, 3-subject cycles. A 2-person cycle does not meet the criteria for a study group as defined."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const sortedSelected = [...selectedAnswers].sort();
+                    const sortedCorrect = [...question.correct].sort();
+
+                    const isCorrect = JSON.stringify(sortedSelected) === JSON.stringify(sortedCorrect);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

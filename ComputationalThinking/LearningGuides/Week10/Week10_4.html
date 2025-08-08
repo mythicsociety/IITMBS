@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L10.4: Pseudocode for edge labelled graph</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L10.4: Edge-Labeled Graphs</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                 <h1 class="text-2xl font-bold">L10.4: Edge-Labeled Graphs</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#storing-labels" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Storing Labels</a>
+                <a href="#shortest-distance" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Shortest Distance Algorithm</a>
+                <a href="#interactive-shortest-path" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Interactive Shortest Path</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L10.4: Pseudocode for Edge-Labeled Graphs</h1>
+                <p class="text-lg">We've seen that an adjacency matrix can represent whether a connection exists between two nodes. But what if we want to store more information about that connection? For example, which specific trains make the connection, or what the travel distance is.</p>
+                <p class="text-lg mt-4">This lesson introduces the concept of an <strong>edge-labeled graph</strong>. By storing richer data in the cells of our adjacency matrix, we can solve much more interesting and practical problems, such as finding the shortest path between two stations.</p>
+            </section>
+
+            <section id="storing-labels" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Storing Information as Edge Labels</h2>
+                <p class="text-lg mb-4">Instead of just storing a `1` in our matrix to represent an edge, we can store more complex data. This data is called an "edge label."</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-violet-800">Labeling with Dictionaries</h3>
+                        <p class="text-lg mt-2">To keep track of all trains on a route, the matrix cell `direct[i][j]` can be a <strong>dictionary</strong>. Each key in this inner dictionary can be a train number that connects station `i` to `j`.</p>
+                    </div>
+                    <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-violet-800">Labeling with Numbers</h3>
+                        <p class="text-lg mt-2">For problems like finding the shortest path, the matrix cell `directdist[i][j]` can store a <strong>number</strong> representing the travel distance. An entry of `0` signifies no direct connection.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="shortest-distance" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Algorithm: Finding the Shortest Distance</h2>
+                <p class="text-lg mb-4">A key challenge is that multiple trains might connect the same two stations with different routes and distances. Our algorithm must find and store only the shortest of these distances.</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <h3 class="text-2xl font-semibold text-violet-800">The `DirectDistance` Procedure</h3>
+                    <p class="text-lg mt-2">This procedure builds a matrix of the shortest direct distances.</p>
+                    <ol class="list-decimal list-inside text-lg mt-2 pl-4 space-y-2">
+                        <li>Initialize an `n x n` matrix `directdist` with all zeros.</li>
+                        <li>Iterate through each train `t` in the dataset.</li>
+                        <li>For a train connecting `i` to `j` with distance `d`:
+                            <ul>
+                                <li>- If `directdist[i][j]` is 0, it's the first route found. Set `directdist[i][j] = d`.</li>
+                                <li>- If `directdist[i][j]` is not 0, another route already exists. Update it to the minimum: `directdist[i][j] = min(directdist[i][j], d)`.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                 <div class="mt-8">
+                    <h3 class="text-2xl font-semibold text-gray-700">Extending to One-Hop Distances</h3>
+                    <p class="text-lg mt-2">This same logic can be used to find the shortest one-hop path. For every intermediate station `k`, calculate `newdist = directdist[i][k] + directdist[k][j]`. Then, update the `onehopdist[i][j]` matrix with the minimum of its current value and `newdist`.</p>
+                </div>
+            </section>
+
+            <section id="interactive-shortest-path" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Interactive Shortest Path Calculator</h2>
+                <p class="text-lg mb-4">This tool demonstrates the algorithm for finding the shortest paths with at most one hop. Given a matrix of direct distances, click the button to calculate the `onehopdist` matrix. Cells that are improved or newly discovered via a one-hop path will be highlighted.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Direct Distance Matrix</h3>
+                            <table id="direct-dist-matrix" class="w-full text-center border-collapse bg-white"></table>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Shortest 1-Hop Path Matrix</h3>
+                            <table id="onehop-dist-matrix" class="w-full text-center border-collapse bg-white"></table>
+                        </div>
+                    </div>
+                    <button id="calculate-paths-btn" class="mt-4 bg-violet-600 text-white px-5 py-2 rounded-md hover:bg-violet-700 transition font-semibold">Calculate Shortest 1-Hop Paths</button>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">Edge-labeled graphs elevate our ability to model and solve complex problems.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Richer Data:</strong> We can represent extra information like train names or distances in our graph via edge labels in the adjacency matrix.</li>
+                    <li><strong>Complex Cell Values:</strong> Matrix cells are not limited to 0s and 1s. They can hold numbers, dictionaries, or any other data type needed for the problem.</li>
+                    <li><strong>Solving Optimization Problems:</strong> By storing numerical labels like distance, we can modify our path-finding algorithms to solve optimization problems, such as finding the shortest path between two nodes.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Shortest Path ---
+            const directDistTable = document.getElementById('direct-dist-matrix');
+            const onehopDistTable = document.getElementById('onehop-dist-matrix');
+            const calculatePathsBtn = document.getElementById('calculate-paths-btn');
+            const directDistMatrix = [
+                [0, 5, 0, 8],
+                [0, 0, 2, 0],
+                [3, 0, 0, 0],
+                [0, 0, 9, 0]
+            ];
+            const nodes = ['A', 'B', 'C', 'D'];
+
+            function drawDistMatrix(tableEl, matrix, highlight = []) {
+                let html = `<thead><tr><th class="p-2 border"></th>${nodes.map(n => `<th class="p-2 border">${n}</th>`).join('')}</tr></thead><tbody>`;
+                for (let i = 0; i < matrix.length; i++) {
+                    html += `<tr><td class="p-2 border font-bold">${nodes[i]}</td>`;
+                    for (let j = 0; j < matrix[i].length; j++) {
+                        const isHighlighted = highlight.some(p => p[0] === i && p[1] === j);
+                        const val = matrix[i][j] === 0 ? '-' : matrix[i][j];
+                        html += `<td class="p-2 border ${isHighlighted ? 'bg-green-200 font-bold' : ''}">${val}</td>`;
+                    }
+                    html += `</tr>`;
+                }
+                html += `</tbody>`;
+                tableEl.innerHTML = html;
+            }
+
+            calculatePathsBtn.addEventListener('click', () => {
+                const n = directDistMatrix.length;
+                const onehopDistMatrix = JSON.parse(JSON.stringify(directDistMatrix));
+                const newPaths = [];
+
+                for (let i = 0; i < n; i++) {
+                    for (let j = 0; j < n; j++) {
+                        for (let k = 0; k < n; k++) {
+                            if (directDistMatrix[i][k] > 0 && directDistMatrix[k][j] > 0) {
+                                const newDist = directDistMatrix[i][k] + directDistMatrix[k][j];
+                                if (onehopDistMatrix[i][j] === 0 || newDist < onehopDistMatrix[i][j]) {
+                                    if (onehopDistMatrix[i][j] === 0) newPaths.push([i, j]);
+                                    onehopDistMatrix[i][j] = newDist;
+                                }
+                            }
+                        }
+                    }
+                }
+                drawDistMatrix(onehopDistTable, onehopDistMatrix, newPaths);
+            });
+
+            drawDistMatrix(directDistTable, directDistMatrix);
+            drawDistMatrix(onehopDistTable, directDistMatrix);
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                 {
+                    question: "In an edge-labeled graph, what can be stored in the cells of the adjacency matrix?",
+                    type: "multiple-choice",
+                    answers: ["Only 0s and 1s", "Only numbers representing distance", "Any type of data, including numbers, strings, or dictionaries.", "Only lists of train numbers."],
+                    correct: ["Any type of data, including numbers, strings, or dictionaries."],
+                    explanation: "Edge labels are flexible. The matrix cells can hold various data types to represent information about the connection, such as distances (numbers) or a list of trains (stored in a dictionary)."
+                },
+                {
+                    question: "When calculating the shortest direct distance between two stations, what is the purpose of the `min()` function?",
+                    type: "single-choice",
+                    answers: ["To find the minimum number of stations on a route.", "To compare the distance of a newly found train route with the shortest distance found so far and keep the smaller one.", "To find the train with the minimum number of stops.", "To ensure the distance is not negative."],
+                    correct: ["To compare the distance of a newly found train route with the shortest distance found so far and keep the smaller one."],
+                    explanation: "Since multiple trains can connect two stations, the `min()` function is used to update the matrix cell with the shortest distance among all available direct trains."
+                },
+                {
+                    question: "To calculate the shortest one-hop distance from station `i` to `j` via an intermediate station `k`, you add `directdist[i][k]` and `directdist[k][j]`.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. The total length of a path is the sum of the lengths of its individual segments (edges)."
+                },
+                {
+                    question: "If `directdist[i][j]` is 0, it means the distance between station i and station j is 0 km.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "In this model, a value of 0 is used to signify that there is no known direct connection between the two stations."
+                },
+                {
+                    question: "The algorithm to find the shortest one-hop distance is an extension of the transitive closure algorithm.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Yes, it modifies the transitive closure logic. Instead of just checking for connectivity (1/0), it calculates and records the minimum path length."
+                },
+                {
+                    question: "If the value of `direct[i][j]` is an empty dictionary `{}`, what does it signify?",
+                    type: "single-choice",
+                    answers: ["There is a direct connection, but the train number is unknown.", "The distance is zero.", "There is no direct train connection between station i and station j.", "The data for this route is corrupted."],
+                    correct: ["There is no direct train connection between station i and station j."],
+                    explanation: "When using dictionaries as edge labels to store train numbers, an empty dictionary is the initial state, indicating no connecting trains have been found."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

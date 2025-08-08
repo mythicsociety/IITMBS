@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L7.3: Pseudocode for dictionaries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+        .code-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L7.3: Pseudocode</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction</a>
+                <a href="#syntax" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Pseudocode Syntax</a>
+                <a href="#example-walkthrough" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Example Walkthrough</a>
+                <a href="#interactive-builder" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Builder</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L7.3: Pseudocode for Dictionaries</h1>
+                <p class="text-lg">Now that we've seen practical examples of how dictionaries can simplify complex problems, it's time to formalize our understanding. This section introduces the specific <strong>pseudocode</strong> we'll use to describe algorithms that involve dictionaries.</p>
+                <p class="text-lg mt-4">Having a clear, consistent notation allows us to design and communicate computational procedures accurately, without worrying about the specific syntax of a particular programming language.</p>
+            </section>
+
+            <section id="syntax" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Dictionary Pseudocode Syntax</h2>
+                <p class="text-lg mb-4">Here are the essential building blocks for working with dictionaries in our pseudocode.</p>
+                <div class="space-y-6">
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-900">1. Initialization</h3>
+                        <p class="mt-1">An empty dictionary is created using curly braces <code>{}</code>.</p>
+                        <div class="code-block mt-2"><code>chemMarks = {}</code></div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-900">2. Accessing and Assigning Values</h3>
+                        <p class="mt-1">Use the key inside square brackets <code>[]</code>. This single syntax works for creating, updating, and reading values.</p>
+                        <div class="code-block mt-2"><code>// Assigns 92 to the key "Rahul", creating it if it doesn't exist
+chemMarks["Rahul"] = 92
+
+// Retrieves the value for "Rahul" and stores it in m
+m = chemMarks["Rahul"]</code></div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-900">3. Checking for a Key's Existence</h3>
+                        <p class="mt-1">The <code>isKey(dictionary, key)</code> procedure returns <code>True</code> or <code>False</code>. This is crucial for accumulation tasks.</p>
+                        <div class="code-block mt-2"><code>if isKey(runs, "Kohli") {
+    // Update existing entry
+} else {
+    // Create new entry
+}</code></div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-900">4. Iteration</h3>
+                        <p class="mt-1">To loop through a dictionary, first get a list of its keys with <code>keys(dictionary)</code>, then use a <code>foreach</code> loop.</p>
+                        <div class="code-block mt-2"><code>foreach k in keys(chemMarks) {
+    // In the loop, d[k] gives you the value for the current key k
+    Do something with chemMarks[k]
+}</code></div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="example-walkthrough" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Example Walkthrough: Customer Food Purchases</h2>
+                <p class="text-lg mb-4">Let's look at the complete pseudocode for one of the problems from the lecture: finding the number of food items each customer purchased. This combines all the syntax rules we've just learned.</p>
+                <div class="grid md:grid-cols-2 gap-8 mt-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">The Pseudocode</h3>
+                        <div class="code-block"><code>foodD = {}
+
+while (Table 1 has more rows) {
+  Read the first row X in Table 1
+  customer = X.CustomerName
+  items = X.Items
+
+  foreach row in items {
+    if (row.Category == "Food") {
+      if (isKey(foodD, customer)) {
+        foodD[customer] = foodD[customer] + 1
+      } else {
+        foodD[customer] = 1
+      }
+    }
+  }
+  Move X to Table 2
+}</code></div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Step-by-Step Explanation</h3>
+                        <ol class="list-decimal list-inside space-y-2 pl-4 text-lg">
+                            <li><strong>Initialize:</strong> We start by creating an empty dictionary called <code>foodD</code>.</li>
+                            <li><strong>Outer Loop:</strong> We iterate through each shopping bill (each row in Table 1).</li>
+                            <li><strong>Get Data:</strong> For each bill, we get the customer's name and their list of purchased items.</li>
+                            <li><strong>Inner Loop:</strong> We iterate through the list of items in that specific bill.</li>
+                            <li><strong>Conditional Check:</strong> We only care about items where the category is "Food".</li>
+                            <li><strong>Accumulate:</strong> We use <code>isKey</code> to check if we've seen this customer before. If yes, we increment their count. If no, we create a new entry for them with a count of 1.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-builder" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Pseudocode Builder</h2>
+                <p class="text-lg mb-4">Let's build a simple pseudocode block. Choose an action and a key/value to see how the corresponding pseudocode is written. This helps reinforce the syntax for common dictionary operations.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="operation-select" class="block font-semibold mb-2">Action:</label>
+                            <select id="operation-select" class="w-full p-2 border border-gray-300 rounded-md bg-white">
+                                <option value="assign">Assign/Update Value</option>
+                                <option value="access">Access Value</option>
+                                <option value="check">Check if Key Exists</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="key-input" class="block font-semibold mb-2">Key:</label>
+                            <input type="text" id="key-input" value="Srinidhi" class="w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label for="value-input" class="block font-semibold mb-2">Value (if assigning):</label>
+                            <input type="text" id="value-input" value="B" class="w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h3 class="text-xl font-semibold">Generated Pseudocode:</h3>
+                        <div id="builder-output" class="code-block mt-2"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">Mastering the pseudocode for dictionaries is key to designing efficient algorithms.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Clear Syntax:</strong> We have a simple, consistent set of commands: <code>{}</code> for creation, <code>d[k]</code> for access/assignment, <code>isKey(d, k)</code> for checking, and <code>keys(d)</code> for iteration.</li>
+                    <li><strong>No Ambiguity:</strong> This formal notation removes ambiguity and allows any two people to understand the exact steps of an algorithm.</li>
+                    <li><strong>Foundation for Code:</strong> Pseudocode acts as a blueprint. Once an algorithm is designed in pseudocode, translating it into any real programming language becomes a much simpler task.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of dictionary pseudocode.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Pseudocode Builder ---
+            const opSelect = document.getElementById('operation-select');
+            const keyInput = document.getElementById('key-input');
+            const valueInput = document.getElementById('value-input');
+            const builderOutput = document.getElementById('builder-output');
+
+            function updateBuilder() {
+                const op = opSelect.value;
+                const key = keyInput.value ? `"${keyInput.value}"` : '""';
+                const value = valueInput.value ? `"${valueInput.value}"` : '""';
+
+                let pseudocode = '';
+                switch (op) {
+                    case 'assign':
+                        pseudocode = `grades[${key}] = ${value}`;
+                        valueInput.disabled = false;
+                        break;
+                    case 'access':
+                        pseudocode = `studentGrade = grades[${key}]`;
+                        valueInput.disabled = true;
+                        break;
+                    case 'check':
+                        pseudocode = `isKey(grades, ${key})`;
+                        valueInput.disabled = true;
+                        break;
+                }
+                builderOutput.textContent = pseudocode;
+            }
+
+            opSelect.addEventListener('change', updateBuilder);
+            keyInput.addEventListener('input', updateBuilder);
+            valueInput.addEventListener('input', updateBuilder);
+            updateBuilder(); // Initial call
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ7_3.docx ---
+                {
+                    question: "Consider the dictionary `chemMarks` discussed in the lecture. What does `keys(chemMarks)` represent?",
+                    type: "single-choice",
+                    answers: ["List of keys of the dictionary `chemMarks`", "List of keys of the dictionary `chemMarks` in the order they were stored", "List of values of the dictionary `chemMarks`", "List of both keys and values"],
+                    correct: ["List of keys of the dictionary `chemMarks`"],
+                    explanation: "`keys(chemMarks)` returns a list of all the keys in the dictionary. The order is not guaranteed."
+                },
+                {
+                    question: "Consider the dictionary `chemMarks` discussed in the lecture. What will be the output of the procedure `isKey(chemMarks, 48)`?",
+                    type: "single-choice",
+                    answers: ["Found", "True", "False", "Undefined"],
+                    correct: ["False"],
+                    explanation: "The keys in `chemMarks` are student names (strings), not numbers like 48. Therefore, the key 48 would not be found, and the procedure returns False."
+                },
+                {
+                    question: "Find the correct pseudocode block which stores the number of students with marks greater than 50 in a variable `N`.",
+                    type: "single-choice",
+                    answers: [
+                        "N = 0<br>foreach Y in keys(chemMarks) {<br>  if (chemMarks(Y) > 50) {<br>    N = N + 1<br>  }<br>}",
+                        "N = 0<br>foreach Y in chemMarks {<br>  if (chemMarks(Y) > 50) {<br>    N = N + 1<br>  }<br>}",
+                        "N = 0<br>foreach key in keys(chemMarks) {<br>  if (chemMarks[key] > 50) {<br>    N = N + 1<br>  }<br>}",
+                        "N = 0<br>foreach key in keys(chemMarks) {<br>  if (chemMarks[key] > 50) {<br>    N = N ++ 1<br>  }<br>}"
+                    ],
+                    correct: ["N = 0<br>foreach key in keys(chemMarks) {<br>  if (chemMarks[key] > 50) {<br>    N = N + 1<br>  }<br>}"],
+                    explanation: "The correct pseudocode iterates through the `keys(chemMarks)`, uses square brackets `[]` to access the value, and uses `N = N + 1` for incrementing."
+                },
+                {
+                    question: "A Dictionary is used to store the total sum of mathematics marks of students from each city. Identify the mistake(s) in the provided pseudocode.",
+                    type: "multiple-choice",
+                    answers: ["Error in line 1", "Error in line 5", "Error in line 6", "Error in line 9"],
+                    correct: ["Error in line 1", "Error in line 6"],
+                    explanation: "Line 1 is incorrect because `sumMarks = []` initializes a list, not a dictionary (it should be `{}`). Line 6 is incorrect because `++` is not the standard pseudocode operator for addition; it should be `+`."
+                },
+                // --- New Questions ---
+                {
+                    question: "What happens if you assign a value to a key that already exists in a dictionary?",
+                    type: "single-choice",
+                    answers: ["It creates a second entry with the same key.", "It returns an error.", "It overwrites the old value with the new one.", "It appends the new value to the old one."],
+                    correct: ["It overwrites the old value with the new one."],
+                    explanation: "Keys in a dictionary are unique. Assigning a new value to an existing key updates the entry."
+                },
+                {
+                    question: "The `keys(d)` procedure is guaranteed to return the keys in the same order they were added to the dictionary `d`.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "Dictionaries are inherently unordered, so the list of keys can be returned in any sequence."
+                },
+                {
+                    question: "In the birthday paradox solution, what information was stored as the dictionary's **value**?",
+                    type: "single-choice",
+                    answers: ["The student's name", "A list of student IDs (`seqno`)", "The date of birth", "A simple True or False value"],
+                    correct: ["A list of student IDs (`seqno`)"],
+                    explanation: "The key was the date of birth, and the value was a list containing the sequence numbers of all students with that birthday."
+                },
+                {
+                    question: "Why is using a dictionary more efficient for the birthday paradox problem than a nested loop?",
+                    type: "single-choice",
+                    answers: ["Dictionaries use less memory.", "Dictionaries avoid repeated comparisons by checking for a key in a single step.", "Dictionaries can store dates more easily than lists.", "Nested loops cannot handle more than 25 students."],
+                    correct: ["Dictionaries avoid repeated comparisons by checking for a key in a single step."],
+                    explanation: "The dictionary's `isKey` check is a 'random access' operation, which is much faster than iterating through a list of other students for every single student."
+                },
+                {
+                    question: "In the pseudocode `myDict[\"city\"] = \"Chennai\"`, the key is `\"Chennai\"`.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "The key is the value inside the square brackets, which is `\"city\"`. The value being assigned is `\"Chennai\"`."
+                },
+                {
+                    question: "If a dictionary `d` is empty, what will `isKey(d, \"apple\")` return?",
+                    type: "single-choice",
+                    answers: ["True", "False", "Error", "Null"],
+                    correct: ["False"],
+                    explanation: "Since the dictionary is empty, it contains no keys, so the procedure will correctly return False."
+                },
+                {
+                    question: "Which of the following are valid use cases for a dictionary as demonstrated in the lectures? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["Storing a sequence of steps to bake a cake.", "Counting the frequency of different words in a paragraph.", "Storing student names as keys and their corresponding grades as values.", "Keeping track of items that have been processed to avoid duplicates."],
+                    correct: ["Counting the frequency of different words in a paragraph.", "Storing student names as keys and their corresponding grades as values.", "Keeping track of items that have been processed to avoid duplicates."],
+                    explanation: "Dictionaries are ideal for frequency counts, mapping unique identifiers to data, and tracking state. A sequence of steps is better suited for a list."
+                },
+                {
+                    question: "What is the purpose of initializing a dictionary with `{}` before a loop?",
+                    type: "single-choice",
+                    answers: ["To pre-fill it with some default values.", "To define the types of keys and values it will hold.", "To ensure the variable exists and is recognized as a dictionary before trying to add entries to it.", "To set its maximum size."],
+                    correct: ["To ensure the variable exists and is recognized as a dictionary before trying to add entries to it."],
+                    explanation: "You must create the dictionary container first (even if empty) before you can perform operations like adding key-value pairs."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-start space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="mt-1 form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span class="flex-1"><code class="text-sm">${answer}</code></span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> <code class="text-sm">${question.correct.join(', ')}</code></p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

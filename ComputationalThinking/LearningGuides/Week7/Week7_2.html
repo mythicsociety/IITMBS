@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L7.2: Concept of dictionary to solve birthday paradox problem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #1D4ED8; /* bg-blue-700 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L7.2: The Birthday Paradox</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-8">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Introduction</a>
+                <a href="#problem-definition" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Problem</a>
+                <a href="#dictionary-solution" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">The Dictionary Solution</a>
+                <a href="#interactive-paradox" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Interactive Simulator</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-blue-800">L7.2: Solving the Birthday Paradox with Dictionaries</h1>
+                <p class="text-lg">In this section, we'll tackle a classic probability problem known as the "Birthday Paradox." It explores the surprisingly high chance of two people in a group sharing a birthday. While it can be solved by comparing every person to every other person, this approach is slow and inefficient.</p>
+                <p class="text-lg mt-4">We'll demonstrate how using a <strong>dictionary</strong> provides a much faster and more elegant solution, reinforcing the power of this data structure for solving complex problems without costly, repetitive searching.</p>
+            </section>
+
+            <section id="problem-definition" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The Problem: Finding a Shared Birthday</h2>
+                <p class="text-lg mb-4">The task is to determine if any two students in our dataset share the same birthday (the same month and day). </p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-red-50 border-2 border-red-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-red-800">The Inefficient Approach</h3>
+                        <p class="text-lg mt-2">The most straightforward method is to use a <strong>nested loop</strong>:</p>
+                        <ol class="list-decimal list-inside text-lg mt-2 pl-4 space-y-1">
+                            <li>Pick the first student.</li>
+                            <li>Compare their birthday to every other student.</li>
+                            <li>Pick the second student and repeat.</li>
+                        </ol>
+                        <p class="text-lg mt-2">This is very slow because of the repeated comparisons. Sorting the data first can help, but the sorting process itself is computationally expensive.</p>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-green-800">A Better Way</h3>
+                        <p class="text-lg mt-2">Instead of comparing students to each other, what if we just kept a record of the birthdays we've already seen? As we go through the list of students one by one, we can instantly check our record. This is where a dictionary shines.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="dictionary-solution" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">The Dictionary Solution</h2>
+                <p class="text-lg mb-4">We can solve this problem in a single pass through the data by using a dictionary to keep track of the birthdays we encounter.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">The Strategy</h3>
+                        <p class="text-lg mt-2">We'll create a dictionary where the <strong>key</strong> is the date of birth (e.g., "15th March") and the <strong>value</strong> is a list of student IDs who have that birthday.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">The Process (in Pseudocode)</h3>
+                        <ol class="list-decimal list-inside text-lg space-y-2 mt-2 pl-4">
+                            <li>Initialize an empty dictionary: <code>birthdays = {}</code></li>
+                            <li>Iterate through each student card.</li>
+                            <li>For each card, get the date of birth (<code>dob</code>) and student ID (<code>seqno</code>).</li>
+                            <li>Check if the birthday is already a key in our dictionary: <code>isKey(birthdays, dob)</code>.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <pre class="bg-gray-800 text-white p-4 rounded-md mt-2"><code>if isKey(birthdays, dob) {
+    // DUPLICATE FOUND!
+    // The birthday is already in our dictionary.
+    // Add the new student's ID to the existing list.
+    birthdays[dob] = birthdays[dob] ++ [seqno]
+} else {
+    // First time seeing this birthday.
+    // Create a new entry with the birthday as the key,
+    // and a new list containing just this student's ID as the value.
+    birthdays[dob] = [seqno]
+}</code></pre>
+                    </div>
+                     <div class="mt-4 border-l-4 border-blue-500 p-4">
+                        <p class="text-lg font-semibold">The Result:</p>
+                        <p class="text-lg">After checking all the cards, any key in the <code>birthdays</code> dictionary that has a list with more than one student ID represents a shared birthday. This method completely avoids nested loops and is extremely efficient.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-paradox" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Interactive Birthday Paradox Simulator</h2>
+                <p class="text-lg mb-4">Let's see the paradox in action. Select the number of "students" in a room and run the simulation. It will generate random birthdays and use the dictionary method to check for duplicates. In a group of just 23, there's a ~50% chance of a match!</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <label for="student-count" class="font-semibold">Number of Students:</label>
+                        <input type="number" id="student-count" value="23" min="2" max="100" class="w-24 p-2 border border-gray-300 rounded-md">
+                        <button id="run-simulation-btn" class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition font-semibold">Run Simulation</button>
+                    </div>
+                    <div id="simulation-output" class="mt-4"></div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Summary</h2>
+                <p class="text-lg mb-4">The Birthday Paradox problem is a perfect example of how choosing the right data structure can dramatically improve a solution's efficiency.</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Avoiding Nested Loops:</strong> Dictionaries allow us to check for previously seen data in constant time, eliminating the need for slow, repetitive comparisons inside nested loops.</li>
+                    <li><strong>Complex Values:</strong> A dictionary's value can be another collection, like a list. This allows us to group related items (like student IDs for a shared birthday) under a single key.</li>
+                    <li><strong>Single-Pass Solutions:</strong> Using a dictionary enabled us to find the answer by iterating through our data just once, which is a hallmark of an efficient algorithm.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-blue-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's test your understanding of these concepts.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Birthday Paradox Simulator ---
+            const studentCountInput = document.getElementById('student-count');
+            const runBtn = document.getElementById('run-simulation-btn');
+            const simOutput = document.getElementById('simulation-output');
+
+            runBtn.addEventListener('click', () => {
+                const numStudents = parseInt(studentCountInput.value);
+                const birthdays = {};
+                const generatedDates = [];
+                let duplicatesFound = [];
+
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+                for (let i = 1; i <= numStudents; i++) {
+                    const month = Math.floor(Math.random() * 12);
+                    const day = Math.floor(Math.random() * 28) + 1; // Simplified to 28 days for all months
+                    const dob = `${day} ${monthNames[month]}`;
+                    generatedDates.push({id: i, dob: dob});
+
+                    // The dictionary logic
+                    if (birthdays[dob]) { // isKey is true
+                        birthdays[dob].push(i);
+                    } else { // isKey is false
+                        birthdays[dob] = [i];
+                    }
+                }
+                
+                // Find duplicates from the final dictionary
+                for (const dob in birthdays) {
+                    if (birthdays[dob].length > 1) {
+                        duplicatesFound.push({ dob: dob, ids: birthdays[dob] });
+                    }
+                }
+
+                let outputHTML = `
+                    <h3 class="text-xl font-semibold mb-2">Simulation Results:</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-semibold mb-2">Generated Birthdays (ID: Date)</h4>
+                            <div class="bg-white p-3 rounded-md border h-48 overflow-y-auto text-sm">
+                                ${generatedDates.map(d => `<div>Student ${d.id}: <span class="font-mono">${d.dob}</span></div>`).join('')}
+                            </div>
+                        </div>
+                `;
+
+                if (duplicatesFound.length > 0) {
+                    outputHTML += `
+                        <div>
+                            <h4 class="font-semibold mb-2 text-green-700">Match Found! ✅</h4>
+                            <div class="bg-green-100 p-3 rounded-md border border-green-300 h-48 overflow-y-auto">
+                                ${duplicatesFound.map(d => `<div><strong>${d.dob}</strong> is shared by students: ${d.ids.join(', ')}</div>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    outputHTML += `
+                        <div>
+                            <h4 class="font-semibold mb-2 text-red-700">No Match Found ❌</h4>
+                            <div class="bg-red-100 p-3 rounded-md border border-red-300 h-48 flex items-center justify-center">
+                                <p>No two students shared a birthday in this simulation.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                outputHTML += '</div>';
+                simOutput.innerHTML = outputHTML;
+            });
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ7_2.docx ---
+                {
+                    question: "Each variable in a dictionary data structure can be accessed using?",
+                    type: "single-choice",
+                    answers: ["Key", "Index number", "Key as well as index number", "None of the above"],
+                    correct: ["Key"],
+                    explanation: "Dictionaries use unique keys for direct access to values, unlike lists which use numerical index numbers."
+                },
+                {
+                    question: "In a dictionary data structure, variables must be arranged in alphabetic order.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "Dictionaries are unordered collections. The keys are not stored in any specific order (like alphabetical or chronological)."
+                },
+                {
+                    question: "We need nested iteration to check for students with the same birthday if we use a dictionary data structure.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "The main advantage of using a dictionary for this problem is that it allows us to avoid nested iteration by checking for existing keys in a single pass."
+                },
+                {
+                    question: "Let N be the number of bills generated in a shop, and n be the number of keys required to organize the purchase cost of each customer in a dictionary. What is the relationship between n and N?",
+                    type: "single-choice",
+                    answers: ["n > N", "n ≤ N", "n ≥ N", "n = N"],
+                    correct: ["n ≤ N"],
+                    explanation: "The number of unique customers (n, the number of keys) must be less than or equal to the total number of bills (N), because one customer can be responsible for multiple bills."
+                },
+                // --- New Questions ---
+                {
+                    question: "In the dictionary solution to the birthday paradox, what does the key represent?",
+                    type: "single-choice",
+                    answers: ["The student's ID number", "The student's name", "The date of birth (e.g., '15th March')", "A boolean value (True/False)"],
+                    correct: ["The date of birth (e.g., '15th March')"],
+                    explanation: "The date of birth is used as the key to group all students born on that day."
+                },
+                {
+                    question: "What does it signify when `isKey(birthdays, dob)` returns `True`?",
+                    type: "single-choice",
+                    answers: ["The dictionary is full.", "The current student is the first person with that birthday.", "At least one other student with that same birthday has already been processed.", "The date of birth is invalid."],
+                    correct: ["At least one other student with that same birthday has already been processed."],
+                    explanation: "If the key (the birthday) already exists, it means we've found a duplicate."
+                },
+                {
+                    question: "The value associated with each key in the birthday paradox dictionary is a list of student IDs.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. This allows us to collect all student IDs that share the same birthday under a single key."
+                },
+                {
+                    question: "Using a dictionary to solve the birthday paradox requires sorting the data first.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["False"],
+                    explanation: "A major benefit of the dictionary approach is that it works efficiently on unsorted data, avoiding the need for a costly sorting step."
+                },
+                {
+                    question: "After processing all students, how do you identify the shared birthdays using the dictionary?",
+                    type: "single-choice",
+                    answers: ["Find all keys where the value is `True`.", "Find all keys where the associated list has a length greater than 1.", "Count the total number of keys in the dictionary.", "Sort the dictionary by key and look for adjacent identical keys."],
+                    correct: ["Find all keys where the associated list has a length greater than 1."],
+                    explanation: "A list with more than one student ID indicates that multiple students share that birthday."
+                },
+                {
+                    question: "Which of the following are benefits of the dictionary method over the nested loop method for the birthday paradox? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["It is more efficient (faster).", "It uses less memory.", "It requires only a single pass through the data.", "It can also tell you *who* shares a birthday, not just that one exists."],
+                    correct: ["It is more efficient (faster).", "It requires only a single pass through the data.", "It can also tell you *who* shares a birthday, not just that one exists."],
+                    explanation: "The dictionary method is significantly faster because it's a single-pass algorithm. By storing lists of IDs, it also easily identifies the specific students who share a birthday. It might use more memory than a simple loop, however."
+                },
+                {
+                    question: "If you used a dictionary where the key was the student ID and the value was the birthday, would it efficiently solve the birthday paradox?",
+                    type: "single-choice",
+                    answers: ["Yes, it's just as efficient.", "No, because you would still need to compare the values of all entries.", "Yes, but it would be more complicated.", "No, because student IDs cannot be keys."],
+                    correct: ["No, because you would still need to compare the values of all entries."],
+                    explanation: "The goal is to group by birthday. If the birthday is the value, you can't use the dictionary's fast key lookup to find duplicates; you'd have to iterate and compare all the values, which is inefficient."
+                },
+                 {
+                    question: "A dictionary is a suitable data structure for the birthday problem because the keys (birthdays) are unique identifiers for the groups we want to form.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "This is the core concept. We want to group students by birthday, so using the birthday as the unique key is the perfect application for a dictionary."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-blue-100 has-[:checked]:border-blue-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const isCorrect = question.type === 'multiple-choice' 
+                        ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+                        : (selectedAnswers[0] === question.correct[0]);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

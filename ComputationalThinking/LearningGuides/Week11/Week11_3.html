@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L11.3: Exploring the Train Graph with DFS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .active-link {
+            background-color: #6d28d9; /* bg-violet-700 */
+            color: white;
+        }
+        .dfs-tree-element {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+        <h1 class="text-xl font-bold">L11.3: Train Graph DFS</h1>
+        <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2">
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+            <span class="block w-8 h-0.5 bg-white"></span>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold">L11.3: Train Graph DFS</h1>
+            </div>
+            <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+            <nav id="nav-links">
+                <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction</a>
+                <a href="#train-graph" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">The Train Graph</a>
+                <a href="#dfs-on-trains" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">DFS on Trains</a>
+                <a href="#exploration-viz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Exploration Visualization</a>
+                <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+                <a href="#quiz" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+            <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-4xl font-bold mb-4 text-violet-800">L11.3: Exploring the Train Graph</h1>
+                <p class="text-lg">So far, we've used stations as the main nodes in our graph to find which places are reachable. But what if we change our perspective? What if we ask: "If I start on one train, how many *other trains* can I connect to within two days?"</p>
+                <p class="text-lg mt-4">This lesson flips our graph model on its head. We'll now treat <strong>trains as the nodes</strong> and stations as the links between them. We'll apply the same powerful Depth First Search (DFS) and recursive techniques to explore this new "train graph" and uncover a web of interconnected journeys.</p>
+            </section>
+
+            <section id="train-graph" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">A New Perspective: The Train Graph</h2>
+                <p class="text-lg mb-4">In this new model, we are building a graph where:</p>
+                <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+                    <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+                        <li><strong>Nodes are Trains:</strong> Each train (e.g., Train 12269) is a node in our graph.</li>
+                        <li><strong>Edges are Stations:</strong> A connection exists between two trains if you can get off the first train at a station and board the second train from that same station within the allowed time. The station acts as the bridge, or "edge," between the two train nodes.</li>
+                    </ul>
+                </div>
+                <p class="text-lg mt-6">This allows us to answer questions about the connectivity of the train network itself. For example, starting on a train from Chennai, can we eventually connect to a train that goes to Mumbai? DFS is the perfect tool to find out.</p>
+            </section>
+
+            <section id="dfs-on-trains" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Adapting DFS for the Train Graph</h2>
+                <p class="text-lg mb-4">Our recursive DFS approach remains the same at its core, but the details of our `Explore` procedure change to fit the new model.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">The Exploration Process</h3>
+                        <p class="text-lg mt-2">Here's how we explore the train graph starting with an initial train:</p>
+                        <ol class="list-decimal list-inside text-lg mt-2 pl-4 space-y-3">
+                            <li>Start with a train, say `Train A`, and add it to our `visited_trains` list.</li>
+                            <li>Go through each stop (`Station X`) on `Train A`'s route.</li>
+                            <li>At `Station X`, look for all departing trains that leave after `Train A` arrives and within our time limit (e.g., 2 days).</li>
+                            <li>For the first valid connecting train we find, say `Train B`, that is NOT in `visited_trains`, we make a <strong>recursive call</strong> to explore `Train B`.</li>
+                            <li>This new exploration of `Train B` will follow the same steps, going deep into its connections.</li>
+                            <li>Once the exploration of `Train B` is complete, we <strong>backtrack</strong> to `Station X` to see if there are other connecting trains to explore. If not, we backtrack further to the next station on `Train A`'s route.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700">An Important Rule: Handling Paired Trains</h3>
+                        <p class="text-lg mt-2">Many trains have a "pair" (e.g., 12269 and 12270) that runs the same route in the opposite direction. To avoid trivial explorations where we just find the return train, we add a rule: when we visit a train, we add both it and its pair to the `visited_trains` list.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="exploration-viz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Train Exploration Visualization</h2>
+                <p class="text-lg mb-4">The DFS exploration of the train graph can get quite complex! The diagram below is a simplified visualization of the DFS tree created in the lecture, starting from Train 12269. Click the "Start Exploration" button to see how the search branches out from one train to another via connecting stations.</p>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex flex-col items-center mb-4">
+                        <div id="dfs-status" class="text-lg font-semibold h-8">Click Start to begin.</div>
+                        <button id="start-viz-btn" class="bg-violet-600 text-white px-6 py-2 rounded-md hover:bg-violet-700 transition">Start Exploration</button>
+                    </div>
+                    <div class="w-full overflow-x-auto">
+                        <svg id="dfs-tree-svg" width="800" height="450">
+                            <!-- SVG content will be generated by JS -->
+                        </svg>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+                <p class="text-lg mb-4">By shifting our perspective, we've unlocked a new way to analyze our network data:</p>
+                <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+                    <li><strong>Flexible Graph Models:</strong> The same dataset can be modeled in different ways. We can create a "station graph" (nodes=stations) or a "train graph" (nodes=trains) depending on the question we want to answer.</li>
+                    <li><strong>DFS is Versatile:</strong> The Depth First Search algorithm is a general-purpose tool that works on any graph, regardless of what the nodes and edges represent.</li>
+                    <li><strong>Stations as Connectors:</strong> In the train graph, stations are not the destinations but the crucial links that form the edges between train nodes.</li>
+                    <li><strong>Revisiting Stations:</strong> Unlike in the station graph DFS, a station can be visited multiple times in the train graph DFS, as long as we arrive via a different, unvisited train each time. However, a train can only be explored once.</li>
+                </ul>
+            </section>
+
+            <section id="quiz" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+                <p class="text-lg mb-6">Let's check your understanding of the train graph exploration.</p>
+                <div id="quiz-container" class="space-y-8"></div>
+                <div id="quiz-results" class="mt-8 text-2xl font-bold"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Sidebar and navigation logic ---
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-link');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-link');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Train Exploration Visualization ---
+            const startVizBtn = document.getElementById('start-viz-btn');
+            const statusDiv = document.getElementById('dfs-status');
+            const svg = document.getElementById('dfs-tree-svg');
+
+            const treeData = [
+                { id: 1, text: 'Start: 12269', x: 50, y: 225, parent: null },
+                { id: 2, text: 'via Vijayawada', x: 150, y: 125, parent: 1, edge: true },
+                { id: 3, text: 'Explore: 02246', x: 250, y: 125, parent: 2 },
+                { id: 4, text: 'via Bhubaneshwar', x: 350, y: 50, parent: 3, edge: true },
+                { id: 5, text: 'Explore: 02202', x: 450, y: 50, parent: 4 },
+                { id: 6, text: 'DEAD END', x: 550, y: 50, parent: 5, edge: true, end: true },
+                { id: 7, text: 'Backtrack...', x: 350, y: 125, parent: 3, edge: true, backtrack: true },
+                { id: 8, text: 'Explore: 22204', x: 450, y: 125, parent: 7 },
+                { id: 9, text: 'DEAD END', x: 550, y: 125, parent: 8, edge: true, end: true },
+                { id: 10, text: 'via Nagpur', x: 150, y: 325, parent: 1, edge: true },
+                { id: 11, text: 'Explore: 12262', x: 250, y: 325, parent: 10 },
+                { id: 12, text: 'via Mumbai', x: 350, y: 325, parent: 11, edge: true },
+                { id: 13, text: 'Explore: 12263', x: 450, y: 250, parent: 12 },
+                { id: 14, text: '...', x: 550, y: 250, parent: 13, edge: true },
+                { id: 15, text: 'Explore: 12223', x: 450, y: 400, parent: 12 },
+                { id: 16, text: '...', x: 550, y: 400, parent: 15, edge: true },
+            ];
+            
+            function drawTree() {
+                let svgHTML = '';
+                treeData.forEach(node => {
+                    const color = node.end ? '#ef4444' : (node.backtrack ? '#6b7280' : '#6d28d9');
+                    // Draw node
+                    if (!node.edge) {
+                         svgHTML += `<g id="vis-node-${node.id}" class="dfs-tree-element">
+                            <rect x="${node.x - 50}" y="${node.y - 15}" width="100" height="30" rx="5" fill="${color}" stroke="#4c1d95" />
+                            <text x="${node.x}" y="${node.y}" dy=".3em" text-anchor="middle" fill="white" font-size="12">${node.text}</text>
+                         </g>`;
+                    }
+                    // Draw edge from parent
+                    if (node.parent) {
+                        const parentNode = treeData.find(p => p.id === node.parent);
+                        const startX = parentNode.edge ? parentNode.x : parentNode.x + 50;
+                        const startY = parentNode.y;
+                        const endX = node.edge ? node.x : node.x - 50;
+                        const endY = node.y;
+                        
+                        svgHTML += `<g id="vis-node-${node.id}" class="dfs-tree-element">
+                            <path d="M ${startX} ${startY} L ${endX} ${endY}" stroke="${color}" stroke-width="2" fill="none" />
+                            ${node.edge && !node.end ? `<text x="${(startX + endX) / 2}" y="${(startY + endY) / 2 - 5}" text-anchor="middle" font-size="11" fill="#374151">${node.text}</text>` : ''}
+                        </g>`;
+                    }
+                });
+                svg.innerHTML = svgHTML;
+            }
+
+            async function animateTree() {
+                startVizBtn.disabled = true;
+                drawTree(); // draw all elements but keep them hidden
+                
+                for (let i = 1; i <= treeData.length; i++) {
+                    const element = document.getElementById(`vis-node-${i}`);
+                    const nodeData = treeData.find(n => n.id === i);
+                    
+                    if(nodeData && !nodeData.edge) {
+                       statusDiv.textContent = `Exploring Train ${nodeData.text.split(': ')[1]}...`;
+                    } else if (nodeData && nodeData.edge && !nodeData.backtrack && !nodeData.end) {
+                       statusDiv.textContent = `Connecting ${nodeData.text}...`;
+                    } else if (nodeData && nodeData.backtrack) {
+                        statusDiv.textContent = `Backtracking...`;
+                    } else if (nodeData && nodeData.end) {
+                         statusDiv.textContent = `Path terminated.`;
+                    }
+
+                    if (element) {
+                        element.classList.add('visible');
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                }
+                 statusDiv.textContent = `Exploration Complete!`;
+            }
+
+            drawTree(); // Initial draw
+            startVizBtn.addEventListener('click', animateTree);
+
+
+            // --- Quiz Logic ---
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            let score = 0;
+
+            const quizQuestions = [
+                // --- Benchmark Questions from AQ11_3.docx ---
+                {
+                    question: "Same station can be seen more than once in DFS tree of explored trains in the lecture.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. A station is just a connection point. You can arrive at the same station via different trains at different times, so it can be visited multiple times in the overall exploration."
+                },
+                {
+                    question: "The DFS tree of explored trains in the lecture gives information of order in which trains are seen?",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Yes, the structure of the DFS tree directly reflects the order of exploration. Parent nodes (trains) are explored before their children."
+                },
+                {
+                    question: "Which of the following situations are referring to terminate a branch of DFS tree of explored trains in the lecture? (Select all that apply)",
+                    type: "multiple-choice",
+                    answers: ["Visited trains", "Exceeds the given time limit to explore trains", "Unavailability of trains at that station"],
+                    correct: ["Visited trains", "Exceeds the given time limit to explore trains", "Unavailability of trains at that station"],
+                    explanation: "A branch of the search terminates if you try to connect to an already visited train, if you run out of time (e.g., the 2-day limit), or if you arrive at a station with no valid onward connections."
+                },
+                // --- New Questions ---
+                {
+                    question: "In the 'train graph' model, what do the edges represent?",
+                    type: "single-choice",
+                    answers: ["The train routes", "The time between train departures", "The stations where you can transfer between trains", "The distance between trains"],
+                    correct: ["The stations where you can transfer between trains"],
+                    explanation: "In this model, trains are the nodes. The stations are the 'connections' or 'edges' that allow you to move from one train-node to another."
+                },
+                {
+                    question: "Why is it useful to mark a train's 'pair' (e.g., the return journey train) as visited at the same time?",
+                    type: "single-choice",
+                    answers: ["To make the algorithm run faster", "To prevent finding trivial, uninteresting paths where you just take the same train back", "Because the trains are identical", "To save memory"],
+                    correct: ["To prevent finding trivial, uninteresting paths where you just take the same train back"],
+                    explanation: "This rule prevents the search from immediately finding the return train at the next station, which isn't a useful discovery. It forces the DFS to find more interesting, non-trivial connections."
+                },
+                {
+                    question: "If our time limit was only 1 day instead of 2, the resulting DFS tree of explored trains would be smaller or the same size.",
+                    type: "true-false",
+                    answers: ["True", "False"],
+                    correct: ["True"],
+                    explanation: "Correct. A shorter time limit provides fewer opportunities for connections, especially overnight waits. This would prune many branches from the exploration tree, making it smaller or, at best, the same size."
+                },
+                {
+                    question: "What is the main difference between the 'visited' list in the station-graph DFS versus the train-graph DFS?",
+                    type: "single-choice",
+                    answers: ["There is no difference.", "The train-graph DFS doesn't need a visited list.", "The station-graph DFS tracks visited stations; the train-graph DFS tracks visited trains.", "The train-graph visited list is always smaller."],
+                    correct: ["The station-graph DFS tracks visited stations; the train-graph DFS tracks visited trains."],
+                    explanation: "The 'visited' list always corresponds to the nodes of the graph. When stations are nodes, we track visited stations. When trains are nodes, we track visited trains."
+                },
+                {
+                    question: "Exploring the train graph with DFS could help a traveler find...",
+                    type: "single-choice",
+                    answers: ["...the single fastest train between two cities.", "...the cheapest ticket for a journey.", "...complex, multi-train itineraries across the country.", "...the most scenic route."],
+                    correct: ["...complex, multi-train itineraries across the country."],
+                    explanation: "The purpose of this DFS is to uncover chains of connections between different train services, which is exactly what a complex travel itinerary is."
+                }
+            ];
+
+            function renderQuiz() {
+                quizContainer.innerHTML = quizQuestions.map((q, index) => {
+                    const answersHtml = q.answers.map(answer => `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                            <input type="${q.type === 'multiple-choice' ? 'checkbox' : 'radio'}" name="question${index}" value="${answer}" class="form-${q.type === 'multiple-choice' ? 'checkbox' : 'radio'} h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500">
+                            <span>${answer}</span>
+                        </label>
+                    `).join('');
+                    return `
+                        <div class="quiz-question" data-question-index="${index}">
+                            <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+                            <div class="space-y-3">${answersHtml}</div>
+                            <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+                            <div class="feedback mt-3"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('submit-answer')) {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const index = parseInt(questionDiv.dataset.questionIndex);
+                    const question = quizQuestions[index];
+                    const feedbackDiv = questionDiv.querySelector('.feedback');
+                    
+                    const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+                    
+                    if (selectedAnswers.length === 0) {
+                        feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+                        return;
+                    }
+
+                    questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+                    e.target.disabled = true;
+                    e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const sortedSelected = [...selectedAnswers].sort();
+                    const sortedCorrect = [...question.correct].sort();
+
+                    const isCorrect = JSON.stringify(sortedSelected) === JSON.stringify(sortedCorrect);
+
+                    if (isCorrect) {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+                        score++;
+                    } else {
+                        feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+                    }
+                    
+                    const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+                    if (answeredQuestions === quizQuestions.length) {
+                        quizResults.innerHTML = `Quiz Complete! Your Score: ${score} / ${quizQuestions.length}`;
+                    }
+                }
+            });
+
+            renderQuiz();
+        });
+    </script>
+</body>
+</html>

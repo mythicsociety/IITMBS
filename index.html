@@ -29,18 +29,21 @@
         }
         /* Active state for sidebar */
         .sidebar-item.active {
-            background-color: #e0e7ff; /* indigo-100 */
-            color: #3730a3; /* indigo-800 */
+            background-color: #4338ca; /* indigo-700 */
+            color: #ffffff; /* white */
             font-weight: 600;
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-slate-100 text-gray-800">
 
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="w-1/3 lg:w-1/4 bg-white border-r border-gray-200 p-6 flex flex-col">
-            <h2 class="text-2xl font-bold mb-6">IITM BDS Material</h2>
+        <aside class="w-1/3 lg:w-1/4 bg-slate-800 text-slate-100 p-6 flex flex-col">
+            <div class="mb-8">
+                <img src="https://study.iitm.ac.in/ds/assets/images/logo/logo.png" alt="IIT Madras BS in Data Science and Applications" class="w-full h-auto">
+            </div>
+            <h2 class="text-xl font-semibold mb-4 text-slate-300">Courses</h2>
             <nav id="course-sidebar" class="flex flex-col space-y-2">
                 <!-- Sidebar items will be dynamically inserted here -->
             </nav>
@@ -141,6 +144,19 @@
                         { week: 6, topic: 'L6.5: Hypothesis Verification with Lists', file: 'LearningGuides/Week6/Week6_5.html' },
                         { week: 6, topic: 'L6.6: Hypothesis Verification Pseudocode', file: 'LearningGuides/Week6/Week6_6.html' },
                         { week: 6, topic: 'L6.7: Introduction to Train Dataset', file: 'LearningGuides/Week6/Week6_7.html' },
+                        // Week 7 Guides
+                        { week: 7, topic: 'L7.1: Examples to introduce dictionary', file: 'LearningGuides/Week7/Week7_1.html' },
+                        { week: 7, topic: 'L7.2: Concept of dictionary to solve birthday paradox problem', file: 'LearningGuides/Week7/Week7_2.html' },
+                        { week: 7, topic: 'L7.3: Pseudocode for dictionaries', file: 'LearningGuides/Week7/Week7_3.html' },
+                        { week: 7, topic: 'L7.4: Relations among customers (Part 1)', file: 'LearningGuides/Week7/Week7_4.html' },
+                        { week: 7, topic: 'L7.5: Relations among customers (Part 2)', file: 'LearningGuides/Week7/Week7_5.html' },
+                        { week: 7, topic: 'L7.6: Introduction to dictionary data structure', file: 'LearningGuides/Week7/Week7_6.html' },
+                        { week: 7, topic: 'L7.7: Pseudocodes for real-time examples using dictionaries', file: 'LearningGuides/Week7/Week7_7.html' },
+                        // Week 8 Guides
+                        { week: 8, topic: 'L8.2: Dictionaries with lists as values', file: 'LearningGuides/Week8/Week8_2.html' },
+                        { week: 8, topic: 'L8.3: Dictionary comparison to find common elements', file: 'LearningGuides/Week8/Week8_3.html' },
+                        { week: 8, topic: 'L8.4: Procedure to find relations among customers', file: 'LearningGuides/Week8/Week8_4.html' },
+                        { week: 8, topic: 'L8.5: Side effects in pseudocodes', file: 'LearningGuides/Week8/Week8_5.html' },
                         // Week 9 Guides
                         { week: 9, topic: 'L9.1: Introduction to Graphs', file: 'LearningGuides/Week9/Wk9_1.html' },
                         { week: 9, topic: 'L9.2: Introduction to Matrices', file: 'LearningGuides/Week9/Wk9_2.html' },
@@ -148,7 +164,19 @@
                         { week: 9, topic: 'L9.4: The Concept of Popular Students', file: 'LearningGuides/Week9/Wk9_4.html' },
                         { week: 9, topic: 'L9.5: Pseudocodes for Real-Time Examples', file: 'LearningGuides/Week9/Wk9_5.html' },
                         { week: 9, topic: 'L9.6: Interactive Guide to Graphs and Pseudocode', file: 'LearningGuides/Week9/Wk9_6.html' },
-                        { week: 9, topic: 'L9.7: Representing Train Routes with Graphs', file: 'LearningGuides/Week9/Wk9_7.html' }
+                        { week: 9, topic: 'L9.7: Representing Train Routes with Graphs', file: 'LearningGuides/Week9/Wk9_7.html' },
+                        // Week 10 Guides
+                        { week: 10, topic: 'L10.1: Representation of a graph as an adjacency matrix', file: 'LearningGuides/Week10/Week10_1.html' },
+                        { week: 10, topic: 'L10.2: Construction of a graph where trains are nodes', file: 'LearningGuides/Week10/Week10_2.html' },
+                        { week: 10, topic: 'L10.3: Pseudocodes for finding a route between two stations', file: 'LearningGuides/Week10/Week10_3.html' },
+                        { week: 10, topic: 'L10.4: Pseudocode for edge labelled graph', file: 'LearningGuides/Week10/Week10_4.html' },
+                        // Week 11 Guides
+                        { week: 11, topic: 'L11.1: Depth First Search (DFS) and Recursive Procedure Call', file: 'LearningGuides/Week11/Week11_1.html' },
+                        { week: 11, topic: 'L11.2: DFS for Finding Cycles', file: 'LearningGuides/Week11/Week11_2.html' },
+                        { week: 11, topic: 'L11.3: Exploring the Train Graph with DFS', file: 'LearningGuides/Week11/Week11_3.html' },
+                        { week: 11, topic: 'L11.4: Mutual Recursion and Bipartite Graphs', file: 'LearningGuides/Week11/Week11_4.html' },
+                        { week: 11, topic: 'L11.5: Pseudocode for Recursion', file: 'LearningGuides/Week11/Week11_5.html' },
+                        { week: 11, topic: 'L11.6: Comparing Graph Traversal Algorithms', file: 'LearningGuides/Week11/Week11_6.html' }
                     ]
                 }
             ];
@@ -190,7 +218,7 @@
                 }
 
                 mainContent.innerHTML = `
-                    <h1 class="text-4xl font-bold mb-2">${course.title}</h1>
+                    <h1 class="text-4xl font-bold mb-2 text-slate-800">${course.title}</h1>
                     <p class="text-lg text-gray-600 mb-8">${course.description}</p>
                     <div class="space-y-4">${accordionHtml}</div>
                 `;
@@ -213,7 +241,7 @@
             courses.forEach(course => {
                 const item = document.createElement('a');
                 item.href = '#';
-                item.className = 'sidebar-item p-3 rounded-md hover:bg-gray-100 transition-colors duration-200';
+                item.className = 'sidebar-item p-3 rounded-md hover:bg-slate-700 transition-colors duration-200';
                 item.textContent = course.title;
                 item.dataset.courseId = course.id;
                 
