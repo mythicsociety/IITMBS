@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Interactive Guide to Natural Numbers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <style>
+        /* Custom Styles for a polished look */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        /* Sidebar active link style */
+        .sidebar-link.active {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Smooth transitions */
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Custom scrollbar for a better look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Styles for interactive elements */
+        .interactive-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Quiz feedback styles */
+        .correct-answer {
+            color: #16a34a;
+            font-weight: 700;
+        }
+        .incorrect-answer {
+            color: #dc2626;
+            font-weight: 700;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid #cbd5e1;
+        }
+        code {
+            background-color: #e2e8f0;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-slate-800 text-white p-5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-40 overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-8 text-indigo-400">Learning Guide</h2>
+        <ul class="space-y-2">
+            <li><a href="#introduction" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">What are Numbers?</a></li>
+            <li><a href="#operations" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Basic Operations</a></li>
+            <li><a href="#multiplication" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Multiplication & Powers</a></li>
+            <li><a href="#division" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Division & Remainders</a></li>
+            <li><a href="#factors-primes" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Factors & Prime Numbers</a></li>
+            <li><a href="#quiz" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Knowledge Check</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="md:ml-64 p-6 md:p-10">
+        <div class="max-w-4xl mx-auto">
+
+            <!-- Section 1: Introduction -->
+            <section id="introduction" class="mb-16 scroll-mt-20">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Natural Numbers and Their Operations</h1>
+                <p class="text-lg text-slate-600 mb-6">Welcome! Let's start a journey to understand the very first numbers we ever learn about: natural numbers. Think of them as the building blocks for all of math.</p>
+                
+                <h2 class="text-3xl font-bold text-slate-900 mt-8 mb-4">What Are Natural Numbers?</h2>
+                <p class="mb-4">Imagine you have a basket of apples. How many are there? One, two, three... The numbers you use to count things are called <strong>natural numbers</strong>. They are the simplest numbers we know: $0, 1, 2, 3, 4, 5,$ and so on, forever!</p>
+                <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4 rounded-md my-4">
+                    <p><strong>What about zero (0)?</strong> The number 0 is super important! It represents "nothing" or "no objects." In this guide, we'll include 0 in our set of natural numbers, which we write with a special symbol: $\mathbb{N} = \{0, 1, 2, 3, ...\}$.</p>
+                </div>
+                <p>When we take away a bigger number from a smaller one, like $5 - 6$, we get a negative number. To handle this, we expand our number system to include negative numbers. This bigger group, $\{..., -3, -2, -1, 0, 1, 2, 3, ...\}$, is called the <strong>integers</strong>, written as $\mathbb{Z}$.</p>
+                
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">Interactive Number Line</h3>
+                    <p class="text-sm text-slate-500 mb-4">Click the buttons to see how numbers move on the number line.</p>
+                    <div class="relative h-1 bg-slate-300 rounded-full my-6">
+                        <div id="number-dot" class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-indigo-600 rounded-full transition-all duration-300" style="left: 50%;"></div>
+                    </div>
+                    <div class="flex justify-center items-center gap-4">
+                        <button id="subtract-btn" class="px-4 py-2 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-600">- 1</button>
+                        <span id="number-display" class="text-2xl font-bold w-12 text-center">0</span>
+                        <button id="add-btn" class="px-4 py-2 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600">+ 1</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Basic Operations -->
+            <section id="operations" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">The Four Basic Operations</h2>
+                <p class="mb-4">With numbers, we can do four basic things: add, subtract, multiply, and divide. Let's see what happens when we do these with natural numbers.</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li><strong>Addition (+):</strong> If you add two natural numbers, you always get another natural number. Example: $3 + 5 = 8$.</li>
+                    <li><strong>Subtraction (-):</strong> This is where it gets tricky! If you subtract a bigger number from a smaller one, like $4 - 9$, you get $-5$, which is an integer but not a natural number.</li>
+                    <li><strong>Multiplication (×):</strong> Multiplying two natural numbers always gives a natural number. Example: $4 \times 6 = 24$.</li>
+                    <li><strong>Division (÷):</strong> Sometimes division works out perfectly ($20 \div 5 = 4$), but other times it doesn't ($19 \div 5$ doesn't give a whole number).</li>
+                </ul>
+            </section>
+
+            <!-- Section 3: Multiplication & Powers -->
+            <section id="multiplication" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Multiplication is Just Repeated Addition</h2>
+                <p class="mb-4">What does $7 \times 4$ really mean? It means you have 4 groups of 7. So, it's just a shortcut for adding 7 to itself 4 times: $7 + 7 + 7 + 7 = 28$.</p>
+                
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">Multiplication Visualizer</h3>
+                    <p class="text-sm text-slate-500 mb-4">Enter two numbers to see multiplication as repeated addition.</p>
+                    <div class="flex gap-4 items-center mb-4">
+                        <input type="number" id="m-input" value="3" class="w-20 p-2 border rounded-md">
+                        <span class="text-xl font-bold">×</span>
+                        <input type="number" id="n-input" value="4" class="w-20 p-2 border rounded-md">
+                        <button id="visualize-btn" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700">Visualize</button>
+                    </div>
+                    <div id="multiplication-visual" class="flex flex-wrap gap-4 p-4 bg-white rounded-md border"></div>
+                    <div id="multiplication-equation" class="mt-4 text-center text-xl font-bold"></div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Powers are Repeated Multiplication</h3>
+                <p class="mb-4">Just like multiplication is repeated addition, raising a number to a power (exponentiation) is repeated multiplication.</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li>$m^2$ is called "$m$ squared" and means $m \times m$. It's called squared because it gives the area of a square with side length $m$.</li>
+                    <li>$m^3$ is called "$m$ cubed" and means $m \times m \times m$. It's called cubed because it gives the volume of a cube with side length $m$.</li>
+                    <li>$m^k$ is "$m$ to the power of $k$" and means multiplying $m$ by itself $k$ times.</li>
+                </ul>
+            </section>
+
+            <!-- Section 4: Division & Remainders -->
+            <section id="division" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Division and What's Left Over</h2>
+                <p class="mb-4">Division is like sharing things equally. If you have 20 mangoes for 5 friends, each gets 4. This is because you can subtract 5 from 20 four times until you have nothing left.</p>
+                <p class="mb-4">But what if you have 19 mangoes for 5 friends? You can give each friend 3 mangoes, but you'll have 4 left over. You can't give out another round.</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li>The number of full rounds you can do is the <strong>quotient</strong>. For $19 \div 5$, the quotient is 3.</li>
+                    <li>The amount left over is the <strong>remainder</strong>. For $19 \div 5$, the remainder is 4.</li>
+                </ul>
+                <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-700 p-4 rounded-md my-4">
+                    <p><strong>Modulus Operator:</strong> In math and programming, we often use <code>mod</code> to find the remainder. So, we'd write $19 \text{ mod } 5 = 4$.</p>
+                </div>
+                
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">Division with Remainder Calculator</h3>
+                    <p class="text-sm text-slate-500 mb-4">See how many groups you can make and what's left over.</p>
+                    <div class="flex gap-4 items-center mb-4">
+                        <input type="number" id="dividend-input" value="19" class="w-24 p-2 border rounded-md">
+                        <span class="text-xl font-bold">÷</span>
+                        <input type="number" id="divisor-input" value="5" class="w-24 p-2 border rounded-md">
+                        <button id="calculate-division-btn" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700">Calculate</button>
+                    </div>
+                    <div id="division-result" class="mt-4 text-center text-lg font-medium"></div>
+                </div>
+            </section>
+
+            <!-- Section 5: Factors & Prime Numbers -->
+            <section id="factors-primes" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Factors and Prime Numbers</h2>
+                <p class="mb-4">A number <code>a</code> is a <strong>factor</strong> of <code>b</code> if <code>a</code> divides <code>b</code> with no remainder. For example, the factors of 12 are 1, 2, 3, 4, 6, and 12. This is because $1 \times 12 = 12$, $2 \times 6 = 12$, and $3 \times 4 = 12$.</p>
+                
+                <h3 class="text-2xl font-bold text-slate-900 mt-8 mb-4">The Special Primes</h3>
+                <p class="mb-4">Some numbers are special because they only have two factors: 1 and themselves. These are called <strong>prime numbers</strong>. The first few primes are 2, 3, 5, 7, 11, 13, ...</p>
+                <div class="bg-rose-100 border-l-4 border-rose-500 text-rose-700 p-4 rounded-md my-4">
+                    <p><strong>Is 1 a prime number?</strong> No! It only has one factor (itself), but primes need to have exactly two different factors.</p>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Prime Factorization</h3>
+                <p class="mb-4">One of the coolest facts in math is that any natural number greater than 1 can be written as a unique product of prime numbers. It's like a secret code for each number!</p>
+                <p class="mb-4">For example, $126 = 2 \times 3 \times 3 \times 7$, which we can write as $2 \times 3^2 \times 7$. There's no other combination of primes that will multiply to 126.</p>
+
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">Interactive Sieve of Eratosthenes</h3>
+                    <p class="text-sm text-slate-500 mb-4">This is an ancient method for finding prime numbers. Click the button to see it in action!</p>
+                    <button id="sieve-btn" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700 mb-4">Find Primes up to 100</button>
+                    <div id="sieve-grid" class="grid grid-cols-10 gap-1 text-center"></div>
+                </div>
+            </section>
+
+            <!-- Section 6: Knowledge Check Quiz -->
+            <section id="quiz" class="scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6">Knowledge Check</h2>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Mobile Menu Logic ---
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Close sidebar when a link is clicked on mobile
+            sidebar.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A' && window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+
+            // --- Active Sidebar Link on Scroll ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- Interactive Number Line ---
+            const numberDot = document.getElementById('number-dot');
+            const numberDisplay = document.getElementById('number-display');
+            const addBtn = document.getElementById('add-btn');
+            const subtractBtn = document.getElementById('subtract-btn');
+            let currentNumber = 0;
+            const numberLineWidth = numberDot.parentElement.offsetWidth;
+
+            function updateNumberLine() {
+                numberDisplay.textContent = currentNumber;
+                // Scale position from -20 to 20
+                const percentage = (currentNumber + 20) / 40 * 100;
+                numberDot.style.left = `clamp(0%, ${percentage}%, 100%)`;
+            }
+            addBtn.addEventListener('click', () => { currentNumber++; updateNumberLine(); });
+            subtractBtn.addEventListener('click', () => { currentNumber--; updateNumberLine(); });
+            updateNumberLine();
+
+            // --- Multiplication Visualizer ---
+            const mInput = document.getElementById('m-input');
+            const nInput = document.getElementById('n-input');
+            const visualizeBtn = document.getElementById('visualize-btn');
+            const visualContainer = document.getElementById('multiplication-visual');
+            const equationContainer = document.getElementById('multiplication-equation');
+
+            function visualizeMultiplication() {
+                const m = parseInt(mInput.value) || 0;
+                const n = parseInt(nInput.value) || 0;
+                visualContainer.innerHTML = '';
+                if (m > 20 || n > 20 || m < 0 || n < 0) {
+                    visualContainer.innerHTML = '<p class="text-red-500">Please use positive numbers up to 20 for the visualizer.</p>';
+                    equationContainer.innerHTML = '';
+                    return;
+                }
+                
+                let equation = [];
+                for (let i = 0; i < n; i++) {
+                    const group = document.createElement('div');
+                    group.className = 'flex flex-wrap gap-1 p-2 border rounded-md bg-slate-100';
+                    for (let j = 0; j < m; j++) {
+                        const dot = document.createElement('div');
+                        dot.className = 'w-4 h-4 bg-indigo-500 rounded-full';
+                        group.appendChild(dot);
+                    }
+                    visualContainer.appendChild(group);
+                    equation.push(m);
+                }
+                equationContainer.innerHTML = `${n} groups of ${m} is ${equation.join(' + ')} = <span class="text-indigo-600">${m*n}</span>`;
+            }
+            visualizeBtn.addEventListener('click', visualizeMultiplication);
+            visualizeMultiplication();
+
+            // --- Division Calculator ---
+            const dividendInput = document.getElementById('dividend-input');
+            const divisorInput = document.getElementById('divisor-input');
+            const calculateDivisionBtn = document.getElementById('calculate-division-btn');
+            const divisionResult = document.getElementById('division-result');
+
+            function calculateDivision() {
+                const dividend = parseInt(dividendInput.value) || 0;
+                const divisor = parseInt(divisorInput.value) || 1; // Avoid division by zero
+                if (divisor === 0) {
+                     divisionResult.innerHTML = `<span class="text-red-500">Cannot divide by zero!</span>`;
+                     return;
+                }
+                const quotient = Math.floor(dividend / divisor);
+                const remainder = dividend % divisor;
+                divisionResult.innerHTML = `Quotient: <span class="text-indigo-600">${quotient}</span>, Remainder: <span class="text-amber-600">${remainder}</span>`;
+            }
+            calculateDivisionBtn.addEventListener('click', calculateDivision);
+            calculateDivision();
+
+            // --- Sieve of Eratosthenes ---
+            const sieveBtn = document.getElementById('sieve-btn');
+            const sieveGrid = document.getElementById('sieve-grid');
+
+            function createSieveGrid() {
+                sieveGrid.innerHTML = '';
+                for (let i = 1; i <= 100; i++) {
+                    const cell = document.createElement('div');
+                    cell.id = `sieve-${i}`;
+                    cell.textContent = i;
+                    cell.className = 'p-2 border rounded-md bg-white transition-all duration-300';
+                    sieveGrid.appendChild(cell);
+                }
+            }
+            createSieveGrid();
+
+            sieveBtn.addEventListener('click', () => {
+                createSieveGrid();
+                let numbers = Array(101).fill(true);
+                numbers[0] = numbers[1] = false;
+
+                let p = 2;
+                let delay = 50;
+
+                function processNumber() {
+                    if (p * p > 100) {
+                        highlightPrimes();
+                        return;
+                    }
+
+                    if (numbers[p]) {
+                        document.getElementById(`sieve-${p}`).classList.add('bg-green-200', 'font-bold');
+                        for (let i = p * p; i <= 100; i += p) {
+                            if (numbers[i]) {
+                                numbers[i] = false;
+                                setTimeout(() => {
+                                    const cell = document.getElementById(`sieve-${i}`);
+                                    cell.classList.add('bg-red-200', 'line-through', 'text-slate-400');
+                                }, delay);
+                                delay += 5;
+                            }
+                        }
+                    }
+                    
+                    p++;
+                    setTimeout(processNumber, delay/2);
+                }
+                
+                function highlightPrimes() {
+                    for(let i = 2; i <= 100; i++) {
+                        if (numbers[i]) {
+                             setTimeout(() => {
+                                document.getElementById(`sieve-${i}`).classList.add('bg-green-400', 'text-white', 'font-bold', 'scale-110');
+                             }, (i-p)*10);
+                        }
+                    }
+                }
+                
+                processNumber();
+            });
+
+            // --- Quiz Logic ---
+            const quizData = [
+                // Benchmark Questions
+                {
+                    question: "Below is a list of numbers: 22, -17, 47, -2000, 0, 1, 43, 1729, 6174, -63, 100, 32, -9. How many natural numbers are there in the given list?",
+                    type: 'single',
+                    options: ['6', '7', '8', '9'],
+                    correct: [3],
+                    explanation: "Natural numbers are non-negative integers (0, 1, 2, ...). The natural numbers in the list are 22, 47, 0, 1, 43, 1729, 6174, 100, and 32. That's a total of 9 numbers."
+                },
+                {
+                    question: "Suppose a class has M students. If we distribute 3 pens to each student, then 4 pens will remain. If there are 70 pens in total, what is the value of M?",
+                    type: 'single',
+                    options: ['22', '20', '19', '23'],
+                    correct: [0],
+                    explanation: "This is a division with remainder problem. 70 pens divided by M students gives a quotient of 3 and a remainder of 4. So, $70 = 3 \\times M + 4$. Subtracting 4 gives $66 = 3 \\times M$. Dividing by 3 gives $M = 22$."
+                },
+                {
+                    question: "Consider ‘2’ to be the first prime number. Which of the following will be the sixteenth prime number?",
+                    type: 'single',
+                    options: ['47', '61', '59', '53'],
+                    correct: [3],
+                    explanation: "Listing the primes: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53. The 16th prime is 53."
+                },
+                {
+                    question: "If $x \\text{ mod } 3 = 1$ and $x \\text{ mod } 7 = 4$. Which of the following is(are) possible values for $x$?",
+                    type: 'multiple',
+                    options: ['25', '34', '58', '67'],
+                    correct: [0, 3],
+                    explanation: "We check each option. 25 mod 3 = 1 and 25 mod 7 = 4 (Correct). 34 mod 3 = 1 but 34 mod 7 = 6 (Incorrect). 58 mod 3 = 1 but 58 mod 7 = 2 (Incorrect). 67 mod 3 = 1 and 67 mod 7 = 4 (Correct)."
+                },
+                // New Questions
+                {
+                    question: "What is the unique prime factorization of the number 60?",
+                    type: 'single',
+                    options: ['$2 \\times 30$', '$2^2 \\times 3 \\times 5$', '$4 \\times 15$', '$5 \\times 12$'],
+                    correct: [1],
+                    explanation: "Prime factorization means breaking a number down into only prime numbers. $60 = 2 \\times 30 = 2 \\times 2 \\times 15 = 2 \\times 2 \\times 3 \\times 5$, which is written as $2^2 \\times 3 \\times 5$."
+                },
+                {
+                    question: "Which of the following statements is TRUE?",
+                    type: 'single',
+                    options: ['Every integer is a natural number.', '1 is a prime number.', 'Multiplying two negative integers gives a negative integer.', 'The set of natural numbers is infinite.'],
+                    correct: [3],
+                    explanation: "The natural numbers continue forever, so the set is infinite. Negative integers are not natural numbers. 1 is not prime. The product of two negative integers is positive."
+                },
+                {
+                    question: "What is the result of $31 \\text{ mod } 6$?",
+                    type: 'single',
+                    options: ['1', '3', '5', '6'],
+                    correct: [0],
+                    explanation: "31 divided by 6 is 5 with a remainder of 1. ($6 \\times 5 = 30$, and $31 - 30 = 1$)."
+                },
+                {
+                    question: "Select all the numbers from the list that are factors of 48.",
+                    type: 'multiple',
+                    options: ['3', '5', '8', '10'],
+                    correct: [0, 2],
+                    explanation: "A factor divides a number evenly. $48 \\div 3 = 16$. $48 \\div 8 = 6$. 5 and 10 do not divide 48 without a remainder."
+                },
+                {
+                    question: "A baker has 50 cookies and wants to put them in boxes of 6. How many cookies will be left over?",
+                    type: 'single',
+                    options: ['0', '2', '4', '5'],
+                    correct: [1],
+                    explanation: "This is asking for the remainder of $50 \\div 6$. We know $6 \\times 8 = 48$. So, $50 - 48 = 2$. There will be 2 cookies left over."
+                },
+                {
+                    question: "The result of $(-8) \\times (-4)$ is:",
+                    type: 'single',
+                    options: ['-32', '32', '-12', '12'],
+                    correct: [1],
+                    explanation: "When multiplying two negative numbers, the result is always positive. $8 \\times 4 = 32$."
+                },
+                 {
+                    question: "Which of the following numbers are perfect squares?",
+                    type: 'multiple',
+                    options: ['36', '48', '81', '90'],
+                    correct: [0, 2],
+                    explanation: "A perfect square is an integer that is the square of an integer. $36 = 6^2$ and $81 = 9^2$. 48 and 90 are not perfect squares."
+                },
+                {
+                    question: "True or False: The number 0 is an integer.",
+                    type: 'single',
+                    options: ['True', 'False'],
+                    correct: [0],
+                    explanation: "The set of integers $\\mathbb{Z}$ includes all whole numbers (positive, negative, and zero)."
+                },
+                {
+                    question: "What is $4^3$?",
+                    type: 'single',
+                    options: ['12', '16', '64', '256'],
+                    correct: [2],
+                    explanation: "$4^3$ means $4 \\times 4 \\times 4$. $4 \\times 4 = 16$, and $16 \\times 4 = 64$."
+                },
+                {
+                    question: "If a number is divisible by 2, it must be:",
+                    type: 'single',
+                    options: ['An odd number', 'A prime number', 'A composite number', 'An even number'],
+                    correct: [3],
+                    explanation: "The definition of an even number is that it is divisible by 2. Note that 2 itself is a prime number, but all other even numbers are composite."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'p-6 bg-white rounded-lg shadow-md';
+                
+                let optionsHTML = q.options.map((opt, i) => `
+                    <div class="flex items-center">
+                        <input type="${q.type === 'single' ? 'radio' : 'checkbox'}" id="q${index}o${i}" name="q${index}" value="${i}" class="mr-3">
+                        <label for="q${index}o${i}">${opt}</label>
+                    </div>
+                `).join('');
+
+                questionElem.innerHTML = `
+                    <p class="font-bold mb-4">${index + 1}. ${q.question}</p>
+                    <div class="space-y-2 mb-4">${optionsHTML}</div>
+                    <button class="check-answer-btn px-4 py-2 text-sm bg-slate-200 font-semibold rounded-md hover:bg-slate-300">Check Answer</button>
+                    <div class="feedback mt-4 hidden"></div>
+                `;
+                quizContainer.appendChild(questionElem);
+            });
+
+            quizContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('check-answer-btn')) {
+                    const questionElem = e.target.closest('.p-6');
+                    const feedbackElem = questionElem.querySelector('.feedback');
+                    const questionIndex = Array.from(quizContainer.children).indexOf(questionElem);
+                    const questionData = quizData[questionIndex];
+                    const inputs = questionElem.querySelectorAll('input:checked');
+                    
+                    let selectedIndices = Array.from(inputs).map(input => parseInt(input.value));
+                    
+                    feedbackElem.classList.remove('hidden');
+                    let isCorrect = false;
+                    
+                    if (questionData.type === 'single') {
+                        isCorrect = selectedIndices.length === 1 && selectedIndices[0] === questionData.correct[0];
+                    } else { // multiple
+                        isCorrect = selectedIndices.length === questionData.correct.length && selectedIndices.every(val => questionData.correct.includes(val));
+                    }
+                    
+                    if (isCorrect) {
+                        feedbackElem.innerHTML = `<p class="correct-answer">Correct!</p><p class="explanation">${questionData.explanation}</p>`;
+                    } else {
+                        feedbackElem.innerHTML = `<p class="incorrect-answer">Not quite.</p><p class="explanation">${questionData.explanation}</p>`;
+                    }
+                    MathJax.typesetPromise([feedbackElem]);
+                }
+            });
+            MathJax.typesetPromise();
+        });
+    </script>
+</body>
+</html>

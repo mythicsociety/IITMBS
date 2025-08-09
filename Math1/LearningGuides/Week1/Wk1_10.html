@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L1.10: Relations: Examples - Learning Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the active navigation link */
+        .sidebar-link.active {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: 600;
+        }
+        /* Custom scrollbar for aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Ensure sidebar is truly sticky and has its own scroll context if needed */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 50;
+        }
+        /* Main content padding to avoid overlap with fixed sidebar */
+        .main-content {
+            padding-left: 16rem; /* Same as sidebar width */
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                padding-left: 0;
+            }
+        }
+    </style>
+     <!-- Main application script defined first -->
+    <script>
+        function runGuide() {
+            // --- Mobile Sidebar Toggle ---
+            const menuButton = document.getElementById('menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('.main-content');
+
+            menuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('hidden');
+            });
+
+            // Close sidebar when clicking outside of it on mobile
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !menuButton.contains(e.target) && !sidebar.classList.contains('hidden')) {
+                    if (window.innerWidth < 768) {
+                       sidebar.classList.add('hidden');
+                    }
+                }
+            });
+
+            // --- Smooth Scrolling & Active Link Highlighting ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                     // Close sidebar on mobile after click
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('hidden');
+                    }
+                });
+            });
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -75% 0px', // Activates when a section is in the top quarter of the viewport
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- Interactive Relation Simulator ---
+            const simCanvas = document.getElementById('relation-simulator');
+            const simNodes = ['A', 'B', 'C', 'D'];
+            const nodePositions = {};
+            const radius = 15;
+            let selectedNode = null;
+            let relations = new Set();
+            const ctx = simCanvas.getContext('2d');
+
+            function resizeCanvas() {
+                simCanvas.width = simCanvas.offsetWidth;
+                simCanvas.height = simCanvas.offsetHeight;
+                calculateNodePositions();
+                drawSimulator();
+            }
+
+            function calculateNodePositions() {
+                const centerX = simCanvas.width / 2;
+                const centerY = simCanvas.height / 2;
+                const canvasRadius = Math.min(centerX, centerY) * 0.7;
+                simNodes.forEach((node, i) => {
+                    const angle = (i / simNodes.length) * 2 * Math.PI;
+                    nodePositions[node] = {
+                        x: centerX + canvasRadius * Math.cos(angle - Math.PI / 2),
+                        y: centerY + canvasRadius * Math.sin(angle - Math.PI / 2)
+                    };
+                });
+            }
+
+            function drawSimulator() {
+                ctx.clearRect(0, 0, simCanvas.width, simCanvas.height);
+                
+                // Draw relations
+                ctx.strokeStyle = '#9ca3af';
+                ctx.lineWidth = 2;
+                relations.forEach(rel => {
+                    const [from, to] = rel.split('->');
+                    const start = nodePositions[from];
+                    const end = nodePositions[to];
+                    
+                    if (from === to) { // Loop
+                        ctx.beginPath();
+                        ctx.arc(start.x - radius, start.y - radius, radius * 0.8, 0, 2 * Math.PI);
+                        ctx.stroke();
+                    } else {
+                        // Arrow
+                        ctx.beginPath();
+                        ctx.moveTo(start.x, start.y);
+                        ctx.lineTo(end.x, end.y);
+                        ctx.stroke();
+
+                        // Arrowhead
+                        const angle = Math.atan2(end.y - start.y, end.x - start.x);
+                        ctx.save();
+                        ctx.translate(end.x, end.y);
+                        ctx.rotate(angle);
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0);
+                        ctx.lineTo(-10, -5);
+                        ctx.lineTo(-10, 5);
+                        ctx.closePath();
+                        ctx.fillStyle = '#9ca3af';
+                        ctx.fill();
+                        ctx.restore();
+                    }
+                });
+
+                // Draw nodes
+                simNodes.forEach(node => {
+                    const pos = nodePositions[node];
+                    ctx.beginPath();
+                    ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+                    ctx.fillStyle = selectedNode === node ? '#3b82f6' : '#60a5fa';
+                    ctx.fill();
+                    ctx.strokeStyle = '#1e40af';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 16px Inter';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(node, pos.x, pos.y);
+                });
+            }
+
+            simCanvas.addEventListener('click', (e) => {
+                const rect = simCanvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                let clickedNode = null;
+                simNodes.forEach(node => {
+                    const pos = nodePositions[node];
+                    const distance = Math.sqrt((x - pos.x)**2 + (y - pos.y)**2);
+                    if (distance < radius) {
+                        clickedNode = node;
+                    }
+                });
+
+                if (clickedNode) {
+                    if (!selectedNode) {
+                        selectedNode = clickedNode;
+                    } else {
+                        const relationKey = `${selectedNode}->${clickedNode}`;
+                        if (relations.has(relationKey)) {
+                            relations.delete(relationKey);
+                        } else {
+                            relations.add(relationKey);
+                        }
+                        selectedNode = null;
+                        updateRelationProperties();
+                    }
+                } else {
+                    selectedNode = null;
+                }
+                drawSimulator();
+            });
+            
+            function updateRelationProperties() {
+                const isReflexive = simNodes.every(node => relations.has(`${node}->${node}`));
+                document.getElementById('reflexive-status').textContent = isReflexive ? 'Yes' : 'No';
+                document.getElementById('reflexive-status').className = isReflexive ? 'text-green-600 font-bold' : 'text-red-600 font-bold';
+
+                let isSymmetric = true;
+                relations.forEach(rel => {
+                    const [from, to] = rel.split('->');
+                    if (from !== to && !relations.has(`${to}->${from}`)) {
+                        isSymmetric = false;
+                    }
+                });
+                document.getElementById('symmetric-status').textContent = isSymmetric ? 'Yes' : 'No';
+                 document.getElementById('symmetric-status').className = isSymmetric ? 'text-green-600 font-bold' : 'text-red-600 font-bold';
+
+                let isTransitive = true;
+                simNodes.forEach(a => {
+                    simNodes.forEach(b => {
+                        simNodes.forEach(c => {
+                            if (relations.has(`${a}->${b}`) && relations.has(`${b}->${c}`) && !relations.has(`${a}->${c}`)) {
+                                isTransitive = false;
+                            }
+                        });
+                    });
+                });
+                document.getElementById('transitive-status').textContent = isTransitive ? 'Yes' : 'No';
+                document.getElementById('transitive-status').className = isTransitive ? 'text-green-600 font-bold' : 'text-red-600 font-bold';
+
+                const isEquivalence = isReflexive && isSymmetric && isTransitive;
+                document.getElementById('equivalence-status').textContent = isEquivalence ? 'Yes!' : 'No';
+                document.getElementById('equivalence-status').className = isEquivalence ? 'text-green-600 font-bold text-lg' : 'text-red-600 font-bold text-lg';
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            updateRelationProperties();
+
+            // --- Knowledge Check Quiz ---
+            const quizData = [
+                // Questions from AQ1_10.html
+                {
+                    question: "Let $A = \\{x | x \\in \\mathbb{N}, x < 10$ and $x$ is odd$\\}$ and $B = \\{y | y \\in \\mathbb{N}, y$ is a perfect square and $15 < y < 40\\}$. Which of the following is a subset of $B \\times A$?",
+                    options: [
+                        "$\\{(36,3), (25,5), (36,6)\\}$",
+                        "$\\{(1,25), (6,36), (7,25), (3,36)\\}$",
+                        "$\\{(16,5), (25,9), (36,3), (16,1)\\}$",
+                        "$\\{(1,16), (5,16), (3,36), (9,36), (7,25)\\}$"
+                    ],
+                    correct: 2,
+                    explanation: "First, let's list the elements of sets A and B. $A = \\{1, 3, 5, 7, 9\\}$ and $B = \\{16, 25, 36\\}$. A subset of $B \\times A$ must contain pairs $(b, a)$ where $b \\in B$ and $a \\in A$. Option 3 contains $(16,5), (25,9), (36,3), (16,1)$, all of which are valid pairs in $B \\times A$."
+                },
+                {
+                    question: "Using the same sets A and B as before, which of the following is a subset of $A \\times A$?",
+                    options: [
+                        "$\\{(1,3), (3,5), (5,9), (7,3),(7,7)\\}$",
+                        "$\\{(36,25), (25,25), (36,36), (16,25)\\}$",
+                        "$\\{(3,3), (1,5), (3,6), (9,9)\\}$",
+                        "$\\{(3,5), (5,1), (9,4),(1,1),(7,1)\\}$"
+                    ],
+                    correct: 0,
+                    explanation: "$A = \\{1, 3, 5, 7, 9\\}$. A subset of $A \\times A$ must only contain pairs of odd numbers less than 10. Option 1 contains only such pairs. Option 3 contains (3,6) where 6 is not in A. Option 4 contains (9,4) where 4 is not in A."
+                },
+                {
+                    question: "Using the same sets A and B, which of the following is an element of $A \\times B \\times A$?",
+                    type: 'checkbox',
+                    options: [
+                        "(2, 25, 3)",
+                        "(5, 25, 9)",
+                        "(3, 36, 9)",
+                        "(5, 16, 1)"
+                    ],
+                    correct: [1, 2, 3],
+                    explanation: "$A = \\{1, 3, 5, 7, 9\\}$ and $B = \\{16, 25, 36\\}$. An element of $A \\times B \\times A$ must be a triple $(a_1, b, a_2)$ where $a_1, a_2 \\in A$ and $b \\in B$. The first option (2, 25, 3) is invalid because 2 is not in A. The other three options are valid triples."
+                },
+                {
+                    question: "Suppose the Cartesian product $M \\times M$ has 9 elements among which 2 elements are (2, 4) and (3, 2). Which of the following sets is M?",
+                    options: [
+                        "$\\{9, 2, 4\\}$",
+                        "$\\{3, 2, 9\\}$",
+                        "$\\{2, 3, 4\\}$",
+                        "$\\{3, 4, 9\\}$"
+                    ],
+                    correct: 2,
+                    explanation: "If $|M \\times M| = 9$, then $|M| \\times |M| = 9$, so $|M| = 3$. Since (2, 4) and (3, 2) are in $M \\times M$, the elements 2, 3, and 4 must all be in M. Therefore, $M = \\{2, 3, 4\\}$."
+                },
+                 {
+                    question: "Using the set $M = \\{2, 3, 4\\}$ from the previous question, which set represents the remaining elements of $M \\times M$?",
+                    options: [
+                        "$\\{(2,3),(2,2),(3,4),(3,2),(4,4),(4,2),(3,3)\\}$",
+                        "$\\{(2,3),(2,2),(3,4),(4,3),(4,4),(4,2),(3,3)\\}$",
+                        "$\\{(2,3),(2,2),(4,3),(2,4),(4,4),(4,2),(3,3)\\}$",
+                        "$\\{(2,2),(2,3),(4,3),(3,2),(3,3),(4,4),(3,4)\\}$"
+                    ],
+                    correct: 1,
+                    explanation: "$M \\times M$ contains all 9 pairs. We are given (2,4) and (3,2). The remaining 7 pairs are (2,2), (2,3), (3,3), (3,4), (4,2), (4,3), and (4,4). Option 2 lists these correctly."
+                },
+                {
+                    question: "Let $R = \\{$ (Snail, Frog), (Bird, Bird), (Fox, Frog), (Snail, Fox) $\\}$ be a relation on the set $S = \\{$ Snail, Fox, Bird, Frog $\\}$. The relation R is:",
+                    options: [
+                        "Reflexive",
+                        "Symmetric",
+                        "Transitive",
+                        "None of these"
+                    ],
+                    correct: 2,
+                    explanation: "It's not reflexive (e.g., (Snail,Snail) is missing). It's not symmetric (e.g., (Snail,Frog) is present but (Frog,Snail) is not). It is transitive: (Snail,Fox) and (Fox,Frog) implies (Snail,Frog), which is in R. There are no other chains to check."
+                },
+                // New Questions
+                {
+                    question: "A relation $R$ on a set $A$ is an equivalence relation if it is:",
+                    options: [
+                        "Reflexive and Symmetric",
+                        "Symmetric and Transitive",
+                        "Reflexive, Symmetric, and Transitive",
+                        "Reflexive and Transitive"
+                    ],
+                    correct: 2,
+                    explanation: "By definition, an equivalence relation must satisfy all three properties: reflexivity, symmetry, and transitivity. These properties ensure it behaves like an 'equals' sign, partitioning the set into equivalence classes."
+                },
+                {
+                    question: "Consider the relation 'divides' on the set of positive integers $\\mathbb{Z}^+$. Which properties does this relation have?",
+                    type: 'checkbox',
+                    options: [
+                        "Reflexive",
+                        "Symmetric",
+                        "Transitive",
+                        "Antisymmetric"
+                    ],
+                    correct: [0, 2, 3],
+                    explanation: "It is reflexive (every number divides itself). It is transitive (if a|b and b|c, then a|c). It is antisymmetric (if a|b and b|a, then a=b). It is NOT symmetric (2|4 but 4 does not divide 2)."
+                },
+                {
+                    question: "Let $A = \\{1, 2\\}$ and $B = \\{x, y\\}$. What is the cardinality of the Cartesian product $A \\times B$?",
+                    options: [
+                        "2",
+                        "3",
+                        "4",
+                        "6"
+                    ],
+                    correct: 2,
+                    explanation: "$A \\times B = \\{(1,x), (1,y), (2,x), (2,y)\\}$. The number of elements (cardinality) is $|A| \\times |B| = 2 \\times 2 = 4$."
+                },
+                 {
+                    question: "Which of the following relations on the set of all people is symmetric?",
+                    options: [
+                        "'is a child of'",
+                        "'is an ancestor of'",
+                        "'is a sibling of'",
+                        "'is older than'"
+                    ],
+                    correct: 2,
+                    explanation: "If person A is a sibling of person B, then person B is also a sibling of person A. The other relations are not symmetric."
+                },
+                {
+                    question: "The identity relation $I$ on a set $A$ is defined as $I = \\{(a, a) | a \\in A\\}$. Which properties must the identity relation always have?",
+                    type: 'checkbox',
+                    options: [
+                        "Reflexive",
+                        "Symmetric",
+                        "Transitive",
+                        "Antisymmetric"
+                    ],
+                    correct: [0, 1, 2, 3],
+                    explanation: "The identity relation is the classic example of an equivalence relation (reflexive, symmetric, transitive). It is also antisymmetric because the only time (a,b) and (b,a) are both in I is when a=b, which is allowed by the definition of antisymmetry."
+                },
+                {
+                    question: "Let $R$ be a relation on $\\mathbb{Z}$ where $(a, b) \\in R$ if $a - b$ is an even integer. This relation is:",
+                    options: [
+                        "Only Reflexive",
+                        "Only Symmetric",
+                        "An Equivalence Relation",
+                        "Not a relation"
+                    ],
+                    correct: 2,
+                    explanation: "It is reflexive ($a-a=0$, which is even). It is symmetric (if $a-b$ is even, then $b-a = -(a-b)$ is also even). It is transitive (if $a-b$ and $b-c$ are even, their sum $a-c$ is also even). Thus, it's an equivalence relation."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            let quizHTML = '';
+            quizData.forEach((q, index) => {
+                quizHTML += `<div class="bg-white p-6 rounded-lg shadow-md mb-6">`;
+                quizHTML += `<p class="font-semibold mb-4 text-lg">Question ${index + 1}: ${q.question}</p>`;
+                quizHTML += `<div class="space-y-3">`;
+                q.options.forEach((opt, optIndex) => {
+                    const inputType = q.type === 'checkbox' ? 'checkbox' : 'radio';
+                    quizHTML += `<label class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+                                    <input type="${inputType}" name="question-${index}" value="${optIndex}" class="mr-3 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <span>${opt}</span>
+                                 </label>`;
+                });
+                quizHTML += `</div>`;
+                quizHTML += `<button class="check-answer-btn mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors" data-index="${index}">Check Answer</button>`;
+                quizHTML += `<div id="feedback-${index}" class="mt-4 p-4 rounded-lg hidden"></div>`;
+                quizHTML += `</div>`;
+            });
+            quizContainer.innerHTML = quizHTML;
+            MathJax.typesetPromise();
+
+            document.querySelectorAll('.check-answer-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const qIndex = button.getAttribute('data-index');
+                    const question = quizData[qIndex];
+                    const feedbackEl = document.getElementById(`feedback-${qIndex}`);
+                    
+                    let isCorrect = false;
+                    if (question.type === 'checkbox') {
+                        const checkedOptions = Array.from(document.querySelectorAll(`input[name="question-${qIndex}"]:checked`)).map(el => parseInt(el.value));
+                        isCorrect = checkedOptions.length === question.correct.length && checkedOptions.every(val => question.correct.includes(val));
+                    } else {
+                        const selectedOption = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+                        if (selectedOption) {
+                            isCorrect = parseInt(selectedOption.value) === question.correct;
+                        }
+                    }
+
+                    if (isCorrect) {
+                        feedbackEl.className = 'mt-4 p-4 rounded-lg bg-green-100 border border-green-300 text-green-800';
+                        feedbackEl.innerHTML = `<strong>Correct!</strong> ${question.explanation}`;
+                    } else {
+                        feedbackEl.className = 'mt-4 p-4 rounded-lg bg-red-100 border border-red-300 text-red-800';
+                        feedbackEl.innerHTML = `<strong>Incorrect.</strong> ${question.explanation}`;
+                    }
+                    feedbackEl.classList.remove('hidden');
+                    MathJax.typesetPromise([`#feedback-${qIndex}`]);
+                });
+            });
+        }
+    </script>
+    <!-- MathJax Configuration and Loader -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        startup: {
+          ready: () => {
+            MathJax.startup.defaultReady();
+            // This tells MathJax to run your script ONLY after it's fully loaded.
+            runGuide();
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Hamburger Menu for Mobile -->
+    <button id="menu-button" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar w-64 bg-white shadow-lg hidden md:block transform transition-transform duration-300 ease-in-out">
+        <div class="p-6">
+            <h2 class="text-xl font-bold text-blue-600">L1.10: Relations</h2>
+            <p class="text-sm text-gray-500">Learning Guide</p>
+        </div>
+        <ul class="mt-4">
+            <li><a href="#what-is-a-relation" class="sidebar-link block py-3 px-6 text-gray-700 hover:bg-blue-500 hover:text-white transition-colors duration-200">What is a Relation?</a></li>
+            <li><a href="#properties" class="sidebar-link block py-3 px-6 text-gray-700 hover:bg-blue-500 hover:text-white transition-colors duration-200">Properties of Relations</a></li>
+            <li><a href="#equivalence" class="sidebar-link block py-3 px-6 text-gray-700 hover:bg-blue-500 hover:text-white transition-colors duration-200">Equivalence Relations</a></li>
+            <li><a href="#quiz" class="sidebar-link block py-3 px-6 text-gray-700 hover:bg-blue-500 hover:text-white transition-colors duration-200">Knowledge Check</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="max-w-4xl mx-auto p-6 md:p-10">
+            
+            <header class="mb-12">
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Understanding Relations: Examples and Properties</h1>
+                <p class="text-lg text-gray-600">Let's explore how we connect items from different sets and the special rules these connections can follow.</p>
+            </header>
+
+            <!-- Section 1: What is a Relation? -->
+            <section id="what-is-a-relation" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">What is a Relation?</h2>
+                <div class="space-y-6 text-base leading-relaxed">
+                    <p>Imagine you have two boxes of toys. One box, let's call it Set A, has a car, a block, and a ball. The other box, Set B, has the colors red, blue, and green. How can we connect these? We can pair them up!</p>
+                    <p>This idea of pairing items from different sets is called the <strong>Cartesian Product</strong>, written as $A \times B$. It's a giant set containing <em>every possible pair</em> you can make by taking one item from A and one from B. For our toy boxes, it would be {(car, red), (car, blue), (car, green), (block, red), ...} and so on.</p>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                        <p>A <strong>relation</strong> is just a specific selection of these pairs. It's a <em>subset</em> of the Cartesian product. Think of it as a rule that tells you which pairs are "related". For example, we could have a relation "is the color of" that only includes the pair (car, red) if the toy car is actually red.</p>
+                    </div>
+                    <p>So, a relation is simply a set of ordered pairs. The order matters: the pair (teacher, student) is different from (student, teacher). This is a fundamental concept that helps us describe connections between all sorts of things, from numbers to people to cities on a map.</p>
+                </div>
+            </section>
+
+            <!-- Section 2: Properties of Relations -->
+            <section id="properties" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">Properties of Relations</h2>
+                <p class="text-lg text-gray-600 mb-6">Some relations follow special rules. When we have a relation from a set back to itself (like a relation on the set of all people), we can check for these properties. Let's make this interactive!</p>
+                
+                <div class="bg-white p-6 rounded-lg shadow-xl">
+                    <h3 class="text-xl font-bold mb-2">Relation Simulator</h3>
+                    <p class="mb-4 text-gray-600">Click a node to select it, then click another node (or the same one) to create or remove a relation (an arrow). See how the properties change!</p>
+                    <canvas id="relation-simulator" class="w-full h-64 md:h-80 border rounded-lg bg-gray-100 cursor-pointer"></canvas>
+                    <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <p class="font-semibold">Reflexive?</p>
+                            <p id="reflexive-status" class="text-red-600 font-bold">No</p>
+                            <p class="text-xs text-gray-500">(Every element relates to itself?)</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <p class="font-semibold">Symmetric?</p>
+                            <p id="symmetric-status" class="text-red-600 font-bold">No</p>
+                            <p class="text-xs text-gray-500">(If A→B, then B→A?)</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <p class="font-semibold">Transitive?</p>
+                            <p id="transitive-status" class="text-red-600 font-bold">No</p>
+                            <p class="text-xs text-gray-500">(If A→B & B→C, then A→C?)</p>
+                        </div>
+                         <div class="p-3 bg-blue-100 border border-blue-300 rounded-lg">
+                            <p class="font-semibold text-blue-800">Equivalence?</p>
+                            <p id="equivalence-status" class="text-red-600 font-bold text-lg">No</p>
+                            <p class="text-xs text-gray-500">(All three above?)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Equivalence Relations -->
+            <section id="equivalence" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">Equivalence Relations</h2>
+                 <div class="space-y-6 text-base leading-relaxed">
+                    <p>When a relation is <strong>reflexive, symmetric, AND transitive</strong>, it's called an <strong>equivalence relation</strong>. This is a very special type of relation because it acts just like the "equals" sign (=).</p>
+                    <p>Think about a clock. 2:00 AM is different from 2:00 PM. But on a standard clock face, they look the same. The relation "looks the same on a 12-hour clock" is an equivalence relation. It groups all the hours into 12 sets, or "equivalence classes".</p>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                        <p>An equivalence relation always <strong>partitions</strong> a set. This means it chops the set up into smaller, non-overlapping groups called <strong>equivalence classes</strong>. Everything inside one group is "equivalent" to everything else in that group, and nothing in one group is equivalent to anything in another group.</p>
+                    </div>
+                     <p>Another example is the relation "has the same remainder when divided by 5" on the set of integers. This partitions all integers into 5 groups: those with remainder 0, remainder 1, remainder 2, remainder 3, and remainder 4.</p>
+                </div>
+            </section>
+
+            <!-- Section 4: Knowledge Check -->
+            <section id="quiz" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">Knowledge Check 🧠</h2>
+                <p class="text-lg text-gray-600 mb-8">Time to test your understanding! Choose the best answer for each question.</p>
+                <div id="quiz-container">
+                    <!-- Quiz questions will be dynamically inserted here by JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>L10.1: Representation of a graph as an adjacency matrix to find shortest distance and time</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .active-link { background-color: #6d28d9; color: white; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Mobile Header -->
+  <header class="lg:hidden fixed top-0 left-0 right-0 bg-violet-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+    <h1 class="text-xl font-bold">L10.1: Graphs & Matrices</h1>
+    <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2" aria-label="Toggle navigation menu" aria-controls="sidebar" aria-expanded="false">
+      <span class="block w-8 h-0.5 bg-white"></span>
+      <span class="block w-8 h-0.5 bg-white"></span>
+      <span class="block w-8 h-0.5 bg-white"></span>
+    </button>
+  </header>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-violet-600 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto" aria-label="Section navigation">
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold">L10.1: Graphs & Matrices</h1>
+      </div>
+      <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+      <nav id="nav-links">
+        <a href="#introduction" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Introduction to Graphs</a>
+        <a href="#adjacency-matrix" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">The Adjacency Matrix</a>
+        <a href="#finding-paths" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Finding Paths</a>
+        <a href="#edge-labels" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Edge-Labeled Graphs</a>
+        <a href="#interactive-graph" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Interactive Graph</a>
+        <a href="#summary" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Summary</a>
+        <a href="#knowledge-check" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-violet-700 hover:text-white">Knowledge Check</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 p-6 md:p-10 w-full mt-16 lg:mt-0">
+      <!-- Introduction -->
+      <section id="introduction" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h1 class="text-4xl font-bold mb-4 text-violet-800">L10.1: Representing Graphs with an Adjacency Matrix</h1>
+        <p class="text-lg">Welcome! This guide explains graphs in simple, plain English. No heavy jargon. Think of a <strong>graph</strong> as a set of places (called <strong>nodes</strong>) and the connections between them (called <strong>edges</strong>). For example: train stations and the routes between them.</p>
+        <p class="text-lg mt-4">We will learn to represent a graph using an <strong>adjacency matrix</strong> — basically a table that tells us if a direct connection exists between two places. Using this table, we can also figure out paths that require one or more changes, and even calculate the shortest distance or time.</p>
+      </section>
+
+      <!-- Adjacency Matrix -->
+      <section id="adjacency-matrix" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-6 text-violet-800">The Adjacency Matrix: A Graph as a Table</h2>
+        <p class="text-lg mb-4">An <strong>adjacency matrix</strong> is a square table. Rows and columns both list the same set of nodes. A cell says whether there is a direct edge from the row’s node to the column’s node.</p>
+        <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+          <ul class="list-disc list-inside text-lg mt-2 pl-4 space-y-2">
+            <li><strong>Nodes:</strong> The items (e.g., stations) in the network.</li>
+            <li><strong>Edges:</strong> Direct connections (e.g., a train from A to B).</li>
+            <li><strong>Matrix entry:</strong> 1 (connection exists) or 0 (no connection) in a simple graph.</li>
+          </ul>
+        </div>
+        <div class="mt-8">
+          <h3 class="text-2xl font-semibold text-gray-700">Directed vs. Undirected</h3>
+          <p class="text-lg mt-2">If A→B does not guarantee B→A, the graph is <strong>directed</strong>. In that case, the matrix is not symmetric. Many transport systems are directed.</p>
+        </div>
+      </section>
+
+      <!-- Finding Paths -->
+      <section id="finding-paths" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-6 text-violet-800">Finding Paths with the Matrix</h2>
+        <p class="text-lg mb-4">We can use the adjacency matrix to check for paths with 1 hop, 2 hops, and so on. The idea is simple: if you can go from <em>i</em> to <em>k</em> and from <em>k</em> to <em>j</em>, then there’s a path from <em>i</em> to <em>j</em> with one change.</p>
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-700">1. Direct Routes (1 Hop)</h3>
+            <p class="text-lg mt-2">If <code>matrix[i][j] == 1</code>, there’s a direct edge from <em>i</em> to <em>j</em>.</p>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-700">2. One-Change Routes (2 Hops)</h3>
+            <p class="text-lg mt-2">If there exists a <em>k</em> such that <code>matrix[i][k] == 1</code> and <code>matrix[k][j] == 1</code>, there’s a path from <em>i</em> to <em>j</em> with one change (via <em>k</em>).</p>
+            <pre class="bg-gray-800 text-white p-4 rounded-md mt-2" aria-label="Pseudocode example"><code>// Pseudocode
+if (direct[i][k] == 1 && direct[k][j] == 1) {
+  path2[i][j] = 1;
+}</code></pre>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold text-gray-700">3. N-Hop Routes &amp; Transitive Closure</h3>
+            <p class="text-lg mt-2">Repeating this logic up to <em>N-1</em> times (for <em>N</em> nodes) reveals all reachable pairs. This is called the <strong>transitive closure</strong> of the graph.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Edge Labels -->
+      <section id="edge-labels" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-6 text-violet-800">Edge-Labeled Graphs: Adding More Information</h2>
+        <p class="text-lg mb-4">Instead of just 0/1, each cell can store richer data like <strong>distance</strong> or <strong>time</strong>. This lets us compute shortest paths by comparing totals (e.g., distance via different intermediate nodes).</p>
+        <div class="bg-violet-50 border-2 border-violet-200 p-6 rounded-lg shadow-sm mt-6">
+          <h3 class="text-2xl font-semibold text-violet-800">Example</h3>
+          <p class="text-lg mt-2">If <code>distance[i][k] = 50</code> and <code>distance[k][j] = 75</code>, then the path <em>i → k → j</em> has length <strong>125</strong>.</p>
+        </div>
+      </section>
+
+      <!-- Interactive Graph -->
+      <section id="interactive-graph" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-6 text-violet-800">Interactive Adjacency Matrix</h2>
+        <p class="text-lg mb-4">Click edges in the diagram to toggle them. The table updates instantly. This helps you see how the graph and the matrix match each other.</p>
+        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div id="svg-container" aria-label="Interactive graph"></div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Adjacency Matrix</h3>
+              <table id="matrix-table" class="w-full text-center border-collapse" aria-label="Adjacency matrix table"></table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section id="summary" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-6 text-violet-800">Summary</h2>
+        <ul class="list-disc list-inside text-lg space-y-3 pl-4">
+          <li><strong>Graphs model networks:</strong> Nodes are places; edges are direct connections.</li>
+          <li><strong>Adjacency matrices compute paths:</strong> The table helps find 1-hop, 2-hop, and longer routes.</li>
+          <li><strong>Edge labels add power:</strong> With distance/time, we can compute shortest paths.</li>
+        </ul>
+      </section>
+
+      <!-- Knowledge Check -->
+      <section id="knowledge-check" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-6 text-violet-800">Knowledge Check 🧠</h2>
+        <p class="text-lg mb-6">Test yourself. Read each question and choose the correct answer(s). You’ll get instant feedback.</p>
+        <div class="flex items-center gap-3 mb-6">
+          <button id="reset-quiz" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md transition" aria-label="Reset all Knowledge Check answers">
+            Reset Knowledge Check
+          </button>
+          <span id="quiz-results" class="text-xl font-semibold" aria-live="polite"></span>
+        </div>
+        <div id="quiz-container" class="space-y-8"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // --- Sidebar and navigation logic ---
+      const sidebar = document.getElementById('sidebar');
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const navLinks = document.querySelectorAll('#nav-links a');
+      const sections = document.querySelectorAll('main section');
+
+      function toggleSidebar() {
+        const isHidden = sidebar.classList.contains('-translate-x-full');
+        sidebar.classList.toggle('-translate-x-full');
+        hamburgerMenu.setAttribute('aria-expanded', String(isHidden));
+      }
+
+      if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', toggleSidebar);
+      }
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth < 1024) {
+            sidebar.classList.add('-translate-x-full');
+            hamburgerMenu.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(link => {
+              link.classList.remove('active-link');
+              if (link.getAttribute('href').substring(1) === entry.target.id) {
+                link.classList.add('active-link');
+              }
+            });
+          }
+        });
+      }, { rootMargin: "-50% 0px -50% 0px" });
+
+      sections.forEach(section => observer.observe(section));
+
+      // --- Interactive Graph and Matrix ---
+      const svgContainer = document.getElementById('svg-container');
+      const matrixTable = document.getElementById('matrix-table');
+      const nodes = {
+        A: { x: 50, y: 50 },
+        B: { x: 200, y: 50 },
+        C: { x: 50, y: 200 },
+        D: { x: 200, y: 200 }
+      };
+      const nodeKeys = Object.keys(nodes);
+      let adjMatrix = [
+        [0, 1, 0, 1],
+        [0, 0, 0, 1],
+        [1, 1, 0, 0],
+        [0, 1, 0, 0]
+      ];
+
+      function drawGraph() {
+        let svgHTML = `<svg viewBox="0 0 250 250" role="img" aria-label="Directed graph with four nodes">`;
+        // defs
+        svgHTML += `<defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6b7280" /></marker></defs>`;
+        // edges
+        nodeKeys.forEach((from, i) => {
+          nodeKeys.forEach((to, j) => {
+            if (adjMatrix[i][j] === 1) {
+              const curve = (i === j-1 || i === j+1 || i === j-2 || i === j+2) ? 0 : 0.3;
+              svgHTML += `<path id="edge-${from}${to}" d="M ${nodes[from].x} ${nodes[from].y} A 150 ${150 * (1-curve*2)} 0 0 1 ${nodes[to].x} ${nodes[to].y}" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrowhead)" class="cursor-pointer edge" data-from="${i}" data-to="${j}" tabindex="0" aria-label="Toggle edge ${from} to ${to}"></path>`;
+            }
+          });
+        });
+        // nodes
+        nodeKeys.forEach(key => {
+          svgHTML += `<circle cx="${nodes[key].x}" cy="${nodes[key].y}" r="20" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"></circle>`;
+          svgHTML += `<text x="${nodes[key].x}" y="${nodes[key].y}" dy=".3em" text-anchor="middle" fill="white" font-weight="bold">${key}</text>`;
+        });
+        svgHTML += `</svg>`;
+        svgContainer.innerHTML = svgHTML;
+      }
+
+      function drawMatrix() {
+        let matrixHTML = `
+          <thead><tr><th class="p-2 border">From/To</th>
+          ${nodeKeys.map(k => `<th class="p-2 border">${k}</th>`).join('')}
+          </tr></thead><tbody>`;
+        nodeKeys.forEach((rowKey, i) => {
+          matrixHTML += `<tr><td class="p-2 border font-bold">${rowKey}</td>`;
+          nodeKeys.forEach((colKey, j) => {
+            matrixHTML += `<td class="p-2 border">${adjMatrix[i][j]}</td>`;
+          });
+          matrixHTML += `</tr>`;
+        });
+        matrixHTML += `</tbody>`;
+        matrixTable.innerHTML = matrixHTML;
+      }
+
+      svgContainer.addEventListener('click', (e) => {
+        const edge = e.target.closest('.edge');
+        if (edge) {
+          const from = parseInt(edge.dataset.from);
+          const to = parseInt(edge.dataset.to);
+          adjMatrix[from][to] = adjMatrix[from][to] === 1 ? 0 : 1;
+          drawGraph();
+          drawMatrix();
+        }
+      });
+
+      svgContainer.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const edge = e.target.closest('.edge');
+          if (edge) {
+            e.preventDefault();
+            const from = parseInt(edge.dataset.from);
+            const to = parseInt(edge.dataset.to);
+            adjMatrix[from][to] = adjMatrix[from][to] === 1 ? 0 : 1;
+            drawGraph();
+            drawMatrix();
+          }
+        }
+      });
+
+      drawGraph();
+      drawMatrix();
+
+      // --- Knowledge Check Logic ---
+      const quizContainer = document.getElementById('quiz-container');
+      const quizResults = document.getElementById('quiz-results');
+      const resetBtn = document.getElementById('reset-quiz');
+      let score = 0;
+
+      const quizQuestions = [
+        // --- Benchmark-like examples (replace with actual Benchmark questions exactly as worded) ---
+        {
+          question: "Adjacency matrix is a square matrix used to represent a graph.",
+          type: "true-false",
+          answers: ["True", "False"],
+          correct: ["True"],
+          explanation: "Correct. Rows and columns both represent the same set of nodes."
+        },
+        {
+          question: "Adjacency matrix is always symmetric.",
+          type: "true-false",
+          answers: ["True", "False"],
+          correct: ["False"],
+          explanation: "Only true for undirected graphs. Directed graphs are not symmetric."
+        },
+        {
+          question: "If we convert the table from the example to a graph, we will obtain a directed graph.",
+          type: "true-false",
+          answers: ["True", "False"],
+          correct: ["True"],
+          explanation: "Because some connections exist one way but not the other."
+        },
+        {
+          question: "How many edges are there in the example graph?",
+          type: "single-choice",
+          answers: ["At least 6", "At most 6", "Exactly 6", "Exactly 4"],
+          correct: ["Exactly 6"],
+          explanation: "Six non-zero entries correspond to six directed edges."
+        },
+        {
+          question: "What is the minimum distance from station A to station D?",
+          type: "single-choice",
+          answers: ["200", "100", "300", "Not possible"],
+          correct: ["200"],
+          explanation: "A→D is 300, but A→B→D is 100+100 = 200."
+        },
+        // --- Additional new questions (not rewordings) to cover topics ---
+        {
+          question: "In a transport graph, what do nodes usually represent?",
+          type: "single-choice",
+          answers: ["Trains", "Stations", "Tickets", "Distances"],
+          correct: ["Stations"],
+          explanation: "Nodes are places; edges are the direct connections."
+        },
+        {
+          question: "The complete set of all reachable pairs in a graph is called:",
+          type: "single-choice",
+          answers: ["Adjacency Matrix", "Shortest Path", "Transitive Closure", "Edge Label"],
+          correct: ["Transitive Closure"],
+          explanation: "Transitive closure lists all pairs (i, j) such that j is reachable from i."
+        },
+        {
+          question: "An edge-labeled graph can store which on its edges? (Select all that apply)",
+          type: "multiple-choice",
+          answers: ["Time", "Distance", "Train numbers", "Station name"],
+          correct: ["Time", "Distance", "Train numbers"],
+          explanation: "Edge labels describe the connection; station names belong to nodes."
+        },
+        {
+          question: "For a graph with N nodes, the shortest simple path between two nodes has at most how many edges?",
+          type: "single-choice",
+          answers: ["N", "N-1", "N+1", "2N"],
+          correct: ["N-1"],
+          explanation: "A simple path with N or more edges repeats a node (creates a cycle)."
+        },
+        {
+          question: "To find 2-hop paths, you need the information from 1-hop (direct) connections.",
+          type: "true-false",
+          answers: ["True", "False"],
+          correct: ["True"],
+          explanation: "The 2-hop step builds on top of 1-hop connections via an intermediate node."
+        }
+      ];
+
+      function renderQuiz() {
+        score = 0;
+        quizResults.textContent = '';
+        quizContainer.innerHTML = quizQuestions.map((q, index) => {
+          const answersHtml = q.answers.map((answer, idx) => {
+            const id = `q${index}_a${idx}`;
+            const inputType = q.type === 'multiple-choice' ? 'checkbox' : 'radio';
+            return `
+              <label for="${id}" class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition has-[:checked]:bg-violet-100 has-[:checked]:border-violet-400">
+                <input id="${id}" type="${inputType}" name="question${index}" value="${answer}" class="h-5 w-5 text-violet-600 border-gray-300 rounded focus:ring-violet-500" />
+                <span>${answer}</span>
+              </label>
+            `;
+          }).join('');
+          return `
+            <div class="quiz-question" data-question-index="${index}">
+              <p class="text-lg font-semibold mb-4">${index + 1}. ${q.question}</p>
+              <div class="space-y-3">${answersHtml}</div>
+              <button class="submit-answer mt-4 bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-700 transition">Submit</button>
+              <div class="feedback mt-3" aria-live="polite"></div>
+            </div>
+           `;
+        }).join('');
+      }
+
+      quizContainer.addEventListener('click', function(e) {
+        if (!e.target.classList.contains('submit-answer')) return;
+
+        const questionDiv = e.target.closest('.quiz-question');
+        const index = parseInt(questionDiv.dataset.questionIndex);
+        const question = quizQuestions[index];
+        const feedbackDiv = questionDiv.querySelector('.feedback');
+
+        const selectedAnswers = Array.from(questionDiv.querySelectorAll(`input[name="question${index}"]:checked`)).map(input => input.value);
+
+        if (selectedAnswers.length === 0) {
+          feedbackDiv.innerHTML = `<p class="text-yellow-600 font-semibold">Please select an answer.</p>`;
+          return;
+        }
+
+        // lock
+        questionDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+        e.target.disabled = true;
+        e.target.classList.add('opacity-50', 'cursor-not-allowed');
+
+        const isCorrect = question.type === 'multiple-choice'
+          ? (selectedAnswers.length === question.correct.length && selectedAnswers.every(sa => question.correct.includes(sa)))
+          : (selectedAnswers[0] === question.correct[0]);
+
+        if (isCorrect) {
+          feedbackDiv.innerHTML = `<div class="p-4 bg-green-100 border-l-4 border-green-500 text-green-700"><p class="font-bold">✅ Correct!</p><p class="mt-1">${question.explanation}</p></div>`;
+          score++;
+        } else {
+          feedbackDiv.innerHTML = `<div class="p-4 bg-red-100 border-l-4 border-red-500 text-red-700"><p class="font-bold">❌ Incorrect.</p><p class="mt-1"><strong>Correct Answer(s):</strong> ${question.correct.join(', ')}</p><p class="mt-1">${question.explanation}</p></div>`;
+        }
+
+        const answeredQuestions = document.querySelectorAll('.submit-answer:disabled').length;
+        if (answeredQuestions === quizQuestions.length) {
+          quizResults.textContent = `Knowledge Check Complete! Your Score: ${score} / ${quizQuestions.length}`;
+        }
+      });
+
+      // Reset Knowledge Check
+      function resetQuiz() {
+        renderQuiz(); // rebuilds UI, clears selections, re-enables inputs, removes feedback/results
+        quizResults.textContent = '';
+      }
+      resetBtn.addEventListener('click', resetQuiz);
+
+      // initial render
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

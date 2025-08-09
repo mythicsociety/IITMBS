@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L1.2: Rational Numbers - An Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for active sidebar link and scrollbar */
+        .sidebar-link.active {
+            background-color: #1d4ed8; /* A darker blue */
+            color: white;
+            font-weight: 600;
+        }
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .quiz-option {
+            transition: background-color 0.3s ease;
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* Light green */
+            border-color: #22c55e;
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* Light red */
+            border-color: #ef4444;
+        }
+    </style>
+    <!-- Main application script defined first -->
+    <script>
+        function runGuide() {
+            // Mobile sidebar toggle logic
+            const menuButton = document.getElementById('menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+
+            menuButton.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+            });
+
+            // Close sidebar on link click in mobile view
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('hidden');
+                    }
+                });
+            });
+
+            // IntersectionObserver for highlighting active sidebar link
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-20% 0px -75% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Interactive Number Line Simulator
+            const pSlider = document.getElementById('p-slider');
+            const qSlider = document.getElementById('q-slider');
+            const numberLineValue = document.getElementById('number-line-value');
+            const numberLinePoint = document.getElementById('number-line-point');
+            const decimalValue = document.getElementById('decimal-value');
+
+            function updateNumberLine() {
+                const p = parseInt(pSlider.value);
+                const q = parseInt(qSlider.value);
+                const value = p / q;
+                
+                numberLineValue.textContent = `${p}/${q}`;
+                decimalValue.textContent = `≈ ${value.toFixed(3)}`;
+
+                // Map value to a percentage for positioning on the number line
+                // The line represents -5 to 5, a range of 10.
+                const percentage = ((value - (-5)) / 10) * 100;
+                numberLinePoint.style.left = `${Math.max(0, Math.min(100, percentage))}%`;
+            }
+
+            pSlider.addEventListener('input', updateNumberLine);
+            qSlider.addEventListener('input', updateNumberLine);
+            updateNumberLine();
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizQuestions = [
+                // Benchmark questions from AQ1_2.html
+                {
+                    question: "Which of the following option(s) is(are) true?",
+                    options: [
+                        "$\\frac{4}{7} > \\frac{5}{8}$",
+                        "$\\frac{12}{17} > \\frac{7}{13}$",
+                        "$\\frac{11}{7} > \\frac{13}{8}$",
+                        "$\\frac{7}{15} < \\frac{2}{5}$"
+                    ],
+                    correctIndex: 1,
+                    explanation: "To compare $\\frac{12}{17}$ and $\\frac{7}{13}$, we can cross-multiply: $12 \\times 13 = 156$ and $7 \\times 17 = 119$. Since $156 > 119$, we have $\\frac{12}{17} > \\frac{7}{13}$."
+                },
+                {
+                    question: "Which of the following option(s) is(are) in reduced form?",
+                    options: [
+                        "$\\frac{5}{60}$",
+                        "$\\frac{12}{27}$",
+                        "$\\frac{11}{18}$",
+                        "$\\frac{13}{91}$"
+                    ],
+                    correctIndex: 2,
+                    explanation: "A fraction is in reduced form if the numerator and denominator have no common factors other than 1. For $\\frac{11}{18}$, the gcd(11, 18) is 1, as 11 is prime and does not divide 18."
+                },
+                {
+                    question: "Let gcd(a,4) = 2 and gcd(a,b) = 1. If $4 > a > b$ and a, b are natural numbers, then the values of a and b are respectively:",
+                    options: ["2, 1", "1, 2", "2, 4", "4, 2"],
+                    correctIndex: 0,
+                    explanation: "From gcd(a,4) = 2 and $a < 4$, 'a' must be 2. Since gcd(a,b) = gcd(2,b) = 1 and $b < a$, 'b' must be 1. Thus, a=2 and b=1."
+                },
+                // Additional questions
+                {
+                    question: "What is the reduced form of the rational number $\\frac{18}{60}$?",
+                    options: [
+                        "$\\frac{9}{30}$",
+                        "$\\frac{6}{20}$",
+                        "$\\frac{3}{10}$",
+                        "$\\frac{18}{60}$"
+                    ],
+                    correctIndex: 2,
+                    explanation: "The greatest common divisor (gcd) of 18 and 60 is 6. Dividing both the numerator and the denominator by 6 gives $\\frac{18 \\div 6}{60 \\div 6} = \\frac{3}{10}$."
+                },
+                {
+                    question: "Which rational number lies exactly halfway between $\\frac{1}{3}$ and $\\frac{1}{2}$?",
+                    options: [
+                        "$\\frac{2}{5}$",
+                        "$\\frac{5}{12}$",
+                        "$\\frac{3}{8}$",
+                        "$\\frac{4}{9}$"
+                    ],
+                    correctIndex: 1,
+                    explanation: "To find the number halfway between two numbers, we calculate their average: $(\\frac{1}{3} + \\frac{1}{2}) \\div 2 = (\\frac{2}{6} + \\frac{3}{6}) \\div 2 = \\frac{5}{6} \\div 2 = \\frac{5}{12}$."
+                },
+                {
+                    question: "The property that between any two distinct rational numbers there is another rational number is called:",
+                    options: ["Discreteness", "Density", "Completeness", "Continuity"],
+                    correctIndex: 1,
+                    explanation: "The density property of rational numbers states that between any two distinct rationals, another rational number can always be found (for example, their average)."
+                },
+                 {
+                    question: "Which of the following is equivalent to $2\\frac{3}{7}$?",
+                    options: [
+                        "$\\frac{14}{7}$",
+                        "$\\frac{17}{7}$",
+                        "$\\frac{6}{7}$",
+                        "$\\frac{23}{7}$"
+                    ],
+                    correctIndex: 1,
+                    explanation: "To convert a mixed fraction to an improper fraction, multiply the whole number by the denominator and add the numerator: $(2 \\times 7) + 3 = 14 + 3 = 17$. The denominator stays the same, so we get $\\frac{17}{7}$."
+                },
+                {
+                    question: "Which inequality is correct?",
+                    options: [
+                        "$\\frac{-1}{2} > \\frac{-1}{3}$",
+                        "$\\frac{-1}{2} < \\frac{-1}{3}$",
+                        "$\\frac{-1}{2} = \\frac{-1}{3}$",
+                        "None of the above"
+                    ],
+                    correctIndex: 1,
+                    explanation: "On the number line, -0.333... (which is -1/3) is to the right of -0.5 (which is -1/2). Therefore, $\\frac{-1}{2}$ is less than $\\frac{-1}{3}$."
+                },
+                {
+                    question: "What is the result of $\\frac{5}{6} \\times \\frac{3}{10}$ in its reduced form?",
+                    options: [
+                        "$\\frac{15}{60}$",
+                        "$\\frac{8}{16}$",
+                        "$\\frac{1}{4}$",
+                        "$\\frac{5}{20}$"
+                    ],
+                    correctIndex: 2,
+                    explanation: "Multiplying the fractions gives $\\frac{5 \\times 3}{6 \\times 10} = \\frac{15}{60}$. The greatest common divisor of 15 and 60 is 15. Dividing both by 15 gives the reduced form $\\frac{1}{4}$."
+                }
+            ];
+            
+            if (quizContainer) {
+                quizQuestions.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'mb-8 p-6 bg-white rounded-lg shadow-md';
+                    
+                    const questionTitle = document.createElement('p');
+                    questionTitle.className = 'font-semibold text-lg mb-4 text-gray-800';
+                    questionTitle.innerHTML = `<strong>Question ${index + 1}:</strong> ${q.question}`;
+                    
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'space-y-3';
+                    
+                    q.options.forEach((option, i) => {
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'quiz-option block w-full text-left p-3 border-2 border-gray-300 rounded-lg hover:bg-blue-50';
+                        optionButton.innerHTML = option;
+                        optionButton.dataset.index = i;
+                        
+                        optionButton.addEventListener('click', () => {
+                            const allOptions = optionsDiv.querySelectorAll('.quiz-option');
+                            allOptions.forEach(btn => {
+                                btn.disabled = true;
+                                btn.classList.remove('hover:bg-blue-50');
+                            });
+
+                            const selectedIndex = parseInt(optionButton.dataset.index);
+                            if (selectedIndex === q.correctIndex) {
+                                optionButton.classList.add('correct');
+                            } else {
+                                optionButton.classList.add('incorrect');
+                                allOptions[q.correctIndex].classList.add('correct');
+                            }
+                            
+                            const explanationDiv = questionDiv.querySelector('.explanation');
+                            explanationDiv.classList.remove('hidden');
+                            MathJax.typesetPromise([explanationDiv]);
+                        });
+
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    
+                    const explanationDiv = document.createElement('div');
+                    explanationDiv.className = 'explanation hidden mt-4 p-4 bg-gray-100 rounded-lg text-gray-700';
+                    explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+                    
+                    questionDiv.appendChild(questionTitle);
+                    questionDiv.appendChild(optionsDiv);
+                    questionDiv.appendChild(explanationDiv);
+                    quizContainer.appendChild(questionDiv);
+                });
+            }
+            
+            // Initial MathJax typesetting for the whole document
+            MathJax.typesetPromise();
+        }
+    </script>
+    <!-- MathJax Configuration and Loader -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    // This tells MathJax to run your script ONLY after it's fully loaded.
+                    runGuide();
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-20">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-700">L1.2: Rational Numbers</h1>
+            <button id="menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="container mx-auto flex flex-col md:flex-row">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-full md:w-64 bg-blue-800 text-white md:sticky md:top-[60px] h-screen hidden md:block z-10">
+            <nav class="p-4">
+                <h2 class="text-lg font-semibold mb-4 border-b border-blue-600 pb-2">Guide Sections</h2>
+                <ul class="space-y-2">
+                    <li><a href="#introduction" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Introduction</a></li>
+                    <li><a href="#definition" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">What are Rational Numbers?</a></li>
+                    <li><a href="#reduced-form" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Reduced Form</a></li>
+                    <li><a href="#operations" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Operations</a></li>
+                    <li><a href="#density" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">The Density Property</a></li>
+                    <li><a href="#simulator" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Interactive Simulator</a></li>
+                    <li><a href="#quiz" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Knowledge Check</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10">
+            <section id="introduction" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Welcome! 👋</h2>
+                <p class="text-lg leading-relaxed">Hello! In our last lesson, we explored natural numbers and integers. We saw that while addition and multiplication are straightforward, subtraction can lead us to negative numbers, creating the set of integers. But what about division? When we try to divide 19 by 5, we can't get a whole number. This is where <strong>rational numbers</strong> come to the rescue! This guide will break down what they are, how they work, and why they're so important.</p>
+            </section>
+
+            <section id="definition" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">What are Rational Numbers? 🧠</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">A rational number is any number that can be expressed as a fraction or a ratio $\frac{p}{q}$, where <strong>p</strong> (the numerator) and <strong>q</strong> (the denominator) are both integers, and importantly, <strong>q is not zero</strong> (because we can't divide by zero!).</p>
+                    <p class="text-lg mb-4">Think of it like sharing a pizza. If you have 3 slices out of a pizza cut into 8, you have $\frac{3}{8}$ of the pizza. That's a rational number!</p>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-800 p-4 rounded-r-lg">
+                        <p><strong>Key Idea:</strong> The set of all rational numbers is denoted by the symbol $\mathbb{Q}$. This includes all integers (since any integer $n$ can be written as $\frac{n}{1}$), all finite decimals (like 0.5, which is $\frac{1}{2}$), and all repeating decimals (like 0.333..., which is $\frac{1}{3}$).</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="reduced-form" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">One Number, Many Faces: Reduced Form 🎭</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">A cool (and sometimes confusing) thing about rational numbers is that they can be written in many ways. For example:</p>
+                    <p class="text-center text-2xl font-mono my-4">$\frac{1}{2} = \frac{2}{4} = \frac{5}{10} = \frac{50}{100}$</p>
+                    <p class="text-lg mb-4">They all represent the same value: one half. To keep things simple and standard, we use the <strong>reduced form</strong>. A rational number is in reduced form when its numerator and denominator have no common factors other than 1. In other words, their <strong>Greatest Common Divisor (GCD) is 1</strong>.</p>
+                    <div class="bg-green-50 border-l-4 border-green-500 text-green-800 p-4 rounded-r-lg">
+                        <p><strong>Example:</strong> To reduce $\frac{18}{60}$, we find the GCD of 18 and 60. The prime factorization of 18 is $2 \cdot 3 \cdot 3$ and for 60 is $2 \cdot 2 \cdot 3 \cdot 5$. The common factors are one 2 and one 3, so the GCD is $2 \cdot 3 = 6$. Dividing the top and bottom by 6 gives us $\frac{18 \div 6}{60 \div 6} = \frac{3}{10}$. This is the reduced form!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="operations" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Working with Rationals: Addition & Comparison ⚖️</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">The fact that rationals have many forms is super useful for doing math with them. To add, subtract, or compare fractions, we need a <strong>common denominator</strong>.</p>
+                    <p class="text-lg mb-2"><strong>Addition Example:</strong> How do we calculate $\frac{3}{5} + \frac{3}{4}$?</p>
+                    <p class="text-lg mb-4">We find a common denominator (like 20) and rewrite each fraction:</p>
+                    <p class="text-center text-2xl font-mono my-4">$\frac{3}{5} + \frac{3}{4} = \frac{12}{20} + \frac{15}{20} = \frac{27}{20}$</p>
+                    <p class="text-lg mb-2"><strong>Comparison Example:</strong> Which is bigger, $\frac{3}{5}$ or $\frac{3}{4}$?</p>
+                    <p class="text-lg mb-4">Again, we use a common denominator:</p>
+                    <p class="text-center text-2xl font-mono my-4">$\frac{3}{5} = \frac{12}{20}$ and $\frac{3}{4} = \frac{15}{20}$</p>
+                    <p class="text-lg">Since $12 < 15$, we know that $\frac{12}{20} < \frac{15}{20}$, which means $\frac{3}{5} < \frac{3}{4}$.</p>
+                </div>
+            </section>
+
+            <section id="density" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">The Density Property: No Gaps! 촘촘</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">Integers are <strong>discrete</strong>. For any integer, like 5, there's a "next" one (6) and a "previous" one (4), with nothing in between. Rational numbers are different. They are <strong>dense</strong>.</p>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-r-lg">
+                        <p><strong>The Density Property:</strong> Between any two different rational numbers, you can always find another rational number. How? Just find their average!</p>
+                        <p class="mt-2">For example, between $\frac{1}{2}$ and $\frac{1}{3}$, you can find their average: $(\frac{1}{2} + \frac{1}{3}) \div 2 = \frac{5}{12}$. This means there's no "next" rational number!</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="simulator" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Interactive Number Line ↔️</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">Play with the sliders below to see how different rational numbers $\frac{p}{q}$ appear on the number line.</p>
+                    <div class="my-6">
+                        <label for="p-slider" class="block font-medium">Numerator (p): <span id="p-value" class="font-bold text-blue-600">-5</span></label>
+                        <input id="p-slider" type="range" min="-50" max="50" value="-5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div class="my-6">
+                        <label for="q-slider" class="block font-medium">Denominator (q): <span id="q-value" class="font-bold text-blue-600">10</span></label>
+                        <input id="q-slider" type="range" min="1" max="50" value="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div class="relative h-16 bg-gray-200 rounded-lg mt-8 p-4">
+                        <!-- Number line background -->
+                        <div class="absolute top-1/2 left-0 w-full h-0.5 bg-gray-400"></div>
+                        <!-- Ticks -->
+                        <div class="absolute top-1/2 left-0 w-full flex justify-between">
+                            <span class="h-4 w-0.5 bg-gray-400 block -translate-y-1/2"></span>
+                            <span class="h-4 w-0.5 bg-gray-400 block -translate-y-1/2"></span>
+                            <span class="h-4 w-0.5 bg-gray-400 block -translate-y-1/2"></span>
+                            <span class="h-4 w-0.5 bg-gray-400 block -translate-y-1/2"></span>
+                            <span class="h-4 w-0.5 bg-gray-400 block -translate-y-1/2"></span>
+                        </div>
+                        <!-- Labels -->
+                        <div class="absolute top-full left-0 w-full flex justify-between mt-1 text-sm text-gray-600">
+                            <span>-5</span><span>-2.5</span><span>0</span><span>2.5</span><span>5</span>
+                        </div>
+                        <!-- Point -->
+                        <div id="number-line-point" class="absolute top-1/2 w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-lg -translate-x-1/2 -translate-y-1/2 transition-all duration-100 ease-linear">
+                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-sm rounded-md whitespace-nowrap">
+                                <span id="number-line-value"></span>
+                                <span id="decimal-value" class="text-gray-300 ml-1"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        // Script for sliders to update labels
+                        document.getElementById('p-slider').addEventListener('input', e => document.getElementById('p-value').textContent = e.target.value);
+                        document.getElementById('q-slider').addEventListener('input', e => document.getElementById('q-value').textContent = e.target.value);
+                    </script>
+                </div>
+            </section>
+
+            <section id="quiz" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Knowledge Check 📝</h2>
+                <div id="quiz-container">
+                    <!-- Quiz questions will be dynamically inserted here by JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

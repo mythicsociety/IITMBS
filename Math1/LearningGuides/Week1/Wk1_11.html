@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L1.11: Functions: Examples - Learning Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar-link.active {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 50;
+        }
+        .main-content {
+            padding-left: 16rem; /* Same as sidebar width */
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                padding-left: 0;
+            }
+        }
+    </style>
+    <!-- Main application script -->
+    <script>
+        function runGuide() {
+            // --- Mobile Sidebar Toggle ---
+            const menuButton = document.getElementById('menu-button');
+            const sidebar = document.getElementById('sidebar');
+            menuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('hidden');
+            });
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !menuButton.contains(e.target) && !sidebar.classList.contains('hidden') && window.innerWidth < 768) {
+                   sidebar.classList.add('hidden');
+                }
+            });
+
+            // --- Smooth Scrolling & Active Link Highlighting ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetSection = document.querySelector(this.getAttribute('href'));
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('hidden');
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-20% 0px -75% 0px' });
+
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interactive Function Grapher ---
+            const canvas = document.getElementById('function-grapher');
+            const ctx = canvas.getContext('2d');
+            const functionSelect = document.getElementById('function-select');
+            const paramA = document.getElementById('param-a');
+            const paramB = document.getElementById('param-b');
+            const paramC = document.getElementById('param-c');
+            const domainInfo = document.getElementById('domain-info');
+            const rangeInfo = document.getElementById('range-info');
+
+            let currentFunction = 'linear';
+            let a = 1, b = 0, c = 0;
+
+            function drawGraph() {
+                const width = canvas.width;
+                const height = canvas.height;
+                const scaleX = 30;
+                const scaleY = 30;
+                const originX = width / 2;
+                const originY = height / 2;
+
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw axes
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, originY);
+                ctx.lineTo(width, originY);
+                ctx.moveTo(originX, 0);
+                ctx.lineTo(originX, height);
+                ctx.stroke();
+
+                // Draw function
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let px = 0; px < width; px++) {
+                    const x = (px - originX) / scaleX;
+                    let y;
+                    switch(currentFunction) {
+                        case 'linear': y = a * x + b; break;
+                        case 'quadratic': y = a * x * x + b * x + c; break;
+                        case 'absolute': y = a * Math.abs(x - b) + c; break;
+                        case 'sqrt': y = a * Math.sqrt(x-b) + c; if (x-b < 0) continue; break;
+                    }
+                    const py = originY - y * scaleY;
+                    if (px === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+            
+            function updateUI() {
+                a = parseFloat(paramA.value) || 0;
+                b = parseFloat(paramB.value) || 0;
+                c = parseFloat(paramC.value) || 0;
+                currentFunction = functionSelect.value;
+
+                document.getElementById('param-c-group').style.display = (currentFunction === 'quadratic' || currentFunction === 'absolute' || currentFunction === 'sqrt') ? 'block' : 'none';
+                document.getElementById('param-b-label').textContent = (currentFunction === 'absolute' || currentFunction === 'sqrt') ? 'h:' : 'b:';
+                document.getElementById('param-c-label').textContent = (currentFunction === 'absolute' || currentFunction === 'sqrt') ? 'k:' : 'c:';
+
+
+                switch(currentFunction) {
+                    case 'linear':
+                        domainInfo.textContent = 'Domain: All real numbers $(-\\infty, \\infty)$';
+                        rangeInfo.textContent = a !== 0 ? 'Range: All real numbers $(-\\infty, \\infty)$' : `Range: $\\{${b}\\}$`;
+                        break;
+                    case 'quadratic':
+                        domainInfo.textContent = 'Domain: All real numbers $(-\\infty, \\infty)$';
+                        const vertexY = c - (b*b)/(4*a);
+                        if (a > 0) rangeInfo.textContent = `Range: $[${vertexY.toFixed(2)}, \\infty)$`;
+                        else if (a < 0) rangeInfo.textContent = `Range: $(-\\infty, ${vertexY.toFixed(2)}]$`;
+                        else rangeInfo.textContent = `Range: $\\{${c}\\}$`;
+                        break;
+                    case 'absolute':
+                        domainInfo.textContent = 'Domain: All real numbers $(-\\infty, \\infty)$';
+                        if (a >= 0) rangeInfo.textContent = `Range: $[${c.toFixed(2)}, \\infty)$`;
+                        else rangeInfo.textContent = `Range: $(-\\infty, ${c.toFixed(2)}]$`;
+                        break;
+                    case 'sqrt':
+                        domainInfo.textContent = `Domain: $[${b.toFixed(2)}, \\infty)$`;
+                        if (a >= 0) rangeInfo.textContent = `Range: $[${c.toFixed(2)}, \\infty)$`;
+                        else rangeInfo.textContent = `Range: $(-\\infty, ${c.toFixed(2)}]$`;
+                        break;
+                }
+
+                MathJax.typesetPromise([domainInfo, rangeInfo]);
+                drawGraph();
+            }
+
+            [functionSelect, paramA, paramB, paramC].forEach(el => el.addEventListener('input', updateUI));
+            window.addEventListener('resize', () => {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                drawGraph();
+            });
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            updateUI();
+
+
+            // --- Knowledge Check Quiz ---
+            const quizData = [
+                // Questions from AQ1_11.html
+                {
+                    question: "If $Dom(f) = \\{x \\in R | f(x) \\in R\\}$ defined by $f(x) = \\displaystyle\\frac{x+12}{4x-8}$, then the domain of the function $f$ is _________",
+                    options: ["$\\mathbb{R}$", "$\\mathbb{R} \\,\\big\\backslash \\,\\big\\{\\displaystyle\\frac{1}{4}\\big\\}$", "$\\mathbb{R} \\,\\big\\backslash \\,\\big\\{-12\\big\\}$", "$\\mathbb{R} \\,\\big\\backslash \\,\\big\\{2\\big\\}$"],
+                    correct: 3,
+                    explanation: "A rational function is defined everywhere except where the denominator is zero. We set $4x-8 = 0$, which solves to $4x=8$, or $x=2$. So, the domain is all real numbers except for 2."
+                },
+                {
+                    question: "The product of the minimum value of the function $f(x) = 9|x| - 8$ and the maximum value of the function $g(x) = 11 - |x + 8|$ is __________",
+                    type: 'text',
+                    correct: "-88",
+                    explanation: "The minimum value of $|x|$ is 0 (when $x=0$). So, the minimum of $f(x)$ is $9(0) - 8 = -8$. The maximum value of $-|x+8|$ is 0 (when $x=-8$). So, the maximum of $g(x)$ is $11 - 0 = 11$. The product is $(-8) \\times 11 = -88$."
+                },
+                {
+                    question: "Which of the following functions is always non-negative if $dom(f) = \\{x \\in R|f(x) \\in R\\}$?",
+                    type: 'checkbox',
+                    options: ["$f(x)= \\sqrt{3x+15}$", "$f(x)= |x|$", "$f(x) = \\displaystyle\\frac{30-11x}{5x+60}$", "$f(x) = 4x + 19$"],
+                    correct: [0, 1],
+                    explanation: "The square root function (by convention, the principal/positive root) and the absolute value function always produce non-negative results for any real input where they are defined."
+                },
+                {
+                    question: "Let us define a function $f : \\mathbb{N} \\rightarrow \\mathbb{N}$ as follows, $f(n) = \\begin{cases}\\displaystyle\\frac{n+1}{2} & n\\,\\,is\\,\\,odd \\\\ \\displaystyle\\frac{n}{2} & n\\,\\,is\\,\\,even\\end{cases}$. Which of the following is true?",
+                    options: ["$f$ is one to one and onto", "$f$ is one to one but not onto", "$f$ is onto but not one to one", "$f$ is neither one to one nor onto"],
+                    correct: 2,
+                    explanation: "The function is not one-to-one because, for example, $f(1) = (1+1)/2 = 1$ and $f(2) = 2/2 = 1$. Since two different inputs (1 and 2) map to the same output (1), it's not one-to-one. It is onto because for any natural number $y$, we can find an input; for instance, $2y$ is an even number and $f(2y) = y$."
+                },
+                {
+                    question: "If $f(x) = |x+2|$ and $g(x) = x^2 - 4$, then which of the following is true?",
+                    options: ["The value $f(x)$ is greater than $g(x)$ at $x = 1$", "The value $g(x)$ is greater than $f(x)$ at $x = -2$", "The value $g(x)$ is greater than $f(x)$ at $x = 3$", "The value $f(x)$ is greater than $g(x)$ at $x = -3$"],
+                    correct: 0,
+                    explanation: "Let's check at $x=1$: $f(1) = |1+2| = 3$. $g(1) = 1^2 - 4 = -3$. Since $3 > -3$, the first statement is true."
+                },
+                {
+                    question: "If $f(x) = \\sqrt{14-\\bigg(3x + \\displaystyle\\frac{35-5x}{4}\\bigg)}$, then the domain of the function $f$ is",
+                    options: ["$(-\\infty, -3]$", "$[3,\\infty)$", "$( -\\infty, 3]$", "$[-3,\\infty)$"],
+                    correct: 2,
+                    explanation: "For the square root to be a real number, the expression inside must be non-negative. $14 - (3x + \\frac{35-5x}{4}) \\ge 0$. Simplifying inside the parenthesis: $\\frac{12x + 35 - 5x}{4} = \\frac{7x+35}{4}$. So, $14 - \\frac{7x+35}{4} \\ge 0 \\implies 56 \\ge 7x+35 \\implies 21 \\ge 7x \\implies 3 \\ge x$. The domain is $(-\\infty, 3]$."
+                },
+                // New Questions
+                {
+                    question: "A function is called 'injective' or 'one-to-one' if:",
+                    options: [
+                        "Its graph passes the vertical line test.",
+                        "Every output value corresponds to at least one input value.",
+                        "Every output value corresponds to exactly one input value.",
+                        "Different inputs produce different outputs."
+                    ],
+                    correct: 3,
+                    explanation: "The definition of an injective function is that for any two different inputs $x_1 \\neq x_2$, their outputs must also be different, $f(x_1) \\neq f(x_2)$. This is often visualized with the 'horizontal line test'."
+                },
+                {
+                    question: "What is the range of the function $f(x) = -x^2 + 4$?",
+                    options: [
+                        "$[4, \\infty)$",
+                        "$(-\\infty, 4]$",
+                        "$(-\\infty, -4]$",
+                        "All real numbers"
+                    ],
+                    correct: 1,
+                    explanation: "The term $x^2$ is always greater than or equal to 0. Therefore, $-x^2$ is always less than or equal to 0. The maximum value of $-x^2$ is 0, which occurs at $x=0$. So, the maximum value of the function is $0 + 4 = 4$. The range is $(-\\infty, 4]$."
+                },
+                {
+                    question: "Which of the following functions is a bijection from $\\mathbb{R}$ to $\\mathbb{R}$?",
+                    options: [
+                        "$f(x) = x^2$",
+                        "$f(x) = x^3$",
+                        "$f(x) = |x|$",
+                        "$f(x) = \\sin(x)$"
+                    ],
+                    correct: 1,
+                    explanation: "$f(x) = x^3$ is both injective (it always increases, so it passes the horizontal line test) and surjective (its range is all real numbers). The other functions fail one or both conditions."
+                },
+                {
+                    question: "The graph in Figure 1 shows a piecewise function. What is its domain and range?",
+                    image: "Figure1.png",
+                    options: [
+                        "Domain: $[-4, 9]$, Range: $[1, 9]$",
+                        "Domain: $[1, 9]$, Range: $[-4, 9]$",
+                        "Domain: $[-4, 9]$, Range: $[2, 9]$",
+                        "Domain: $[-4, 9]$, Range: $[1, 6]$"
+                    ],
+                    correct: 0,
+                    explanation: "The domain is the set of all x-values covered by the graph, which spans from -4 to 9, inclusive. The range is the set of all y-values, which spans from a minimum of 1 (at x=3) to a maximum of 9 (at x=0)."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            let quizHTML = '';
+            quizData.forEach((q, index) => {
+                quizHTML += `<div class="bg-white p-6 rounded-lg shadow-md mb-6">`;
+                quizHTML += `<p class="font-semibold mb-4 text-lg">Question ${index + 1}: ${q.question}</p>`;
+                if (q.image) {
+                    quizHTML += `<img src="${q.image}" alt="Quiz figure for question ${index + 1}" class="my-4 rounded-lg border">`;
+                }
+                if (q.type === 'text') {
+                    quizHTML += `<input type="text" name="question-${index}" class="w-full p-2 border rounded-md" placeholder="Your answer...">`;
+                } else {
+                    quizHTML += `<div class="space-y-3">`;
+                    q.options.forEach((opt, optIndex) => {
+                        const inputType = q.type === 'checkbox' ? 'checkbox' : 'radio';
+                        quizHTML += `<label class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+                                        <input type="${inputType}" name="question-${index}" value="${optIndex}" class="mr-3 h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                        <span>${opt}</span>
+                                     </label>`;
+                    });
+                    quizHTML += `</div>`;
+                }
+                quizHTML += `<button class="check-answer-btn mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors" data-index="${index}">Check Answer</button>`;
+                quizHTML += `<div id="feedback-${index}" class="mt-4 p-4 rounded-lg hidden"></div>`;
+                quizHTML += `</div>`;
+            });
+            quizContainer.innerHTML = quizHTML;
+            MathJax.typesetPromise();
+
+            document.querySelectorAll('.check-answer-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const qIndex = button.getAttribute('data-index');
+                    const question = quizData[qIndex];
+                    const feedbackEl = document.getElementById(`feedback-${qIndex}`);
+                    let isCorrect = false;
+
+                    if (question.type === 'text') {
+                        const input = document.querySelector(`input[name="question-${qIndex}"]`);
+                        isCorrect = input && input.value.trim() === question.correct;
+                    } else if (question.type === 'checkbox') {
+                        const checkedOptions = Array.from(document.querySelectorAll(`input[name="question-${qIndex}"]:checked`)).map(el => parseInt(el.value));
+                        isCorrect = checkedOptions.length === question.correct.length && checkedOptions.every(val => question.correct.includes(val));
+                    } else {
+                        const selectedOption = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+                        if (selectedOption) {
+                            isCorrect = parseInt(selectedOption.value) === question.correct;
+                        }
+                    }
+
+                    feedbackEl.className = `mt-4 p-4 rounded-lg ${isCorrect ? 'bg-green-100 border border-green-300 text-green-800' : 'bg-red-100 border border-red-300 text-red-800'}`;
+                    feedbackEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong> ${question.explanation}`;
+                    feedbackEl.classList.remove('hidden');
+                    MathJax.typesetPromise([`#feedback-${qIndex}`]);
+                });
+            });
+        }
+    </script>
+    <!-- MathJax Configuration and Loader -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        startup: {
+          ready: () => {
+            MathJax.startup.defaultReady();
+            runGuide();
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <button id="menu-button" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+    </button>
+
+    <nav id="sidebar" class="sidebar w-64 bg-white shadow-lg hidden md:block">
+        <div class="p-6">
+            <h2 class="text-xl font-bold text-blue-600">L1.11: Functions</h2>
+            <p class="text-sm text-gray-500">Learning Guide</p>
+        </div>
+        <ul class="mt-4">
+            <li><a href="#what-is-a-function" class="sidebar-link block py-3 px-6 text-gray-700 hover:bg-blue-500 hover:text-white">What is a Function?</a></li>
+            <li><a href="#properties-of-functions" class="sidebar-link block py-3 px-6 text-gray-700 hover:bg-blue-500 hover:text-white">Properties of Functions</a></li>
+            <li><a href="#interactive-grapher" class="sidebar-link block py-3 px-6 text-gray-700 hover:bg-blue-500 hover:text-white">Interactive Grapher</a></li>
+            <li><a href="#quiz" class="sidebar-link block py-3 px-6 text-gray-700 hover:bg-blue-500 hover:text-white">Knowledge Check</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="max-w-4xl mx-auto p-6 md:p-10">
+            
+            <header class="mb-12">
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Exploring Functions: Examples and Behavior</h1>
+                <p class="text-lg text-gray-600">Let's dive into functions, the mathematical machines that turn inputs into predictable outputs.</p>
+            </header>
+
+            <section id="what-is-a-function" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">What is a Function?</h2>
+                <div class="space-y-6 text-base leading-relaxed">
+                    <p>A <strong>function</strong> is like a recipe. It's a specific rule that takes an input and produces exactly one output. For every input you give it, you know precisely what you'll get back. Think of a vending machine: you press a specific button (the input), and it gives you a specific snack (the output). It won't give you two different snacks for the same button press.</p>
+                    <p>We need to define three key things for any function:</p>
+                    <ul class="list-disc list-inside space-y-2 pl-4">
+                        <li><strong>Domain</strong>: The set of all possible inputs. What are we allowed to put into our function machine?</li>
+                        <li><strong>Codomain</strong>: The set of all <em>possible</em> outputs. What kind of things could our machine spit out?</li>
+                        <li><strong>Range</strong>: The set of all <em>actual</em> outputs the function produces. While the codomain might be all real numbers, the range of $f(x)=x^2$ is only the non-negative numbers.</li>
+                    </ul>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                        <p>The most important rule for a function is that for any given input from the domain, there must be <strong>exactly one</strong> output. This is why a circle isn't the graph of a single function—one x-value can correspond to two y-values.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="properties-of-functions" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">Properties of Functions</h2>
+                <div class="space-y-6 text-base leading-relaxed">
+                    <p>We can classify functions based on how their inputs and outputs behave. Two key properties are:</p>
+                    <ul class="list-disc list-inside space-y-4 pl-4">
+                        <li><strong>Injective (One-to-One)</strong>: An injective function never maps two different inputs to the same output. Think of it as a "no-sharing" rule for outputs. The function $f(x) = x+1$ is injective, but $f(x)=x^2$ is not, because both $x=2$ and $x=-2$ map to the output 4.</li>
+                        <li><strong>Surjective (Onto)</strong>: A surjective function hits every single possible output in its codomain. Its range is equal to its codomain. The function $f(x)=x^3$ is surjective from $\mathbb{R}$ to $\mathbb{R}$, but $f(x)=x^2$ is not, because you can never get a negative number as an output.</li>
+                    </ul>
+                    <p>A function that is both injective and surjective is called <strong>bijective</strong>. It creates a perfect, one-to-one correspondence between the entire domain and the entire codomain.</p>
+                </div>
+            </section>
+            
+            <section id="interactive-grapher" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">Interactive Grapher</h2>
+                <div class="bg-white p-6 rounded-lg shadow-xl">
+                    <p class="mb-4 text-gray-600">Select a function type and adjust the parameters to see how the graph, domain, and range change.</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <select id="function-select" class="p-2 border rounded-md">
+                            <option value="linear" selected>Linear: $ax+b$</option>
+                            <option value="quadratic">Quadratic: $ax^2+bx+c$</option>
+                            <option value="absolute">Absolute: $a|x-h|+k$</option>
+                            <option value="sqrt">Square Root: $a\sqrt{x-h}+k$</option>
+                        </select>
+                        <div class="flex items-center">
+                            <label for="param-a" class="mr-2 font-mono">a:</label>
+                            <input type="number" id="param-a" value="1" class="w-full p-2 border rounded-md">
+                        </div>
+                        <div class="flex items-center">
+                            <label for="param-b" id="param-b-label" class="mr-2 font-mono">b:</label>
+                            <input type="number" id="param-b" value="0" class="w-full p-2 border rounded-md">
+                        </div>
+                        <div id="param-c-group" class="flex items-center" style="display: none;">
+                            <label for="param-c" id="param-c-label" class="mr-2 font-mono">c:</label>
+                            <input type="number" id="param-c" value="0" class="w-full p-2 border rounded-md">
+                        </div>
+                    </div>
+                    <canvas id="function-grapher" class="w-full h-80 border rounded-lg bg-gray-100"></canvas>
+                    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div id="domain-info" class="p-3 bg-gray-50 rounded-lg text-center"></div>
+                        <div id="range-info" class="p-3 bg-gray-50 rounded-lg text-center"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quiz" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-4">Knowledge Check 🧠</h2>
+                <p class="text-lg text-gray-600 mb-8">Test your understanding of functions with these questions.</p>
+                <div id="quiz-container">
+                    <!-- Quiz questions will be dynamically inserted here -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>L1.1: Natural Numbers and their Operations (v3)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: { 600: '#0d9488', 700: '#0f766e', 800: '#115e59' } } } }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      options: { enableMenu: false },
+      chtml: { mtextInheritFont: true }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .active-link { background-color: #0f766e; color: white; }
+    .badge { display:inline-block; padding:.15rem .5rem; border-radius:.5rem; background:#e2e8f0; font-size:.75rem; }
+    .callout { border-left:4px solid #0d9488; background:#ecfeff; padding:1rem; border-radius:.5rem; }
+    .practice { background:#f8fafc; border:1px solid #e2e8f0; border-radius:.75rem; padding:1rem; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Mobile Header -->
+  <header class="lg:hidden fixed top-0 left-0 right-0 bg-brand-600 text-white p-4 z-50 flex justify-between items-center shadow-md">
+    <h1 class="text-xl font-bold">L1.1: Natural Numbers and their Operations (v3)</h1>
+    <button id="hamburger-menu" class="hamburger-icon z-50 space-y-2" aria-label="Toggle navigation menu" aria-controls="sidebar" aria-expanded="false">
+      <span class="block w-8 h-0.5 bg-white"></span>
+      <span class="block w-8 h-0.5 bg-white"></span>
+      <span class="block w-8 h-0.5 bg-white"></span>
+    </button>
+  </header>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-80 bg-brand-700 text-white p-6 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 lg:pt-6 pt-20 overflow-y-auto" aria-label="Section navigation">
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold leading-tight">L1.1: Natural Numbers and their Operations (v3)</h1>
+        <p class="text-sm opacity-90 mt-2">Built for beginners • Friendly explanations • Try the interactives!</p>
+      </div>
+      <h2 class="text-xl font-semibold mb-4">Navigation</h2>
+      <nav id="nav-links" class="space-y-1">
+        <a href="#intro" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Introduction</a>
+        <a href="#naturals" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Natural Numbers</a>
+        <a href="#integers" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Integers</a>
+        <a href="#ops" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Operations</a>
+        <a href="#props" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Properties of Operations</a>
+        <a href="#compare" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Comparing &amp; Ordering</a>
+        <a href="#division-mod" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Division &amp; Remainder</a>
+        <a href="#factors-primes" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Factors &amp; Primes</a>
+        <a href="#sieve" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Sieve of Eratosthenes</a>
+        <a href="#pf-walkthrough" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Prime Factorization (Steps)</a>
+        <a href="#gcd-demo" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">GCD by Factorization</a>
+        <a href="#knowledge-check" class="block py-2 px-4 rounded transition duration-200 hover:bg-brand-800 hover:text-white">Knowledge Check</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-80 p-6 md:p-10 w-full mt-16 lg:mt-0">
+      <section id="intro" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h1 class="text-4xl font-bold mb-3 text-brand-700">Welcome 👋</h1>
+        <p class="text-lg">We’re going to learn about the <strong>natural numbers</strong> and how we use them: add, subtract, multiply, divide (with remainder), and think about primes and factors. We’ll also practice a lot.</p>
+        <div class="callout mt-5"><strong>Goal:</strong> by the end, you can tell what counts as a natural number, do the core operations, and spot primes and factors. You’ll also know a neat way to find primes (the sieve) and how to get the gcd using prime factors.</div>
+      </section>
+
+      <section id="naturals" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Natural Numbers</h2>
+        <p class="text-lg">We use these numbers to count things: one apple, two apples, three apples… In this course, <strong>we include 0</strong> because “zero things” is a useful idea.</p>
+        <div class="grid md:grid-cols-2 gap-6 mt-4">
+          <div>
+            <p class="text-lg">We write the set like this:</p>
+            <p class="text-xl mt-2">\(\mathbb{N} = \{0,1,2,3,\ldots\}\)</p>
+            <p class="mt-3">The dots “\(\ldots\)” mean the list keeps going forever.</p>
+          </div>
+          <div class="practice">
+            <p class="font-semibold mb-2">Practice</p>
+            <ol class="list-decimal list-inside space-y-1 text-sm">
+              <li>Circle all natural numbers: \(-2, 0, 4, -7, 12\)</li>
+              <li>Is \(1000\) a natural number?</li>
+              <li>Write the next three numbers after \(7\).</li>
+            </ol>
+            <button class="mt-2 text-brand-700 underline" data-reveal="ans-naturals">Show answers</button>
+            <div id="ans-naturals" class="hidden mt-2 text-sm"><em>Answers:</em> 0,4,12 • Yes • 8,9,10</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="integers" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Integers</h2>
+        <p class="text-lg">Sometimes we go below zero, like when a lift goes to “−2”. For that we use the set of <strong>integers</strong>:</p>
+        <p class="text-xl mt-2">\(\mathbb{Z} = \{\ldots,-3,-2,-1,0,1,2,3,\ldots\}\)</p>
+        <p class="mt-3">It stretches forever to the left and right of zero.</p>
+        <div class="practice mt-4">
+          <p class="font-semibold mb-2">Practice</p>
+          <ol class="list-decimal list-inside space-y-1 text-sm">
+            <li>Place these on a number line: \(-3, -1, 0, 2\)</li>
+            <li>Which is larger: \(-4\) or \(-2\)?</li>
+          </ol>
+          <button class="mt-2 text-brand-700 underline" data-reveal="ans-integers">Show answers</button>
+          <div id="ans-integers" class="hidden mt-2 text-sm"><em>Answers:</em> order left→right: −3, −1, 0, 2 • −2 is larger</div>
+        </div>
+      </section>
+
+      <section id="ops" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Operations</h2>
+        <div class="space-y-4 text-lg">
+          <p><strong>Addition</strong> and <strong>multiplication</strong> keep you inside \(\mathbb{N}\). Example: \(3+5=8\), \(4\times 7=28\).</p>
+          <p><strong>Subtraction</strong> or <strong>division</strong> can leave \(\mathbb{N}\). Example: \(3-9=-6\) (not natural), \(7\div 2=3.5\) (not natural).</p>
+          <p><strong>Multiplication is repeated addition:</strong> \(4\times 3 = 4+4+4\).</p>
+          <p><strong>Exponentiation is repeated multiplication:</strong> \(2^4 = 2\times 2\times 2\times 2 = 16\).</p>
+        </div>
+        <div class="practice mt-4">
+          <p class="font-semibold mb-2">Practice</p>
+          <ol class="list-decimal list-inside space-y-1 text-sm">
+            <li>Compute: \(6+7\), \(5\times 9\)</li>
+            <li>Is \(12-20\) a natural number?</li>
+            <li>Evaluate: \(3^3\)</li>
+          </ol>
+          <button class="mt-2 text-brand-700 underline" data-reveal="ans-ops">Show answers</button>
+          <div id="ans-ops" class="hidden mt-2 text-sm"><em>Answers:</em> 13, 45 • No • 27</div>
+        </div>
+      </section>
+
+      <section id="props" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Properties of Operations</h2>
+        <ul class="list-disc list-inside text-lg space-y-2">
+          <li><strong>Commutative</strong> (order does not matter): \(a+b=b+a\), \(a\times b=b\times a\).</li>
+          <li><strong>Associative</strong> (grouping does not matter): \((a+b)+c=a+(b+c)\), \((a\times b)\times c=a\times(b\times c)\).</li>
+          <li><strong>Identity elements:</strong> \(a+0=a\); \(a\times 1=a\).</li>
+          <li><strong>Distributive:</strong> \(a\times(b+c)=a\times b + a\times c\).</li>
+        </ul>
+        <div class="practice mt-4">
+          <p class="font-semibold mb-2">Practice</p>
+          <ol class="list-decimal list-inside space-y-1 text-sm">
+            <li>Use distributive law: \(7\times(10+3)\)</li>
+            <li>Fill: \(a+\_ = a\). What number goes in the blank?</li>
+            <li>True or False: \(2+5=5+2\)</li>
+          </ol>
+          <button class="mt-2 text-brand-700 underline" data-reveal="ans-props">Show answers</button>
+          <div id="ans-props" class="hidden mt-2 text-sm"><em>Answers:</em> 7×10 + 7×3 = 70 + 21 = 91 • 0 • True</div>
+        </div>
+      </section>
+
+      <section id="compare" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Comparing &amp; Ordering</h2>
+        <p class="text-lg">We use symbols like \(<, >, =\) to compare numbers. On a number line, bigger numbers are to the right.</p>
+        <div class="practice mt-2">
+          <p class="font-semibold mb-2">Practice</p>
+          <ol class="list-decimal list-inside space-y-1 text-sm">
+            <li>Put in the correct sign: \(12\;?\;9\)</li>
+            <li>Order from smallest to largest: \(14, 2, 9, 11\)</li>
+          </ol>
+          <button class="mt-2 text-brand-700 underline" data-reveal="ans-compare">Show answers</button>
+          <div id="ans-compare" class="hidden mt-2 text-sm"><em>Answers:</em> 12 &gt; 9 • 2, 9, 11, 14</div>
+        </div>
+      </section>
+
+      <section id="division-mod" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Division &amp; Remainder</h2>
+        <p class="text-lg">If you split \(a\) things into equal groups of size \(b>0\), you get some full groups (the <em>quotient</em> \(q\)) and maybe some leftover (the <em>remainder</em> \(r\)). We write: \(a=bq+r\) with \(0\le r<b\). The remainder is written as \(a\bmod b=r\).</p>
+        <div class="grid md:grid-cols-2 gap-8 items-start mt-4">
+          <div class="practice">
+            <p class="font-semibold mb-2">Practice</p>
+            <ol class="list-decimal list-inside space-y-1 text-sm">
+              <li>Find the remainder: \(23\bmod 4\)</li>
+              <li>Write \(20\) as \(6q+r\) with \(0\le r<6\).</li>
+            </ol>
+            <button class="mt-2 text-brand-700 underline" data-reveal="ans-div">Show answers</button>
+            <div id="ans-div" class="hidden mt-2 text-sm"><em>Answers:</em> 3 • \(20=6\cdot 3+2\)</div>
+          </div>
+          <div id="mod-widget" class="bg-gray-50 p-4 rounded border">
+            <h3 class="text-xl font-semibold mb-2">Try it</h3>
+            <label class="block mb-2">a: <input id="a-input" type="number" class="border px-2 py-1 rounded w-44"></label>
+            <label class="block mb-2">b (>0): <input id="b-input" type="number" class="border px-2 py-1 rounded w-44"></label>
+            <button id="mod-calc" class="mt-2 bg-brand-600 text-white px-3 py-1 rounded hover:bg-brand-700">Compute</button>
+            <div id="mod-output" class="mt-3 text-sm"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="factors-primes" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Factors &amp; Primes</h2>
+        <ul class="list-disc list-inside text-lg space-y-2">
+          <li><strong>Divides:</strong> \(a\mid b\) means \(b\) splits evenly by \(a\) (no remainder).</li>
+          <li><strong>Prime:</strong> a number with exactly two factors: 1 and itself. (Note: 1 is not prime; 2 is the only even prime.)</li>
+          <li>Every integer \(>1\) breaks into primes in exactly one way (ignoring order). This is the <em>Fundamental Theorem of Arithmetic</em>.</li>
+        </ul>
+        <div class="practice mt-4">
+          <p class="font-semibold mb-2">Practice</p>
+          <ol class="list-decimal list-inside space-y-1 text-sm">
+            <li>Is 29 prime?</li>
+            <li>List all factors of 20.</li>
+          </ol>
+          <button class="mt-2 text-brand-700 underline" data-reveal="ans-factors">Show answers</button>
+          <div id="ans-factors" class="hidden mt-2 text-sm"><em>Answers:</em> Yes (29 is prime). • 1, 2, 4, 5, 10, 20</div>
+        </div>
+      </section>
+
+      <section id="sieve" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Sieve of Eratosthenes (Mini Grid)</h2>
+        <p class="text-lg">This classic method finds primes up to 100. Start with all numbers, then cross out multiples of 2, 3, 5, and 7. The numbers not crossed out (and bigger than 1) are primes.</p>
+        <div class="mb-3 flex gap-2 flex-wrap">
+          <button class="bg-brand-600 text-white px-3 py-1 rounded hover:bg-brand-700" data-sieve="step" data-p="2">Cross multiples of 2</button>
+          <button class="bg-brand-600 text-white px-3 py-1 rounded hover:bg-brand-700" data-sieve="step" data-p="3">Cross multiples of 3</button>
+          <button class="bg-brand-600 text-white px-3 py-1 rounded hover:bg-brand-700" data-sieve="step" data-p="5">Cross multiples of 5</button>
+          <button class="bg-brand-600 text-white px-3 py-1 rounded hover:bg-brand-700" data-sieve="step" data-p="7">Cross multiples of 7</button>
+          <button class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300" id="sieve-reset">Reset</button>
+          <button class="bg-brand-700 text-white px-3 py-1 rounded hover:bg-brand-800" id="sieve-run">Run Sieve</button>
+        </div>
+        <div id="sieve-grid" class="grid grid-cols-10 gap-1"></div>
+        <p class="text-sm mt-2"><span class="badge">Legend</span> <span class="ml-2 inline-block w-4 h-4 align-middle bg-gray-200 rounded"></span> crossed out (composite) • <span class="inline-block w-4 h-4 align-middle bg-yellow-200 rounded ml-2"></span> prime found</p>
+      </section>
+
+      <section id="pf-walkthrough" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Prime Factorization (Steps + Factor Tree)</h2>
+        <p class="text-lg">Every whole number bigger than 1 can be written as a product of primes. We keep dividing by the smallest prime that fits.</p>
+        <div class="bg-gray-50 p-4 rounded border">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-2">Number (≥ 2): <input id="pf-input" type="number" min="2" class="border px-2 py-1 rounded w-44"></label>
+              <button id="pf-run" class="mt-2 bg-brand-600 text-white px-3 py-1 rounded hover:bg-brand-700">Factorize</button>
+              <div id="pf-steps" class="mt-3 text-sm"></div>
+              <div id="pf-result" class="mt-3 text-lg font-semibold"></div>
+            </div>
+            <div>
+              <svg id="factor-tree" viewBox="0 0 600 360" class="w-full h-auto border rounded bg-white"></svg>
+              <p class="text-sm mt-2">The <em>factor tree</em> splits a number into two factors, then keeps splitting until only primes remain.</p>
+            </div>
+          </div>
+        </div>
+        <div class="practice mt-4">
+          <p class="font-semibold mb-2">Practice</p>
+          <ol class="list-decimal list-inside space-y-1 text-sm">
+            <li>Find the prime factorization of 36.</li>
+            <li>Find the prime factorization of 100.</li>
+          </ol>
+          <button class="mt-2 text-brand-700 underline" data-reveal="ans-pf">Show answers</button>
+          <div id="ans-pf" class="hidden mt-2 text-sm"><em>Answers:</em> \(36=2^2\cdot 3^2\) • \(100=2^2\cdot 5^2\)</div>
+        </div>
+      </section>
+
+      <section id="gcd-demo" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">GCD by Factorization</h2>
+        <p class="text-lg">The <strong>greatest common divisor</strong> (gcd) of two numbers takes the primes they share, using the <em>smallest</em> power that appears in each.</p>
+        <div class="bg-gray-50 p-4 rounded border">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-2">a (≥ 2): <input id="gcd-a" type="number" min="2" class="border px-2 py-1 rounded w-44"></label>
+              <label class="block mb-2">b (≥ 2): <input id="gcd-b" type="number" min="2" class="border px-2 py-1 rounded w-44"></label>
+              <button id="gcd-run" class="mt-2 bg-brand-600 text-white px-3 py-1 rounded hover:bg-brand-700">Compute GCD</button>
+            </div>
+            <div>
+              <div id="gcd-steps" class="text-sm"></div>
+              <div id="gcd-result" class="text-lg font-semibold mt-2"></div>
+            </div>
+          </div>
+        </div>
+        <div class="practice mt-4">
+          <p class="font-semibold mb-2">Practice</p>
+          <ol class="list-decimal list-inside space-y-1 text-sm">
+            <li>\(\gcd(18, 24)\)</li>
+            <li>\(\gcd(45, 28)\)</li>
+          </ol>
+          <button class="mt-2 text-brand-700 underline" data-reveal="ans-gcd">Show answers</button>
+          <div id="ans-gcd" class="hidden mt-2 text-sm"><em>Answers:</em> 6 • 1</div>
+        </div>
+      </section>
+
+      <section id="knowledge-check" class="mb-12 bg-white p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold mb-3 text-brand-700">Knowledge Check 🧠</h2>
+        <p class="text-lg mb-6">These include the official Benchmark questions (copied exactly as written) plus additional practice. You get instant feedback. Use Reset to try again.</p>
+        <div class="flex items-center gap-3 mb-6">
+          <button id="reset-quiz" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md transition" aria-label="Reset all Knowledge Check answers">
+            Reset Knowledge Check
+          </button>
+          <span id="quiz-results" class="text-xl font-semibold" aria-live="polite"></span>
+        </div>
+        <div id="quiz-container" class="space-y-8"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    function toggleSidebar() {
+      const isHidden = sidebar.classList.contains('-translate-x-full');
+      sidebar.classList.toggle('-translate-x-full');
+      if (hamburgerMenu) hamburgerMenu.setAttribute('aria-expanded', String(isHidden));
+    }
+    if (hamburgerMenu) hamburgerMenu.addEventListener('click', toggleSidebar);
+    const navLinks = document.querySelectorAll('#nav-links a');
+    const sections = document.querySelectorAll('main section');
+    navLinks.forEach(link => link.addEventListener('click', () => {
+      if (window.innerWidth < 1024) {
+        sidebar.classList.add('-translate-x-full');
+        if (hamburgerMenu) hamburgerMenu.setAttribute('aria-expanded', 'false');
+      }
+    }));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.remove('active-link');
+            if (link.getAttribute('href').substring(1) === entry.target.id) link.classList.add('active-link');
+          });
+        }
+      });
+    }, { rootMargin: "-50% 0px -50% 0px" });
+    sections.forEach(section => observer.observe(section));
+
+    document.querySelectorAll('[data-reveal]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.getAttribute('data-reveal'));
+        if (target) target.classList.toggle('hidden');
+      });
+    });
+
+    function typeset(el) { if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]); }
+
+    // Remainder widget
+    const aInput = document.getElementById('a-input');
+    const bInput = document.getElementById('b-input');
+    const modBtn = document.getElementById('mod-calc');
+    const modOut = document.getElementById('mod-output');
+    if (modBtn) modBtn.addEventListener('click', () => {
+      const a = parseInt(aInput.value, 10);
+      const b = parseInt(bInput.value, 10);
+      if (!Number.isFinite(a) || !Number.isFinite(b) || b <= 0) { modOut.textContent = "Please enter an integer a and a positive integer b."; return; }
+      const q = Math.trunc(a / b);
+      const r = ((a % b)+b)%b;
+      modOut.innerHTML = `a = bq + r → ${a} = ${b}×${q} + ${r} ⇒ a mod b = ${r}`;
+      typeset(modOut);
+    });
+
+    // Sieve
+    const sieveGrid = document.getElementById('sieve-grid');
+    const sieveReset = document.getElementById('sieve-reset');
+    const sieveRun = document.getElementById('sieve-run');
+    function makeCell(n) {
+      const btn = document.createElement('button');
+      btn.textContent = n; btn.dataset.n = n;
+      btn.className = "text-sm rounded px-2 py-1 border bg-white hover:bg-gray-100";
+      if (n === 1) btn.classList.add('opacity-70');
+      return btn;
+    }
+    function buildSieve() {
+      sieveGrid.innerHTML = ""; for (let n=1; n<=100; n++) sieveGrid.appendChild(makeCell(n));
+    }
+    function crossMultiples(p) {
+      [...sieveGrid.children].forEach(cell => {
+        const n = parseInt(cell.dataset.n, 10);
+        if (n>p && n % p === 0) cell.className = "text-sm rounded px-2 py-1 border bg-gray-200 line-through";
+      });
+      [...sieveGrid.children].forEach(cell => {
+        const n = parseInt(cell.dataset.n, 10);
+        if (n===p) cell.className = "text-sm rounded px-2 py-1 border bg-yellow-200 font-semibold";
+      });
+    }
+    function runSieve() { [2,3,5,7].forEach(crossMultiples); }
+    document.querySelectorAll('[data-sieve="step"]').forEach(b => b.addEventListener('click', () => crossMultiples(parseInt(b.dataset.p,10))));
+    if (sieveReset) sieveReset.addEventListener('click', buildSieve);
+    if (sieveRun) sieveRun.addEventListener('click', runSieve);
+    buildSieve();
+
+    // Factorization + factor tree
+    function primeFactorization(n) { const f=[]; let d=2; while (d*d<=n){ while(n%d===0){f.push(d); n=n/d;} d+=(d===2?1:2); } if(n>1) f.push(n); return f; }
+    function buildFactorPairs(n){ if(n<=3)return null; let d=2; while(d*d<=n){ if(n%d===0) return [d, Math.floor(n/d)]; d+=(d===2?1:2);} return null; }
+    function buildTree(n){ const pair=buildFactorPairs(n); if(!pair) return {val:n,left:null,right:null}; return {val:n,left:buildTree(pair[0]),right:buildTree(pair[1])}; }
+    function layoutTree(root,x,y,dx,levelGap,nodes,edges){ if(!root)return; const my=nodes.length; nodes.push({x,y,label:root.val}); if(root.left){const li=nodes.length; layoutTree(root.left,x-dx,y+levelGap,dx*0.55,levelGap,nodes,edges); edges.push([my,li]);} if(root.right){const ri=nodes.length; layoutTree(root.right,x+dx,y+levelGap,dx*0.55,levelGap,nodes,edges); edges.push([my,ri]);} }
+    function renderTree(n){ const svg=document.getElementById('factor-tree'); if(!svg) return; svg.innerHTML=""; const root=buildTree(n); const nodes=[],edges=[]; layoutTree(root,300,30,180,70,nodes,edges);
+      edges.forEach(([a,b])=>{ const A=nodes[a],B=nodes[b]; const line=document.createElementNS("http://www.w3.org/2000/svg","line"); line.setAttribute("x1",A.x); line.setAttribute("y1",A.y+16); line.setAttribute("x2",B.x); line.setAttribute("y2",B.y-16); line.setAttribute("stroke","#94a3b8"); line.setAttribute("stroke-width","2"); svg.appendChild(line); });
+      nodes.forEach(nd=>{ const g=document.createElementNS("http://www.w3.org/2000/svg","g"); const c=document.createElementNS("http://www.w3.org/2000/svg","circle"); c.setAttribute("cx",nd.x); c.setAttribute("cy",nd.y); c.setAttribute("r","16"); c.setAttribute("fill","#0d9488"); c.setAttribute("stroke","#0f766e"); c.setAttribute("stroke-width","2"); const t=document.createElementNS("http://www.w3.org/2000/svg","text"); t.setAttribute("x",nd.x); t.setAttribute("y",nd.y+5); t.setAttribute("text-anchor","middle"); t.setAttribute("fill","white"); t.setAttribute("font-size","12"); t.textContent=nd.label; g.appendChild(c); g.appendChild(t); svg.appendChild(g); }); }
+    const pfInput=document.getElementById('pf-input'); const pfRun=document.getElementById('pf-run'); const pfSteps=document.getElementById('pf-steps'); const pfResult=document.getElementById('pf-result');
+    function prettyPow(f){ const m=new Map(); f.forEach(x=>m.set(x,(m.get(x)||0)+1)); return [...m.entries()].map(([p,e])=>e===1?`${p}`:`${p}^{${e}}`).join('\\u00A0\\u00B7\\u00A0'); }
+    if (pfRun) pfRun.addEventListener('click', ()=>{ const n=parseInt(pfInput.value,10); if(!Number.isFinite(n)||n<2){ pfSteps.textContent="Enter an integer ≥ 2."; pfResult.textContent=""; return;} const facts=primeFactorization(n);
+      let tmp=n, d=2, step=""; while(d*d<=tmp){ while(tmp%d===0){ const next=Math.floor(tmp/d); step += `<div>${tmp} \\(\\div\\) ${d} = ${next}</div>`; tmp=next; } d+=(d===2?1:2);} if(tmp>1 && tmp!==1) step += `<div>Leftover prime: ${tmp}</div>`; pfSteps.innerHTML=step or "Already prime."; pfResult.innerHTML=`Prime factors: \\(${prettyPow(facts)}\\)`; typeset(pfSteps); typeset(pfResult); renderTree(n); });
+
+    // GCD by factorization
+    const gcdA=document.getElementById('gcd-a'); const gcdB=document.getElementById('gcd-b'); const gcdRun=document.getElementById('gcd-run'); const gcdSteps=document.getElementById('gcd-steps'); const gcdResult=document.getElementById('gcd-result');
+    function factorCounts(n){ const m=new Map(); primeFactorization(n).forEach(p=>m.set(p,(m.get(p)||0)+1)); return m; }
+    function gcdFromCounts(c1,c2){ const shared=[]; c1.forEach((e1,p)=>{ if(c2.has(p)) shared.push([p, Math.min(e1,c2.get(p))]); }); if(!shared.length) return [1,"No shared primes → gcd = 1 (coprime)."]; const parts=shared.map(([p,e])=>e===1?`${p}`:`${p}^{${e}}`); let value=1; shared.forEach(([p,e])=>{ value*=p**e; }); return [value, `Take shared primes with smallest powers: \\(${parts.join(' \\u00B7 ')}\\)`]; }
+    if (gcdRun) gcdRun.addEventListener('click', ()=>{ const a=parseInt(gcdA.value,10), b=parseInt(gcdB.value,10); if(!Number.isFinite(a)||a<2||!Number.isFinite(b)||b<2){ gcdSteps.textContent="Enter integers ≥ 2."; gcdResult.textContent=""; return;} const ca=factorCounts(a), cb=factorCounts(b); const [g,how]=gcdFromCounts(ca,cb); const show=c=>[...c.entries()].map(([p,e])=>e===1?`${p}`:`${p}^{${e}}`).join(' \\u00B7 '); gcdSteps.innerHTML=`\\(${a}\\) = ${show(ca)}<br>\\(${b}\\) = ${show(cb)}<br>${how}`; gcdResult.innerHTML=`\\(\\gcd(${a},${b}) = ${g}\\)`; typeset(gcdSteps); typeset(gcdResult); });
+
+    // Knowledge Check
+    const quizContainer=document.getElementById('quiz-container'); const quizResults=document.getElementById('quiz-results'); const resetBtn=document.getElementById('reset-quiz'); let score=0;
+    const quizQuestions = [{"question": "Below is a list of numbers:\n22, -17, 47, -2000, 0, 1, 43, 1729, 6174, -63, 100, 32, -9. How many natural numbers are there in the given list?", "type": "single-choice", "answers": ["6", "7", "8", "9"], "correct": ["9"]}, {"question": "Suppose a class has M students. If we distribute 3 pens to each student, then 4 pens will remain. If there are 70 pens in total, what is the value of M?", "type": "single-choice", "answers": ["22", "20", "19", "23"], "correct": ["22"]}, {"question": "Consider \u20182\u2019 to be the first prime number. Which of the following will be the sixteenth prime number?", "type": "single-choice", "answers": ["47", "53", "59", "61"], "correct": ["53"]}, {"question": "Suppose x mod 3 = 1 and x mod 7 = 4. Which of the following is(are) possible values for x?", "type": "multiple-choice", "answers": ["25", "34", "58", "67"], "correct": ["25", "67"]}, {"question": "Which symbol denotes the set of natural numbers in this course?", "type": "single-choice", "answers": ["Z", "N", "Q", "R"], "correct": ["N"]}, {"question": "In this course, 0 is part of the natural numbers.", "type": "true-false", "answers": ["True", "False"], "correct": ["True"]}, {"question": "Which operations always map natural numbers to natural numbers? (Select all that apply)", "type": "multiple-choice", "answers": ["Addition", "Subtraction", "Multiplication", "Division"], "correct": ["Addition", "Multiplication"]}, {"question": "Fill in the blank: Multiplication is repeated ________.", "type": "single-choice", "answers": ["division", "addition", "subtraction", "exponentiation"], "correct": ["addition"]}, {"question": "Which statement about integers is correct?", "type": "single-choice", "answers": ["They start at 0 and go up.", "They extend infinitely in both directions.", "They exclude negative numbers.", "They do not include 0."], "correct": ["They extend infinitely in both directions."]}, {"question": "Select all correct statements about prime numbers.", "type": "multiple-choice", "answers": ["1 is a prime number.", "2 is the only even prime.", "Every integer > 1 has a unique prime factorization.", "All odd numbers are prime."], "correct": ["2 is the only even prime.", "Every integer > 1 has a unique prime factorization."]}, {"question": "If 19 mod 5 = r, what is r?", "type": "single-choice", "answers": ["0", "1", "3", "4"], "correct": ["4"]}, {"question": "Which pair lists a number and one of its factors?", "type": "single-choice", "answers": ["20 and 6", "21 and 8", "18 and 3", "25 and 7"], "correct": ["18 and 3"]}];
+    function renderQuiz(){ score=0; quizResults.textContent=''; quizContainer.innerHTML = quizQuestions.map((q,i)=>{ const answers=q.answers.map((ans,j)=>{ const id=`q${i}_a${j}`; const type=q.type==='multiple-choice'?'checkbox':'radio'; return `<label for="${id}" class="flex items-center space-x-3 p-3 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-50 transition has-[:checked]:bg-emerald-50 has-[:checked]:border-brand-600">
+      <input id="${id}" type="${type}" name="question${i}" value="${ans}" class="h-5 w-5 text-brand-600 border-gray-300 rounded focus:ring-brand-600"/><span>${ans}</span></label>`; }).join('');
+      return `<div class="quiz-question" data-question-index="${i}"><p class="text-lg font-semibold mb-2">${q.question.replace(/\\n/g,'<br>')}</p><div class="space-y-2">${answers}</div><button class="submit-answer mt-3 bg-brand-600 text-white px-4 py-2 rounded-md hover:bg-brand-700 transition">Submit</button><div class="feedback mt-2" aria-live="polite"></div></div>`; }).join(''); typeset(quizContainer); }
+    quizContainer.addEventListener('click', e=>{ if(!e.target.classList.contains('submit-answer')) return; const qDiv=e.target.closest('.quiz-question'); const i=parseInt(qDiv.dataset.questionIndex); const q=quizQuestions[i]; const fb=qDiv.querySelector('.feedback'); const selected=[...qDiv.querySelectorAll(`input[name="question${i}"]:checked`)].map(x=>x.value); if(selected.length===0){ fb.innerHTML=`<p class="text-amber-700">Please select an answer.</p>`; return; } qDiv.querySelectorAll('input').forEach(inp=>inp.disabled=true); e.target.disabled=true; e.target.classList.add('opacity-60','cursor-not-allowed'); const ok = q.type==='multiple-choice' ? (selected.length===q.correct.length && selected.every(sa=>q.correct.includes(sa))) : (selected[0]===q.correct[0]); if(ok){ fb.innerHTML=`<div class="p-3 bg-emerald-100 border-l-4 border-emerald-500 text-emerald-700"><strong>✅ Correct!</strong></div>`; score++; } else { fb.innerHTML=`<div class="p-3 bg-red-100 border-l-4 border-red-500 text-red-700"><strong>❌ Incorrect.</strong> <span class="ml-1">Correct answer(s):</span> ${q.correct.join(', ')}</div>`; } const answered=document.querySelectorAll('.submit-answer:disabled').length; if(answered===quizQuestions.length){ quizResults.textContent = `Knowledge Check Complete! Your Score: ${score} / ${quizQuestions.length}`; } typeset(fb); });
+    function resetQuiz(){ renderQuiz(); quizResults.textContent=''; }
+    if (resetBtn) resetBtn.addEventListener('click', resetQuiz);
+    renderQuiz();
+  </script>
+</body>
+</html>

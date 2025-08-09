@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Interactive Guide to Set Examples</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: {
+          fontCache: 'global'
+        },
+        startup: {
+          ready: () => {
+            MathJax.startup.defaultReady();
+            runGuide(); // This function will be defined at the end of the body
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <style>
+        /* Custom Styles for a polished look */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        /* Sidebar active link style */
+        .sidebar-link.active {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Smooth transitions */
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Custom scrollbar for a better look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Styles for interactive elements */
+        .interactive-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Quiz feedback styles */
+        .correct-answer {
+            color: #16a34a;
+            font-weight: 700;
+        }
+        .incorrect-answer {
+            color: #dc2626;
+            font-weight: 700;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid #cbd5e1;
+        }
+        code {
+            background-color: #e2e8f0;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-slate-800 text-white p-5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-40 overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-8 text-indigo-400">Learning Guide</h2>
+        <ul class="space-y-2">
+            <li><a href="#finite-infinite" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Finite vs. Infinite Sets</a></li>
+            <li><a href="#intervals" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Sets as Intervals</a></li>
+            <li><a href="#quiz" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Knowledge Check</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="md:ml-64 p-6 md:p-10">
+        <div class="max-w-4xl mx-auto">
+
+            <!-- Section 1: Finite and Infinite Sets -->
+            <section id="finite-infinite" class="mb-16 scroll-mt-20">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Sets: Examples</h1>
+                <p class="text-lg text-slate-600 mb-6">Let's look at some practical examples of sets and learn how to classify them based on their size.</p>
+                
+                <h2 class="text-3xl font-bold text-slate-900 mt-8 mb-4">Finite vs. Infinite Sets</h2>
+                <p class="mb-4">Sets can be categorized by whether we can count their elements or not.</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li>A <strong>finite set</strong> is a set where the elements can be counted, and the counting process eventually ends. The number of elements is its cardinality. For example, the set of days in a week has a cardinality of 7.</li>
+                    <li>An <strong>infinite set</strong> is a set where the elements go on forever. You can never finish counting them. The set of natural numbers, $\mathbb{N} = \{0, 1, 2, 3, ...\}$, is a classic example of an infinite set.</li>
+                </ul>
+                <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4 rounded-md my-4">
+                    <p><strong>Example:</strong> The set of all leap years is infinite because they occur roughly every four years, forever. The set of all countries in the world is finite because you could, in principle, list them all.</p>
+                </div>
+            </section>
+
+            <!-- Section 2: Intervals -->
+            <section id="intervals" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Describing Sets of Real Numbers: Intervals</h2>
+                <p class="mb-4">When dealing with real numbers, it's often impossible to list all the elements in a set. For example, how would you list all the numbers between 2 and 3? There's an infinite number of them! For this, we use <strong>interval notation</strong>.</p>
+                <p class="mb-4">An interval is a continuous part of the number line. We use parentheses `()` and square brackets `[]` to define them:</p>
+                <ul class="list-disc list-inside space-y-3 text-slate-700">
+                    <li><strong>Open Interval $(a, b)$</strong>: This includes all numbers between $a$ and $b$, but <strong>not</strong> $a$ or $b$ themselves. In set notation: $\{x \in \mathbb{R} \mid a < x < b\}$.</li>
+                    <li><strong>Closed Interval $[a, b]$</strong>: This includes all numbers between $a$ and $b$, <strong>including</strong> $a$ and $b$. In set notation: $\{x \in \mathbb{R} \mid a \le x \le b\}$.</li>
+                    <li><strong>Half-Open Intervals</strong>: We can also mix them. For instance, $[a, b)$ includes $a$ but not $b$.</li>
+                </ul>
+
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">Interval Operations Visualizer</h3>
+                    <p class="text-sm text-slate-500 mb-4">Enter two intervals to see their union or intersection on the number line.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                        <div>
+                            <label class="font-bold">Interval A:</label>
+                            <input type="text" id="intervalA" value="[-2, 0)" class="w-full p-2 border rounded-md mt-1">
+                        </div>
+                        <div>
+                            <label class="font-bold">Interval B:</label>
+                            <input type="text" id="intervalB" value="(4, 8]" class="w-full p-2 border rounded-md mt-1">
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-4 mt-4">
+                        <button id="union-btn" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700">Union ($\cup$)</button>
+                        <button id="intersection-btn" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700">Intersection ($\cap$)</button>
+                    </div>
+                    <div class="mt-4">
+                        <svg id="number-line" width="100%" height="60" viewBox="0 0 500 60"></svg>
+                        <p id="interval-result" class="text-center font-bold text-lg mt-2"></p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 3: Knowledge Check Quiz -->
+            <section id="quiz" class="scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6">Knowledge Check</h2>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        function runGuide() {
+            // --- Mobile Menu Logic ---
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            sidebar.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A' && window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+
+            // --- Active Sidebar Link on Scroll ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+            sections.forEach(section => observer.observe(section));
+
+            // --- Interval Visualizer ---
+            const svg = document.getElementById('number-line');
+            const resultText = document.getElementById('interval-result');
+            const unionBtn = document.getElementById('union-btn');
+            const intersectionBtn = document.getElementById('intersection-btn');
+            
+            const parseInterval = (str) => {
+                const match = str.match(/([(\[])\s*(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)\s*([)\]])/);
+                if (!match) return null;
+                return {
+                    start: parseFloat(match[2]),
+                    end: parseFloat(match[3]),
+                    startInclusive: match[1] === '[',
+                    endInclusive: match[4] === ']'
+                };
+            };
+
+            const drawNumberLine = (intervals = []) => {
+                svg.innerHTML = '';
+                const min = -10, max = 10;
+                const scale = (val) => 25 + ((val - min) / (max - min)) * 450;
+
+                // Line and ticks
+                svg.innerHTML += `<line x1="25" y1="30" x2="475" y2="30" stroke="black" />`;
+                for (let i = min; i <= max; i++) {
+                    const x = scale(i);
+                    svg.innerHTML += `<line x1="${x}" y1="25" x2="${x}" y2="35" stroke="black" />`;
+                    if (i % 2 === 0) {
+                        svg.innerHTML += `<text x="${x}" y="50" text-anchor="middle">${i}</text>`;
+                    }
+                }
+
+                // Draw intervals
+                intervals.forEach((interval, index) => {
+                    if (!interval) return;
+                    const yPos = index === 0 ? 20 : 15; // Offset second interval slightly
+                    const color = index === 0 ? '#4f46e5' : '#059669';
+                    const x1 = scale(interval.start);
+                    const x2 = scale(interval.end);
+                    svg.innerHTML += `<line x1="${x1}" y1="${yPos}" x2="${x2}" y2="${yPos}" stroke="${color}" stroke-width="4" />`;
+                    svg.innerHTML += `<circle cx="${x1}" cy="${yPos}" r="4" fill="${interval.startInclusive ? color : 'white'}" stroke="${color}" stroke-width="2" />`;
+                    svg.innerHTML += `<circle cx="${x2}" cy="${yPos}" r="4" fill="${interval.endInclusive ? color : 'white'}" stroke="${color}" stroke-width="2" />`;
+                });
+            };
+
+            const calculateOperation = (op) => {
+                const intA = parseInterval(document.getElementById('intervalA').value);
+                const intB = parseInterval(document.getElementById('intervalB').value);
+                if (!intA || !intB) {
+                    resultText.textContent = "Invalid interval format. Use (a,b), [a,b], (a,b], or [a,b).";
+                    drawNumberLine();
+                    return;
+                }
+                
+                if (op === 'union') {
+                    resultText.textContent = `Result: ${document.getElementById('intervalA').value} U ${document.getElementById('intervalB').value}`;
+                    drawNumberLine([intA, intB]);
+                } else if (op === 'intersection') {
+                    const start = Math.max(intA.start, intB.start);
+                    const end = Math.min(intA.end, intB.end);
+                    
+                    const startIsIncluded = (intA.start < start ? intB.startInclusive : intA.startInclusive) && (intB.start < start ? intA.startInclusive : intB.startInclusive);
+                    const endIsIncluded = (intA.end > end ? intB.endInclusive : intA.endInclusive) && (intB.end > end ? intA.endInclusive : intB.endInclusive);
+
+                    if (start > end || (start === end && (!startIsIncluded || !endIsIncluded))) {
+                        resultText.textContent = "Result: $\\emptyset$";
+                        drawNumberLine([]);
+                    } else {
+                        const newInterval = { start, end, startInclusive: startIsIncluded, endInclusive: endIsIncluded };
+                        resultText.textContent = `Result: ${startIsIncluded ? '[' : '('}${start}, ${end}${endIsIncluded ? ']' : ')'}`;
+                        drawNumberLine([newInterval]);
+                    }
+                }
+                 MathJax.typesetPromise([resultText]);
+            };
+
+            unionBtn.addEventListener('click', () => calculateOperation('union'));
+            intersectionBtn.addEventListener('click', () => calculateOperation('intersection'));
+            calculateOperation('union');
+
+
+            // --- Quiz Logic ---
+            const quizData = [
+                // Benchmark Questions from AQ1_6.html
+                {
+                    question: "Which of the following sets is(are) infinite?",
+                    type: 'multiple',
+                    options: ['Set of all Indian Nobel laureates', 'Set of squares of all odd natural numbers', 'Set of all countries in the world', 'Set of all leap years'],
+                    correct: [1, 3],
+                    explanation: "The set of odd natural numbers is infinite, so the set of their squares is also infinite. Leap years occur indefinitely. The number of Nobel laureates and countries are finite and countable."
+                },
+                {
+                    question: "Which of the following set comprehension defines real numbers in interval $[-2, 0) \\cup (4, 8]$?",
+                    type: 'single',
+                    options: [
+                        '\\({r \\in \\mathbb{R} \\mid -2 \\leq r \\leq 8}\\)',
+                        '\\({r \\in \\mathbb{R} \\mid -2 \\leq r < 0 \\text{ and } 4 < r \\leq 8}\\)',
+                        '\\({r \\in \\mathbb{R} \\mid -2 \\leq r < 0 \\text{ or } 4 < r \\leq 8}\\)',
+                        '\\({r \\in \\mathbb{R} \\mid -2 \\leq r \\leq 0 \\text{ and } 4 \\leq r \\leq 8}\\)'
+                    ],
+                    correct: [2],
+                    explanation: "The union symbol $\\cup$ corresponds to 'or'. The interval $[-2, 0)$ means $-2 \\leq r < 0$, and $(4, 8]$ means $4 < r \\leq 8$."
+                },
+                {
+                    question: "Which of the following set comprehensions define squares of the first 100 natural numbers?",
+                    type: 'multiple',
+                    options: [
+                        '\\({n \\in \\mathbb{N} \\mid \\sqrt{n} \\in \\mathbb{N} \\text{ and } n < 100}\\)',
+                        '\\({n^2 \\mid n \\in \\mathbb{N}, n < 100}\\)',
+                        '\\({n \\in \\mathbb{N} \\mid \\sqrt{n} \\in \\mathbb{N} \\text{ and } n < 10000}\\)',
+                        '\\({n^2 \\mid n \\in \\mathbb{N}, n < 10000}\\)'
+                    ],
+                    correct: [1, 2],
+                    explanation: "The first 100 natural numbers are 0, 1, ..., 99. Squaring them gives $\\{n^2 \\mid n \\in \\mathbb{N}, n < 100\\}$. Alternatively, a number 'n' is a perfect square if its square root is a natural number. The squares of the first 100 natural numbers are all less than $100^2=10000$. So, $\\{n \\mid n \\in \\mathbb{N}, \\sqrt{n} \\in \\mathbb{N} \\text{ and } n < 10000\\}$ is also correct."
+                },
+                {
+                    question: "Which of the following statement(s) is(are) true?",
+                    type: 'multiple',
+                    options: ['Empty set contains only one element i.e. $\\phi$.', 'Set with $n$ elements has $2^{n-1}$ subsets', 'Empty set is an element in the power set of a set', 'Power set is a set of all the subsets of a set'],
+                    correct: [2, 3],
+                    explanation: "The empty set has 0 elements. A set with n elements has $2^n$ subsets. The empty set is a subset of every set, so it is an element of every power set. The definition of a power set is the set of all subsets."
+                },
+                {
+                    question: "Which of the following intervals are subsets of $[2, 3]$?",
+                    type: 'multiple',
+                    options: [
+                        '$((0, 2.3] \\cup (2.3, 3]) \\cap (0, 2.3)$',
+                        '$((2, 2.5] \\cup (2.5, 4]) \\setminus (0, 2.3)$',
+                        '$((2, 2.5] \\cup (2.5, 4]) \\cap (0, 3)$',
+                        '$((0, 2.3] \\cup (2.2, 3]) \\setminus (0, 2.3)$'
+                    ],
+                    correct: [2, 3],
+                    explanation: "For option 3, $((2, 2.5] \\cup (2.5, 4]) = (2, 4]$. Then $(2, 4] \\cap (0, 3) = (2, 3)$, which is a subset of $[2, 3]$. For option 4, $((0, 2.3] \\cup (2.2, 3]) = (0, 3]$. Then $(0, 3] \\setminus (0, 2.3) = [2.3, 3]$, which is a subset of $[2, 3]$."
+                },
+                {
+                    question: "Two finite sets A and B are such that the total number of subsets of A is 56 more than the total number of subsets of B. What are the cardinalities of A and B respectively?",
+                    type: 'single',
+                    options: ['6, 3', '8, 4', '7, 1', '8, 3'],
+                    correct: [0],
+                    explanation: "Let $|A|=m$ and $|B|=n$. The number of subsets is $2^m$ and $2^n$. We have $2^m - 2^n = 56$. Factoring gives $2^n(2^{m-n} - 1) = 56 = 8 \\times 7 = 2^3 \\times 7$. Comparing factors, $2^n = 2^3 \\implies n=3$. And $2^{m-n}-1 = 7 \\implies 2^{m-3} = 8 = 2^3 \\implies m-3=3 \\implies m=6$. So, the cardinalities are 6 and 3."
+                },
+                // New Questions
+                {
+                    question: "The set of all letters in the word 'MISSISSIPPI' is:",
+                    type: 'single',
+                    options: ['{M, I, S, S, I, S, S, I, P, P, I}', '{M, I, S, P}', '{M, S, P}', '{M, I, S, P, I}'],
+                    correct: [1],
+                    explanation: "A set contains only distinct elements. The unique letters in 'MISSISSIPPI' are M, I, S, and P."
+                },
+                {
+                    question: "Which of the following is a finite set?",
+                    type: 'single',
+                    options: ['The set of all integers $\\mathbb{Z}$', 'The set of grains of sand on Earth', 'The set of real numbers between 0 and 1', 'The set of all prime numbers'],
+                    correct: [1],
+                    explanation: "While the number of grains of sand is incredibly large, it is still a finite, countable number. The other sets are all infinite."
+                },
+                 {
+                    question: "What is the intersection of the intervals $(-3, 5]$ and $[2, 8)$?",
+                    type: 'single',
+                    options: ['(2, 5]', '[2, 5]', '(2, 5)', '[2, 5)'],
+                    correct: [1],
+                    explanation: "The intersection includes all numbers that are in both intervals. The numbers must be greater than -3 AND greater than or equal to 2 (so $\\ge 2$). They must be less than or equal to 5 AND less than 8 (so $\\le 5$). This gives the interval $[2, 5]$."
+                },
+                {
+                    question: "If A = {1, 2}, what is the set A $\\cup \\emptyset$?",
+                    type: 'single',
+                    options: ['{1, 2}', '$\\emptyset$', '{{1, 2}, $\\emptyset$}', '{1, 2, 0}'],
+                    correct: [0],
+                    explanation: "The union of any set with the empty set is the original set itself, as the empty set adds no new elements."
+                },
+                {
+                    question: "Which of these sets is equal to {x | x is a letter in 'FOLLOW'}?",
+                    type: 'single',
+                    options: ['{F, L, W}', '{F, O, L, W}', '{F, O, L, L, O, W}', '{W, O, L, F}'],
+                    correct: [1],
+                    explanation: "The distinct letters in 'FOLLOW' are F, O, L, W. The set {W, O, L, F} contains the same elements, just in a different order, so they are equal."
+                },
+                {
+                    question: "Let U = {all single-digit natural numbers} and A = {0, 2, 4, 6, 8}. What is A'?",
+                    type: 'single',
+                    options: ['{1, 3, 5, 7, 9}', '{1, 3, 5, 7}', '{0, 1, 3, 5, 7, 9}', '{2, 4, 6, 8}'],
+                    correct: [0],
+                    explanation: "The universal set U is {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}. The complement A' contains all elements of U that are not in A, which is {1, 3, 5, 7, 9}."
+                },
+                {
+                    question: "Let A = {1, 2} and B = {1, 2, 3}. Which of the following is true?",
+                    type: 'multiple',
+                    options: ['A $\\subset$ B', 'B $\\subseteq$ A', 'A $\\subseteq$ B', 'A = B'],
+                    correct: [0, 2],
+                    explanation: "A is a subset of B because all elements of A are in B ($A \\subseteq B$). It is also a proper subset ($A \\subset B$) because B contains an element (3) that is not in A."
+                },
+                {
+                    question: "The set of all rational numbers is:",
+                    type: 'single',
+                    options: ['Finite', 'Infinite', 'Empty', 'None of the above'],
+                    correct: [1],
+                    explanation: "There is no end to the number of fractions you can create, so the set of rational numbers is infinite."
+                },
+                {
+                    question: "What is the cardinality of the set of vowels in the English alphabet?",
+                    type: 'single',
+                    options: ['26', '21', '5', '6'],
+                    correct: [2],
+                    explanation: "The set of vowels is {a, e, i, o, u}. There are 5 elements, so the cardinality is 5."
+                },
+                {
+                    question: "If A = {x, y} and B = {1, 2}, what is $A \\cap B$?",
+                    type: 'single',
+                    options: ['{x, y, 1, 2}', '{{x,y},{1,2}}', '$\\emptyset$', '{x, 1}'],
+                    correct: [2],
+                    explanation: "The intersection contains elements that are in both sets. Since sets A and B have no elements in common, their intersection is the empty set, $\\emptyset$."
+                },
+                {
+                    question: "Let A = {all multiples of 4} and B = {all multiples of 6}. Which number is in $A \\cap B$?",
+                    type: 'single',
+                    options: ['8', '18', '24', '32'],
+                    correct: [2],
+                    explanation: "The intersection contains numbers that are multiples of both 4 and 6. This means they must be multiples of the least common multiple of 4 and 6, which is 12. Of the options, only 24 is a multiple of 12."
+                },
+                {
+                    question: "If a set has 5 elements, how many proper subsets does it have?",
+                    type: 'single',
+                    options: ['32', '31', '24', '5'],
+                    correct: [1],
+                    explanation: "A set with 5 elements has $2^5 = 32$ total subsets. The set itself is one of these subsets, but it is not a 'proper' subset. Therefore, there are $32 - 1 = 31$ proper subsets."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'p-6 bg-white rounded-lg shadow-md';
+                
+                let optionsHTML = q.options.map((opt, i) => `
+                    <div class="flex items-center">
+                        <input type="${q.type === 'single' ? 'radio' : 'checkbox'}" id="q${index}o${i}" name="q${index}" value="${i}" class="mr-3">
+                        <label for="q${index}o${i}">${opt}</label>
+                    </div>
+                `).join('');
+
+                questionElem.innerHTML = `
+                    <p class="font-bold mb-4">${index + 1}. ${q.question}</p>
+                    <div class="space-y-2 mb-4">${optionsHTML}</div>
+                    <button class="check-answer-btn px-4 py-2 text-sm bg-slate-200 font-semibold rounded-md hover:bg-slate-300">Check Answer</button>
+                    <div class="feedback mt-4 hidden"></div>
+                `;
+                quizContainer.appendChild(questionElem);
+            });
+
+            quizContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('check-answer-btn')) {
+                    const questionElem = e.target.closest('.p-6');
+                    const feedbackElem = questionElem.querySelector('.feedback');
+                    const questionIndex = Array.from(quizContainer.children).indexOf(questionElem);
+                    const questionData = quizData[questionIndex];
+                    const inputs = questionElem.querySelectorAll('input:checked');
+                    
+                    let selectedIndices = Array.from(inputs).map(input => parseInt(input.value));
+                    
+                    feedbackElem.classList.remove('hidden');
+                    let isCorrect = false;
+                    
+                    if (questionData.type === 'single') {
+                        isCorrect = selectedIndices.length === 1 && selectedIndices[0] === questionData.correct[0];
+                    } else { // multiple
+                        isCorrect = selectedIndices.length === questionData.correct.length && selectedIndices.every(val => questionData.correct.includes(val));
+                    }
+                    
+                    if (isCorrect) {
+                        feedbackElem.innerHTML = `<p class="correct-answer">Correct!</p><p class="explanation">${questionData.explanation}</p>`;
+                    } else {
+                        feedbackElem.innerHTML = `<p class="incorrect-answer">Not quite.</p><p class="explanation">${questionData.explanation}</p>`;
+                    }
+                    MathJax.typesetPromise([feedbackElem]);
+                }
+            });
+            MathJax.typesetPromise();
+        }
+    </script>
+</body>
+</html>

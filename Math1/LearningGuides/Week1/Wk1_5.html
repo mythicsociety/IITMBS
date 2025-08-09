@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L1.5: Construction of Subsets and Set Operations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for active sidebar link and scrollbar */
+        .sidebar-link.active {
+            background-color: #1d4ed8; /* A darker blue */
+            color: white;
+            font-weight: 600;
+        }
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .quiz-option {
+            transition: background-color 0.3s ease;
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7; /* Light green */
+            border-color: #22c55e;
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* Light red */
+            border-color: #ef4444;
+        }
+        /* Venn Diagram styles */
+        .venn-circle {
+            fill-opacity: 0.1;
+            stroke-width: 2;
+            transition: fill-opacity 0.3s ease;
+        }
+        .venn-text {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #333;
+        }
+        .venn-area {
+            fill: #3b82f6; /* Blue */
+            fill-opacity: 0;
+            transition: fill-opacity 0.3s ease;
+        }
+        .venn-area.highlight {
+            fill-opacity: 0.5;
+        }
+    </style>
+    <!-- Main application script defined first -->
+    <script>
+        function runGuide() {
+            // Mobile sidebar toggle logic
+            const menuButton = document.getElementById('menu-button');
+            const sidebar = document.getElementById('sidebar');
+            
+            menuButton.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+            });
+
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('hidden');
+                    }
+                });
+            });
+
+            // IntersectionObserver for highlighting active sidebar link
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-20% 0px -75% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Venn Diagram Simulator
+            const setAInput = document.getElementById('setAInput');
+            const setBInput = document.getElementById('setBInput');
+            const unionBtn = document.getElementById('unionBtn');
+            const intersectionBtn = document.getElementById('intersectionBtn');
+            const diffABBtn = document.getElementById('diffABBtn');
+            const diffBABtn = document.getElementById('diffBABtn');
+            const vennResult = document.getElementById('vennResult');
+            
+            const vennAOnly = document.getElementById('vennAOnly');
+            const vennBOnly = document.getElementById('vennBOnly');
+            const vennIntersection = document.getElementById('vennIntersection');
+
+            function getSetFromInput(inputElement) {
+                const text = inputElement.value.trim();
+                if (text === '') return new Set();
+                return new Set(text.split(',').map(item => item.trim()).filter(Boolean));
+            }
+
+            function updateVenn(operation) {
+                const setA = getSetFromInput(setAInput);
+                const setB = getSetFromInput(setBInput);
+                
+                // Clear previous highlights
+                vennAOnly.classList.remove('highlight');
+                vennBOnly.classList.remove('highlight');
+                vennIntersection.classList.remove('highlight');
+
+                let resultSet;
+                let resultString = '';
+
+                switch(operation) {
+                    case 'union':
+                        resultSet = new Set([...setA, ...setB]);
+                        vennAOnly.classList.add('highlight');
+                        vennBOnly.classList.add('highlight');
+                        vennIntersection.classList.add('highlight');
+                        resultString = `$A \\cup B = \\{${[...resultSet].join(', ')}\\}$`;
+                        break;
+                    case 'intersection':
+                        resultSet = new Set([...setA].filter(x => setB.has(x)));
+                        vennIntersection.classList.add('highlight');
+                        resultString = `$A \\cap B = \\{${[...resultSet].join(', ')}\\}$`;
+                        break;
+                    case 'diffAB':
+                        resultSet = new Set([...setA].filter(x => !setB.has(x)));
+                        vennAOnly.classList.add('highlight');
+                        resultString = `$A \\setminus B = \\{${[...resultSet].join(', ')}\\}$`;
+                        break;
+                    case 'diffBA':
+                        resultSet = new Set([...setB].filter(x => !setA.has(x)));
+                        vennBOnly.classList.add('highlight');
+                        resultString = `$B \\setminus A = \\{${[...resultSet].join(', ')}\\}$`;
+                        break;
+                }
+                vennResult.innerHTML = resultString;
+                MathJax.typesetPromise([vennResult]);
+            }
+
+            unionBtn.addEventListener('click', () => updateVenn('union'));
+            intersectionBtn.addEventListener('click', () => updateVenn('intersection'));
+            diffABBtn.addEventListener('click', () => updateVenn('diffAB'));
+            diffBABtn.addEventListener('click', () => updateVenn('diffBA'));
+            
+            // Initial update
+            updateVenn('union');
+
+
+            // Quiz Logic
+            const quizContainer = document.getElementById('quiz-container');
+            const quizQuestions = [
+                // Benchmark questions from AQ1_5.html
+                {
+                    question: "Which of the following is a correct representation of set comprehension?",
+                    options: [
+                        "$\\{x \\,; \\,x \\in \\mathbb{N}, x \\text{ is even}\\}$",
+                        "$\\{x \\,| \\,x \\in \\mathbb{N}, x \\text{ is even}\\}$",
+                        "$\\{x \\text{ is even} \\,| \\,x \\in \\mathbb{N} \\,| \\, x\\}$",
+                        "$\\{x \\text{ is even} \\,; \\,x \\in \\mathbb{N}, x\\}$"
+                    ],
+                    correctIndex: 1,
+                    explanation: "The standard notation for set comprehension is $\\{ \\text{expression} \\,| \\, \\text{variable} \\in \\text{Set}, \\text{condition} \\}$. The vertical bar '|' is read as 'such that'. The semi-colon ';' is sometimes used but the vertical bar is more common."
+                },
+                {
+                    question: "Which of the following is the set of natural numbers that are multiples of 3 or 5?",
+                    options: [
+                        "$\\{x \\,| \\,x \\in \\mathbb{N}, x \\text{ mod } 3 = 0 \\text{ and } x \\text{ mod } 5 = 0\\}$",
+                        "$\\{x \\,| \\,x \\in \\mathbb{Z}, x \\text{ mod } 3 = 0 \\text{ or } x \\text{ mod } 5 = 0\\}$",
+                        "$\\{x \\,| \\,x \\in \\mathbb{Z}, x \\text{ mod } 3 = 0 \\text{ and } x \\text{ mod } 5 = 0\\}$",
+                        "$\\{x \\,| \\,x \\in \\mathbb{N}, x \\text{ mod } 3 = 0 \\text{ or } x \\text{ mod } 5 = 0\\}$"
+                    ],
+                    correctIndex: 3,
+                    explanation: "The question asks for natural numbers ($\\mathbb{N}$), not all integers ($\\mathbb{Z}$). The word 'or' means the number must be a multiple of 3, or a multiple of 5, or both. This corresponds to the logical 'or' in the condition."
+                },
+                {
+                    context: `Given below is the set of students from Madras University who are going to participate in SCHROETER, a sports fest organized by I.I.T Madras:<br>
+                    $\\,$<br>
+                    $\\{Abbas, Akhil, Aditya, Balachandra, Bhuvan, Chidambaram, Charan, Kiran, Dayal, Deepak, Jaivardhan, Nithin, Sunil, Karthik, Rakesh\\}$
+                    <br>$\\,$<br>
+                    These students are interested to play volleyball, basketball, and cricket but as there are only 15 students from Madras University, some of them are assigned to play more than one sport. Given below are the sets in which they are assigned to play volleyball, basketball, and cricket respectively.<br>$\\,$<br>
+                    Volleyball (V): $\\{Akhil, Charan, Deepak, Sunil, Karthik, Rakesh\\}$<br>
+                    Basketball (B): $\\{Charan, Rakesh, Kiran, Chidambaram, Balachandra\\}$<br>
+                    Cricket (C): $\\{Abbas, Akhil, Aditya, Bhuvan, Charan, Dayal, Deepak, Kiran, Jaivardhan, Nithin, Rakesh\\}$<br>$\\,$<br>
+                    Based on the above data, answer the following questions:`,
+                    question: "Which of the following sets represents students from Madras University who play both cricket and basketball?",
+                    options: [
+                        "$\\{Akhil, Rakesh, Sunil, Karthik\\}$",
+                        "$\\{Sunil, Karthik\\}$",
+                        "$\\{Kiran, Charan, Rakesh\\}$",
+                        "$\\{Abbas, Akhil, Rakesh\\}$"
+                    ],
+                    correctIndex: 2,
+                    explanation: "This question asks for the intersection of the Cricket set and the Basketball set: $B \\cap C$. The players common to both lists are {Kiran, Charan, Rakesh}."
+                },
+                {
+                    question: "What is the number of students who play all the three sports?",
+                    options: ["1", "2", "3", "4"],
+                    correctIndex: 1,
+                    explanation: "We need to find the intersection of all three sets: $V \\cap B \\cap C$. The players common to all three lists are Charan and Rakesh. So, the number is 2."
+                },
+                {
+                    question: "Which set represents students who play volleyball but not cricket?",
+                    options: [
+                        "$\\{Akhil, Rakesh, Sunil, Karthik\\}$",
+                        "$\\{Sunil, Karthik\\}$",
+                        "$\\{Deepak, Sunil, Bhuvan, Dayal, Nithin\\}$",
+                        "$\\{Abbas, Aditya, Bhuvan, Dayal, Kiran, Jaivardhan, Nithin\\}$"
+                    ],
+                    correctIndex: 1,
+                    explanation: "This asks for the set difference $V \\setminus C$. We take the Volleyball set {Akhil, Charan, Deepak, Sunil, Karthik, Rakesh} and remove anyone who is also in the Cricket set. Akhil, Charan, Deepak, and Rakesh are in the Cricket set, leaving only {Sunil, Karthik}."
+                },
+                {
+                    question: "Which set represents students who are not playing cricket?",
+                    options: [
+                        "$\\{Dayal, Deepak, Kiran, Jaivardhan\\}$",
+                        "$\\{Rakesh, Kiran, Chidambaram, Balachandra\\}$",
+                        "$\\{Bhuvan, Jaivardhan, Sunil, Chidambaram\\}$",
+                        "$\\{Sunil, Chidambaram, Karthik, Balachandra\\}$"
+                    ],
+                    correctIndex: 3,
+                    explanation: "This is the complement of the Cricket set with respect to the universal set of all 15 students. We take the full list of 15 students and remove everyone listed in the Cricket set. The remaining students are {Sunil, Chidambaram, Karthik, Balachandra}."
+                },
+                {
+                    context: `Consider two sets that represent the items that are required to be carried by a student to an exam centre to write exam A and exam B respectively:<br>$\\,$<br>
+                    Exam A: $\\{Hall ticket, Pen, Calculator, Ruler, Pencil\\}$<br>
+                    Exam B: $\\{Compass, Pencil, Drafter, Ruler, Eraser, Sharpener, Hall ticket\\}$<br>$\\,$<br>
+                    Based on the above data, answer the following questions:`,
+                    question: "If exams A and B are conducted simultaneously, what items are required?",
+                    options: [
+                        "$\\{Hall ticket, Ruler, Pencil, Eraser, Sharpener, Pen, Drafter, Compass, Calculator\\}$",
+                        "$\\{Calculator, Ruler, Pencil, Hall ticket, Pen, Paper, Compass, Drafter\\}$",
+                        "$\\{Hall ticket, Ruler, Pencil\\}$",
+                        "$\\{Pen, Calculator, Pencil, Hall ticket, Ruler, Compass, Drafter, Eraser\\}$"
+                    ],
+                    correctIndex: 0,
+                    explanation: "This requires the union of the two sets of items ($A \\cup B$). The union combines all unique items from both lists, which corresponds to the first option."
+                },
+                {
+                    question: "If a student forgets to bring her Calculator, which exam will she not be allowed to write?",
+                    options: [
+                        "Exam B",
+                        "She can write both the exams",
+                        "Exam A",
+                        "None of the above"
+                    ],
+                    correctIndex: 2,
+                    explanation: "The calculator is listed as a required item only for Exam A. It is not in the list for Exam B. Therefore, she would not be allowed to write Exam A."
+                },
+                // Additional Questions
+                {
+                    question: "Given $A = \\{1, 2, 3\\}$ and $B = \\{3, 4, 5\\}$, what is $A \\cup B$?",
+                    options: [
+                        "$\\{3\\}$",
+                        "$\\{1, 2, 3, 4, 5\\}$",
+                        "$\\{1, 2, 4, 5\\}$",
+                        "$\\{1, 2, 3, 3, 4, 5\\}$"
+                    ],
+                    correctIndex: 1,
+                    explanation: "The union ($A \\cup B$) combines all elements from both sets without repeating any. So we take all elements from A and all from B: {1, 2, 3, 4, 5}."
+                },
+                {
+                    question: "If a set X has 4 elements, how many subsets does its powerset contain?",
+                    options: ["4", "8", "16", "32"],
+                    correctIndex: 2,
+                    explanation: "The number of subsets of a set with $n$ elements is $2^n$. For a set with 4 elements, the powerset has $2^4 = 16$ subsets."
+                },
+                {
+                    question: "Let U = {1, 2, 3, 4, 5, 6, 7, 8} be the universe. If A = {1, 3, 5, 7}, what is the complement of A, denoted $A^c$?",
+                    options: [
+                        "$\\{1, 3, 5, 7\\}$",
+                        "$\\{2, 4, 6, 8\\}$",
+                        "$\\{\\}$",
+                        "$\\{1, 2, 3, 4, 5, 6, 7, 8\\}$"
+                    ],
+                    correctIndex: 1,
+                    explanation: "The complement of A ($A^c$) contains all elements in the universe U that are NOT in A. The even numbers {2, 4, 6, 8} are in U but not in A."
+                },
+                 {
+                    question: "The empty set, $\\emptyset$, is a subset of which set?",
+                    options: [
+                        "Only itself",
+                        "Only sets that contain 0",
+                        "Only finite sets",
+                        "Every set"
+                    ],
+                    correctIndex: 3,
+                    explanation: "A key property of the empty set is that it is a subset of every set, including itself. This is because the condition 'every element of the empty set is in set X' is vacuously true, as there are no elements to check."
+                },
+                {
+                    question: "Given $X = \\{a, b, c\\}$ and $Y = \\{c, d, e\\}$, what is $Y \\setminus X$?",
+                    options: [
+                        "$\\{a, b\\}$",
+                        "$\\{c\\}$",
+                        "$\\{d, e\\}$",
+                        "$\\{a, b, c, d, e\\}$"
+                    ],
+                    correctIndex: 2,
+                    explanation: "The set difference $Y \\setminus X$ asks for elements that are in Y but NOT in X. The elements in Y are c, d, e. Of these, 'c' is also in X, so we remove it. This leaves us with {d, e}."
+                },
+                 {
+                    question: "Which of the following is a proper subset of $A = \\{1, 2, 3\\}$?",
+                    options: [
+                        "$\\{1, 2, 3\\}$",
+                        "$\\{1, 4\\}$",
+                        "$\\{1, 2\\}$",
+                        "$\\{\\}$ and $\\{1, 2, 3\\}$"
+                    ],
+                    correctIndex: 2,
+                    explanation: "A proper subset must contain only elements from the original set, but must not be equal to the original set. $\\{1, 2\\}$ contains elements from A and is not equal to A. $\\{1, 2, 3\\}$ is a subset, but not a proper one."
+                },
+                {
+                    question: "Using set comprehension, how would you write the set of all positive odd integers?",
+                    options: [
+                        "$\\{x \\,| \\,x \\in \\mathbb{Z}, x > 0 \\text{ and } x \\text{ mod } 2 = 1\\}$",
+                        "$\\{x \\,| \\,x \\in \\mathbb{N}, x \\text{ mod } 2 = 0\\}$",
+                        "$\\{x \\,| \\,x \\in \\mathbb{R}, x > 0 \\}$",
+                        "$\\{x^2 \\,| \\,x \\in \\mathbb{N}\\}$"
+                    ],
+                    correctIndex: 0,
+                    explanation: "We need integers ($\\mathbb{Z}$) that are positive ($x > 0$) and odd ($x \\text{ mod } 2 = 1$). Combining these conditions correctly describes the set."
+                },
+                 {
+                    question: "If $A \\cap B = \\emptyset$, the sets A and B are called:",
+                    options: [
+                        "Equal",
+                        "Equivalent",
+                        "Disjoint",
+                        "Universal"
+                    ],
+                    correctIndex: 2,
+                    explanation: "Two sets are disjoint if they have no elements in common. This means their intersection is the empty set ($\\emptyset$)."
+                }
+            ];
+            
+            if (quizContainer) {
+                quizQuestions.forEach((q, index) => {
+                    if (q.context) {
+                        const contextDiv = document.createElement('div');
+                        contextDiv.className = 'mb-6 p-4 bg-gray-100 rounded-lg text-gray-700';
+                        contextDiv.innerHTML = q.context;
+                        quizContainer.appendChild(contextDiv);
+                    }
+
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'mb-8 p-6 bg-white rounded-lg shadow-md';
+                    
+                    const questionTitle = document.createElement('p');
+                    questionTitle.className = 'font-semibold text-lg mb-4 text-gray-800';
+                    questionTitle.innerHTML = `<strong>Question ${index + 1}:</strong> ${q.question}`;
+                    
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'space-y-3';
+                    
+                    q.options.forEach((option, i) => {
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'quiz-option block w-full text-left p-3 border-2 border-gray-300 rounded-lg hover:bg-blue-50';
+                        optionButton.innerHTML = option;
+                        optionButton.dataset.index = i;
+                        
+                        optionButton.addEventListener('click', () => {
+                            const allOptions = optionsDiv.querySelectorAll('.quiz-option');
+                            allOptions.forEach(btn => {
+                                btn.disabled = true;
+                                btn.classList.remove('hover:bg-blue-50');
+                            });
+
+                            const selectedIndex = parseInt(optionButton.dataset.index);
+                            if (selectedIndex === q.correctIndex) {
+                                optionButton.classList.add('correct');
+                            } else {
+                                optionButton.classList.add('incorrect');
+                                allOptions[q.correctIndex].classList.add('correct');
+                            }
+                            
+                            const explanationDiv = questionDiv.querySelector('.explanation');
+                            explanationDiv.classList.remove('hidden');
+                            MathJax.typesetPromise([explanationDiv]);
+                        });
+
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    
+                    const explanationDiv = document.createElement('div');
+                    explanationDiv.className = 'explanation hidden mt-4 p-4 bg-gray-100 rounded-lg text-gray-700';
+                    explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+                    
+                    questionDiv.appendChild(questionTitle);
+                    questionDiv.appendChild(optionsDiv);
+                    questionDiv.appendChild(explanationDiv);
+                    quizContainer.appendChild(questionDiv);
+                });
+            }
+            
+            // Initial MathJax typesetting for the whole document
+            MathJax.typesetPromise();
+        }
+    </script>
+    <!-- MathJax Configuration and Loader -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    runGuide();
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-20">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-700">L1.5: Subsets & Set Operations</h1>
+            <button id="menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="container mx-auto flex flex-col md:flex-row">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-full md:w-64 bg-blue-800 text-white md:sticky md:top-[60px] h-screen hidden md:block z-10">
+            <nav class="p-4">
+                <h2 class="text-lg font-semibold mb-4 border-b border-blue-600 pb-2">Guide Sections</h2>
+                <ul class="space-y-2">
+                    <li><a href="#introduction" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Introduction to Sets</a></li>
+                    <li><a href="#subsets" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Subsets & Powerset</a></li>
+                    <li><a href="#comprehension" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Set Comprehension</a></li>
+                    <li><a href="#operations" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Set Operations</a></li>
+                    <li><a href="#simulator" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Venn Diagram Simulator</a></li>
+                    <li><a href="#quiz" class="sidebar-link block p-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Knowledge Check</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 md:p-10">
+            <section id="introduction" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Let's Talk About Sets! 🗂️</h2>
+                <p class="text-lg leading-relaxed">Welcome! A <strong>set</strong> is simply a collection of distinct items. Think of your collection of friends, the days of the week, or all the even numbers. In mathematics and data science, we use sets to group things together. The order of items doesn't matter, and you can't have duplicates. This guide will walk you through how we define and work with these powerful collections.</p>
+            </section>
+
+            <section id="subsets" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Subsets and the Powerset ⊆</h2>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">A set $A$ is a <strong>subset</strong> of set $B$ if every element of $A$ is also in $B$. We write this as $A \subseteq B$.</p>
+                    <p class="text-lg mb-4">For example, the set of prime numbers $\{2, 3, 5, 7, ...\}$ is a subset of the natural numbers $\mathbb{N} = \{0, 1, 2, 3, ...\}$.</p>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-800 p-4 rounded-r-lg">
+                        <p><strong>The Powerset:</strong> The collection of <em>all possible subsets</em> of a set is called its <strong>powerset</strong>. If a set has $n$ elements, its powerset will have $2^n$ elements (subsets)!</p>
+                        <p class="mt-2">For $X = \{a, b\}$, the powerset is $\{\emptyset, \{a\}, \{b\}, \{a, b\}\}$. That's $2^2 = 4$ subsets!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="comprehension" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Building Subsets: Set Comprehension 🏗️</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">Listing all elements of a big or infinite set is impossible. Instead, we use <strong>set comprehension</strong> to describe a set by the properties its members must have. It's like giving a rule for membership.</p>
+                    <p class="text-lg mb-4">The notation looks like this: $\{x \mid x \in \mathbb{Z}, x \text{ mod } 2 = 0\}$.</p>
+                    <p class="text-lg mb-4">Let's break it down:</p>
+                    <ul class="list-disc list-inside space-y-2 text-lg">
+                        <li><strong>Generate:</strong> We start with a source set. Here, we generate elements $x$ from the set of integers, $\mathbb{Z}$.</li>
+                        <li><strong>Filter:</strong> We apply a condition. We only keep the elements where $x \text{ mod } 2 = 0$ (i.e., the even numbers).</li>
+                        <li><strong>Collect:</strong> The curly braces mean "collect all the elements $x$ that passed the filter".</li>
+                    </ul>
+                     <div class="bg-green-50 border-l-4 border-green-500 text-green-800 p-4 mt-4 rounded-r-lg">
+                        <p><strong>Another Example:</strong> The set of perfect squares can be written as $\{n^2 \mid n \in \mathbb{N}\}$. Here, we generate from $\mathbb{N}$, apply no filter, but <strong>transform</strong> each element $n$ into $n^2$.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="operations" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Combining Sets: Basic Operations ➕➖</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-blue-700 mb-2">Union (∪)</h3>
+                        <p>The union of two sets contains all elements that are in either set (or both). <br><em>Example:</em> $\{a, b\} \cup \{b, c\} = \{a, b, c\}$</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-blue-700 mb-2">Intersection (∩)</h3>
+                        <p>The intersection contains only the elements that are in both sets. <br><em>Example:</em> $\{a, b\} \cap \{b, c\} = \{b\}$</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-blue-700 mb-2">Difference (\\)</h3>
+                        <p>The difference $A \setminus B$ contains elements that are in A but not in B. <br><em>Example:</em> $\{a, b, c\} \setminus \{c, d\} = \{a, b\}$</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-blue-700 mb-2">Complement ($A^c$)</h3>
+                        <p>The complement contains all elements in the universe ($U$) that are not in the set. <br><em>Example:</em> If $U = \{1,2,3,4\}$ and $A=\{1,2\}$, then $A^c = \{3,4\}$.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="simulator" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Venn Diagram Simulator 🎨</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">Enter comma-separated items into the boxes for Set A and Set B, then click the buttons to see the result of different set operations.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="setAInput" class="block font-medium mb-1">Set A</label>
+                            <textarea id="setAInput" class="w-full p-2 border rounded-md" rows="3">1, 2, 3, 4</textarea>
+                        </div>
+                        <div>
+                            <label for="setBInput" class="block font-medium mb-1">Set B</label>
+                            <textarea id="setBInput" class="w-full p-2 border rounded-md" rows="3">3, 4, 5, 6</textarea>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button id="unionBtn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Union (A ∪ B)</button>
+                        <button id="intersectionBtn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Intersection (A ∩ B)</button>
+                        <button id="diffABBtn" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600">Difference (A \ B)</button>
+                        <button id="diffBABtn" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Difference (B \ A)</button>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <svg width="300" height="200" viewBox="0 0 300 200">
+                            <defs>
+                                <mask id="maskA">
+                                    <rect width="100%" height="100%" fill="white"/>
+                                    <circle cx="180" cy="100" r="80" fill="black"/>
+                                </mask>
+                                <mask id="maskB">
+                                    <rect width="100%" height="100%" fill="white"/>
+                                    <circle cx="120" cy="100" r="80" fill="black"/>
+                                </mask>
+                            </defs>
+                            
+                            <!-- Circles -->
+                            <circle cx="120" cy="100" r="80" class="venn-circle" stroke="#3b82f6"/>
+                            <circle cx="180" cy="100" r="80" class="venn-circle" stroke="#16a34a"/>
+                            
+                            <!-- Highlightable Areas -->
+                            <circle id="vennAOnly" cx="120" cy="100" r="80" class="venn-area" mask="url(#maskA)"/>
+                            <circle id="vennBOnly" cx="180" cy="100" r="80" class="venn-area" mask="url(#maskB)"/>
+                            <path id="vennIntersection" d="M 150 179.28 A 80 80 0 0 1 150 20.71 A 80 80 0 0 1 150 179.28 Z" class="venn-area"/>
+
+                            <!-- Labels -->
+                            <text x="70" y="105" class="venn-text">A</text>
+                            <text x="230" y="105" class="venn-text">B</text>
+                        </svg>
+                        <p id="vennResult" class="mt-2 text-lg font-semibold text-gray-800 h-6"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quiz" class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-4">Knowledge Check 📝</h2>
+                <div id="quiz-container">
+                    <!-- Quiz questions will be dynamically inserted here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

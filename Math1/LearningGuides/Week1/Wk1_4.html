@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Interactive Guide to Set Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <style>
+        /* Custom Styles for a polished look */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        /* Sidebar active link style */
+        .sidebar-link.active {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Smooth transitions */
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Custom scrollbar for a better look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Styles for interactive elements */
+        .interactive-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Quiz feedback styles */
+        .correct-answer {
+            color: #16a34a;
+            font-weight: 700;
+        }
+        .incorrect-answer {
+            color: #dc2626;
+            font-weight: 700;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid #cbd5e1;
+        }
+        code {
+            background-color: #e2e8f0;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-slate-800 text-white p-5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-40 overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-8 text-indigo-400">Learning Guide</h2>
+        <ul class="space-y-2">
+            <li><a href="#introduction" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">What is a Set?</a></li>
+            <li><a href="#subsets" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Subsets & Power Sets</a></li>
+            <li><a href="#operations" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Set Operations</a></li>
+            <li><a href="#quiz" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Knowledge Check</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="md:ml-64 p-6 md:p-10">
+        <div class="max-w-4xl mx-auto">
+
+            <!-- Section 1: Introduction to Sets -->
+            <section id="introduction" class="mb-16 scroll-mt-20">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">An Introduction to Set Theory</h1>
+                <p class="text-lg text-slate-600 mb-6">Set theory is a fundamental part of mathematics. Think of it as organizing objects into groups based on clear, simple rules.</p>
+                
+                <h2 class="text-3xl font-bold text-slate-900 mt-8 mb-4">What is a Set?</h2>
+                <p class="mb-4">A <strong>set</strong> is simply a collection of distinct, well-defined objects. The objects in the set are called its <strong>elements</strong> or <strong>members</strong>.</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li><strong>Well-defined:</strong> This is crucial. We must be able to say for certain whether an object belongs to the set or not. "The set of tall people" is not well-defined (how tall is tall?), but "the set of people over 6 feet tall" is.</li>
+                    <li><strong>Distinct:</strong> Each object in a set appears only once. The set {Raju, Ankitha, Keerthana, Raju} is the same as {Raju, Ankitha, Keerthana}.</li>
+                    <li><strong>Order doesn't matter:</strong> The set {a, b, c} is exactly the same as {c, a, b}.</li>
+                </ul>
+                <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4 rounded-md my-4">
+                    <p>The number of elements in a set is called its <strong>cardinality</strong>. A set with no elements, written as {} or $\emptyset$, is called the <strong>empty set</strong> and has a cardinality of 0.</p>
+                </div>
+            </section>
+
+            <!-- Section 2: Subsets and Power Sets -->
+            <section id="subsets" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Sets Within Sets</h2>
+                <p class="mb-4">A set $A$ is a <strong>subset</strong> of a set $B$ if every element of $A$ is also an element of $B$. We write this as $A \subseteq B$.</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li>If $A = \{1, 2\}$ and $B = \{1, 2, 3\}$, then $A$ is a subset of $B$.</li>
+                    <li>Every set is a subset of itself ($A \subseteq A$).</li>
+                    <li>The empty set $\emptyset$ is a subset of every set.</li>
+                </ul>
+                <p class="mt-4 mb-4">The collection of <strong>all possible subsets</strong> of a set is called its <strong>power set</strong>. If a set has $n$ elements, its power set will have $2^n$ elements.</p>
+                
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">Power Set Generator</h3>
+                    <p class="text-sm text-slate-500 mb-4">Enter elements (separated by commas) to see the power set.</p>
+                    <div class="flex gap-4 items-center mb-4">
+                        <input type="text" id="set-input" value="a,b,c" class="w-full p-2 border rounded-md">
+                        <button id="generate-powerset-btn" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700">Generate</button>
+                    </div>
+                    <div id="powerset-output" class="p-4 bg-white rounded-md border text-center"></div>
+                </div>
+            </section>
+            
+            <!-- Section 3: Set Operations -->
+            <section id="operations" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Combining Sets: Venn Diagrams</h2>
+                <p class="mb-4">We can combine and compare sets using different operations, which are often visualized using <strong>Venn diagrams</strong>.</p>
+                
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">Interactive Venn Diagram</h3>
+                    <p class="text-sm text-slate-500 mb-4">Click the buttons to see different set operations.</p>
+                    <div class="flex justify-center my-4">
+                        <svg id="venn-diagram" width="300" height="200" viewBox="0 0 300 200">
+                            <defs>
+                                <clipPath id="clipA">
+                                    <circle cx="125" cy="100" r="75"/>
+                                </clipPath>
+                                <clipPath id="clipB">
+                                    <circle cx="175" cy="100" r="75"/>
+                                </clipPath>
+                            </defs>
+                            <rect x="0" y="0" width="300" height="200" fill="#f1f5f9" id="venn-universe"/>
+                            <circle cx="125" cy="100" r="75" fill="#a5b4fc" stroke="#4f46e5" stroke-width="2" opacity="0.6" id="venn-a"/>
+                            <circle cx="175" cy="100" r="75" fill="#6ee7b7" stroke="#059669" stroke-width="2" opacity="0.6" id="venn-b"/>
+                            <text x="80" y="105" font-size="20" fill="#312e81">A</text>
+                            <text x="210" y="105" font-size="20" fill="#065f46">B</text>
+                            
+                            <!-- Overlays for highlighting -->
+                            <g id="venn-highlight" style="pointer-events:none;"></g>
+                        </svg>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <button data-op="union" class="venn-btn px-3 py-1 bg-slate-200 rounded-md">A Union B ($A \cup B$)</button>
+                        <button data-op="intersection" class="venn-btn px-3 py-1 bg-slate-200 rounded-md">A Intersect B ($A \cap B$)</button>
+                        <button data-op="diff_a" class="venn-btn px-3 py-1 bg-slate-200 rounded-md">A - B</button>
+                        <button data-op="diff_b" class="venn-btn px-3 py-1 bg-slate-200 rounded-md">B - A</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Knowledge Check Quiz -->
+            <section id="quiz" class="scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6">Knowledge Check</h2>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Mobile Menu Logic ---
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            sidebar.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A' && window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+
+            // --- Active Sidebar Link on Scroll ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+            sections.forEach(section => observer.observe(section));
+
+            // --- Power Set Generator ---
+            const generateBtn = document.getElementById('generate-powerset-btn');
+            const powersetOutput = document.getElementById('powerset-output');
+            function generatePowerSet() {
+                const input = document.getElementById('set-input').value;
+                const elements = input.split(',').map(s => s.trim()).filter(Boolean);
+                if (elements.length > 5) {
+                    powersetOutput.innerHTML = '<p class="text-red-500">Please enter 5 or fewer elements for a clear visualization.</p>';
+                    return;
+                }
+                const pSet = [[]];
+                for (const elem of elements) {
+                    const newSubsets = pSet.map(subset => [...subset, elem]);
+                    pSet.push(...newSubsets);
+                }
+                const formattedSubsets = pSet.map(subset => `{${subset.join(', ')}}`).join(', ');
+                powersetOutput.innerHTML = `Cardinality: ${pSet.length} <br> Power Set: { ${formattedSubsets} }`;
+            }
+            generateBtn.addEventListener('click', generatePowerSet);
+            generatePowerSet();
+
+            // --- Venn Diagram ---
+            const vennBtns = document.querySelectorAll('.venn-btn');
+            const highlightGroup = document.getElementById('venn-highlight');
+            vennBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const op = btn.dataset.op;
+                    highlightGroup.innerHTML = ''; // Clear previous
+                    let highlight;
+                    if(op === 'union') {
+                        highlight = `<circle cx="125" cy="100" r="75" fill="#4f46e5" opacity="0.4"/> <circle cx="175" cy="100" r="75" fill="#4f46e5" opacity="0.4"/>`;
+                    } else if (op === 'intersection') {
+                        highlight = `<circle cx="125" cy="100" r="75" fill="#4f46e5" opacity="0.4" clip-path="url(#clipB)"/>`;
+                    } else if (op === 'diff_a') {
+                        highlight = `<circle cx="125" cy="100" r="75" fill="#4f46e5" opacity="0.4" clip-path="url(#clipA)" style="clip-path: url(#clipA); mask: url(#mask-b-hole);"/>`;
+                        // A bit complex, SVG masks would be better. This is an approximation.
+                         highlight = `<g clip-path="url(#clipA)"><rect x="0" y="0" width="300" height="200" fill="#4f46e5" opacity="0.4" /></g> <g clip-path="url(#clipB)"><rect x="0" y="0" width="300" height="200" fill="#f8fafc" /></g>`;
+                    } else if (op === 'diff_b') {
+                         highlight = `<g clip-path="url(#clipB)"><rect x="0" y="0" width="300" height="200" fill="#4f46e5" opacity="0.4" /></g> <g clip-path="url(#clipA)"><rect x="0" y="0" width="300" height="200" fill="#f8fafc" /></g>`;
+                    }
+                    highlightGroup.innerHTML = highlight;
+                });
+            });
+
+            // --- Quiz Logic ---
+            const quizData = [
+                // Benchmark Questions
+                {
+                    question: "Which of the following sets are same?<br>(i) {Ankitha, Keerthana, Raju, Suresh}<br>(ii) {Raju, Ankitha, Keerthana, Raju, Ankitha, Suresh}<br>(iii) {Keerthana, Suresh, Dheeraj, Raju, Ankitha}<br>(iv) {Suresh, Raju, Ankitha, Keerthana}",
+                    type: 'single',
+                    options: ['(i) and (ii)', '(iii) and (iv)', '(i) and (iv)', '(i), (ii) and (iv)'],
+                    correct: [3],
+                    explanation: "Sets (i), (ii), and (iv) contain the exact same four distinct elements. Order and repetition do not matter in a set."
+                },
+                {
+                    question: "Suppose $X = \\{3, \\pi, \\text{Tiger, Ball}, -40, \\text{Dhoni}\\}$. Which of the following statement(s) is(are) true about $X$?",
+                    type: 'single',
+                    options: [
+                        '$X$ is not a set because a collection of names of persons and numbers together will not be considered a set',
+                        '$X$ is not a set because “$\\pi$” cannot be an element of a set.',
+                        '$X$ is a set because $X$ contains items that are from more than two categories',
+                        '$X$ is a set because it is a collection of different well-defined items'
+                    ],
+                    correct: [3],
+                    explanation: "A set can contain any collection of well-defined, distinct objects, regardless of their category. All items in X are well-defined."
+                },
+                {
+                    question: "Which of the following sets is a subset of the set of prime numbers?",
+                    type: 'single',
+                    options: ['$\\{2,3,5,8,11\\}$', '$\\{3,5,7,11\\}$', '$\\{2,5,7,27\\}$', '$\\{5,9\\}$'],
+                    correct: [1],
+                    explanation: "A subset must only contain elements from the parent set. The set {3,5,7,11} contains only prime numbers. The other sets contain composite numbers (8, 27, 9)."
+                },
+                {
+                    question: "Which of the following statement(s) is(are) false?",
+                    type: 'multiple',
+                    options: ['Venn diagrams are pictorial representations of sets.', 'Every set is a subset of itself.', '$X \\subseteq Y$ implies that $X$ is a proper subset of $Y$.', 'Empty set contains only one element i.e. $\\phi$.'],
+                    correct: [2, 3],
+                    explanation: "$X \\subseteq Y$ means X is a subset, but it could be equal to Y (not proper). The empty set contains zero elements; $\\phi$ is the symbol for the set itself, not an element within it."
+                },
+                // New Questions
+                {
+                    question: "If a set A has 4 elements, what is the cardinality of its power set P(A)?",
+                    type: 'single',
+                    options: ['4', '8', '16', '32'],
+                    correct: [2],
+                    explanation: "The cardinality of the power set of a set with n elements is $2^n$. So, for a set with 4 elements, it is $2^4 = 16$."
+                },
+                {
+                    question: "Let A = {1, 2, 3} and B = {3, 4, 5}. What is the intersection of A and B ($A \\cap B$)?",
+                    type: 'single',
+                    options: ['$\\{3\\}$', '$\\{1, 2, 3, 4, 5\\}$', '$\\{1, 2\\}$', '$\\emptyset$'],
+                    correct: [0],
+                    explanation: "The intersection of two sets contains only the elements that are in BOTH sets. The only common element is 3."
+                },
+                {
+                    question: "Let U = {1, 2, 3, 4, 5, 6} be the universal set and A = {2, 4, 6}. What is the complement of A ($A'$)?",
+                    type: 'single',
+                    options: ['$\\{2, 4, 6\\}$', '$\\{1, 3, 5\\}$', '$\\{1, 2, 3, 4, 5, 6\\}$', '$\\emptyset$'],
+                    correct: [1],
+                    explanation: "The complement of a set contains all the elements from the universal set that are NOT in the set itself. So, we are looking for numbers in U that are not in A, which are {1, 3, 5}."
+                },
+                {
+                    question: "Which of the following represents the empty set?",
+                    type: 'multiple',
+                    options: ['$\\{\\emptyset\\}$', '0', '$\\emptyset$', '{}'],
+                    correct: [2, 3],
+                    explanation: "The empty set is represented by the symbol $\\emptyset$ or by empty curly braces {}. The set {$\\emptyset$} is not empty; it contains one element, which is the symbol for the empty set."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'p-6 bg-white rounded-lg shadow-md';
+                
+                let optionsHTML = q.options.map((opt, i) => `
+                    <div class="flex items-center">
+                        <input type="${q.type === 'single' ? 'radio' : 'checkbox'}" id="q${index}o${i}" name="q${index}" value="${i}" class="mr-3">
+                        <label for="q${index}o${i}">${opt}</label>
+                    </div>
+                `).join('');
+
+                questionElem.innerHTML = `
+                    <p class="font-bold mb-4">${index + 1}. ${q.question}</p>
+                    <div class="space-y-2 mb-4">${optionsHTML}</div>
+                    <button class="check-answer-btn px-4 py-2 text-sm bg-slate-200 font-semibold rounded-md hover:bg-slate-300">Check Answer</button>
+                    <div class="feedback mt-4 hidden"></div>
+                `;
+                quizContainer.appendChild(questionElem);
+            });
+
+            quizContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('check-answer-btn')) {
+                    const questionElem = e.target.closest('.p-6');
+                    const feedbackElem = questionElem.querySelector('.feedback');
+                    const questionIndex = Array.from(quizContainer.children).indexOf(questionElem);
+                    const questionData = quizData[questionIndex];
+                    const inputs = questionElem.querySelectorAll('input:checked');
+                    
+                    let selectedIndices = Array.from(inputs).map(input => parseInt(input.value));
+                    
+                    feedbackElem.classList.remove('hidden');
+                    let isCorrect = false;
+                    
+                    if (questionData.type === 'single') {
+                        isCorrect = selectedIndices.length === 1 && selectedIndices[0] === questionData.correct[0];
+                    } else { // multiple
+                        isCorrect = selectedIndices.length === questionData.correct.length && selectedIndices.every(val => questionData.correct.includes(val));
+                    }
+                    
+                    if (isCorrect) {
+                        feedbackElem.innerHTML = `<p class="correct-answer">Correct!</p><p class="explanation">${questionData.explanation}</p>`;
+                    } else {
+                        feedbackElem.innerHTML = `<p class="incorrect-answer">Not quite.</p><p class="explanation">${questionData.explanation}</p>`;
+                    }
+                    MathJax.typesetPromise([feedbackElem]);
+                }
+            });
+            MathJax.typesetPromise();
+        });
+    </script>
+</body>
+</html>

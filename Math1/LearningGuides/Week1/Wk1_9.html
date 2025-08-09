@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Interactive Guide to Functions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Custom Styles for a polished look */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        /* Sidebar active link style */
+        .sidebar-link.active {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Smooth transitions */
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Custom scrollbar for a better look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Styles for interactive elements */
+        .interactive-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Quiz feedback styles */
+        .correct-answer {
+            color: #16a34a;
+            font-weight: 700;
+        }
+        .incorrect-answer {
+            color: #dc2626;
+            font-weight: 700;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid #cbd5e1;
+        }
+        code {
+            background-color: #e2e8f0;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-slate-800 text-white p-5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-40 overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-8 text-indigo-400">Learning Guide</h2>
+        <ul class="space-y-2">
+            <li><a href="#introduction" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">What is a Function?</a></li>
+            <li><a href="#domain-range" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Domain, Co-domain, Range</a></li>
+            <li><a href="#types" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Types of Functions</a></li>
+            <li><a href="#quiz" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Knowledge Check</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="md:ml-64 p-6 md:p-10">
+        <div class="max-w-4xl mx-auto">
+
+            <!-- Section 1: Introduction to Functions -->
+            <section id="introduction" class="mb-16 scroll-mt-20">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Functions</h1>
+                <p class="text-lg text-slate-600 mb-6">Functions are one of the most important concepts in mathematics. They are a special, well-behaved type of relation that maps inputs to outputs.</p>
+                
+                <h2 class="text-3xl font-bold text-slate-900 mt-8 mb-4">What Makes a Relation a Function?</h2>
+                <p class="mb-4">A <strong>function</strong> $f$ from a set $A$ to a set $B$ is a relation that satisfies one crucial rule: every element in set $A$ must be related to <strong>exactly one</strong> element in set $B$.</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li><strong>Every element in A is used:</strong> No element in the starting set can be left out.</li>
+                    <li><strong>Exactly one output for each input:</strong> An element in A cannot be mapped to two or more different elements in B.</li>
+                </ul>
+            </section>
+
+            <!-- Section 2: Domain, Co-domain, and Range -->
+            <section id="domain-range" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">The Parts of a Function</h2>
+                <p class="mb-4">We use specific terms to describe the sets involved in a function $f: A \rightarrow B$.</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li>The <strong>Domain</strong> is the set of all possible inputs (Set A).</li>
+                    <li>The <strong>Co-domain</strong> is the set of all possible outputs (Set B).</li>
+                    <li>The <strong>Range</strong> is the set of all the actual outputs the function produces. The range is always a subset of the co-domain.</li>
+                </ul>
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">Function Machine</h3>
+                    <p class="text-sm text-slate-500 mb-4">Enter a number to see how the function $f(x) = x^2 + 1$ works.</p>
+                    <div class="flex items-center justify-center gap-4">
+                        <input type="number" id="func-input" value="3" class="w-24 p-2 border rounded-md text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                        <div class="p-4 bg-indigo-100 rounded-md text-indigo-800 font-bold text-center">
+                            $f(x) = x^2 + 1$
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                        <span id="func-output" class="text-2xl font-bold w-24 text-center p-2 bg-white border rounded-md">10</span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 3: Types of Functions -->
+            <section id="types" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Types of Functions</h2>
+                <p class="mb-4">We classify functions based on how their inputs and outputs are mapped.</p>
+                <ul class="list-disc list-inside space-y-3 text-slate-700">
+                    <li><strong>Injective (One-to-One):</strong> Every distinct input maps to a distinct output. No two inputs share the same output.</li>
+                    <li><strong>Surjective (Onto):</strong> Every element in the co-domain is an output for at least one input. The range is equal to the co-domain.</li>
+                    <li><strong>Bijective:</strong> The function is both injective and surjective. There is a perfect one-to-one correspondence between the elements of the domain and the co-domain.</li>
+                </ul>
+            </section>
+
+            <!-- Section 4: Knowledge Check Quiz -->
+            <section id="quiz" class="scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6">Knowledge Check</h2>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        function runGuide() {
+            // --- Mobile Menu Logic ---
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            sidebar.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A' && window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+
+            // --- Active Sidebar Link on Scroll ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+            sections.forEach(section => observer.observe(section));
+            
+            // --- Function Machine ---
+            const funcInput = document.getElementById('func-input');
+            const funcOutput = document.getElementById('func-output');
+            function updateFuncMachine() {
+                const x = parseFloat(funcInput.value) || 0;
+                funcOutput.textContent = x*x + 1;
+            }
+            funcInput.addEventListener('input', updateFuncMachine);
+            updateFuncMachine();
+
+            // --- Quiz Logic ---
+            const quizData = [
+                // Benchmark Questions
+                {
+                    question: "Suppose $f : \\mathbb{Z} \\rightarrow \\mathbb{Z}$ is a function defined by $f(k) = k^3 + 4k – 10$. The value of $f(k)$ at $k=4$ is ________",
+                    type: 'numerical',
+                    correct: 70,
+                    explanation: "$f(4) = 4^3 + 4(4) - 10 = 64 + 16 - 10 = 70$."
+                },
+                {
+                    question: "Let $f(x) = |x| + 5$ and Dom$(f)$ = {$x \\in \\mathbb{R}|f(x) \\in \\mathbb{R}$}. Which of the following is(are) true?",
+                    type: 'multiple',
+                    options: ['Domain of $f(x)$ is $\\mathbb{R}$', 'Range of $f(x)$ is $\\mathbb{R}$', 'Domain of $f(x)$ is $[5, \\infty)$', 'Range of $f(x)$ is $[5, \\infty)$'],
+                    correct: [0, 3],
+                    explanation: "The function is defined for all real numbers, so the domain is $\\mathbb{R}$. Since $|x| \\ge 0$, the minimum value of $|x|+5$ is 5. Thus, the range is $[5, \\infty)$."
+                },
+                {
+                    question: "Let $f : \\mathbb{R} \\rightarrow \\mathbb{R}$ be a function and $f(x) = |(x+4)(4x−10)|$. Which of the following is(are) true?",
+                    type: 'single',
+                    options: ['$f$ is an injective function', '$f$ is a surjective function', '$f$ is a bijective function', 'None of these'],
+                    correct: [3],
+                    explanation: "The function is not injective because different inputs can give the same output (e.g., $f(-4) = 0$ and $f(2.5) = 0$). It is not surjective because the output is always non-negative, so it doesn't cover all of $\\mathbb{R}$. Therefore, it is neither."
+                },
+                {
+                    question: "Which of the following statement(s) is(are) false?",
+                    type: 'multiple',
+                    options: ['Range of a function is a subset of co-domain', 'A function is bijective if and only if it is both injective and surjective', 'Every relation is a function', 'Co-domain of a function is a subset of domain'],
+                    correct: [2, 3],
+                    explanation: "Not every relation is a function (a function must have exactly one output for each input). The co-domain and domain are distinct concepts and one is not necessarily a subset of the other."
+                },
+                {
+                    question: "Let $x \\in \\mathbb{R}$ and $DOM(f) = \\{ x \\in \\mathbb{R} \\mid f(x) \\in \\mathbb{R} \\}$. Which of the following functions is(are) injective?",
+                    type: 'multiple',
+                    options: ['$f(x)= \\sqrt{10−x}$', '$f(x) = \\displaystyle\\frac{7x+6}{3x}$', '$f(x) = 2x + 9$', '$f(x) = \\displaystyle\\frac{(5x+4)(2x−3)}{2}$'],
+                    correct: [0, 1, 2],
+                    explanation: "Linear functions like $2x+9$ are injective. The square root function is injective on its domain. The rational function is also injective. The quadratic function is not injective."
+                },
+                {
+                    question: "Suppose $f : \\mathbb{Z} \\rightarrow \\mathbb{Z}$ is a function defined by $f(x) = ax + b$. For which of the following integer values of $a$ and $b$, is the given function bijective?",
+                    type: 'single',
+                    options: ['$a = 0, b$ = { $z | z \\in \\mathbb{Z}$}', '$a$ = {$-1, 1$}, $b$ = {$z | z \\in \\mathbb{Z}$}', '$b$ = {$-1, 1$}, $a = 0$', '$b = 0, a$= { $z | z \\in \\mathbb{Z}$}'],
+                    correct: [1],
+                    explanation: "For the function to be bijective on integers, it must map every integer to a unique integer and cover all integers. This only happens when the slope 'a' is 1 or -1, which ensures no gaps are created between output integers."
+                },
+                // New Questions
+                {
+                    question: "Which of the following relations from $A = \\{1, 2, 3\\}$ to $B = \\{a, b\\}$ is NOT a function?",
+                    type: 'single',
+                    options: ['$\\{(1,a), (2,b), (3,a)\\}$', '$\\{(1,a), (2,a), (3,a)\\}$', '$\\{(1,a), (2,b)\\}$', '$\\{(1,a), (1,b), (2,a), (3,b)\\}$'],
+                    correct: [3],
+                    explanation: "A function must map each element of the domain to exactly one element of the co-domain. In option 4, the input 1 is mapped to both 'a' and 'b', so it is not a function. Option 3 is also not a function because the element 3 from the domain is not used."
+                },
+                {
+                    question: "What is the domain of the function $f(x) = \\frac{1}{x-2}$?",
+                    type: 'single',
+                    options: ['All real numbers', 'All real numbers except 0', 'All real numbers except 2', 'All positive real numbers'],
+                    correct: [2],
+                    explanation: "The function is undefined when the denominator is zero. $x-2=0$ when $x=2$. Therefore, the domain is all real numbers except 2."
+                },
+                {
+                    question: "If a function is surjective, its range is equal to its ________.",
+                    type: 'single',
+                    options: ['Domain', 'Co-domain', 'Inverse', 'Subset'],
+                    correct: [1],
+                    explanation: "The definition of a surjective (or onto) function is that its range is equal to its entire co-domain."
+                },
+                {
+                    question: "The function $f(x) = x^2$ from $\\mathbb{R}$ to $\\mathbb{R}$ is:",
+                    type: 'single',
+                    options: ['Injective but not surjective', 'Surjective but not injective', 'Neither injective nor surjective', 'Bijective'],
+                    correct: [2],
+                    explanation: "It is not injective because $f(2) = 4$ and $f(-2) = 4$. It is not surjective because the range is $[0, \\infty)$, which does not cover all of the co-domain $\\mathbb{R}$ (e.g., no real number squares to -1)."
+                },
+                {
+                    question: "A function that is both one-to-one and onto is called:",
+                    type: 'single',
+                    options: ['Reflexive', 'Symmetric', 'Bijective', 'Transitive'],
+                    correct: [2],
+                    explanation: "A bijective function is one that is both injective (one-to-one) and surjective (onto)."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'p-6 bg-white rounded-lg shadow-md';
+                
+                let optionsHTML = '';
+                if (q.type === 'numerical') {
+                    optionsHTML = `<input type="number" id="q${index}o0" class="p-2 border rounded-md">`;
+                } else {
+                    optionsHTML = q.options.map((opt, i) => `
+                        <div class="flex items-center">
+                            <input type="${q.type === 'single' ? 'radio' : 'checkbox'}" id="q${index}o${i}" name="q${index}" value="${i}" class="mr-3">
+                            <label for="q${index}o${i}">${opt}</label>
+                        </div>
+                    `).join('');
+                }
+
+                questionElem.innerHTML = `
+                    <p class="font-bold mb-4">${index + 1}. ${q.question}</p>
+                    <div class="space-y-2 mb-4">${optionsHTML}</div>
+                    <button class="check-answer-btn px-4 py-2 text-sm bg-slate-200 font-semibold rounded-md hover:bg-slate-300">Check Answer</button>
+                    <div class="feedback mt-4 hidden"></div>
+                `;
+                quizContainer.appendChild(questionElem);
+            });
+
+            quizContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('check-answer-btn')) {
+                    const questionElem = e.target.closest('.p-6');
+                    const feedbackElem = questionElem.querySelector('.feedback');
+                    const questionIndex = Array.from(quizContainer.children).indexOf(questionElem);
+                    const questionData = quizData[questionIndex];
+                    
+                    let isCorrect = false;
+                    if (questionData.type === 'numerical') {
+                        const input = questionElem.querySelector('input');
+                        isCorrect = parseInt(input.value) === questionData.correct;
+                    } else {
+                        const inputs = questionElem.querySelectorAll('input:checked');
+                        let selectedIndices = Array.from(inputs).map(input => parseInt(input.value));
+                        if (questionData.type === 'single') {
+                            isCorrect = selectedIndices.length === 1 && selectedIndices[0] === questionData.correct[0];
+                        } else { // multiple
+                            isCorrect = selectedIndices.length === questionData.correct.length && selectedIndices.every(val => questionData.correct.includes(val));
+                        }
+                    }
+                    
+                    feedbackElem.classList.remove('hidden');
+                    if (isCorrect) {
+                        feedbackElem.innerHTML = `<p class="correct-answer">Correct!</p><p class="explanation">${questionData.explanation}</p>`;
+                    } else {
+                        feedbackElem.innerHTML = `<p class="incorrect-answer">Not quite.</p><p class="explanation">${questionData.explanation}</p>`;
+                    }
+                    MathJax.typesetPromise([feedbackElem]);
+                }
+            });
+            MathJax.typesetPromise();
+        }
+    </script>
+    <!-- MathJax Configuration and Loader -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: {
+          fontCache: 'global'
+        },
+        startup: {
+          ready: () => {
+            MathJax.startup.defaultReady();
+            // This now correctly waits for the DOM to be loaded before running the guide script.
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", runGuide);
+            } else {
+                runGuide();
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+</body>
+</html>

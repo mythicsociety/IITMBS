@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Interactive Guide to Set Operations and Counting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration -->
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: {
+          fontCache: 'global'
+        },
+        startup: {
+          ready: () => {
+            MathJax.startup.defaultReady();
+            runGuide(); // This function will be defined at the end of the body
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <style>
+        /* Custom Styles for a polished look */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        /* Sidebar active link style */
+        .sidebar-link.active {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Smooth transitions */
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Custom scrollbar for a better look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Styles for interactive elements */
+        .interactive-box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Quiz feedback styles */
+        .correct-answer {
+            color: #16a34a;
+            font-weight: 700;
+        }
+        .incorrect-answer {
+            color: #dc2626;
+            font-weight: 700;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid #cbd5e1;
+        }
+        code {
+            background-color: #e2e8f0;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-slate-800 text-white p-5 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-40 overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-8 text-indigo-400">Learning Guide</h2>
+        <ul class="space-y-2">
+            <li><a href="#inclusion-exclusion" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Inclusion-Exclusion</a></li>
+            <li><a href="#three-sets" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Counting with Three Sets</a></li>
+            <li><a href="#quiz" class="sidebar-link block py-2 px-4 rounded-lg hover:bg-slate-700">Knowledge Check</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="md:ml-64 p-6 md:p-10">
+        <div class="max-w-4xl mx-auto">
+
+            <!-- Section 1: Inclusion-Exclusion Principle -->
+            <section id="inclusion-exclusion" class="mb-16 scroll-mt-20">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Set Operations and Counting Problems</h1>
+                <p class="text-lg text-slate-600 mb-6">Let's apply our knowledge of set operations to solve real-world counting problems.</p>
+                
+                <h2 class="text-3xl font-bold text-slate-900 mt-8 mb-4">The Principle of Inclusion-Exclusion</h2>
+                <p class="mb-4">How do we count the total number of elements in the union of two sets? If we just add their cardinalities, $|A| + |B|$, we will have double-counted the elements that are in both sets (the intersection).</p>
+                <p class="mb-4">To fix this, we need to subtract the intersection. This gives us the <strong>Principle of Inclusion-Exclusion</strong> for two sets:</p>
+                <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4 rounded-md my-4 text-center text-lg font-bold">
+                    $|A \cup B| = |A| + |B| - |A \cap B|$
+                </div>
+                <p class="mb-4">This formula helps us find the total number of people who like at least one of two things, the number of students taking at least one of two classes, and so on.</p>
+            </section>
+
+            <!-- Section 2: Three Sets -->
+            <section id="three-sets" class="mb-16 scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Counting with Three Sets</h2>
+                <p class="mb-4">The principle extends to three sets as well. We start by adding the sizes of the three sets. Then we subtract the sizes of the three pairwise intersections. But now we've subtracted the middle part (where all three overlap) three times. We need to add it back once.</p>
+                <div class="bg-emerald-100 border-l-4 border-emerald-500 text-emerald-700 p-4 rounded-md my-4 text-center text-lg font-bold">
+                    $|A \cup B \cup C| = |A| + |B| + |C| - (|A \cap B| + |A \cap C| + |B \cap C|) + |A \cap B \cap C|$
+                </div>
+
+                <div class="interactive-box">
+                    <h3 class="text-xl font-bold mb-2">3-Set Inclusion-Exclusion Calculator</h3>
+                    <p class="text-sm text-slate-500 mb-4">Enter the cardinalities for each region to find the total number of elements in the union.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label>|A|:</label> <input type="number" id="cardA" value="20" class="w-full p-1 border rounded-md"></div>
+                        <div><label>|B|:</label> <input type="number" id="cardB" value="18" class="w-full p-1 border rounded-md"></div>
+                        <div><label>|C|:</label> <input type="number" id="cardC" value="16" class="w-full p-1 border rounded-md"></div>
+                        <div><label>|A $\cap$ B|:</label> <input type="number" id="cardAB" value="7" class="w-full p-1 border rounded-md"></div>
+                        <div><label>|A $\cap$ C|:</label> <input type="number" id="cardAC" value="7" class="w-full p-1 border rounded-md"></div>
+                        <div><label>|B $\cap$ C|:</label> <input type="number" id="cardBC" value="9" class="w-full p-1 border rounded-md"></div>
+                        <div><label>|A $\cap$ B $\cap$ C|:</label> <input type="number" id="cardABC" value="3" class="w-full p-1 border rounded-md"></div>
+                    </div>
+                     <div class="text-center mt-4">
+                        <button id="calculate-union-btn" class="px-4 py-2 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700">Calculate Union</button>
+                    </div>
+                    <p id="union-result" class="text-center font-bold text-xl mt-4"></p>
+                </div>
+            </section>
+            
+            <!-- Section 3: Knowledge Check Quiz -->
+            <section id="quiz" class="scroll-mt-20">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6">Knowledge Check</h2>
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        function runGuide() {
+            // --- Mobile Menu Logic ---
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            menuBtn.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+            sidebar.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A' && window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+
+            // --- Active Sidebar Link on Scroll ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+            sections.forEach(section => observer.observe(section));
+            
+            // --- 3-Set Calculator ---
+            const calculateBtn = document.getElementById('calculate-union-btn');
+            const unionResult = document.getElementById('union-result');
+            
+            function calculateUnion() {
+                const A = parseInt(document.getElementById('cardA').value) || 0;
+                const B = parseInt(document.getElementById('cardB').value) || 0;
+                const C = parseInt(document.getElementById('cardC').value) || 0;
+                const AB = parseInt(document.getElementById('cardAB').value) || 0;
+                const AC = parseInt(document.getElementById('cardAC').value) || 0;
+                const BC = parseInt(document.getElementById('cardBC').value) || 0;
+                const ABC = parseInt(document.getElementById('cardABC').value) || 0;
+
+                const total = A + B + C - (AB + AC + BC) + ABC;
+                unionResult.innerHTML = `Total Union $|A \\cup B \\cup C|$ = <span class="text-indigo-600">${total}</span>`;
+                MathJax.typesetPromise([unionResult]);
+            }
+            
+            calculateBtn.addEventListener('click', calculateUnion);
+            calculateUnion();
+
+            // --- Quiz Logic ---
+            const quizData = [
+                // Benchmark Questions
+                {
+                    question: "In a class of 40 students, 20 took Mathematics, 18 took Statistics, 16 took English, 7 took Mathematics and Statistics, 7 took Mathematics and English, 9 took Statistics and English, and 3 took all the three courses. How many students are not taking any of these courses?",
+                    type: 'single',
+                    options: ['3', '4', '5', '6'],
+                    correct: [3],
+                    explanation: "Using the inclusion-exclusion principle: $|M \\cup S \\cup E| = 20 + 18 + 16 - (7+7+9) + 3 = 54 - 23 + 3 = 34$. Students not taking any course = Total - $|M \\cup S \\cup E| = 40 - 34 = 6$."
+                },
+                {
+                    question: "In a survey, it is found that 30 people like apples, 45 people like oranges, and 20 people like both apples and oranges. How many people like only one fruit?",
+                    type: 'numerical',
+                    correct: 35,
+                    explanation: "People who like only apples = (Total who like apples) - (Like both) = 30 - 20 = 10. People who like only oranges = 45 - 20 = 25. Total who like only one fruit = 10 + 25 = 35."
+                },
+                {
+                    question: "In a class, 50 students play cricket, 35 play football, 14 play both, and 9 play neither. How many students are there in the class?",
+                    type: 'single',
+                    options: ['80', '108', '90', '62'],
+                    correct: [0],
+                    explanation: "Total who play at least one sport = $|C \\cup F| = |C| + |F| - |C \\cap F| = 50 + 35 - 14 = 71$. Total students in the class = (Play at least one) + (Play neither) = 71 + 9 = 80."
+                },
+                {
+                    question: "A group of 25 people are planning to get together to celebrate their 10 years of friendship. Out of them, 9 suggested to go to Goa, 8 suggested to go to Bangkok, X suggested to go to Pondicherry and 3 of them did not suggest any place. Considering each person suggested only one place, what is the value of X?",
+                    type: 'single',
+                    options: ['5', '3', '4', 'Data is insufficient'],
+                    correct: [0],
+                    explanation: "Total people = 25. People who suggested a place = 25 - 3 = 22. Since each person suggested only one place, the sets are disjoint. So, $9 + 8 + X = 22 \\implies 17 + X = 22 \\implies X = 5$."
+                },
+                {
+                    question: "An advertising agency finds that, of its 200 clients who use Television or Radio or both, 150 use Television. How many use only Radio?",
+                    type: 'single',
+                    options: ['150', '100', '50', 'Data is insufficient'],
+                    correct: [3],
+                    explanation: "We know $|T \\cup R| = 200$ and $|T|=150$. The formula is $|T \\cup R| = |T| + |R| - |T \\cap R|$. We want to find $|R| - |T \\cap R|$. We have $200 = 150 + |R| - |T \\cap R|$, so $50 = |R| - |T \\cap R|$. However, we cannot determine $|R|$ or $|T \\cap R|$ individually. Data is insufficient."
+                },
+                // New Questions
+                {
+                    question: "If $|A| = 10$, $|B| = 15$, and $|A \\cup B| = 20$, what is $|A \\cap B|$?",
+                    type: 'single',
+                    options: ['5', '10', '25', '0'],
+                    correct: [0],
+                    explanation: "Using the formula $|A \\cup B| = |A| + |B| - |A \\cap B|$, we have $20 = 10 + 15 - |A \\cap B|$, which means $20 = 25 - |A \\cap B|$. Therefore, $|A \\cap B| = 5$."
+                },
+                {
+                    question: "In a school, 100 students have access to Netflix and 150 have access to Prime Video. If 40 students have access to both, how many students have access to at least one of the services?",
+                    type: 'single',
+                    options: ['290', '250', '210', '190'],
+                    correct: [2],
+                    explanation: "We want to find $|N \\cup P|$. Using the inclusion-exclusion principle: $|N \\cup P| = |N| + |P| - |N \\cap P| = 100 + 150 - 40 = 210$."
+                },
+                {
+                    question: "Let A be the set of even numbers and B be the set of prime numbers. Which of the following is in $A \\cap B$?",
+                    type: 'single',
+                    options: ['1', '2', '4', '9'],
+                    correct: [1],
+                    explanation: "We are looking for a number that is both even and prime. The only number that fits this description is 2."
+                },
+                {
+                    question: "If $|A - B| = 10$, $|B - A| = 15$, and $|A \\cap B| = 5$, what is $|A \\cup B|$?",
+                    type: 'single',
+                    options: ['20', '25', '30', '35'],
+                    correct: [2],
+                    explanation: "The union of two sets is the sum of the elements only in A, only in B, and in both. So, $|A \\cup B| = |A - B| + |B - A| + |A \\cap B| = 10 + 15 + 5 = 30$."
+                },
+                {
+                    question: "Out of 50 people, 30 drink tea and 25 drink coffee. How many people drink both tea and coffee, assuming everyone drinks at least one beverage?",
+                    type: 'single',
+                    options: ['5', '10', '15', '20'],
+                    correct: [0],
+                    explanation: "Here, $|T \\cup C| = 50$. Using the formula, $50 = |T| + |C| - |T \\cap C| \\implies 50 = 30 + 25 - |T \\cap C| \\implies 50 = 55 - |T \\cap C|$. So, $|T \\cap C| = 5$."
+                },
+                {
+                    question: "True or False: For any two sets A and B, $|A \\cup B| \\ge |A|$",
+                    type: 'single',
+                    options: ['True', 'False'],
+                    correct: [0],
+                    explanation: "True. The union of A and B contains all the elements of A, plus any elements that are in B but not in A. Therefore, its size must be at least the size of A."
+                },
+                {
+                    question: "If 120 students are surveyed, 60 like Math, 50 like Science, and 20 like both. How many students like neither?",
+                    type: 'single',
+                    options: ['10', '20', '30', '40'],
+                    correct: [2],
+                    explanation: "First find how many like at least one: $|M \\cup S| = 60 + 50 - 20 = 90$. The number who like neither is the total minus this amount: $120 - 90 = 30$."
+                },
+                {
+                    question: "If A and B are disjoint sets, what is $|A \\cup B|$?",
+                    type: 'single',
+                    options: ['$|A| + |B|$', '$|A| - |B|$', '0', '$|A| \\times |B|$'],
+                    correct: [0],
+                    explanation: "Disjoint sets mean they have no elements in common, so their intersection is empty ($|A \\cap B| = 0$). The inclusion-exclusion formula simplifies to $|A \\cup B| = |A| + |B| - 0 = |A| + |B|$."
+                },
+                {
+                    question: "In a group of dogs, 15 have long tails, 10 have brown fur, and 5 have both long tails and brown fur. How many dogs have either a long tail or brown fur?",
+                    type: 'single',
+                    options: ['15', '20', '25', '30'],
+                    correct: [1],
+                    explanation: "$|L \\cup B| = |L| + |B| - |L \\cap B| = 15 + 10 - 5 = 20$."
+                },
+                 {
+                    question: "If $|U|=100$ and $|A|=40$, what is $|A'|$?",
+                    type: 'single',
+                    options: ['40', '60', '100', '140'],
+                    correct: [1],
+                    explanation: "The complement A' contains all elements in the universal set U that are not in A. So, $|A'| = |U| - |A| = 100 - 40 = 60$."
+                },
+                {
+                    question: "A survey of 100 people showed that 72 people speak English and 43 people speak French. How many people speak both English and French?",
+                    type: 'single',
+                    options: ['15', '28', '29', '43'],
+                    correct: [0],
+                    explanation: "Let E be English speakers and F be French speakers. We are given $|E \\cup F| = 100$. So, $100 = 72 + 43 - |E \\cap F| \\implies 100 = 115 - |E \\cap F|$. Thus, $|E \\cap F| = 15$."
+                },
+                {
+                    question: "In a library, 80% of books are fiction, and 40% are hardcover. If 30% are hardcover fiction, what percentage of books are either fiction or hardcover?",
+                    type: 'single',
+                    options: ['70%', '80%', '90%', '120%'],
+                    correct: [2],
+                    explanation: "$P(F \\cup H) = P(F) + P(H) - P(F \\cap H) = 80\\% + 40\\% - 30\\% = 90\\%$."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'p-6 bg-white rounded-lg shadow-md';
+                
+                let optionsHTML = '';
+                if (q.type === 'numerical') {
+                    optionsHTML = `<input type="number" id="q${index}o0" class="p-2 border rounded-md">`;
+                } else {
+                    optionsHTML = q.options.map((opt, i) => `
+                        <div class="flex items-center">
+                            <input type="${q.type === 'single' ? 'radio' : 'checkbox'}" id="q${index}o${i}" name="q${index}" value="${i}" class="mr-3">
+                            <label for="q${index}o${i}">${opt}</label>
+                        </div>
+                    `).join('');
+                }
+
+                questionElem.innerHTML = `
+                    <p class="font-bold mb-4">${index + 1}. ${q.question}</p>
+                    <div class="space-y-2 mb-4">${optionsHTML}</div>
+                    <button class="check-answer-btn px-4 py-2 text-sm bg-slate-200 font-semibold rounded-md hover:bg-slate-300">Check Answer</button>
+                    <div class="feedback mt-4 hidden"></div>
+                `;
+                quizContainer.appendChild(questionElem);
+            });
+
+            quizContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('check-answer-btn')) {
+                    const questionElem = e.target.closest('.p-6');
+                    const feedbackElem = questionElem.querySelector('.feedback');
+                    const questionIndex = Array.from(quizContainer.children).indexOf(questionElem);
+                    const questionData = quizData[questionIndex];
+                    
+                    let isCorrect = false;
+                    if (questionData.type === 'numerical') {
+                        const input = questionElem.querySelector('input');
+                        isCorrect = parseInt(input.value) === questionData.correct;
+                    } else {
+                        const inputs = questionElem.querySelectorAll('input:checked');
+                        let selectedIndices = Array.from(inputs).map(input => parseInt(input.value));
+                        if (questionData.type === 'single') {
+                            isCorrect = selectedIndices.length === 1 && selectedIndices[0] === questionData.correct[0];
+                        } else { // multiple
+                            isCorrect = selectedIndices.length === questionData.correct.length && selectedIndices.every(val => questionData.correct.includes(val));
+                        }
+                    }
+                    
+                    feedbackElem.classList.remove('hidden');
+                    if (isCorrect) {
+                        feedbackElem.innerHTML = `<p class="correct-answer">Correct!</p><p class="explanation">${questionData.explanation}</p>`;
+                    } else {
+                        feedbackElem.innerHTML = `<p class="incorrect-answer">Not quite.</p><p class="explanation">${questionData.explanation}</p>`;
+                    }
+                    MathJax.typesetPromise([feedbackElem]);
+                }
+            });
+            MathJax.typesetPromise();
+        }
+    </script>
+</body>
+</html>
