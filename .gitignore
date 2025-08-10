@@ -1,0 +1,10 @@
+*
+!*.csv
+!*.docx
+!*.html
+!*.jpeg
+!*.jpg
+!*.png
+!*.svg
+!*.txt
+!.gitignore
