@@ -1,4 +1,10 @@
+# ignore everything by default
 *
+
+# re-allow all directories so rules below can work inside them
+!*/
+
+# allow only these file types
 !*.csv
 !*.docx
 !*.html
@@ -7,4 +13,6 @@
 !*.png
 !*.svg
 !*.txt
+
+# keep this file
 !.gitignore

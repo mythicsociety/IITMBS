@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 English 3: Speech Sounds in English</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+
+        /* Active sidebar link style */
+        .sidebar-link.active {
+            background-color: #0d9488; /* Tailwind teal-600 */
+            color: #ffffff; /* white */
+            font-weight: 600;
+        }
+
+        /* Sidebar transition for mobile */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Main content scroll-margin for better anchor linking */
+        section[id] {
+            scroll-margin-top: 4rem;
+        }
+
+        /* Quiz answer feedback styles */
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .quiz-explanation {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-left-width: 4px;
+            border-color: #60a5fa; /* blue-400 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+
+        /* Interactive Element Styles */
+        .sound-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .sound-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Container -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="fixed inset-y-0 left-0 bg-teal-700 text-white w-64 p-4 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen z-30">
+            <h2 class="text-2xl font-bold mb-6">
+                Week 1: English
+                <span class="block text-lg font-medium text-teal-200 mt-1">Lecture 3: Speech Sounds</span>
+            </h2>
+            <ul class="space-y-2">
+                <li><a href="#introduction" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Introduction</a></li>
+                <li><a href="#production" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">How Sounds Are Made</a></li>
+                <li><a href="#articulators" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">The Articulators</a></li>
+                <li><a href="#vowel-distinctions" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Vowel Distinctions</a></li>
+                <li><a href="#interactive-practice" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Interactive Practice</a></li>
+                <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Knowledge Check</a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="fixed top-4 left-4 z-40 md:hidden bg-white p-2 rounded-md shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <div class="max-w-6xl">
+                
+                <!-- Section: Introduction -->
+                <section id="introduction" class="mb-12 bg-sky-50 p-8 rounded-xl shadow-sm">
+                    <h1 class="text-4xl font-bold text-sky-900 mb-4">A Closer Look at Speech Sounds</h1>
+                    <p class="text-lg text-gray-600">Welcome! In this guide, we're going to explore the mechanics of how we actually produce speech sounds. By understanding the "machinery" in our vocal tract, we can better grasp the subtle differences between sounds in English and the sounds in our native languages. This knowledge is a powerful tool for improving pronunciation and speaking with greater clarity and confidence.</p>
+                </section>
+
+                <!-- Section: How Sounds Are Made -->
+                <section id="production" class="mb-12 bg-green-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-green-800 mb-6">How Sounds Are Made: The Role of Airflow</h2>
+                    <p class="mb-4">All the sounds we make to speak are created by a single, simple process: the flow of air from our lungs. Think of your lungs as the engine and the air as the fuel for speech.</p>
+                    <ul class="list-disc list-inside mt-2 space-y-2 text-gray-600">
+                        <li><strong>Exhaling Creates Sound:</strong> We produce speech sounds using the <strong>exhaling flow of air</strong>, not the inhaling flow.</li>
+                        <li><strong>Modification is Key:</strong> As this stream of air travels up and out of our mouth and nose, we use various parts of our vocal tract (like the tongue and lips) to shape and modify it.</li>
+                        <li><strong>Vowels vs. Consonants:</strong> The amount of modification determines the type of sound. A mostly free flow of air creates a <strong>vowel</strong>. A significantly obstructed or blocked flow of air creates a <strong>consonant</strong>.</li>
+                    </ul>
+                </section>
+
+                <!-- Section: The Articulators -->
+                <section id="articulators" class="mb-12 bg-amber-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-amber-800 mb-6">The Articulators: Your Sound Toolkit</h2>
+                    <p class="mb-4">The parts of our vocal tract that we use to shape air into specific sounds are called <strong>articulators</strong>. Understanding where sounds are made helps explain why they are distinct.</p>
+                    <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg text-gray-700">Lips (Labial)</h4>
+                            <p class="text-gray-600">Used for sounds like /p/, /b/, and /m/.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg text-gray-700">Teeth (Dental)</h4>
+                            <p class="text-gray-600">Used with the tongue for sounds like /th/ in <em>thin</em>.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg text-gray-700">Alveolar Ridge</h4>
+                            <p class="text-gray-600">The bumpy ridge behind your top teeth. Used for /t/, /d/, and /n/.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg text-gray-700">Palate</h4>
+                            <p class="text-gray-600">The hard roof of your mouth. Used for the /sh/ sound.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg text-gray-700">Velum</h4>
+                            <p class="text-gray-600">The soft area at the back of the roof of your mouth. Used for /k/ and /g/.</p>
+                        </div>
+                         <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg text-gray-700">Tongue</h4>
+                            <p class="text-gray-600">The most flexible articulator! It moves to touch all the other places.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Vowel Distinctions -->
+                <section id="vowel-distinctions" class="mb-12 bg-violet-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-violet-800 mb-6">Vowel Distinctions: Short vs. Long</h2>
+                    <p class="mb-4">One of the key features of English vowels is the distinction between <strong>short</strong> and <strong>long</strong> sounds. This doesn't just mean how long you say the sound; it refers to a difference in quality that changes the meaning of a word. A speech sound is often written between two slashes, like /i/.</p>
+                    <p>Let's look at a clear example with the sounds /ɪ/ (short i) and /iː/ (long ee).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Short Vowel /ɪ/</h3>
+                            <p class="text-gray-600">This is a relaxed, quick sound.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><em>s<strong>i</strong>t</em></li>
+                                <li><em>sh<strong>i</strong>p</em></li>
+                                <li><em>dr<strong>i</strong>nk</em></li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Long Vowel /iː/</h3>
+                            <p class="text-gray-600">This is a more tense sound, like you are smiling slightly.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><em>s<strong>ea</strong>t</em></li>
+                                <li><em>sh<strong>ee</strong>p</em></li>
+                                <li><em>cl<strong>ea</strong>n</em></li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="mt-6 p-4 bg-violet-100 border-l-4 border-violet-400 rounded-r-lg">
+                        <p><strong>Key Takeaway:</strong> The difference between <em>"ship"</em> and <em>"sheep"</em> is only the length and quality of the vowel sound. Mastering these subtle differences is essential for clear communication.</p>
+                    </div>
+                </section>
+
+                <!-- Section: Interactive Practice -->
+                <section id="interactive-practice" class="mb-12 bg-orange-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-orange-800 mb-6">Interactive Practice</h2>
+                    <p class="mb-6">Let's practice identifying short and long vowel sounds. Click the button that matches the vowel sound in the word.</p>
+                    <div id="interactive-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Card 1 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Live"</p>
+                            <p class="text-gray-600 mb-4">(As in, "Where do you live?")</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Short /ɪ/</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Long /iː/</button>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Leave"</p>
+                            <p class="text-gray-600 mb-4">(As in, "I have to leave now.")</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Short /ɪ/</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Long /iː/</button>
+                            </div>
+                        </div>
+                         <!-- Card 3 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Look"</p>
+                            <p class="text-gray-600 mb-4">(As in, "Look over there!")</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Short /ʊ/</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Long /uː/</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="interactive-feedback" class="mt-4 text-center h-6 font-medium"></div>
+                </section>
+
+                <!-- Section: Knowledge Check -->
+                <section id="quiz" class="bg-blue-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-blue-800 mb-6">Knowledge Check</h2>
+                    <p class="mb-6">Time to check your understanding. Choose the best answer for each question.</p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Quiz questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            // Mobile menu toggle
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Close sidebar on link click (for mobile)
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            // Intersection Observer for active link highlighting
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.sidebar-link[href="#${id}"]`);
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(l => l.classList.remove('active'));
+                        if(link) link.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '0px 0px -50% 0px' });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Practice Logic
+            const interactiveContainer = document.getElementById('interactive-container');
+            const interactiveFeedback = document.getElementById('interactive-feedback');
+            interactiveContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('sound-choice')) {
+                    const parentContainer = e.target.closest('.sound-card-container');
+                    const buttons = parentContainer.querySelectorAll('.sound-choice');
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.dataset.correct) {
+                        e.target.classList.add('bg-green-200', 'border-green-500');
+                        interactiveFeedback.textContent = 'Correct!';
+                        interactiveFeedback.style.color = '#16a34a';
+                    } else {
+                        e.target.classList.add('bg-red-200', 'border-red-500');
+                        interactiveFeedback.textContent = 'Not quite!';
+                        interactiveFeedback.style.color = '#dc2626';
+                        parentContainer.querySelector('[data-correct="true"]').classList.add('bg-green-200', 'border-green-500');
+                    }
+                    setTimeout(() => interactiveFeedback.textContent = '', 2000);
+                }
+            });
+
+            // Quiz Data
+            const quizData = [
+                {
+                    question: "In writing symbols, we have five characters/letters to represent vowel sounds.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. The letters a, e, i, o, u are the five primary characters used to represent the ~20 vowel sounds."
+                },
+                {
+                    question: "In the vowel sounds ‘i’ (/ɪ/) and ‘ii’ (/iː/), the former is a long vowel, while the latter is a short vowel.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. It's the other way around. /ɪ/ (as in 'sit') is the short vowel, and /iː/ (as in 'seat') is the long vowel."
+                },
+                {
+                    question: "Vowel sounds are required elements in the formation of words.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. Every word in English must have at least one vowel sound to form a syllable."
+                },
+                {
+                    question: "The vowel sound present in the word ‘cup’ is /u/.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. The vowel sound in 'cup' is a short 'uh' sound, phonetically represented as /ʌ/, not /u/."
+                },
+                {
+                    question: "A speech sound is written between two slashes/slant lines.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. This is the standard convention in linguistics to distinguish a speech sound from a letter, for example, the sound /k/ vs. the letter 'k'."
+                },
+                {
+                    question: "Which of these is NOT considered a primary articulator?",
+                    options: ["Tongue", "Lungs", "Lips", "Teeth"],
+                    correct: "Lungs",
+                    explanation: "Correct. The lungs provide the airflow, but they don't shape or 'articulate' the sound. The tongue, lips, and teeth do."
+                },
+                {
+                    question: "The sound /p/ is made primarily with the:",
+                    options: ["Tongue and teeth", "Lips", "Back of the tongue", "Nasal cavity"],
+                    correct: "Lips",
+                    explanation: "Correct. The /p/ sound is a bilabial sound, meaning it's formed by bringing both lips together to stop the air."
+                },
+                {
+                    question: "The main physical difference between a vowel and a consonant is:",
+                    options: ["Loudness", "Pitch", "Airflow obstruction", "Speed"],
+                    correct: "Airflow obstruction",
+                    explanation: "Correct. Vowels are produced with an open vocal tract and free airflow, while consonants involve some kind of obstruction."
+                },
+                {
+                    question: "The word 'feet' contains a:",
+                    options: ["Short vowel sound", "Long vowel sound", "Consonant cluster", "Diphthong"],
+                    correct: "Long vowel sound",
+                    explanation: "Correct. The 'ee' in 'feet' represents the long vowel sound /iː/."
+                },
+                {
+                    question: "The sounds /t/ and /d/ are made when the tongue touches the:",
+                    options: ["Lips", "Velum (soft palate)", "Alveolar ridge", "Uvula"],
+                    correct: "Alveolar ridge",
+                    explanation: "Correct. These are alveolar sounds, produced when the tip of the tongue touches the ridge just behind the upper teeth."
+                },
+                {
+                    question: "True or False: All languages in the world use the exact same set of speech sounds.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. Each language has its own unique inventory of sounds, which is why some sounds in a new language can be difficult to learn."
+                },
+                {
+                    question: "The word 'book' contains the same vowel sound as the word 'boot'.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. 'Book' has a short vowel sound /ʊ/, while 'boot' has a long vowel sound /uː/."
+                },
+                {
+                    question: "Which of these sounds is produced at the back of the mouth?",
+                    options: ["/p/", "/t/", "/s/", "/k/"],
+                    correct: "/k/",
+                    explanation: "Correct. The /k/ sound is a velar sound, made by raising the back of the tongue to the velum (soft palate)."
+                },
+                {
+                    question: "The purpose of understanding articulators is to:",
+                    options: ["Learn to spell better", "Understand the physical production of sounds to improve pronunciation", "Read faster", "Write more creatively"],
+                    correct: "Understand the physical production of sounds to improve pronunciation",
+                    explanation: "Correct. Knowing where and how sounds are made helps you consciously adjust your own speech to be more accurate."
+                },
+                {
+                    question: "True or False: The letter 'a' always represents the same vowel sound.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. The letter 'a' has many different pronunciations, as in the words 'cat', 'father', and 'late'."
+                }
+            ];
+
+            // Quiz Generation
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('quiz-question');
+                
+                let optionsHtml = '';
+                item.options.forEach(option => {
+                    optionsHtml += `<button class="w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition-colors">${option}</button>`;
+                });
+
+                questionDiv.innerHTML = `
+                    <p class="text-lg font-semibold mb-4">${index + 1}. ${item.question}</p>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div class="quiz-explanation">${item.explanation}</div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+
+            // Quiz Logic
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const buttons = questionDiv.querySelectorAll('button');
+                    const explanation = questionDiv.querySelector('.quiz-explanation');
+                    const questionText = questionDiv.querySelector('p').textContent.split('. ')[1];
+                    const quizItem = quizData.find(q => q.question === questionText);
+
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.textContent === quizItem.correct) {
+                        e.target.classList.add('correct-answer');
+                    } else {
+                        e.target.classList.add('incorrect-answer');
+                        buttons.forEach(btn => {
+                            if (btn.textContent === quizItem.correct) {
+                                btn.classList.add('correct-answer');
+                            }
+                        });
+                    }
+                    explanation.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

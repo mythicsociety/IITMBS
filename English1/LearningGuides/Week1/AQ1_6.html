@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 English 6: Consonant Clusters</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+
+        /* Active sidebar link style */
+        .sidebar-link.active {
+            background-color: #0d9488; /* Tailwind teal-600 */
+            color: #ffffff; /* white */
+            font-weight: 600;
+        }
+
+        /* Sidebar transition for mobile */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Main content scroll-margin for better anchor linking */
+        section[id] {
+            scroll-margin-top: 4rem;
+        }
+
+        /* Quiz answer feedback styles */
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .quiz-explanation {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-left-width: 4px;
+            border-color: #60a5fa; /* blue-400 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+
+        /* Interactive Element Styles */
+        .sound-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .sound-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Container -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="fixed inset-y-0 left-0 bg-teal-700 text-white w-64 p-4 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen z-30">
+            <h2 class="text-2xl font-bold mb-6">
+                Week 1: English
+                <span class="block text-lg font-medium text-teal-200 mt-1">Lecture 6: Consonant Clusters</span>
+            </h2>
+            <ul class="space-y-2">
+                <li><a href="#introduction" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Introduction</a></li>
+                <li><a href="#definition" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">What is a Cluster?</a></li>
+                <li><a href="#positions" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Cluster Positions</a></li>
+                <li><a href="#three-consonant-clusters" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Three-Consonant Clusters</a></li>
+                <li><a href="#interactive-practice" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Interactive Practice</a></li>
+                <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Knowledge Check</a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="fixed top-4 left-4 z-40 md:hidden bg-white p-2 rounded-md shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <div class="max-w-6xl">
+                
+                <!-- Section: Introduction -->
+                <section id="introduction" class="mb-12 bg-sky-50 p-8 rounded-xl shadow-sm">
+                    <h1 class="text-4xl font-bold text-sky-900 mb-4">Consonant Clusters in English</h1>
+                    <p class="text-lg text-gray-600">In our final lesson for the week, we'll explore how English words can pack multiple consonant sounds together. These are called <strong>consonant clusters</strong>. Understanding how they work not only helps with pronunciation but also reveals some fascinating and very strict hidden rules about English word structure.</p>
+                </section>
+
+                <!-- Section: What is a Cluster? -->
+                <section id="definition" class="mb-12 bg-green-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-green-800 mb-6">What is a Consonant Cluster?</h2>
+                    <p class="mb-4">A consonant cluster is a sequence of two or more consonant sounds that appear next to each other in a word, with no vowel sound between them. It's the absence of a vowel that creates the cluster.</p>
+                    <p class="mb-4">Think about the word <em>glass</em>. The sounds are /g/, /l/, /æ/, /s/. The first two sounds, <strong>/g/ and /l/</strong>, are right next to each other. We don't say "ga-lass"; we blend them together as "glass". This "gl" is a consonant cluster.</p>
+                    <div class="mt-6 p-4 bg-green-100 border-l-4 border-green-400 rounded-r-lg">
+                        <p><strong>A Key Rule:</strong> Generally, two consonant sounds made in the exact same place of articulation won't form a cluster. For example, you won't see /p/ and /b/ (both made with the lips) clustered together like "pb" at the start of a word.</p>
+                    </div>
+                </section>
+
+                <!-- Section: Cluster Positions -->
+                <section id="positions" class="mb-12 bg-amber-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-amber-800 mb-6">Where Can Clusters Appear?</h2>
+                    <p class="mb-4">Consonant clusters are very flexible and can show up in different parts of a word.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Initial Position (Beginning)</h3>
+                            <p class="text-gray-600">At the start of a word.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><em><strong>bl</strong>iss</em></li>
+                                <li><em><strong>gr</strong>eat</em></li>
+                                <li><em><strong>sc</strong>ool</em></li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Final Position (End)</h3>
+                            <p class="text-gray-600">At the end of a word.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><em>si<strong>nk</strong></em></li>
+                                <li><em>bla<strong>st</strong></em></li>
+                                <li><em>pi<strong>nk</strong></em></li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Medial Position (Middle)</h3>
+                            <p class="text-gray-600">In the middle of a word.</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><em>clu<strong>st</strong>er</em></li>
+                                <li><em>da<strong>dd</strong>y</em> (Note: two letters, but one /d/ sound)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Three-Consonant Clusters -->
+                <section id="three-consonant-clusters" class="mb-12 bg-violet-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-violet-800 mb-6">The Special Rule for Three-Consonant Clusters</h2>
+                    <p class="mb-4">While English has many two-consonant clusters, it's also possible to have a cluster of three consonants, but only at the beginning of a word and only if they follow a very strict pattern. This is a perfect example of the hidden, rule-governed nature of language.</p>
+                    <p class="font-bold text-xl text-center my-4">The Formula: /s/ + Voiceless Stop + Liquid</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 text-center">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg text-gray-700">1st Sound</h4>
+                            <p class="text-3xl font-mono mt-2">/s/</p>
+                            <p class="text-gray-600">(Always)</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg text-gray-700">2nd Sound</h4>
+                            <p class="text-3xl font-mono mt-2">/p/, /t/, /k/</p>
+                            <p class="text-gray-600">(A voiceless stop)</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-semibold text-lg text-gray-700">3rd Sound</h4>
+                            <p class="text-3xl font-mono mt-2">/l/, /r/</p>
+                            <p class="text-gray-600">(A liquid sound)</p>
+                        </div>
+                    </div>
+                    <p class="mt-6">Examples of words that follow this pattern include:</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                        <li><em><strong>spl</strong>ash</em> (/s/ + /p/ + /l/)</li>
+                        <li><em><strong>str</strong>ess</em> (/s/ + /t/ + /r/)</li>
+                        <li><em><strong>scr</strong>ew</em> (/s/ + /k/ + /r/)</li>
+                        <li><em><strong>spr</strong>ing</em> (/s/ + /p/ + /r/)</li>
+                    </ul>
+                </section>
+
+                <!-- Section: Interactive Practice -->
+                <section id="interactive-practice" class="mb-12 bg-orange-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-orange-800 mb-6">Interactive Practice</h2>
+                    <p class="mb-6">Let's practice identifying clusters. Click on the word that contains a <strong>three-consonant cluster</strong> at the beginning.</p>
+                    <div id="interactive-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <button class="cluster-choice sound-card bg-white p-6 rounded-lg shadow-md text-center text-3xl font-bold">Glass</button>
+                        <button class="cluster-choice sound-card bg-white p-6 rounded-lg shadow-md text-center text-3xl font-bold" data-correct="true">Street</button>
+                        <button class="cluster-choice sound-card bg-white p-6 rounded-lg shadow-md text-center text-3xl font-bold">Think</button>
+                    </div>
+                    <div id="interactive-feedback" class="mt-4 text-center h-6 font-medium"></div>
+                </section>
+
+                <!-- Section: Knowledge Check -->
+                <section id="quiz" class="bg-blue-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-blue-800 mb-6">Knowledge Check</h2>
+                    <p class="mb-6">Time for the final check on this week's topics!</p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Quiz questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            // Mobile menu toggle
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Close sidebar on link click (for mobile)
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            // Intersection Observer for active link highlighting
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.sidebar-link[href="#${id}"]`);
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(l => l.classList.remove('active'));
+                        if(link) link.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '0px 0px -50% 0px' });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Practice Logic
+            const interactiveContainer = document.getElementById('interactive-container');
+            const interactiveFeedback = document.getElementById('interactive-feedback');
+            interactiveContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('cluster-choice')) {
+                    const buttons = interactiveContainer.querySelectorAll('.cluster-choice');
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.dataset.correct) {
+                        e.target.classList.add('bg-green-200', 'border-2', 'border-green-500');
+                        interactiveFeedback.textContent = 'Correct! "Street" starts with /s/, /t/, /r/.';
+                        interactiveFeedback.style.color = '#16a34a';
+                    } else {
+                        e.target.classList.add('bg-red-200', 'border-2', 'border-red-500');
+                        interactiveFeedback.textContent = 'Not quite. That word has a two-consonant cluster.';
+                        interactiveFeedback.style.color = '#dc2626';
+                        interactiveContainer.querySelector('[data-correct="true"]').classList.add('bg-green-200', 'border-2', 'border-green-500');
+                    }
+                }
+            });
+
+            // Quiz Data
+            const quizData = [
+                {
+                    question: "A consonant cluster is a sequence of two or more consonant sounds without a vowel sound in between.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. The absence of a vowel between consonants is what defines a cluster."
+                },
+                {
+                    question: "The word 'daddy' has a consonant cluster.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. Although it has two 'd' letters, they represent a single /d/ sound between two vowels (/dædi/). There is no cluster."
+                },
+                {
+                    question: "The word 'strength' has a consonant cluster at the beginning and at the end of the word.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. It begins with the cluster 'str' and ends with the cluster 'ngth'."
+                },
+                {
+                    question: "The first sound of a three-consonant cluster in the beginning of a word is always /s/.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. This is a strict phonotactic rule in English for initial three-consonant clusters."
+                },
+                {
+                    question: "The word 'apple' has a consonant cluster.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. The 'ppl' part is not a cluster because the letters represent sounds separated by a vowel sound."
+                },
+                {
+                    question: "Which of these words contains an initial three-consonant cluster?",
+                    options: ["great", "splash", "think", "phone"],
+                    correct: "splash",
+                    explanation: "Correct. 'splash' begins with /s/ + /p/ + /l/, which fits the required pattern."
+                },
+                {
+                    question: "Consonant clusters can only occur at the beginning of a word.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. Clusters can occur at the beginning (initial), middle (medial), or end (final) of a word."
+                },
+                {
+                    question: "The word 'sink' contains a final consonant cluster.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. The sounds /n/ and /k/ form a cluster at the end of the word."
+                },
+                {
+                    question: "According to the English three-consonant cluster rule, which of these words is NOT possible?",
+                    options: ["string", "spling", "skring", "stling"],
+                    correct: "stling",
+                    explanation: "Correct. 'tl' is not a valid combination for the second and third sounds in an initial three-consonant cluster."
+                },
+                {
+                    question: "What is the key element that is *absent* in a consonant cluster?",
+                    options: ["A consonant sound", "A vowel sound", "A voiced sound", "A letter"],
+                    correct: "A vowel sound",
+                    explanation: "Correct. A consonant cluster is defined by the absence of a vowel sound between the consonants."
+                },
+                {
+                    question: "The word 'bliss' has an initial consonant cluster.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. The sounds /b/ and /l/ form a cluster at the beginning."
+                },
+                {
+                    question: "How many consonant sounds are in the cluster at the beginning of 'screw'?",
+                    options: ["One", "Two", "Three", "Four"],
+                    correct: "Three",
+                    explanation: "Correct. The cluster is made of three sounds: /s/, /k/, and /r/."
+                },
+                {
+                    question: "Is it possible to have a four-consonant cluster at the beginning of an English word?",
+                    options: ["Yes", "No"],
+                    correct: "No",
+                    explanation: "Correct. While some rare final clusters can have four consonants, initial clusters in English are limited to a maximum of three."
+                },
+                {
+                    question: "The word 'blast' has:",
+                    options: ["Only an initial cluster", "Only a final cluster", "Both an initial and a final cluster", "No clusters"],
+                    correct: "Both an initial and a final cluster",
+                    explanation: "Correct. It begins with the cluster 'bl' and ends with the cluster 'st'."
+                },
+                {
+                    question: "Understanding consonant clusters helps improve:",
+                    options: ["Vocabulary", "Pronunciation", "Grammar", "Handwriting"],
+                    correct: "Pronunciation",
+                    explanation: "Correct. Knowing that sounds should be blended together without an intervening vowel is crucial for fluent pronunciation."
+                }
+            ];
+
+            // Quiz Generation
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('quiz-question');
+                
+                let optionsHtml = '';
+                item.options.forEach(option => {
+                    optionsHtml += `<button class="w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition-colors">${option}</button>`;
+                });
+
+                questionDiv.innerHTML = `
+                    <p class="text-lg font-semibold mb-4">${index + 1}. ${item.question}</p>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div class="quiz-explanation">${item.explanation}</div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+
+            // Quiz Logic
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const buttons = questionDiv.querySelectorAll('button');
+                    const explanation = questionDiv.querySelector('.quiz-explanation');
+                    const questionText = questionDiv.querySelector('p').textContent.split('. ')[1];
+                    const quizItem = quizData.find(q => q.question === questionText);
+
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.textContent === quizItem.correct) {
+                        e.target.classList.add('correct-answer');
+                    } else {
+                        e.target.classList.add('incorrect-answer');
+                        buttons.forEach(btn => {
+                            if (btn.textContent === quizItem.correct) {
+                                btn.classList.add('correct-answer');
+                            }
+                        });
+                    }
+                    explanation.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 English 5: Diphthongs and Semi-vowels</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+
+        /* Active sidebar link style */
+        .sidebar-link.active {
+            background-color: #0d9488; /* Tailwind teal-600 */
+            color: #ffffff; /* white */
+            font-weight: 600;
+        }
+
+        /* Sidebar transition for mobile */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Main content scroll-margin for better anchor linking */
+        section[id] {
+            scroll-margin-top: 4rem;
+        }
+
+        /* Quiz answer feedback styles */
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .quiz-explanation {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-left-width: 4px;
+            border-color: #60a5fa; /* blue-400 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+
+        /* Interactive Element Styles */
+        .sound-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .sound-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Container -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="fixed inset-y-0 left-0 bg-teal-700 text-white w-64 p-4 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen z-30">
+            <h2 class="text-2xl font-bold mb-6">
+                Week 1: English
+                <span class="block text-lg font-medium text-teal-200 mt-1">Lecture 5: Diphthongs & Semi-vowels</span>
+            </h2>
+            <ul class="space-y-2">
+                <li><a href="#introduction" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Introduction</a></li>
+                <li><a href="#diphthongs" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Diphthongs</a></li>
+                <li><a href="#semivowels" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Semi-vowels</a></li>
+                <li><a href="#linking" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Linking with Semi-vowels</a></li>
+                <li><a href="#interactive-practice" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Interactive Practice</a></li>
+                <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Knowledge Check</a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="fixed top-4 left-4 z-40 md:hidden bg-white p-2 rounded-md shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <div class="max-w-6xl">
+                
+                <!-- Section: Introduction -->
+                <section id="introduction" class="mb-12 bg-sky-50 p-8 rounded-xl shadow-sm">
+                    <h1 class="text-4xl font-bold text-sky-900 mb-4">Gliding Sounds: Diphthongs & Semi-vowels</h1>
+                    <p class="text-lg text-gray-600">Now that we've covered basic vowels and consonants, let's look at two special types of sounds that add fluency and complexity to English. <strong>Diphthongs</strong> are gliding vowels, and <strong>semi-vowels</strong> are unique consonants that act like vowels. Mastering them is key to a more natural-sounding pronunciation.</p>
+                </section>
+
+                <!-- Section: Diphthongs -->
+                <section id="diphthongs" class="mb-12 bg-green-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-green-800 mb-6">Diphthongs: The Two-in-One Vowels</h2>
+                    <p class="mb-4">A diphthong is a single vowel sound that consists of a movement, or <strong>glide</strong>, from one vowel to another within the same syllable. Your mouth starts in one position and ends in another. There are <strong>eight diphthongs</strong> in English.</p>
+                    <p class="mb-4">Think of it like a smooth transition between two sounds, where the first sound is stronger and longer than the second.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+                        <div class="bg-white p-4 rounded-lg shadow text-center">
+                            <p class="text-2xl font-mono">/eɪ/</p>
+                            <p class="text-gray-600">as in <em>t<strong>a</strong>ke, str<strong>ai</strong>n, d<strong>ay</strong></em></p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow text-center">
+                            <p class="text-2xl font-mono">/aɪ/</p>
+                            <p class="text-gray-600">as in <em>b<strong>uy</strong>, h<strong>igh</strong>, <strong>i</strong>ce</em></p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow text-center">
+                            <p class="text-2xl font-mono">/ɔɪ/</p>
+                            <p class="text-gray-600">as in <em>b<strong>oy</strong>, t<strong>oy</strong>, v<strong>oi</strong>ce</em></p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow text-center">
+                            <p class="text-2xl font-mono">/aʊ/</p>
+                            <p class="text-gray-600">as in <em>c<strong>ow</strong>, h<strong>ou</strong>se, b<strong>ow</strong>l</em></p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow text-center">
+                            <p class="text-2xl font-mono">/oʊ/</p>
+                            <p class="text-gray-600">as in <em>g<strong>o</strong>, sl<strong>ow</strong>, fl<strong>oa</strong>t</em></p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow text-center">
+                            <p class="text-2xl font-mono">/ɪə/</p>
+                            <p class="text-gray-600">as in <em>f<strong>ear</strong>, p<strong>eer</strong>s, cl<strong>ear</strong></em></p>
+                        </div>
+                         <div class="bg-white p-4 rounded-lg shadow text-center">
+                            <p class="text-2xl font-mono">/eə/</p>
+                            <p class="text-gray-600">as in <em>c<strong>are</strong>, p<strong>air</strong>, th<strong>eir</strong></em></p>
+                        </div>
+                         <div class="bg-white p-4 rounded-lg shadow text-center">
+                            <p class="text-2xl font-mono">/ʊə/</p>
+                            <p class="text-gray-600">as in <em>p<strong>oor</strong>, j<strong>ur</strong>y, c<strong>ure</strong></em></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Semi-vowels -->
+                <section id="semivowels" class="mb-12 bg-amber-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-amber-800 mb-6">Semi-vowels: The Consonant Imposters</h2>
+                    <p class="mb-4">The sounds <strong>/w/</strong> and <strong>/y/</strong> are special consonants known as semi-vowels. They are unique because they share qualities of both consonants and vowels.</p>
+                    <ul class="list-disc list-inside mt-2 space-y-3 text-gray-600">
+                        <li><strong>Vowel-like Quality:</strong> They are produced with almost no blockage of air, just like a vowel.</li>
+                        <li><strong>Consonant-like Function:</strong> They cannot form a syllable on their own (they are non-syllabic). A semi-vowel always needs a true vowel to partner with. For example, you can't have a word that is just "w".</li>
+                    </ul>
+                    <p class="mt-4">Another important rule: semi-vowel sounds <strong>do not occur at the end of words</strong>. A word might end with the letter 'w' or 'y' in its spelling (like <em>cow</em> or <em>happy</em>), but the final *sound* in those words is a vowel or a diphthong, not a semi-vowel.</p>
+                </section>
+
+                <!-- Section: Linking with Semi-vowels -->
+                <section id="linking" class="mb-12 bg-violet-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-violet-800 mb-6">Linking with Semi-vowels</h2>
+                    <p class="mb-4">One of the most important functions of semi-vowels is to create smooth transitions between words in connected speech. When one word ends in a vowel sound and the next word begins with a vowel sound, a semi-vowel is often naturally inserted to link them.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">The /w/ Link</h3>
+                            <p class="text-gray-600 mb-2">This happens after rounded vowel sounds (like /oʊ/ or /uː/).</p>
+                            <p class="text-gray-600"><em>"Go away"</em> becomes <em>"Go-<strong>w</strong>-away"</em></p>
+                            <p class="text-gray-600"><em>"Shoe on"</em> becomes <em>"Shoe-<strong>w</strong>-on"</em></p>
+                            <p class="text-gray-600"><em>"She wants to eat"</em> becomes <em>"to-<strong>w</strong>-eat"</em></p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">The /y/ Link</h3>
+                            <p class="text-gray-600 mb-2">This happens after unrounded vowel sounds (like /iː/ or /eɪ/).</p>
+                            <p class="text-gray-600"><em>"I am"</em> becomes <em>"I-<strong>y</strong>-am"</em></p>
+                            <p class="text-gray-600"><em>"Say it"</em> becomes <em>"Say-<strong>y</strong>-it"</em></p>
+                            <p class="text-gray-600"><em>"Three years"</em> becomes <em>"Three-<strong>y</strong>-years"</em></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Interactive Practice -->
+                <section id="interactive-practice" class="mb-12 bg-orange-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-orange-800 mb-6">Interactive Practice</h2>
+                    <p class="mb-6">Identify the special sound in each word. Is it a diphthong or a semi-vowel?</p>
+                    <div id="interactive-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Card 1 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"World"</p>
+                            <p class="text-gray-600 mb-4">The first sound, /w/, is a...</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Diphthong</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Semi-vowel</button>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"House"</p>
+                            <p class="text-gray-600 mb-4">The vowel sound, /aʊ/, is a...</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Diphthong</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Semi-vowel</button>
+                            </div>
+                        </div>
+                         <!-- Card 3 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Yes"</p>
+                            <p class="text-gray-600 mb-4">The first sound, /y/, is a...</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Diphthong</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Semi-vowel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="interactive-feedback" class="mt-4 text-center h-6 font-medium"></div>
+                </section>
+
+                <!-- Section: Knowledge Check -->
+                <section id="quiz" class="bg-blue-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-blue-800 mb-6">Knowledge Check</h2>
+                    <p class="mb-6">Let's check your understanding of these gliding sounds.</p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Quiz questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            // Mobile menu toggle
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Close sidebar on link click (for mobile)
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            // Intersection Observer for active link highlighting
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.sidebar-link[href="#${id}"]`);
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(l => l.classList.remove('active'));
+                        if(link) link.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '0px 0px -50% 0px' });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Practice Logic
+            const interactiveContainer = document.getElementById('interactive-container');
+            const interactiveFeedback = document.getElementById('interactive-feedback');
+            interactiveContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('sound-choice')) {
+                    const parentContainer = e.target.closest('.sound-card-container');
+                    const buttons = parentContainer.querySelectorAll('.sound-choice');
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.dataset.correct) {
+                        e.target.classList.add('bg-green-200', 'border-green-500');
+                        interactiveFeedback.textContent = 'Correct!';
+                        interactiveFeedback.style.color = '#16a34a';
+                    } else {
+                        e.target.classList.add('bg-red-200', 'border-red-500');
+                        interactiveFeedback.textContent = 'Not quite!';
+                        interactiveFeedback.style.color = '#dc2626';
+                        parentContainer.querySelector('[data-correct="true"]').classList.add('bg-green-200', 'border-green-500');
+                    }
+                    setTimeout(() => interactiveFeedback.textContent = '', 2000);
+                }
+            });
+
+            // Quiz Data
+            const quizData = [
+                {
+                    question: "Which semi-vowel occurs in the transition between the words 'to' and 'eat' in the sentence 'She wants to eat.'?",
+                    options: ["/w/", "/y/"],
+                    correct: "/w/",
+                    explanation: "Correct. The word 'to' ends in a rounded vowel sound, so the linking sound is /w/ (to-w-eat)."
+                },
+                {
+                    question: "Answer whether true or false. There are eight diphthongs in the English language.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. English has 8 distinct diphthong sounds."
+                },
+                {
+                    question: "Which among the following words has the same sound as underlined in 'str<u>ai</u>n'?",
+                    options: ["sit", "day", "cat", "car"],
+                    correct: "day",
+                    explanation: "Correct. Both 'strain' and 'day' contain the /eɪ/ diphthong."
+                },
+                {
+                    question: "Which among the following words has the same sound as underlined in 't<u>oy</u>'?",
+                    options: ["go", "cow", "shy", "voice"],
+                    correct: "voice",
+                    explanation: "Correct. Both 'toy' and 'voice' contain the /ɔɪ/ diphthong."
+                },
+                {
+                    question: "Which among the following words has a diphthong?",
+                    options: ["book", "read", "go", "cup"],
+                    correct: "go",
+                    explanation: "Correct. The word 'go' contains the /oʊ/ diphthong. The other words contain simple (monophthong) vowels."
+                },
+                {
+                    question: "A diphthong is best described as a:",
+                    options: ["Type of consonant", "Gliding vowel sound", "Silent letter", "Syllable"],
+                    correct: "Gliding vowel sound",
+                    explanation: "Correct. A diphthong is a single sound that starts as one vowel and glides to another."
+                },
+                {
+                    question: "The sounds /w/ and /y/ are called semi-vowels because:",
+                    options: ["They are always silent", "They are produced like vowels but function like consonants", "They are very rare", "They are only used in questions"],
+                    correct: "They are produced like vowels but function like consonants",
+                    explanation: "Correct. They have the open airflow of a vowel but cannot form a syllable on their own, which is a consonant-like property."
+                },
+                {
+                    question: "In fast speech, what linking sound would you hear in 'see it'?",
+                    options: ["/w/", "/y/", "No linking sound"],
+                    correct: "/y/",
+                    explanation: "Correct. 'See' ends in an unrounded vowel, so the linking sound is /y/ (see-y-it)."
+                },
+                {
+                    question: "True or False: The word 'my' ends with a /y/ semi-vowel sound.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. The word 'my' ends with the diphthong /aɪ/. Semi-vowels do not occur at the end of words."
+                },
+                {
+                    question: "Which of these words does NOT contain a diphthong?",
+                    options: ["how", "fear", "slow", "cat"],
+                    correct: "cat",
+                    explanation: "Correct. 'Cat' has a simple short vowel sound /æ/. The other words contain the diphthongs /aʊ/, /ɪə/, and /oʊ/ respectively."
+                },
+                {
+                    question: "The primary function of semi-vowels in connected speech is to:",
+                    options: ["Make speech louder", "Add emphasis", "Create smooth links between vowel sounds", "Separate words"],
+                    correct: "Create smooth links between vowel sounds",
+                    explanation: "Correct. They act as bridges when one word ends in a vowel and the next begins with one."
+                },
+                {
+                    question: "How many vowel sounds are in a diphthong?",
+                    options: ["Zero", "One", "Two", "Three"],
+                    correct: "One",
+                    explanation: "Correct. This is a tricky one! Although it's a glide between two positions, a diphthong is considered a single, complex vowel sound."
+                },
+                 {
+                    question: "The word 'year' begins with a semi-vowel sound.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. The first sound in 'year' is the semi-vowel /y/."
+                },
+                {
+                    question: "Which of these is NOT one of the eight English diphthongs?",
+                    options: ["/aɪ/ (as in 'buy')", "/eɪ/ (as in 'say')", "/uː/ (as in 'blue')", "/ɔɪ/ (as in 'boy')"],
+                    correct: "/uː/ (as in 'blue')",
+                    explanation: "Correct. /uː/ is a long monophthong (a simple vowel), not a diphthong."
+                },
+                {
+                    question: "The linking sound in 'do it' would be:",
+                    options: ["/w/", "/y/", "No linking sound"],
+                    correct: "/w/",
+                    explanation: "Correct. 'Do' ends in a rounded vowel sound /uː/, so the linking sound is /w/ (do-w-it)."
+                }
+            ];
+
+            // Quiz Generation
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('quiz-question');
+                
+                let optionsHtml = '';
+                item.options.forEach(option => {
+                    optionsHtml += `<button class="w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition-colors">${option}</button>`;
+                });
+
+                questionDiv.innerHTML = `
+                    <p class="text-lg font-semibold mb-4">${index + 1}. ${item.question}</p>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div class="quiz-explanation">${item.explanation}</div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+
+            // Quiz Logic
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const buttons = questionDiv.querySelectorAll('button');
+                    const explanation = questionDiv.querySelector('.quiz-explanation');
+                    const questionText = questionDiv.querySelector('p').textContent.split('. ')[1];
+                    const quizItem = quizData.find(q => q.question === questionText);
+
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.textContent === quizItem.correct) {
+                        e.target.classList.add('correct-answer');
+                    } else {
+                        e.target.classList.add('incorrect-answer');
+                        buttons.forEach(btn => {
+                            if (btn.textContent === quizItem.correct) {
+                                btn.classList.add('correct-answer');
+                            }
+                        });
+                    }
+                    explanation.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

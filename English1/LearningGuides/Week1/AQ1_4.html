@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 English 4: Articulation of Sounds</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+
+        /* Active sidebar link style */
+        .sidebar-link.active {
+            background-color: #0d9488; /* Tailwind teal-600 */
+            color: #ffffff; /* white */
+            font-weight: 600;
+        }
+
+        /* Sidebar transition for mobile */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Main content scroll-margin for better anchor linking */
+        section[id] {
+            scroll-margin-top: 4rem;
+        }
+
+        /* Quiz answer feedback styles */
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .quiz-explanation {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-left-width: 4px;
+            border-color: #60a5fa; /* blue-400 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+
+        /* Interactive Element Styles */
+        .sound-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .sound-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Container -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="fixed inset-y-0 left-0 bg-teal-700 text-white w-64 p-4 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen z-30">
+            <h2 class="text-2xl font-bold mb-6">
+                Week 1: English
+                <span class="block text-lg font-medium text-teal-200 mt-1">Lecture 4: Articulation</span>
+            </h2>
+            <ul class="space-y-2">
+                <li><a href="#introduction" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Introduction</a></li>
+                <li><a href="#manners" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Manners of Articulation</a></li>
+                <li><a href="#comparisons" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Comparing Sound Systems</a></li>
+                <li><a href="#accents" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Why Accents Exist</a></li>
+                <li><a href="#interactive-practice" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Interactive Practice</a></li>
+                <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Knowledge Check</a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="fixed top-4 left-4 z-40 md:hidden bg-white p-2 rounded-md shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <div class="max-w-6xl">
+                
+                <!-- Section: Introduction -->
+                <section id="introduction" class="mb-12 bg-sky-50 p-8 rounded-xl shadow-sm">
+                    <h1 class="text-4xl font-bold text-sky-900 mb-4">How We Articulate Sounds</h1>
+                    <p class="text-lg text-gray-600">In the last lesson, we learned *where* sounds are made (the places of articulation). Now, we'll focus on *how* they are made. This is called the <strong>manner of articulation</strong>. Understanding features like voicing and aspiration will give you a much deeper insight into the fine details of English pronunciation and help you pinpoint specific areas for improvement.</p>
+                </section>
+
+                <!-- Section: Manners of Articulation -->
+                <section id="manners" class="mb-12 bg-green-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-green-800 mb-6">Manners of Articulation</h2>
+                    <p class="mb-4">If two sounds are made in the same place (e.g., /k/ and /g/ are both velar sounds), what makes them different? The answer lies in the manner of articulation. Let's look at two key features.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Voicing (Vocal Cord Vibration)</h3>
+                            <p class="text-gray-600 mb-2">Inside your larynx (voice box), you have vocal cords. For some sounds, these cords vibrate, creating a buzzing or resonance. These are called <strong>voiced</strong> sounds. For other sounds, they don't vibrate. These are <strong>voiceless</strong> sounds.</p>
+                            <p class="text-gray-600"><strong>Try this:</strong> Place your palm gently on your throat and say "ssssss" then "zzzzzz". You should feel a vibration for "zzzzzz" but not for "ssssss".</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><strong>Voiceless:</strong> /p/, /t/, /k/, /s/, /f/</li>
+                                <li><strong>Voiced:</strong> /b/, /d/, /g/, /z/, /v/</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Aspiration (A Puff of Air)</h3>
+                            <p class="text-gray-600 mb-2">Aspiration refers to the small, extra puff of air that follows certain voiceless consonants. These are <strong>aspirated</strong> sounds. Sounds without this puff are <strong>unaspirated</strong>.</p>
+                             <p class="text-gray-600"><strong>Try this:</strong> Hold your hand in front of your mouth. Say "pin". You should feel a strong puff of air on the 'p'. Now say "spin". The 'p' sound here has almost no puff of air.</p>
+                             <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><strong>Aspirated:</strong> The 'p' in <em><strong>p</strong>in</em>, 't' in <em><strong>t</strong>op</em>, 'k' in <em><strong>k</strong>ing</em>.</li>
+                                <li><strong>Unaspirated:</strong> The 'p' in <em>s<strong>p</strong>in</em>, 't' in <em>s<strong>t</strong>op</em>, 'k' in <em>s<strong>k</strong>in</em>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Comparing Sound Systems -->
+                <section id="comparisons" class="mb-12 bg-amber-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-amber-800 mb-6">Comparing Sound Systems: English vs. Indian Languages</h2>
+                    <p class="mb-4">Many speakers of Indian languages use sounds that are very close to, but not exactly the same as, sounds in English. Recognizing these differences is a huge step toward clearer pronunciation.</p>
+                    
+                    <div class="mt-6">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Alveolar /t/ vs. Retroflex /T/</h3>
+                        <p class="mb-4">This is one of the most common differences. Many Indian languages (both Dravidian and Indo-Aryan) have <strong>retroflex</strong> sounds, but English does not.</p>
+                        <ul class="list-disc list-inside mt-2 space-y-2 text-gray-600">
+                            <li><strong>Retroflex /T/, /D/ (e.g., in Hindi):</strong> To make this sound, the tip of your tongue <strong>curls or folds backward</strong> and then flaps forward to hit the alveolar ridge.</li>
+                            <li><strong>Alveolar /t/, /d/ (in English):</strong> To make this sound, the tip of your tongue simply touches the alveolar ridge <strong>without curling back</strong>. It's a much lighter, simpler movement.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Labiodental /f/ vs. Bilabial /pʰ/</h3>
+                        <p class="mb-4">Another key difference involves the /f/ sound.</p>
+                        <ul class="list-disc list-inside mt-2 space-y-2 text-gray-600">
+                            <li><strong>Bilabial /pʰ/ (e.g., the sound in Hindi फल 'phal'):</strong> This is an aspirated 'p' sound made with <strong>both lips</strong> coming together, followed by a puff of air.</li>
+                            <li><strong>Labiodental /f/ (in English):</strong> This sound is a fricative, made by touching your <strong>upper teeth to your lower lip</strong> and letting air flow through. Words like <em><strong>f</strong>an</em>, <em><strong>f</strong>riend</em>, and <em><strong>f</strong>at</em> all use this sound.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Section: Why Accents Exist -->
+                <section id="accents" class="mb-12 bg-violet-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-violet-800 mb-6">Why Accents Exist: The Science of "Indian English"</h2>
+                    <p class="mb-4">Have you ever wondered why it's hard to change an accent? There's a scientific reason for it. The term "Indian English" isn't offensive; it's a linguistic term for the variety of English spoken in India, just like "American English" or "British English".</p>
+                    <ul class="list-disc list-inside mt-2 space-y-3 text-gray-600">
+                        <li><strong>Vocal Tract Maturity:</strong> Before the age of 12, our vocal tract (the muscles in our mouth and throat) matures and becomes conditioned to the specific sounds of our native language(s).</li>
+                        <li><strong>Sound System Transfer:</strong> Because our muscles are "trained" for our first language, we naturally tend to use those familiar sounds when we speak a new language. This is why a speaker of Hindi might use a retroflex /T/ instead of an alveolar /t/ in English—it's the closest sound their mouth is used to making.</li>
+                        <li><strong>Practice Makes Progress:</strong> While it's difficult to completely change this conditioning, it is absolutely possible to learn and practice new sounds like the English alveolar /t/ or labiodental /f/. Knowing the difference is the first and most important step!</li>
+                    </ul>
+                </section>
+
+                <!-- Section: Interactive Practice -->
+                <section id="interactive-practice" class="mb-12 bg-orange-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-orange-800 mb-6">Interactive Practice</h2>
+                    <p class="mb-6">Let's check your understanding of these sound differences. For each word, choose how the first consonant sound is typically articulated in Standard English.</p>
+                    <div id="interactive-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Card 1 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Top"</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Alveolar (tongue tip touches ridge)</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Retroflex (tongue curls back)</button>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Fan"</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Bilabial (both lips)</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Labiodental (teeth on lip)</button>
+                            </div>
+                        </div>
+                         <!-- Card 3 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Zoo"</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">Voiceless (no vibration)</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">Voiced (vibration)</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="interactive-feedback" class="mt-4 text-center h-6 font-medium"></div>
+                </section>
+
+                <!-- Section: Knowledge Check -->
+                <section id="quiz" class="bg-blue-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-blue-800 mb-6">Knowledge Check</h2>
+                    <p class="mb-6">Let's test your knowledge of articulation.</p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Quiz questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            // Mobile menu toggle
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Close sidebar on link click (for mobile)
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            // Intersection Observer for active link highlighting
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.sidebar-link[href="#${id}"]`);
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(l => l.classList.remove('active'));
+                        if(link) link.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '0px 0px -50% 0px' });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Practice Logic
+            const interactiveContainer = document.getElementById('interactive-container');
+            const interactiveFeedback = document.getElementById('interactive-feedback');
+            interactiveContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('sound-choice')) {
+                    const parentContainer = e.target.closest('.sound-card-container');
+                    const buttons = parentContainer.querySelectorAll('.sound-choice');
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.dataset.correct) {
+                        e.target.classList.add('bg-green-200', 'border-green-500');
+                        interactiveFeedback.textContent = 'Correct!';
+                        interactiveFeedback.style.color = '#16a34a';
+                    } else {
+                        e.target.classList.add('bg-red-200', 'border-red-500');
+                        interactiveFeedback.textContent = 'Not quite!';
+                        interactiveFeedback.style.color = '#dc2626';
+                        parentContainer.querySelector('[data-correct="true"]').classList.add('bg-green-200', 'border-green-500');
+                    }
+                    setTimeout(() => interactiveFeedback.textContent = '', 2000);
+                }
+            });
+
+            // Quiz Data
+            const quizData = [
+                {
+                    question: "The sound /f/ is a fricative dental sound.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. The /f/ sound is a fricative, but it's labiodental (lips and teeth), not dental."
+                },
+                {
+                    question: "The sound /k/ is a velar sound.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. The /k/ sound is produced when the back of the tongue touches the velum (soft palate)."
+                },
+                {
+                    question: "The sound /h/ is a fricative glottal sound.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. The /h/ sound is produced by air passing through the glottis (the space between the vocal cords)."
+                },
+                {
+                    question: "Tongue is a part of the nasal cavity.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. The tongue is in the oral cavity. The nasal cavity is the space inside your nose."
+                },
+                {
+                    question: "When air moves through the oral cavity, nasal sounds are produced.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. Nasal sounds (like /m/ and /n/) are produced when air moves through the *nasal cavity*. Air moving through the oral cavity produces oral sounds."
+                },
+                {
+                    question: "The main difference between the sounds /p/ and /b/ is:",
+                    options: ["Aspiration", "Place of articulation", "Voicing", "Airflow"],
+                    correct: "Voicing",
+                    explanation: "Correct. Both are bilabial stops. The only difference is that /b/ is voiced (vocal cords vibrate) and /p/ is voiceless."
+                },
+                {
+                    question: "An extra puff of air after a consonant is called:",
+                    options: ["Voicing", "Aspiration", "Articulation", "Frication"],
+                    correct: "Aspiration",
+                    explanation: "Correct. This is the feature that distinguishes the 'p' in 'pin' (aspirated) from the 'p' in 'spin' (unaspirated)."
+                },
+                {
+                    question: "Retroflex sounds, common in many Indian languages, involve:",
+                    options: ["Touching the teeth with the tongue", "Using both lips", "Curling the tip of the tongue backward", "Vibrating the vocal cords"],
+                    correct: "Curling the tip of the tongue backward",
+                    explanation: "Correct. This curling motion is the key feature of retroflex sounds and is absent in standard English."
+                },
+                {
+                    question: "The English /t/ sound is best described as:",
+                    options: ["Velar", "Dental", "Alveolar", "Retroflex"],
+                    correct: "Alveolar",
+                    explanation: "Correct. It's made by touching the tongue tip to the alveolar ridge without curling it back."
+                },
+                {
+                    question: "True or False: The sound in the Hindi word 'फल' (phal) is the same as the English sound in 'fan'.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. The Hindi sound is a bilabial aspirated stop /pʰ/, while the English sound is a labiodental fricative /f/."
+                },
+                {
+                    question: "Why do regional accents, like 'Indian English', exist?",
+                    options: ["Because people don't try hard enough", "Because our vocal tracts are conditioned by our first language", "Because English is a difficult language", "Because of different alphabets"],
+                    correct: "Because our vocal tracts are conditioned by our first language",
+                    explanation: "Correct. Our mouths and tongues get used to making the sounds of our native language, and we transfer those habits when learning a new one."
+                },
+                {
+                    question: "Which of the following pairs contains one voiced and one voiceless sound?",
+                    options: ["/s/ and /f/", "/d/ and /g/", "/t/ and /d/", "/m/ and /n/"],
+                    correct: "/t/ and /d/",
+                    explanation: "Correct. /t/ is voiceless, and /d/ is its voiced counterpart. They are made in the same place and manner, differing only by vocal cord vibration."
+                },
+                {
+                    question: "The 'p' in 'spin' is typically:",
+                    options: ["Voiced", "Aspirated", "Unaspirated", "Retroflex"],
+                    correct: "Unaspirated",
+                    explanation: "Correct. When /p/, /t/, or /k/ follow an /s/, they lose their aspiration (the puff of air)."
+                },
+                {
+                    question: "The sound /z/ is a voiced sound.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. You can feel the vibration in your throat when you make a continuous /z/ sound, unlike its voiceless partner, /s/."
+                },
+                {
+                    question: "Improving pronunciation is possible by:",
+                    options: ["Ignoring your accent", "Speaking louder", "Understanding and practicing the specific articulation of new sounds", "Only listening to native speakers"],
+                    correct: "Understanding and practicing the specific articulation of new sounds",
+                    explanation: "Correct. Consciously learning and practicing how to physically make the sounds of a new language is the most effective way to improve pronunciation."
+                }
+            ];
+
+            // Quiz Generation
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('quiz-question');
+                
+                let optionsHtml = '';
+                item.options.forEach(option => {
+                    optionsHtml += `<button class="w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition-colors">${option}</button>`;
+                });
+
+                questionDiv.innerHTML = `
+                    <p class="text-lg font-semibold mb-4">${index + 1}. ${item.question}</p>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div class="quiz-explanation">${item.explanation}</div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+
+            // Quiz Logic
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const buttons = questionDiv.querySelectorAll('button');
+                    const explanation = questionDiv.querySelector('.quiz-explanation');
+                    const questionText = questionDiv.querySelector('p').textContent.split('. ')[1];
+                    const quizItem = quizData.find(q => q.question === questionText);
+
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.textContent === quizItem.correct) {
+                        e.target.classList.add('correct-answer');
+                    } else {
+                        e.target.classList.add('incorrect-answer');
+                        buttons.forEach(btn => {
+                            if (btn.textContent === quizItem.correct) {
+                                btn.classList.add('correct-answer');
+                            }
+                        });
+                    }
+                    explanation.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

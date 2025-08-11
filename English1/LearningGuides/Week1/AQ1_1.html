@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 English 1: Interactive Learning Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+
+        /* Active sidebar link style */
+        .sidebar-link.active {
+            background-color: #0d9488; /* Tailwind teal-600 */
+            color: #ffffff; /* white */
+            font-weight: 600;
+        }
+
+        /* Sidebar transition for mobile */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Main content scroll-margin for better anchor linking */
+        section[id] {
+            scroll-margin-top: 4rem; /* Adjust based on your header height if you have one */
+        }
+
+        /* Quiz answer feedback styles */
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .quiz-explanation {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-left-width: 4px;
+            border-color: #60a5fa; /* blue-400 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+
+        /* Interactive Drag and Drop Styles */
+        .draggable {
+            cursor: grab;
+        }
+        .drop-zone {
+            border: 2px dashed #9ca3af; /* gray-400 */
+            min-height: 50px;
+            transition: background-color 0.2s;
+        }
+        .drop-zone.drag-over {
+            background-color: #dbeafe; /* blue-100 */
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Container -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="fixed inset-y-0 left-0 bg-teal-700 text-white w-64 p-4 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen z-30">
+            <h2 class="text-2xl font-bold mb-6">
+                Week 1: English
+                <span class="block text-lg font-medium text-teal-200 mt-1">Lecture 1: Learning Language</span>
+            </h2>
+            <ul class="space-y-2">
+                <li><a href="#introduction" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Introduction</a></li>
+                <li><a href="#learning" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">How We Learn Language</a></li>
+                <li><a href="#sounds-vs-symbols" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Sounds vs. Symbols</a></li>
+                <li><a href="#vowels-consonants" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Vowels & Consonants</a></li>
+                <li><a href="#diphthongs-semivowels" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Diphthongs & Semi-vowels</a></li>
+                <li><a href="#clusters" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Consonant Clusters</a></li>
+                <li><a href="#interactive-practice" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Interactive Practice</a></li>
+                <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Knowledge Check</a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="fixed top-4 left-4 z-40 md:hidden bg-white p-2 rounded-md shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <div class="max-w-6xl">
+                
+                <!-- Section: Introduction -->
+                <section id="introduction" class="mb-12 bg-sky-50 p-8 rounded-xl shadow-sm">
+                    <h1 class="text-4xl font-bold text-sky-900 mb-4">Welcome to Basic English!</h1>
+                    <p class="text-lg text-gray-600">This guide is your first step on a journey to understand the building blocks of the English language. We're not just going to memorize rules; we're going to explore <strong>how language works</strong>, from the sounds we make to the words we build. The goal is to help you speak with more confidence and fluency by understanding the underlying patterns of English.</p>
+                </section>
+
+                <!-- Section: How We Learn Language -->
+                <section id="learning" class="mb-12 bg-green-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-green-800 mb-6">How We Learn Language</h2>
+                    <div class="space-y-6">
+                        <p>Have you ever wondered how you learned your first language? It probably felt effortless. Linguists make a distinction between learning a language as a child and as an adult.</p>
+                        
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Early Learning (Acquisition)</h3>
+                            <p>When we're children (especially before 10 years old), we don't "learn" language; we <strong>acquire</strong> it. This process is amazing because it's:</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><strong>Automatic and Effortless:</strong> Children are hardwired with a "Language Acquisition Device" (LAD). They absorb language from their environment without conscious effort.</li>
+                                <li><strong>Based on Fuzzy Input:</strong> The language a child hears is often limited and imperfect, yet they produce grammatical and infinite sentences.</li>
+                                <li><strong>A Subconscious Process:</strong> The rules are figured out subconsciously. A child knows "I go" is right and "I goed" is wrong without ever being taught about past tense verbs.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Late Learning</h3>
+                            <p>Learning a language after about age 15 is different. It's no longer automatic. It requires conscious effort. Here's why:</p>
+                             <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><strong>Another Language Exists:</strong> Your brain already has a fully formed language system.</li>
+                                <li><strong>Conscious Effort is Key:</strong> You have to actively pay attention to and apply patterns. The good news is that adults are great at consciously observing and applying patterns.</li>
+                                <li><strong>Motivation Matters:</strong> Having a specific, directed reason to learn helps tremendously.</li>
+                                <li><strong>Vocal Tract Conditioning:</strong> The muscles in your mouth and throat are already conditioned to the sounds of your first language. This is why accents exist and why it's hard to sound exactly like a native speaker. But that's okay! The goal is clear communication, not a perfect accent.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Sounds vs. Symbols -->
+                <section id="sounds-vs-symbols" class="mb-12 bg-amber-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-amber-800 mb-6">Sounds vs. Writing Symbols</h2>
+                    <p class="mb-4">One of the most important things to understand about English is that there isn't a perfect one-to-one match between its sounds and its written letters (the alphabet). This disconnect is a major source of confusion for learners.</p>
+                    <p class="mb-4">Think about when you learned the alphabet: <em>"A is for Apple."</em> But say the word <em>"apple"</em> out loud. Do you hear the "ay" sound? No. The sound at the beginning of "apple" is more of an "ah" sound.</p>
+                    <p class="mb-4">Let's look at another example: the letter <strong>C</strong>.</p>
+                    <ul class="list-disc list-inside mt-2 space-y-2 text-gray-600">
+                        <li>In the word <em>cat</em>, the letter <strong>c</strong> makes a <strong>/k/</strong> sound.</li>
+                        <li>In the word <em>ice</em>, the letter <strong>c</strong> makes an <strong>/s/</strong> sound.</li>
+                    </ul>
+                    <div class="mt-6 p-4 bg-amber-100 border-l-4 border-amber-400 rounded-r-lg">
+                        <p><strong>Key Takeaway:</strong> We use only <strong>26 letters</strong> in the alphabet to represent about <strong>44 different sounds</strong> in the English language. This is why spelling can be so tricky! To truly master the language, we must pay attention to the sounds themselves, not just the letters on the page.</p>
+                    </div>
+                </section>
+
+                <!-- Section: Vowels & Consonants -->
+                <section id="vowels-consonants" class="mb-12 bg-violet-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-violet-800 mb-6">Vowels & Consonants</h2>
+                    <p class="mb-4">All 44 sounds in English can be divided into two main categories: vowels and consonants. The difference is all about airflow.</p>
+                    
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Vowel Sounds (~20 of them!)</h3>
+                        <p>You might have learned that there are 5 vowels (a, e, i, o, u), but those are just the letters. There are actually about 20 vowel <strong>sounds</strong>.</p>
+                        <p class="mb-2">A vowel sound is produced with an <strong>open vocal tract</strong>. The air flows freely from your lungs. Think about it: you can hold a vowel sound for a long time. Try saying "aaaaah" or "eeeeee".</p>
+                        <p>Examples of vowel sounds:</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                            <li>The short /i/ sound in <em>p<strong>i</strong>t</em>.</li>
+                            <li>The long /ee/ sound in <em>b<strong>ea</strong>n</em>.</li>
+                            <li>The /a/ sound in <em>p<strong>a</strong>t</em>.</li>
+                            <li>The /o/ sound in <em>p<strong>o</strong>t</em>.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Consonant Sounds (~24 of them)</h3>
+                        <p>A consonant sound is produced by <strong>obstructing the airflow</strong> in some way. Your tongue, teeth, or lips get in the way. You can't hold most consonant sounds for very long.</p>
+                        <p>Examples of consonant sounds:</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                            <li>The <strong>/p/</strong> sound in <em><strong>p</strong>it</em> (your lips block the air).</li>
+                            <li>The <strong>/t/</strong> sound in <em><strong>t</strong>ab</em> (your tongue touches the roof of your mouth).</li>
+                            <li>The <strong>/k/</strong> sound in <em><strong>c</strong>ab</em> (the back of your tongue blocks the air).</li>
+                            <li>The <strong>/f/</strong> sound in <em><strong>f</strong>an</em> (your teeth touch your lower lip).</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Section: Diphthongs & Semi-vowels -->
+                <section id="diphthongs-semivowels" class="mb-12 bg-rose-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-rose-800 mb-6">Diphthongs & Semi-vowels</h2>
+                    <p class="mb-4">Now let's get into some more advanced sound types that are very common in English.</p>
+                    
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Diphthongs (Gliding Vowels)</h3>
+                        <p>A diphthong is a special kind of vowel sound that is actually a combination of two vowel sounds in the same syllable. Your mouth starts in the position for one vowel and then glides to the position for another.</p>
+                        <p>There are 8 diphthongs in English. Think about the sound in:</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                            <li><em>c<strong>ow</strong></em> - It starts with an "ah" sound and glides to an "oo" sound: /aʊ/.</li>
+                            <li><em>b<strong>oy</strong></em> - It starts with an "oh" sound and glides to an "ee" sound: /ɔɪ/.</li>
+                            <li><em>t<strong>a</strong>ke</em> - It starts with an "eh" sound and glides to an "ee" sound: /eɪ/.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Semi-vowels (The In-Betweeners)</h3>
+                        <p>The sounds <strong>/w/</strong> and <strong>/y/</strong> are special consonants called semi-vowels. They are called this because they act a bit like consonants and a bit like vowels.</p>
+                         <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                            <li><strong>Like Vowels:</strong> They are produced with very little obstruction of air.</li>
+                            <li><strong>Like Consonants:</strong> They can't form a syllable by themselves. They always need a true vowel with them.</li>
+                        </ul>
+                        <p class="mt-2">One of their most important jobs is to help link words together smoothly in speech. For example, when we say <em>"go away"</em> quickly, a little <strong>/w/</strong> sound naturally gets inserted between the words to make the transition smoother: "go-w-away".</p>
+                    </div>
+                </section>
+                
+                <!-- Section: Consonant Clusters -->
+                <section id="clusters" class="mb-12 bg-lime-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-lime-800 mb-6">Consonant Clusters</h2>
+                    <p class="mb-4">A consonant cluster is when two or more consonant sounds appear next to each other in a word without a vowel sound in between. English loves consonant clusters!</p>
+                    <p>Think about the word <em>"<strong>str</strong>eet"</em>. It starts with three consonant sounds in a row: <strong>/s/</strong>, <strong>/t/</strong>, and <strong>/r/</strong>. That's a consonant cluster.</p>
+                    <p>Clusters can appear at the beginning, middle, or end of a word:</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                        <li><strong>Beginning:</strong> <em><strong>spl</strong>ash</em>, <em><strong>gr</strong>eat</em>, <em><strong>bl</strong>iss</em></li>
+                        <li><strong>End:</strong> <em>si<strong>nk</strong></em>, <em>be<strong>st</strong></em>, <em>he<strong>lp</strong></em></li>
+                    </ul>
+                    <div class="mt-6 p-4 bg-lime-100 border-l-4 border-lime-400 rounded-r-lg">
+                        <p><strong>An Interesting Pattern:</strong> English has a very strict rule for three-consonant clusters at the beginning of a word. The first sound is <strong>always /s/</strong>, the second is one of <strong>/p/, /t/, or /k/</strong>, and the third is one of <strong>/l/ or /r/</strong>. That's it! This is a perfect example of the hidden patterns in language.</p>
+                    </div>
+                </section>
+
+                <!-- Section: Interactive Practice -->
+                <section id="interactive-practice" class="mb-12 bg-orange-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-orange-800 mb-6">Interactive Practice</h2>
+                    <p class="mb-6">Let's put your knowledge to the test with some interactive exercises.</p>
+
+                    <!-- Match the Sound Game -->
+                    <div class="mb-10">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4">Match the Sound to the Word</h3>
+                        <p class="mb-4">Drag the sound type to the box next to the word that contains it.</p>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Draggable Items -->
+                            <div class="space-y-3">
+                                <div id="drag-diphthong" class="draggable p-3 bg-teal-100 text-teal-800 rounded-lg shadow-sm text-center font-semibold" draggable="true">Diphthong</div>
+                                <div id="drag-cluster" class="draggable p-3 bg-amber-100 text-amber-800 rounded-lg shadow-sm text-center font-semibold" draggable="true">Consonant Cluster</div>
+                                <div id="drag-semivowel" class="draggable p-3 bg-indigo-100 text-indigo-800 rounded-lg shadow-sm text-center font-semibold" draggable="true">Semi-vowel</div>
+                            </div>
+                            <!-- Drop Zones -->
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4">
+                                    <div id="drop-1" class="drop-zone flex-1 p-3 rounded-lg" data-answer="drag-cluster"></div>
+                                    <p class="font-mono text-lg"><strong>str</strong>ing</p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div id="drop-2" class="drop-zone flex-1 p-3 rounded-lg" data-answer="drag-semivowel"></div>
+                                    <p class="font-mono text-lg"><strong>y</strong>es</p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div id="drop-3" class="drop-zone flex-1 p-3 rounded-lg" data-answer="drag-diphthong"></div>
+                                    <p class="font-mono text-lg">c<strong>oi</strong>n</p>
+                                </div>
+                            </div>
+                        </div>
+                         <div id="drag-feedback" class="mt-4 text-center font-medium"></div>
+                    </div>
+                </section>
+
+
+                <!-- Section: Knowledge Check -->
+                <section id="quiz" class="bg-blue-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-blue-800 mb-6">Knowledge Check</h2>
+                    <p class="mb-6">Let's see what you've learned. Choose the best answer for each question.</p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Quiz questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            // Mobile menu toggle
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Close sidebar on link click (for mobile)
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            // Intersection Observer for active link highlighting
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -50% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.sidebar-link[href="#${id}"]`);
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(l => l.classList.remove('active'));
+                        if(link) link.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Quiz Data
+            const quizData = [
+                {
+                    question: "Learning of a language ________.",
+                    options: ["Helps establish the underlying patterns in the language.", "Involves applying the underlying patterns of the language.", "Both a and b", "Only b"],
+                    correct: "Both a and b",
+                    explanation: "Learning a language as an adult involves both identifying the hidden rules or patterns and then consciously applying them."
+                },
+                {
+                    question: "In language learning for a child, the input from the immediate environment is ________.",
+                    options: ["Systematic", "Infinite", "Grammatical", "Random"],
+                    correct: "Random",
+                    explanation: "Children learn from 'fuzzy' or random input. The language they hear isn't perfectly structured, yet they manage to build a grammatical system from it."
+                },
+                {
+                    question: "True or False: Learning a language helps us identify the underlying patterns in the language.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "This is a key part of late language learning. As adults, we consciously look for these patterns to make sense of the new language."
+                },
+                {
+                    question: "True or False: The 'Language Acquisition Device' (LAD) and 'Universal Grammar' (UG) facilitate language acquisition in children.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "These are theoretical concepts explaining how children can acquire language so effortlessly. The LAD is the hypothetical mental faculty for language."
+                },
+                {
+                    question: "Acquisition of language is ________.",
+                    options: ["A subconscious process of learning", "Automatic", "Both a and b", "Something that requires effort"],
+                    correct: "Both a and b",
+                    explanation: "Acquisition (how children learn) is a subconscious and automatic process, unlike late learning, which requires conscious effort."
+                },
+                {
+                    question: "Which of the following best describes a consonant cluster?",
+                    options: ["Two vowel sounds together", "A vowel followed by a consonant", "Two or more consonant sounds together with no vowel in between", "A very long consonant sound"],
+                    correct: "Two or more consonant sounds together with no vowel in between",
+                    explanation: "A consonant cluster is a sequence of consonants without any vowels separating them, like the 'str' in 'street'."
+                },
+                {
+                    question: "A diphthong is a type of...",
+                    options: ["Consonant", "Vowel", "Syllable", "Letter"],
+                    correct: "Vowel",
+                    explanation: "A diphthong is a special 'gliding' vowel sound that combines two vowel sounds in one syllable, like the 'oi' in 'boy'."
+                },
+                {
+                    question: "Why are the sounds /w/ and /y/ called 'semi-vowels'?",
+                    options: ["Because they are half as loud as other sounds", "Because they are produced with little airflow obstruction but can't form a syllable alone", "Because they only appear in half the words in English", "Because they are a mix of a consonant and a number"],
+                    correct: "Because they are produced with little airflow obstruction but can't form a syllable alone",
+                    explanation: "Semi-vowels are vowel-like in their production (free airflow) but consonant-like in their function (can't be the core of a syllable)."
+                },
+                 {
+                    question: "About how many sounds are there in the English language?",
+                    options: ["26", "100", "44", "32"],
+                    correct: "44",
+                    explanation: "While there are only 26 letters in the alphabet, they are used to represent approximately 44 distinct sounds (phonemes)."
+                },
+                {
+                    question: "Learning a language after age 15 typically requires more conscious effort because:",
+                    options: ["Your vocal tract is already conditioned to your first language", "You already have an existing language in your mind", "The automatic acquisition process is weaker", "All of the above"],
+                    correct: "All of the above",
+                    explanation: "All these factors contribute to making late language learning a more conscious, effortful process compared to childhood acquisition."
+                }
+            ];
+
+            // Quiz Generation
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('quiz-question');
+                
+                let optionsHtml = '';
+                item.options.forEach(option => {
+                    optionsHtml += `<button class="w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition-colors">${option}</button>`;
+                });
+
+                questionDiv.innerHTML = `
+                    <p class="text-lg font-semibold mb-4">${index + 1}. ${item.question}</p>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div class="quiz-explanation">${item.explanation}</div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+
+            // Quiz Logic
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const buttons = questionDiv.querySelectorAll('button');
+                    const explanation = questionDiv.querySelector('.quiz-explanation');
+                    const questionText = questionDiv.querySelector('p').textContent.split('. ')[1];
+                    const quizItem = quizData.find(q => q.question === questionText);
+
+                    // Disable all buttons for this question after an answer is selected
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.textContent === quizItem.correct) {
+                        e.target.classList.add('correct-answer');
+                    } else {
+                        e.target.classList.add('incorrect-answer');
+                        // Highlight the correct answer
+                        buttons.forEach(btn => {
+                            if (btn.textContent === quizItem.correct) {
+                                btn.classList.add('correct-answer');
+                            }
+                        });
+                    }
+                    explanation.style.display = 'block';
+                }
+            });
+
+            // Drag and Drop Logic
+            const draggables = document.querySelectorAll('.draggable');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const dragFeedback = document.getElementById('drag-feedback');
+            let draggedItem = null;
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', function() {
+                    draggedItem = this;
+                    setTimeout(() => {
+                        this.style.display = 'none';
+                    }, 0);
+                });
+
+                draggable.addEventListener('dragend', function() {
+                    setTimeout(() => {
+                        this.style.display = 'block';
+                        draggedItem = null;
+                    }, 0);
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('drag-over');
+                });
+
+                zone.addEventListener('dragleave', function() {
+                    this.classList.remove('drag-over');
+                });
+
+                zone.addEventListener('drop', function() {
+                    this.classList.remove('drag-over');
+                    if (draggedItem) {
+                        if (this.dataset.answer === draggedItem.id) {
+                            this.innerHTML = ''; // Clear previous content
+                            this.appendChild(draggedItem);
+                            draggedItem.style.cursor = 'default';
+                            dragFeedback.textContent = 'Correct!';
+                            dragFeedback.style.color = '#16a34a'; // green-600
+                        } else {
+                            dragFeedback.textContent = 'Not quite, try another one!';
+                            dragFeedback.style.color = '#dc2626'; // red-600
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

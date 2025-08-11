@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 English 2: Sounds & Writing Symbols</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+
+        /* Active sidebar link style */
+        .sidebar-link.active {
+            background-color: #0d9488; /* Tailwind teal-600 */
+            color: #ffffff; /* white */
+            font-weight: 600;
+        }
+
+        /* Sidebar transition for mobile */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Main content scroll-margin for better anchor linking */
+        section[id] {
+            scroll-margin-top: 4rem;
+        }
+
+        /* Quiz answer feedback styles */
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+        }
+        .quiz-explanation {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border-left-width: 4px;
+            border-color: #60a5fa; /* blue-400 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+
+        /* Interactive Element Styles */
+        .sound-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .sound-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Container -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="fixed inset-y-0 left-0 bg-teal-700 text-white w-64 p-4 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen z-30">
+            <h2 class="text-2xl font-bold mb-6">
+                Week 1: English
+                <span class="block text-lg font-medium text-teal-200 mt-1">Lecture 2: Sounds & Writing</span>
+            </h2>
+            <ul class="space-y-2">
+                <li><a href="#introduction" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Introduction</a></li>
+                <li><a href="#alphabet" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">The English Alphabet</a></li>
+                <li><a href="#disconnect" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">The Sound-Symbol Disconnect</a></li>
+                <li><a href="#the-44-sounds" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">The 44 Sounds of English</a></li>
+                <li><a href="#interactive-practice" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Interactive Practice</a></li>
+                <li><a href="#quiz" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">Knowledge Check</a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="fixed top-4 left-4 z-40 md:hidden bg-white p-2 rounded-md shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10">
+            <div class="max-w-6xl">
+                
+                <!-- Section: Introduction -->
+                <section id="introduction" class="mb-12 bg-sky-50 p-8 rounded-xl shadow-sm">
+                    <h1 class="text-4xl font-bold text-sky-900 mb-4">Sounds vs. Letters</h1>
+                    <p class="text-lg text-gray-600">In this lesson, we'll dive into one of the most fundamental concepts of English: the difference between <strong>speech sounds</strong> and the <strong>writing symbols</strong> (letters) we use to represent them. Understanding this difference is crucial for improving both your pronunciation and your spelling. We'll see why "what you see is not always what you say" in English.</p>
+                </section>
+
+                <!-- Section: The English Alphabet -->
+                <section id="alphabet" class="mb-12 bg-green-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-green-800 mb-6">The English Alphabet</h2>
+                    <p class="mb-4">The English writing system is built on an alphabet of <strong>26 letters</strong>. You're already familiar with them, but let's quickly review the two forms they come in.</p>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-2">Uppercase and Lowercase</h3>
+                        <p class="mb-4">Each letter has two versions: an uppercase (or capital) letter and a lowercase letter. For example, 'A' is uppercase and 'a' is lowercase.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <h4 class="font-bold text-lg mb-2 text-gray-700">Uppercase</h4>
+                                <p class="font-mono text-xl tracking-widest">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <h4 class="font-bold text-lg mb-2 text-gray-700">Lowercase</h4>
+                                <p class="font-mono text-xl tracking-widest">a b c d e f g h i j k l m n o p q r s t u v w x y z</p>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-gray-600">We use uppercase letters for specific jobs, like starting a sentence or for proper nouns (names like <em>John</em> or <em>London</em>). Most of our writing, however, uses lowercase letters.</p>
+                    </div>
+                </section>
+
+                <!-- Section: The Sound-Symbol Disconnect -->
+                <section id="disconnect" class="mb-12 bg-amber-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-amber-800 mb-6">The Sound-Symbol Disconnect</h2>
+                    <p class="mb-4">Here is the tricky part. Those 26 letters have to do the job of representing about <strong>44 unique sounds</strong>. This means there is no simple one-to-one relationship. A single letter can represent multiple sounds, and a single sound can be represented by multiple letters or combinations of letters.</p>
+                    <p class="mb-4">Let's look at some examples:</p>
+                    <ul class="list-disc list-inside mt-2 space-y-3 text-gray-600">
+                        <li>The letter <strong>'a'</strong> sounds different in the words <em>c<strong>a</strong>t</em>, <em>f<strong>a</strong>ther</em>, and <em>t<strong>a</strong>ke</em>.</li>
+                        <li>The letter <strong>'c'</strong> makes a <strong>/k/</strong> sound in <em><strong>c</strong>at</em> but an <strong>/s/</strong> sound in <em><strong>c</strong>ity</em>.</li>
+                        <li>The <strong>/f/</strong> sound can be written as 'f' in <em><strong>f</strong>an</em>, 'ph' in <em><strong>ph</strong>one</em>, or even 'gh' in <em>rou<strong>gh</strong></em>.</li>
+                    </ul>
+                    <div class="mt-6 p-4 bg-amber-100 border-l-4 border-amber-400 rounded-r-lg">
+                        <p><strong>Key Takeaway:</strong> When learning English, we must learn two things: the writing system (spelling) and the sound system (pronunciation). Paying close attention to the sounds you hear is just as important as looking at the letters you see.</p>
+                    </div>
+                </section>
+
+                <!-- Section: The 44 Sounds of English -->
+                <section id="the-44-sounds" class="mb-12 bg-violet-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-violet-800 mb-6">The 44 Sounds of English</h2>
+                    <p class="mb-4">All speech sounds are produced by the exhaling flow of air from our lungs. As this air travels up through our vocal tract, we modify it with our tongue, lips, and teeth to create different sounds. These sounds fall into two main categories.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Vowels (~20 Sounds)</h3>
+                            <p class="text-gray-600">Vowel sounds are produced with a free, unobstructed flow of air. They are the core of syllables. Examples include the sounds in:</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><em>p<strong>i</strong>t</em></li>
+                                <li><em>p<strong>e</strong>t</em></li>
+                                <li><em>b<strong>oo</strong>k</em></li>
+                                <li><em>b<strong>ea</strong>n</em></li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Consonants (~24 Sounds)</h3>
+                            <p class="text-gray-600">Consonant sounds are produced by obstructing the airflow in some way. Examples include the sounds:</p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600">
+                                <li><strong>/p/</strong> in <em><strong>p</strong>it</em></li>
+                                <li><strong>/t/</strong> in <em><strong>t</strong>ab</em></li>
+                                <li><strong>/k/</strong> in <em><strong>c</strong>ab</em></li>
+                                <li><strong>/sh/</strong> in <em><strong>sh</strong>y</em></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Interactive Practice -->
+                <section id="interactive-practice" class="mb-12 bg-orange-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-orange-800 mb-6">Interactive Practice</h2>
+                    <p class="mb-6">Click on the card that correctly identifies the first sound in the example word.</p>
+                    <div id="interactive-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Card 1 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Cat"</p>
+                            <p class="text-gray-600 mb-4">What is the <strong>first sound</strong>?</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">/k/ sound</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">/s/ sound</button>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"City"</p>
+                            <p class="text-gray-600 mb-4">What is the <strong>first sound</strong>?</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">/k/ sound</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">/s/ sound</button>
+                            </div>
+                        </div>
+                         <!-- Card 3 -->
+                        <div class="sound-card-container bg-white p-6 rounded-lg shadow-md text-center">
+                            <p class="text-2xl font-bold mb-4">"Phone"</p>
+                            <p class="text-gray-600 mb-4">What is the <strong>first sound</strong>?</p>
+                            <div class="space-y-2">
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100">/p/ sound</button>
+                                <button class="sound-choice w-full p-2 border rounded-lg hover:bg-gray-100" data-correct="true">/f/ sound</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="interactive-feedback" class="mt-4 text-center h-6 font-medium"></div>
+                </section>
+
+                <!-- Section: Knowledge Check -->
+                <section id="quiz" class="bg-blue-50 p-8 rounded-xl shadow-sm">
+                    <h2 class="text-3xl font-bold text-blue-800 mb-6">Knowledge Check</h2>
+                    <p class="mb-6">Let's see what you've learned. Choose the best answer for each question.</p>
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Quiz questions will be injected here by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const sections = document.querySelectorAll('section[id]');
+
+            // Mobile menu toggle
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Close sidebar on link click (for mobile)
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            // Intersection Observer for active link highlighting
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.sidebar-link[href="#${id}"]`);
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(l => l.classList.remove('active'));
+                        if(link) link.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '0px 0px -50% 0px' });
+
+            sections.forEach(section => observer.observe(section));
+
+            // Interactive Practice Logic
+            const interactiveContainer = document.getElementById('interactive-container');
+            const interactiveFeedback = document.getElementById('interactive-feedback');
+            interactiveContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('sound-choice')) {
+                    const parentContainer = e.target.closest('.sound-card-container');
+                    const buttons = parentContainer.querySelectorAll('.sound-choice');
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.dataset.correct) {
+                        e.target.classList.add('bg-green-200', 'border-green-500');
+                        interactiveFeedback.textContent = 'Correct!';
+                        interactiveFeedback.style.color = '#16a34a';
+                    } else {
+                        e.target.classList.add('bg-red-200', 'border-red-500');
+                        interactiveFeedback.textContent = 'Not quite!';
+                        interactiveFeedback.style.color = '#dc2626';
+                        parentContainer.querySelector('[data-correct="true"]').classList.add('bg-green-200', 'border-green-500');
+                    }
+                    setTimeout(() => interactiveFeedback.textContent = '', 2000);
+                }
+            });
+
+            // Quiz Data
+            const quizData = [
+                {
+                    question: "Writing symbols or alphabets are different from speech sounds.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. The 26 English letters are used to represent about 44 different sounds, so there isn't a one-to-one match."
+                },
+                {
+                    question: "There are _______ letters in English.",
+                    options: ["24", "26", "44", "5"],
+                    correct: "26",
+                    explanation: "Correct. The English alphabet consists of 26 letters, each with an uppercase and lowercase form."
+                },
+                 {
+                    question: "'abcdefgh' is represented in uppercase letters.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. These are lowercase letters. Uppercase letters would be 'ABCDEFGH'."
+                },
+                {
+                    question: "There are two kinds of sounds – Vowels and Consonants.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. All speech sounds are categorized as either vowels (unobstructed airflow) or consonants (obstructed airflow)."
+                },
+                {
+                    question: "The exhaling flow of air is responsible for the production of speech sounds.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. We use the air we breathe out, modified by our vocal tract, to produce all the sounds of speech."
+                },
+                {
+                    question: "The sound of 'c' in the word 'city' is the same as the sound of 'c' in the word 'cat'.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. In 'city', 'c' makes an /s/ sound. In 'cat', it makes a /k/ sound. This shows the disconnect between letters and sounds."
+                },
+                {
+                    question: "Which of the following is NOT one of the five letters commonly taught as vowels?",
+                    options: ["a", "e", "i", "y"],
+                    correct: "y",
+                    explanation: "Correct. The five letters usually taught as vowels are a, e, i, o, and u. 'y' is sometimes considered a vowel depending on the word."
+                },
+                {
+                    question: "The main difference between producing a vowel and a consonant sound is the ______.",
+                    options: ["volume of air", "speed of speech", "obstruction of airflow", "pitch of your voice"],
+                    correct: "obstruction of airflow",
+                    explanation: "Correct. Vowels have a free flow of air, while consonants are defined by some kind of obstruction from the lips, tongue, or teeth."
+                },
+                {
+                    question: "True or False: Every English word must contain at least one vowel *sound*.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. Vowel sounds are the core of syllables, and it's impossible to form a word without at least one."
+                },
+                {
+                    question: "The two different sets of alphabet symbols are called:",
+                    options: ["Big and Small", "First and Second", "Uppercase and Lowercase", "Primary and Secondary"],
+                    correct: "Uppercase and Lowercase",
+                    explanation: "Correct. These are the standard terms for the two forms of letters in the alphabet."
+                },
+                {
+                    question: "The letter 'y' can represent both a consonant and a vowel sound.",
+                    options: ["True", "False"],
+                    correct: "True",
+                    explanation: "Correct. It's a consonant sound in 'yes' but a vowel sound in 'shy' or 'gym'."
+                },
+                {
+                    question: "Approximately how many consonant sounds are there in English?",
+                    options: ["26", "20", "24", "30"],
+                    correct: "24",
+                    explanation: "Correct. While there are about 20 vowel sounds, there are approximately 24 distinct consonant sounds."
+                },
+                 {
+                    question: "The word 'know' has how many consonant sounds?",
+                    options: ["One", "Two", "Three", "Zero"],
+                    correct: "One",
+                    explanation: "Correct. The 'k' is silent. The only consonant sound is /n/ at the beginning."
+                },
+                {
+                    question: "The sound at the beginning of the word 'gem' is the same as the sound at the beginning of the word 'go'.",
+                    options: ["True", "False"],
+                    correct: "False",
+                    explanation: "Correct. 'Gem' starts with a soft /j/ sound, while 'go' starts with a hard /g/ sound."
+                },
+                 {
+                    question: "Why do we have two different sets of letters (uppercase and lowercase)?",
+                    options: ["For decoration", "To make writing harder", "For grammatical purposes, like starting sentences and proper nouns", "There is no reason"],
+                    correct: "For grammatical purposes, like starting sentences and proper nouns",
+                    explanation: "Correct. Uppercase letters serve important grammatical functions to signal the start of sentences and identify proper names."
+                }
+            ];
+
+            // Quiz Generation
+            const quizContainer = document.getElementById('quiz-container');
+            quizData.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('quiz-question');
+                
+                let optionsHtml = '';
+                item.options.forEach(option => {
+                    optionsHtml += `<button class="w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition-colors">${option}</button>`;
+                });
+
+                questionDiv.innerHTML = `
+                    <p class="text-lg font-semibold mb-4">${index + 1}. ${item.question}</p>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div class="quiz-explanation">${item.explanation}</div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+
+            // Quiz Logic
+            quizContainer.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const questionDiv = e.target.closest('.quiz-question');
+                    const buttons = questionDiv.querySelectorAll('button');
+                    const explanation = questionDiv.querySelector('.quiz-explanation');
+                    const questionText = questionDiv.querySelector('p').textContent.split('. ')[1];
+                    const quizItem = quizData.find(q => q.question === questionText);
+
+                    buttons.forEach(btn => btn.disabled = true);
+
+                    if (e.target.textContent === quizItem.correct) {
+                        e.target.classList.add('correct-answer');
+                    } else {
+                        e.target.classList.add('incorrect-answer');
+                        buttons.forEach(btn => {
+                            if (btn.textContent === quizItem.correct) {
+                                btn.classList.add('correct-answer');
+                            }
+                        });
+                    }
+                    explanation.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
